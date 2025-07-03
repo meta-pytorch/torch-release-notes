@@ -59,6 +59,7 @@ The categories below are as follows:
 - Bump requests from 2.32.2 to 2.32.4 in /.github (05faba40287)
 - Enable NCCL zero-copy (user buffer registration) for FSDP2 ([#150564](https://github.com/pytorch/pytorch/pull/150564))
 - Provide access to the cudaGraph_t underlying a CUDAGraph. ([#155164](https://github.com/pytorch/pytorch/pull/155164))
+- Improve error handling if nvcc is not found ([#148671](https://github.com/pytorch/pytorch/pull/148671))
 ### not user facing
 - Add ninja to requirements-ci for all arch ([#148778](https://github.com/pytorch/pytorch/pull/148778))
 - [AOTI] Re-enable AOTI cpp unit test ([#149085](https://github.com/pytorch/pytorch/pull/149085))

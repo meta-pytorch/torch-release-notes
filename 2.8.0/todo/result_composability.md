@@ -28,11 +28,46 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+- Allow duck typing for 0/1 ([#150222](https://github.com/pytorch/pytorch/pull/150222))
 ### bug fixes
 - Custom Op handle 1-element tuples ([#155447](https://github.com/pytorch/pytorch/pull/155447))
 ### performance
 ### docs
+- Add docblock for resolve_unbacked_bindings ([#154374](https://github.com/pytorch/pytorch/pull/154374))
+- Add docblock for is_accessor_node ([#154375](https://github.com/pytorch/pytorch/pull/154375))
+- Add docblock for _sympy_from_args ([#154376](https://github.com/pytorch/pytorch/pull/154376))
+- Remove _constrain_symbol_range ([#154386](https://github.com/pytorch/pytorch/pull/154386))
+- Add docblock for RuntimeAssert ([#154401](https://github.com/pytorch/pytorch/pull/154401))
+- Add docblock for _suggest_torch_checks ([#154404](https://github.com/pytorch/pytorch/pull/154404))
+- Add docblock for _remove_effect_token_unbacked_bindings ([#154405](https://github.com/pytorch/pytorch/pull/154405))
+- Add docblock for _iterate_exprs ([#154377](https://github.com/pytorch/pytorch/pull/154377))
+- Add docblock for free_symbols ([#154378](https://github.com/pytorch/pytorch/pull/154378))
+- Add docblock for free_unbacked_symbols ([#154379](https://github.com/pytorch/pytorch/pull/154379))
+- Add docblock to is_symbol_binding_fx_node ([#154380](https://github.com/pytorch/pytorch/pull/154380))
+- Add docblock for find_symbol_binding_fx_nodes ([#154381](https://github.com/pytorch/pytorch/pull/154381))
+- Add docblock for _free_unbacked_symbols_with_path ([#154383](https://github.com/pytorch/pytorch/pull/154383))
+- Add docblock for _guard_or ([#154384](https://github.com/pytorch/pytorch/pull/154384))
+- Add docblock for guard_scalar ([#154385](https://github.com/pytorch/pytorch/pull/154385))
+- Add docblock for _ShapeGuardPrinter ([#154402](https://github.com/pytorch/pytorch/pull/154402))
+- Add docblock for ShapeGuardPythonPrinter ([#154403](https://github.com/pytorch/pytorch/pull/154403))
+- Add docblock to cast_symbool_to_symint_guardless ([#154400](https://github.com/pytorch/pytorch/pull/154400))
+- add docblock for _fast_expand ([#154398](https://github.com/pytorch/pytorch/pull/154398))
+- Add docblock for TrackedFake ([#154396](https://github.com/pytorch/pytorch/pull/154396))
+- Add docblock for _eval_is_non_overlapping_and_dense ([#154399](https://github.com/pytorch/pytorch/pull/154399))
+- Add docblock for _expandsums ([#154397](https://github.com/pytorch/pytorch/pull/154397))
+- Enable torch.types.IntLikeType / FloatLikeType / BoolLikeType ([#152157](https://github.com/pytorch/pytorch/pull/152157))
+- Fix grammar mistakes in StatefulSymbolicContext comment ([#152598](https://github.com/pytorch/pytorch/pull/152598))
+
 ### devs
+- Introduce sym_and, sym_or ([#150456](https://github.com/pytorch/pytorch/pull/150456))
+- Support statically_known_true in C++ ([#151346](https://github.com/pytorch/pytorch/pull/151346))
+- Add C++ bindings for guard_or_false/true ([#150148](https://github.com/pytorch/pytorch/pull/150148))
+- Introduce statically_known_false ([#154291](https://github.com/pytorch/pytorch/pull/154291))
+- Don't log exception when recording is disabled or already recording ([#151038](https://github.com/pytorch/pytorch/pull/151038))
+- Log suppressed data dependent errors ([#151041](https://github.com/pytorch/pytorch/pull/151041))
+- Demote runtime_asserts_frozen logger to debug mode ([#149832](https://github.com/pytorch/pytorch/pull/149832))
+- Demote constant registration warnings to debug ([#149833](https://github.com/pytorch/pytorch/pull/149833))
+
 ### Untopiced
 - Avoid overflow in vector_norm for scalar input ([#144073](https://github.com/pytorch/pytorch/pull/144073))
 - [custom ops] Override fake registration ([#150806](https://github.com/pytorch/pytorch/pull/150806))
@@ -47,6 +82,7 @@ The categories below are as follows:
 - [dynamic shapes] guard_or_false for cat, repeat ([#155290](https://github.com/pytorch/pytorch/pull/155290))
 - [dynamic shapes] skip fused linear path if not definitely contiguous ([#155051](https://github.com/pytorch/pytorch/pull/155051))
 - Align meta deducing for fft_r2c with fft_r2c_mkl on XPU ([#156048](https://github.com/pytorch/pytorch/pull/156048))
+
 ### not user facing
 - fix cuDNN SDPA meta registration ([#148921](https://github.com/pytorch/pytorch/pull/148921))
 - Add meta function for out variants of ones,zeros,empty ([#149098](https://github.com/pytorch/pytorch/pull/149098))
@@ -70,4 +106,23 @@ The categories below are as follows:
 - fix slice w/ dynamic shapes ([#153131](https://github.com/pytorch/pytorch/pull/153131))
 - remove allow-untyped-defs from context.py ([#155622](https://github.com/pytorch/pytorch/pull/155622))
 - remove gso from vector_norm ([#156530](https://github.com/pytorch/pytorch/pull/156530))
+
+
+- Update meta kernel for torch._scaled_mm nvfp4 recipe ([#150462](https://github.com/pytorch/pytorch/pull/150462))
+- Support backed_size_oblivious in guard_or_false/guard_or_true ([#150231](https://github.com/pytorch/pytorch/pull/150231))
+- Fix optimized_add to call make_optimized on non args only  ([#150955](https://github.com/pytorch/pytorch/pull/150955))
+- Fix has_free_symbols on sympy.S.true ([#151492](https://github.com/pytorch/pytorch/pull/151492))
+- Automatically convert instances of _check(u>=0) to check_is_size() ([#148844](https://github.com/pytorch/pytorch/pull/148844))
+- Don't specialize min/max ([#151347](https://github.com/pytorch/pytorch/pull/151347))
+- Do not const fold for nodes with no float symbols ([#151494](https://github.com/pytorch/pytorch/pull/151494))
+- Use bound_sympy for size-oblivious min/max reasoning ([#151242](https://github.com/pytorch/pytorch/pull/151242))
+- Be less aggressive in CSE on bound expressions ([#151590](https://github.com/pytorch/pytorch/pull/151590))
+- Suggest torch._checks only for booleans ([#152499](https://github.com/pytorch/pytorch/pull/152499))
+- Use guard_or_false for infer_size ([#152146](https://github.com/pytorch/pytorch/pull/152146))
+- Simplify int(x / y) pattern ([#153477](https://github.com/pytorch/pytorch/pull/153477))
+- Fix guard_or implementation for better perf and simplicity ([#153674](https://github.com/pytorch/pytorch/pull/153674))
+- Remove guard_size_oblivious from is_nonzero proxy call check ([#154164](https://github.com/pytorch/pytorch/pull/154164))
+- Fix evaluate_expr to include suppress_guards_tls in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
+- [aotd] Support mutations of the same input in fw and bw ([#155354](https://github.com/pytorch/pytorch/pull/155354))
+
 ### security

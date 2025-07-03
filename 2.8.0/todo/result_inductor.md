@@ -153,6 +153,9 @@ The categories below are as follows:
 - Support environement var for autotune log ([#156254](https://github.com/pytorch/pytorch/pull/156254))
 - Improve torch.ops typing ([#154555](https://github.com/pytorch/pytorch/pull/154555))
 - [CUDAGraph] add config `cudagraph_capture_sizes` ([#156551](https://github.com/pytorch/pytorch/pull/156551))
+- Add inductor.config.fallback_random which DCEs unused rand calls ([#147790](https://github.com/pytorch/pytorch/pull/147790))
+- [2/n][Optimus][Auto-AC] Support activation quantization with scaling ([#151770](https://github.com/pytorch/pytorch/pull/151770))
+- Refactor layout constraint selection logic ([#148104](https://github.com/pytorch/pytorch/pull/148104))
 ### not user facing
 - [Inductor][CPP] Fix expr issue in loop split ([#148882](https://github.com/pytorch/pytorch/pull/148882))
 - [while_loop] require stride to be the same as input for body_fn ([#148002](https://github.com/pytorch/pytorch/pull/148002))

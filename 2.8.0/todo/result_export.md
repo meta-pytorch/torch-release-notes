@@ -30,8 +30,16 @@ The categories below are as follows:
 - [BC-breaking] Set NonStrict as default for export_for_training ([#150941](https://github.com/pytorch/pytorch/pull/150941))
 ### deprecation
 ### new features
+- Draft-export ([#149465](https://github.com/pytorch/pytorch/pull/149465), [#153627](https://github.com/pytorch/pytorch/pull/153627), [#154190](https://github.com/pytorch/pytorch/pull/154190), [#155744](https://github.com/pytorch/pytorch/pull/155744))
+
 ### improvements
+- Improve error message on constraint violation error ([#155738](https://github.com/pytorch/pytorch/pull/155738), [#152924](https://github.com/pytorch/pytorch/pull/152924), [#155603](https://github.com/pytorch/pytorch/pull/155603), [#151407](https://github.com/pytorch/pytorch/pull/151407))
+- Add meta[val] to getattr nodes ([#154934](https://github.com/pytorch/pytorch/pull/154934))
+- Support python assertion with symints. ([#149444](https://github.com/pytorch/pytorch/pull/149444))
+
 ### bug fixes
+- Fix aten.is_nonzero for more than one elem tensors ([#149637](https://github.com/pytorch/pytorch/pull/149637))
+
 ### performance
 ### docs
 ### devs
@@ -116,4 +124,5 @@ The categories below are as follows:
 - pyfmt lint  torch/_export/serde/schema.py ([#154487](https://github.com/pytorch/pytorch/pull/154487))
 - pyfmt lint torch/_export/passes/replace_view_ops_with_view_copy_ops_pass.py ([#154488](https://github.com/pytorch/pytorch/pull/154488))
 - [multigraph] use specializations in compile_and_call_fx_graph ([#153449](https://github.com/pytorch/pytorch/pull/153449))
+- Support exporting hop with function schema argument ([#152073](https://github.com/pytorch/pytorch/pull/152073))
 ### security
