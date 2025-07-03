@@ -124,5 +124,7 @@ The categories below are as follows:
 - Remove guard_size_oblivious from is_nonzero proxy call check ([#154164](https://github.com/pytorch/pytorch/pull/154164))
 - Fix evaluate_expr to include suppress_guards_tls in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
 - [aotd] Support mutations of the same input in fw and bw ([#155354](https://github.com/pytorch/pytorch/pull/155354))
+- [multigraph] use specializations in compile_and_call_fx_graph ([#153449](https://github.com/pytorch/pytorch/pull/153449))
+- Add guard_or_false for computeStorageNbytes ([#150483](https://github.com/pytorch/pytorch/pull/150483))
 
 ### security
