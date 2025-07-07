@@ -36,4 +36,6 @@ The categories below are as follows:
 ### Untopiced
 - [CPU][Brgemm] add s8s8 GEMM microkernel API ([#154358](https://github.com/pytorch/pytorch/pull/154358))
 ### not user facing
+- Add torch._scaled_mm for CPU ([#150410](https://github.com/pytorch/pytorch/pull/150410))
+- Support fp8 output of _scaled_mm for CPU ([#153600](https://github.com/pytorch/pytorch/pull/153600))
 ### security
