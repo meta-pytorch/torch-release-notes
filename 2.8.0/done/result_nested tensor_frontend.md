@@ -28,11 +28,11 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+- Fix contiguity in NJT string representation ([#153529](https://github.com/pytorch/pytorch/pull/153529))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [Torch][NT] Fix NestedTensor contiguous check condition. (#153237) ([#153529](https://github.com/pytorch/pytorch/pull/153529))
 ### not user facing
 ### security
