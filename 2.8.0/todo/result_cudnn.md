@@ -28,12 +28,12 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+- Update cuDNN frontend version to 1.11.0 ([#149759](https://github.com/pytorch/pytorch/pull/149759))
+- Update cuDNN frontend version to 1.12, supersedes 1.11.0 update ([#153888](https://github.com/pytorch/pytorch/pull/153888))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- [BE]: Update cudnn frontend submodule  to 1.11.0 ([#149759](https://github.com/pytorch/pytorch/pull/149759))
-- [cuDNN][cuDNN frontend] upgrade cuDNN frontend submodule  to 1.12 ([#153888](https://github.com/pytorch/pytorch/pull/153888))
 ### security
