@@ -1,5 +1,5 @@
 
-# Release Notes worksheet foreach_frontend
+# Release Notes worksheet optimizer_frontend
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,7 +23,7 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## foreach_frontend
+## optimizer_frontend
 ### bc breaking
 ### deprecation
 ### new features
@@ -33,7 +33,6 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- [ca] default on in CI, with fallback for tests in test/compiled_autograd_skips/ ([#155480](https://github.com/pytorch/pytorch/pull/155480))
 ### not user facing
-- pyfmt lint more torch/utils files ([#155812](https://github.com/pytorch/pytorch/pull/155812))
+- Fix typing None override other optimizers ([#153386](https://github.com/pytorch/pytorch/pull/153386))
 ### security

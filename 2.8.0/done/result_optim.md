@@ -28,26 +28,31 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+- Add TensorLR variant for fused Adagrad on CPU ([#153078](https://github.com/pytorch/pytorch/pull/153078))
+- Convert Tensor lr to 0-dim as needed for the optimizer to normally work ([#145674](https://github.com/pytorch/pytorch/pull/145674))
+- Add lr_lambda type check in MultiplicativeLR ([#151973](https://github.com/pytorch/pytorch/pull/151973))
+
 ### bug fixes
 - Fix `lr_scheduler` unexpectedly calls `step()` when init argument last_epoch is larger than -1 ([#149312](https://github.com/pytorch/pytorch/pull/149312))
+- Fix CosineAnnealingWarmRestarts reset T_cur ([#151289](https://github.com/pytorch/pytorch/pull/151289))
+
 ### performance
 ### docs
 - Add scripts to generate plots of LRSchedulers ([#149189](https://github.com/pytorch/pytorch/pull/149189))
 - Include other accelerators in capturable docstr for optimizers ([#149770](https://github.com/pytorch/pytorch/pull/149770))
-- Document that dampening is skipped in SGD momentum first step ([#152833](https://github.com/pytorch/pytorch/pull/152833))
-- Fix doc cosineannealinglr 152081 ([#152936](https://github.com/pytorch/pytorch/pull/152936))
-### devs
-### Untopiced
-- Convert Tensor lr to 0-dim as needed for the optimizer to normally work ([#145674](https://github.com/pytorch/pytorch/pull/145674))
-- Clean up duplicated code in lr_scheduler ([#150984](https://github.com/pytorch/pytorch/pull/150984))
-- Optimize typing in `lr_scheduler.py` ([#151219](https://github.com/pytorch/pytorch/pull/151219))
-- Fix CosineAnnealingWarmRestarts reset T_cur ([#151289](https://github.com/pytorch/pytorch/pull/151289))
-- Add lr_lambda type check in MultiplicativeLR ([#151973](https://github.com/pytorch/pytorch/pull/151973))
-- Update SGD documentation to match implementation ([#149884](https://github.com/pytorch/pytorch/pull/149884))
+- Update SGD documentation to match implementation and document that dampening is skipped in SGD first step ([#149884](https://github.com/pytorch/pytorch/pull/149884), [#152833](https://github.com/pytorch/pytorch/pull/152833))
+- Fix doc for CosineAnnealingLR ([#152936](https://github.com/pytorch/pytorch/pull/152936))
 - Fix incorrect citation of authors in documentation ([#145209](https://github.com/pytorch/pytorch/pull/145209))
-- Fix the type hint of `step()` with default value ([#153367](https://github.com/pytorch/pytorch/pull/153367))
-- [BE]: Improve decorator typing for Optimizer subclasses ([#153374](https://github.com/pytorch/pytorch/pull/153374))
-- Add TensorLR variant for fused Adagrad on CPU ([#153078](https://github.com/pytorch/pytorch/pull/153078))
 - Add `load_state_dict` hint doc about invoke order work with lr_scheduler ([#149942](https://github.com/pytorch/pytorch/pull/149942))
+
+### devs
+- Improve decorator typing for Optimizer subclasses ([#153374](https://github.com/pytorch/pytorch/pull/153374))
+- Optimize typing in `lr_scheduler.py` ([#151219](https://github.com/pytorch/pytorch/pull/151219))
+- Fix the type hint of `step()` with default value ([#153367](https://github.com/pytorch/pytorch/pull/153367))
+
+### Untopiced
+
 ### not user facing
+- Clean up duplicated code in lr_scheduler ([#150984](https://github.com/pytorch/pytorch/pull/150984))
+
 ### security
