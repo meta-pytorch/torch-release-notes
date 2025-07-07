@@ -27,6 +27,7 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
+- Torchbind objects supported in AOTInductor ([#150196](https://github.com/pytorch/pytorch/pull/150196), [#154265](https://github.com/pytorch/pytorch/pull/154265))
 ### improvements
 - [MPS] Implement backward pass for interpolate_trilinear ([#156373](https://github.com/pytorch/pytorch/pull/156373))
 ### bug fixes
@@ -42,7 +43,6 @@ The categories below are as follows:
 - [AOTI][XPU] Refactor AOTInductor runtime API for Intel GPU. ([#153929](https://github.com/pytorch/pytorch/pull/153929))
 - [AOTI][refactor] Fix an anonymous namespace issue ([#154033](https://github.com/pytorch/pytorch/pull/154033))
 - [3/n][Optimus][Auto-AC][reland] Support any fp8 quantization type and set scaling as the default" ([#154057](https://github.com/pytorch/pytorch/pull/154057))
-- Fix torchbind path in AOTI package loader ([#154265](https://github.com/pytorch/pytorch/pull/154265))
 - Use get_device_context in aoti runtime for XPU directly ([#154360](https://github.com/pytorch/pytorch/pull/154360))
 - Add new ops in fallback ops ([#154251](https://github.com/pytorch/pytorch/pull/154251))
 - [4/n][Optimus][Auto-AC] Expose the config to skip the dynamo gaurds to avoid recompile ([#154152](https://github.com/pytorch/pytorch/pull/154152))
