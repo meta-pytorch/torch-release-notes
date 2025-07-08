@@ -51,11 +51,15 @@ torch.onnx.export(...)
 
 Support for JIT traced and scripted modules in the ONNX exporter when `dynamo=True` has been removed. You are encouraged to export an nn.Module directly, or create an `ExportedProgram` using `torch.export` before exporting to ONNX.
 
+#### `onnxscript>=0.3.1` is required for the `dynamo=True` option ([#157017](https://github.com/pytorch/pytorch/pull/157017))
+
+You must upgrade `onnxscript` to version 0.3.1 or higher for it to be compatible with PyTorch 2.8.
+
 ### deprecation
 
 #### The `dynamo=False` (current default) option is deprecated ([#155580](https://github.com/pytorch/pytorch/pull/155580))
 
-The default will be `dynamo=True` starting from PyTorch 2.9. You are encouraged to migrate to use the `dynamo=True` in `torch.onnx.export`.
+The default will be `dynamo=True` starting from PyTorch 2.9. You are encouraged to migrate to use the `dynamo=True` option in `torch.onnx.export`.
 
 ### new features
 
