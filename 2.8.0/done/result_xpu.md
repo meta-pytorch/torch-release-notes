@@ -31,7 +31,7 @@ The categories below are as follows:
 - Support int4 WOQ GEMM on Intel GPU ([#137566](https://github.com/pytorch/pytorch/pull/137566))
 - Support SYCL kernels through CPP Extension([#132945](https://github.com/pytorch/pytorch/pull/132945))
 - Support safe softmax for SDPA on Intel GPU ([#151999](https://github.com/pytorch/pytorch/pull/151999))
-- SupportGQA and different head_dim of value for SDPA on Intel GPU([#150992](https://github.com/pytorch/pytorch/pull/150992))
+- Support GQA and different head_dim of value for SDPA on Intel GPU([#150992](https://github.com/pytorch/pytorch/pull/150992))
 
 ### improvements
 - Add memory reporting to Memory Profiler for Intel GPU ([#152842](https://github.com/pytorch/pytorch/pull/152842))
