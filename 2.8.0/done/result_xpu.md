@@ -50,8 +50,7 @@ The categories below are as follows:
 - Fix matmul accuracy when offset > 0 ([#154495](https://github.com/pytorch/pytorch/pull/154495))
 - Correct torch.xpu.is_bf16_supported to return False if no Intel GPU detected ([#152317](https://github.com/pytorch/pytorch/pull/152317))
 - Fix AOT compilation in SYCL C++ extension ([#156364](https://github.com/pytorch/pytorch/pull/156364))
-- Fix compilation issue when TORCH_Intel GPU_ARCH_LIST is empty ([#153604](https://github.com/pytorch/pytorch/pull/153604))
-- Add device guard for multi-device conv ([#153067](https://github.com/pytorch/pytorch/pull/153067))
+- Add device guard for Cov to handle the case that the input tensors reside on different devices([#153067](https://github.com/pytorch/pytorch/pull/153067))
 
 ### performance
 - Enable post-op fusion for mkldnn Conv on Intel GPU ([#150287](https://github.com/pytorch/pytorch/pull/150287))
