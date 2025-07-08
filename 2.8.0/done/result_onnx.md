@@ -59,7 +59,7 @@ You must upgrade `onnxscript` to version 0.3.1 or higher for it to be compatible
 
 #### The `dynamo=False` (current default) option is deprecated ([#152478](https://github.com/pytorch/pytorch/pull/152478) and [#155580](https://github.com/pytorch/pytorch/pull/155580))
 
-The default will be `dynamo=True` starting from PyTorch 2.9. You are encouraged to migrate to use the `dynamo=True` option in `torch.onnx.export`.
+The default will be `dynamo=True` starting from PyTorch 2.9. You are encouraged to migrate to use the `dynamo=True` option in `torch.onnx.export`. This flag makes `torch.export.export` the default export path, replacing `TorchScript`, as `TorchScript` is nearing end-of-life"
 
 To maintain the old behavior, set `dynamo=True`. You are encouraged to also experiment with the `fallback=True` option that will make the exporter fall back to the `dynamo=False` path if there are errors.
 
