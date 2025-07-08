@@ -139,7 +139,6 @@ You may now use a size 1 dimension in example inputs on the dynamic dimensions. 
 - Update onnx program doc formatting and improve robustness ([#151623](https://github.com/pytorch/pytorch/pull/151623))
 - dynamic_shapes uses DYNAMIC ([#153065](https://github.com/pytorch/pytorch/pull/153065))
 - Set the name of the producing node using the value name ([#155413](https://github.com/pytorch/pytorch/pull/155413))
-- Fix how shapes are computed for float4 ([#156353](https://github.com/pytorch/pytorch/pull/156353))
 
 ### bug fixes
 - Fix bfloat16 support in onnx_program callable ([#151121](https://github.com/pytorch/pytorch/pull/151121))
