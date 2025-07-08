@@ -128,7 +128,7 @@ You may now use a size 1 dimension in example inputs on the dynamic dimensions. 
 #### Others
 - Support sym_float ([#153200](https://github.com/pytorch/pytorch/pull/153200))
 - Update ONNX to 1.18 ([#152200](https://github.com/pytorch/pytorch/pull/152200))
-- Support float4 ([#151069](https://github.com/pytorch/pytorch/pull/151069))
+- Support float4 ([#151069](https://github.com/pytorch/pytorch/pull/151069), [#156353](https://github.com/pytorch/pytorch/pull/156353))
 - Add group_norm support from opset 21 ([#152138](https://github.com/pytorch/pytorch/pull/152138))
 - Implement sym_not ([#152111](https://github.com/pytorch/pytorch/pull/152111))
 - add converters for sym_min, sym_max ([#152196](https://github.com/pytorch/pytorch/pull/152196))
