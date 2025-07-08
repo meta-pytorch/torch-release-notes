@@ -27,6 +27,11 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
+- [Quant][PT2E] add a lowering pass for x86 backend ([#149708](https://github.com/pytorch/pytorch/pull/149708))
+- [Quant][PT2E][X86] enable qconv1d-relu fusion ([#150751](https://github.com/pytorch/pytorch/pull/150751))
+- [Quant][X86] add an op to compute uint8 pointwise mul ([#151112](https://github.com/pytorch/pytorch/pull/151112))
+- [Quant][X86] add ops to compute uint8 pointwise add/add_relu ([#152411](https://github.com/pytorch/pytorch/pull/152411))
+- [Quant][X86] add an op to compute uint8 batch norm 2d ([#152811](https://github.com/pytorch/pytorch/pull/152811))
 ### improvements
 ### bug fixes
 ### performance
@@ -41,24 +46,19 @@ The categories below are as follows:
 - add `torch.float4_e2m1fn_x2` to PyTorch ([#148791](https://github.com/pytorch/pytorch/pull/148791))
 - Improve attr mismatch msg ([#149576](https://github.com/pytorch/pytorch/pull/149576))
 - [Intel GPU] Allow XPU backend in Quantize operators ([#150288](https://github.com/pytorch/pytorch/pull/150288))
-- [Quant][PT2E] add a lowering pass for x86 backend ([#149708](https://github.com/pytorch/pytorch/pull/149708))
 - [AO] update port_metadata_pass to support quant_affine ops ([#150642](https://github.com/pytorch/pytorch/pull/150642))
 - [AO] Add Moving Average Affine Observer ([#150643](https://github.com/pytorch/pytorch/pull/150643))
 - [AO] Refactor convert and add QuantAffinePlaceholderObserver ([#150644](https://github.com/pytorch/pytorch/pull/150644))
-- [Quant][PT2E][X86] enable qconv1d-relu fusion ([#150751](https://github.com/pytorch/pytorch/pull/150751))
 - [AO] fix per token block size calculation ([#150890](https://github.com/pytorch/pytorch/pull/150890))
 - Fix torchscript issues with reference quantized modules ([#150870](https://github.com/pytorch/pytorch/pull/150870))
 - [BE][1/2] Move original_weights_lookup attribute to constant ([#151241](https://github.com/pytorch/pytorch/pull/151241))
 - [Sana][HybridCache] Fix bug in detect_attr_assignment ([#151824](https://github.com/pytorch/pytorch/pull/151824))
 - [standalone_compile] Dynamic shape handling ([#151788](https://github.com/pytorch/pytorch/pull/151788))
-- [Quant][X86] add an op to compute uint8 pointwise mul ([#151112](https://github.com/pytorch/pytorch/pull/151112))
 - [1/N] Deprecate c10::string_view and at::string ([#151972](https://github.com/pytorch/pytorch/pull/151972))
 - [fbgemm] Implement __obj_flatten__ for LinearPackedParamsBase ([#152619](https://github.com/pytorch/pytorch/pull/152619))
 - Avoid  std::chrono::system_clock  ([#153135](https://github.com/pytorch/pytorch/pull/153135))
 - [torch][ao] Properly strip tracking stats in  _fold_conv_bn_qat for 1D ([#152982](https://github.com/pytorch/pytorch/pull/152982))
 - [Refactor] Explicilty spell out the namespace for device() function ([#153248](https://github.com/pytorch/pytorch/pull/153248))
-- [Quant][X86] add ops to compute uint8 pointwise add/add_relu ([#152411](https://github.com/pytorch/pytorch/pull/152411))
-- [Quant][X86] add an op to compute uint8 batch norm 2d ([#152811](https://github.com/pytorch/pytorch/pull/152811))
 - Add deprecation warning for `torch.ao.quantization` ([#153892](https://github.com/pytorch/pytorch/pull/153892))
 - BE: Type previously untyped decorators ([#154515](https://github.com/pytorch/pytorch/pull/154515))
 - [Reland][pytorch] Patch the _is_conv_node function ([#154473](https://github.com/pytorch/pytorch/pull/154473))
