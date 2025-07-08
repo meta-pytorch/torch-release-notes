@@ -29,7 +29,7 @@ The categories below are as follows:
 ### new features
 - Support Intel distributed backend (XCCL) in PyTorch ([#141856](https://github.com/pytorch/pytorch/pull/141856))
 - Support int4 WOQ GEMM on Intel GPU ([#137566](https://github.com/pytorch/pytorch/pull/137566))
-- Support third_party SYCL kernels with CPP Extension API ([#132945](https://github.com/pytorch/pytorch/pull/132945))
+- Support SYCL kernels through CPP Extension([#132945](https://github.com/pytorch/pytorch/pull/132945))
 - Support safe softmax for SDPA on Intel GPU ([#151999](https://github.com/pytorch/pytorch/pull/151999))
 - SupportGQA and different head_dim of value for SDPA on Intel GPU([#150992](https://github.com/pytorch/pytorch/pull/150992))
 
