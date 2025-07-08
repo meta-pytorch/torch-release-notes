@@ -61,6 +61,8 @@ You must upgrade `onnxscript` to version 0.3.1 or higher for it to be compatible
 
 The default will be `dynamo=True` starting from PyTorch 2.9. You are encouraged to migrate to use the `dynamo=True` option in `torch.onnx.export`.
 
+To maintain the old behavior, set `dynamo=True`. You are encouraged to also experiment with the `fallback=True` option that will make the exporter fall back to the `dynamo=False` path if there are errors.
+
 ### new features
 
 #### Additional opsets (>18) are supported when `dynamo=True` ([#149901](https://github.com/pytorch/pytorch/pull/149901), [#154596](https://github.com/pytorch/pytorch/pull/154596))
@@ -118,7 +120,7 @@ Uses of `torch.scan` can now be converted to ONNX.
 
 You may now use a size 1 dimension in example inputs on the dynamic dimensions. Prior to this release, users were required to provide size>=2 example inputs on the dynamic dimensions due to the [0/1 specialization behavior in torch.export](https://docs.google.com/document/d/16VPOa3d-Liikf48teAOmxLc92rgvJdfosIy-yoT38Io)
 
-#### Add draft_export as a strategy ([#147529](https://github.com/pytorch/pytorch/pull/147529))
+#### New strategy `draft_export` ([#147529](https://github.com/pytorch/pytorch/pull/147529))
 
 `draft_export` is added as the last strategy for obtaining an ExportedProgram in `torch.onnx.export` to provide debugging information when there are data dependent / constraint errors. You may learn more in the [docs](https://docs.pytorch.org/docs/main/draft_export.html)
 
