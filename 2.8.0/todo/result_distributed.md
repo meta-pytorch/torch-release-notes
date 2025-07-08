@@ -79,6 +79,7 @@ The categories below are as follows:
   - Created and sent `full_tensor` on `ProcessGroup`-supported device in `_broadcast_tensors` ([#148865](https://github.com/pytorch/pytorch/pull/148865))
   - Supported non-tensor-data `write_size` in planner write items. ([#149699](https://github.com/pytorch/pytorch/pull/149699))
   - Switched to `_apply_to_tensors` for dataclass input ([#154897](https://github.com/pytorch/pytorch/pull/154897))
+  - Not pop tensors if they are on Meta device ([#153185](https://github.com/pytorch/pytorch/pull/153185))
 - DTensor
   - Added more generically support `CompositeImplicitAutograd` ops under inference mode ([#149514](https://github.com/pytorch/pytorch/pull/149514))
   - Made `StridedShard` support uneven sharding ([#150490](https://github.com/pytorch/pytorch/pull/150490))
@@ -169,6 +170,7 @@ The categories below are as follows:
   - Added torch.distributed.run option to provide destination for event logging (#154644) ([#155268](https://github.com/pytorch/pytorch/pull/155268))
 ### Untopiced
 ### not user facing
+- [DTensor][tp] fix errors in FSDP+TP checkpointing test ([#150354](https://github.com/pytorch/pytorch/pull/150354))
 - remove allow-untyped-defs from elastic_distributed_sampler.py ([#154620](https://github.com/pytorch/pytorch/pull/154620))
 - remove allow-untyped-defs from torch/distributed/elastic/utils/logging.py ([#154625](https://github.com/pytorch/pytorch/pull/154625))
 - Fix #155018 (convert distributed rst to markdown) ([#155528](https://github.com/pytorch/pytorch/pull/155528))
