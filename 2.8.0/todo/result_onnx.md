@@ -25,60 +25,112 @@ The categories below are as follows:
 
 ## onnx
 ### bc breaking
-- [ONNX] Clean up legacy dynamo export code ([#149745](https://github.com/pytorch/pytorch/pull/149745))
-- [ONNX] Update default opset to 18 ([#156023](https://github.com/pytorch/pytorch/pull/156023))
+
+#### Default opset in `torch.onnx.export` is now 18 ([#156023](https://github.com/pytorch/pytorch/pull/156023))
+
+When `dynamo=False`, the default ONNX opset version has been updated from 17 to 18. Users can set `opset_version` to explicitly select an opset version.
+
+Version 2.7
+
+```py
+# opset_version=17
+torch.onnx.export(...)
+```
+
+Version 2.8
+
+```py
+# To preserve the original behavior
+torch.onnx.export(..., opset_version=17)
+
+# New: opset_version=18
+torch.onnx.export(...)
+```
+
 ### deprecation
+
+#### The `dynamo=False` (current default) option is deprecated ([#155580](https://github.com/pytorch/pytorch/pull/155580))
+
+The default will be `dynamo=True` starting from PyTorch 2.9. You are encouraged to migrate to use the `dynamo=True` in `torch.onnx.export`.
+
 ### new features
-- [ONNX] Create onnx_symbolic ([#148905](https://github.com/pytorch/pytorch/pull/148905))
-- [ONNX] Add draft_export as a strategy ([#147529](https://github.com/pytorch/pytorch/pull/147529))
-- [ONNX] Set is_in_onnx_export for dynamo=True ([#149678](https://github.com/pytorch/pytorch/pull/149678))
-- [ONNX] Supporting different opset versions for torchlib registry ([#149901](https://github.com/pytorch/pytorch/pull/149901))
-- [ONNX] Support float4 ([#151069](https://github.com/pytorch/pytorch/pull/151069))
-- [ONNX] Create support for rotary embeddings ([#154745](https://github.com/pytorch/pytorch/pull/154745))
-- [ONNX] Support 0/1 on dynamic dimension ([#155717](https://github.com/pytorch/pytorch/pull/155717))
-- [ONNX] Implements converter for higher order ops scan ([#154513](https://github.com/pytorch/pytorch/pull/154513))
+
+#### Additional opsets (>18) are supported when `dynamo=True` ([#149901](https://github.com/pytorch/pytorch/pull/149901))
+
+#### Support for symbolic operators in the `dynamo=True` export path ([#148905](https://github.com/pytorch/pytorch/pull/148905), [#149678](https://github.com/pytorch/pytorch/pull/149678))
+
+Two operators `torch.onnx.ops.symbolic` and `torch.onnx.ops.symbolic_multi_out` are defined to allow you to create symbolic ONNX operators directly in your PyTorch models. You can use them in a forward function:
+
+```py
+def forward(self, x: torch.Tensor) -> torch.Tensor:
+    # Optionally use is_in_onnx_export to control the behavior during onnx export
+
+    if torch.onnx.is_in_onnx_export():
+        # Create a symbolic ONNX operator with the name "CustomOp" in the "custom_domain" domain.
+        # The output tensor will have the specified dtype and shape
+        return torch.onnx.ops.symbolic(
+            "custom_domain::CustomOp",
+            (x,),
+            dict(attr_key="attr_value"),
+            dtype=x.dtype,
+            shape=x.shape,
+            version=1,
+        )
+    else:
+        return x
+```
+
+To learn more, refer to the [docs](https://docs.pytorch.org/docs/main/onnx_ops.html#symbolic-operators).
+
+- Add draft_export as a strategy ([#147529](https://github.com/pytorch/pytorch/pull/147529))
+- Supporting different opset versions for torchlib registry ([#149901](https://github.com/pytorch/pytorch/pull/149901))
+- Support float4 ([#151069](https://github.com/pytorch/pytorch/pull/151069))
+- Create support for rotary embeddings ([#154745](https://github.com/pytorch/pytorch/pull/154745))
+- Support 0/1 on dynamic dimension ([#155717](https://github.com/pytorch/pytorch/pull/155717))
+- Implements converter for higher order ops scan ([#154513](https://github.com/pytorch/pytorch/pull/154513))
 - Fix num_heads inference in ONNX Attention-23 exporter ([#156367](https://github.com/pytorch/pytorch/pull/156367))
-- [ONNX] Implement Attention-23 ([#156431](https://github.com/pytorch/pytorch/pull/156431))
+- Implement Attention-23 ([#156431](https://github.com/pytorch/pytorch/pull/156431))
 ### improvements
-- [ONNX] Annotate None inputs in symbolic ops ([#150038](https://github.com/pytorch/pytorch/pull/150038))
-- [ONNX] Add asdict method to VerificationInfo class ([#151024](https://github.com/pytorch/pytorch/pull/151024))
-- [ONNX] Support running bfloat16 models with ONNX Runtime ([#149646](https://github.com/pytorch/pytorch/pull/149646))
+- Annotate None inputs in symbolic ops ([#150038](https://github.com/pytorch/pytorch/pull/150038))
+- Add asdict method to VerificationInfo class ([#151024](https://github.com/pytorch/pytorch/pull/151024))
+- Support running bfloat16 models with ONNX Runtime ([#149646](https://github.com/pytorch/pytorch/pull/149646))
 - [ONNX][Eazy] Update onnx program doc formatting and improve robustness ([#151623](https://github.com/pytorch/pytorch/pull/151623))
-- [ONNX] Add group_norm support from opset 21 ([#152138](https://github.com/pytorch/pytorch/pull/152138))
-- [ONNX] Implement sym_not ([#152111](https://github.com/pytorch/pytorch/pull/152111))
-- [ONNX] add converters for sym_min, sym_max ([#152196](https://github.com/pytorch/pytorch/pull/152196))
-- [ONNX] dynamic_shapes uses DYNAMIC ([#153065](https://github.com/pytorch/pytorch/pull/153065))
-- [ONNX] Allow exporter to export SDPA to Attention onnx operator ([#154596](https://github.com/pytorch/pytorch/pull/154596))
-- [ONNX] Set the name of the producing node using the value name ([#155413](https://github.com/pytorch/pytorch/pull/155413))
-- [ONNX] Fix how shapes are computed for float4 ([#156353](https://github.com/pytorch/pytorch/pull/156353))
+- Add group_norm support from opset 21 ([#152138](https://github.com/pytorch/pytorch/pull/152138))
+- Implement sym_not ([#152111](https://github.com/pytorch/pytorch/pull/152111))
+- add converters for sym_min, sym_max ([#152196](https://github.com/pytorch/pytorch/pull/152196))
+- dynamic_shapes uses DYNAMIC ([#153065](https://github.com/pytorch/pytorch/pull/153065))
+- Allow exporter to export SDPA to Attention onnx operator ([#154596](https://github.com/pytorch/pytorch/pull/154596))
+- Set the name of the producing node using the value name ([#155413](https://github.com/pytorch/pytorch/pull/155413))
+- Fix how shapes are computed for float4 ([#156353](https://github.com/pytorch/pytorch/pull/156353))
 ### bug fixes
-- [ONNX] Fix bfloat16 support in onnx_program callable ([#151121](https://github.com/pytorch/pytorch/pull/151121))
-- [ONNX] Produce correct dtypes for bf16/f8 in IR TorchTensor ([#151259](https://github.com/pytorch/pytorch/pull/151259))
+- Fix bfloat16 support in onnx_program callable ([#151121](https://github.com/pytorch/pytorch/pull/151121))
+- Produce correct dtypes for bf16/f8 in IR TorchTensor ([#151259](https://github.com/pytorch/pytorch/pull/151259))
 ### performance
 ### docs
-- [ONNX] Update types in VerificationInfo ([#149377](https://github.com/pytorch/pytorch/pull/149377))
-- [ONNX] Improve docstring of onnx symbolic ops ([#149668](https://github.com/pytorch/pytorch/pull/149668))
-- [ONNX] Note on attention op symbolic function ([#156441](https://github.com/pytorch/pytorch/pull/156441))
+- Update types in VerificationInfo ([#149377](https://github.com/pytorch/pytorch/pull/149377))
+- Improve docstring of onnx symbolic ops ([#149668](https://github.com/pytorch/pytorch/pull/149668))
+- Note on attention op symbolic function ([#156441](https://github.com/pytorch/pytorch/pull/156441))
 ### devs
 ### Untopiced
 - [export] refactor DimHints for type errors ([#149424](https://github.com/pytorch/pytorch/pull/149424))
 - [export] refactor _Dim into Dim ([#149891](https://github.com/pytorch/pytorch/pull/149891))
-- [ONNX] Add a comment for handling bf16/fp8 tensor to numpy conversion ([#151371](https://github.com/pytorch/pytorch/pull/151371))
-- [ONNX] Delete JitTraceConvertStrategy ([#152556](https://github.com/pytorch/pytorch/pull/152556))
-- [ONNX] Suggest users setting dynamo=True when exporting ([#152478](https://github.com/pytorch/pytorch/pull/152478))
-- [ONNX] Support sym_float ([#153200](https://github.com/pytorch/pytorch/pull/153200))
+- Add a comment for handling bf16/fp8 tensor to numpy conversion ([#151371](https://github.com/pytorch/pytorch/pull/151371))
+- Delete JitTraceConvertStrategy ([#152556](https://github.com/pytorch/pytorch/pull/152556))
+- Suggest users setting dynamo=True when exporting ([#152478](https://github.com/pytorch/pytorch/pull/152478))
+- Support sym_float ([#153200](https://github.com/pytorch/pytorch/pull/153200))
 - [submodule] Update ONNX to 1.18 ([#152200](https://github.com/pytorch/pytorch/pull/152200))
 - Convert to markdown onnx rst ([#155228](https://github.com/pytorch/pytorch/pull/155228))
-- [ONNX] Change deprecation message from 2.8 to 2.9 ([#155580](https://github.com/pytorch/pytorch/pull/155580))
+- Change deprecation message from 2.8 to 2.9 ([#155580](https://github.com/pytorch/pytorch/pull/155580))
 - Typo fixes for "overridden" in comments and function names ([#155944](https://github.com/pytorch/pytorch/pull/155944))
-- [ONNX] Preserve all legacy exporter params in fallback ([#156659](https://github.com/pytorch/pytorch/pull/156659))
+- Preserve all legacy exporter params in fallback ([#156659](https://github.com/pytorch/pytorch/pull/156659))
 ### not user facing
-- [ONNX] Clean up the diagnostics module ([#149864](https://github.com/pytorch/pytorch/pull/149864))
-- [ONNX] Clean up the diagnostics module ([#149864](https://github.com/pytorch/pytorch/pull/149864))
-- [ONNX] Add test for decomp_table update ([#153671](https://github.com/pytorch/pytorch/pull/153671))
+- Clean up the diagnostics module ([#149864](https://github.com/pytorch/pytorch/pull/149864))
+- Clean up the diagnostics module ([#149864](https://github.com/pytorch/pytorch/pull/149864))
+- Add test for decomp_table update ([#153671](https://github.com/pytorch/pytorch/pull/153671))
 - Add __main__ guards to tests ([#154716](https://github.com/pytorch/pytorch/pull/154716))
 - Convert to .md: onnx_verification.rst, onnx.rst, package.rst, ([#155556](https://github.com/pytorch/pytorch/pull/155556))
 - Delete tools/onnx/update_default_opset_version.py ([#156055](https://github.com/pytorch/pytorch/pull/156055))
 - Add ONNX dynamo metadata documentation ([#155816](https://github.com/pytorch/pytorch/pull/155816))
 - [BE] fix typos in docs/ ([#156080](https://github.com/pytorch/pytorch/pull/156080))
+- Clean up legacy dynamo export code ([#149745](https://github.com/pytorch/pytorch/pull/149745))
 ### security
