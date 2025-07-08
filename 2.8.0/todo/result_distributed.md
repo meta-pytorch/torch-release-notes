@@ -296,7 +296,7 @@ The categories below are as follows:
 - [BE][PYFMT] migrate PYFMT for `test/inductor/` to `ruff format` ([#148186](https://github.com/pytorch/pytorch/pull/148186))
 ### security
 
-### Removed because not released yet
+### Removed because not released yet (not mention in 2.8 and will be mentioned retrospectively in later release notes)
 - [Async TP] More robust support for rowwise scales when fusing matmul reduce-scatter ([#149247](https://github.com/pytorch/pytorch/pull/149247))
 - [Async TP] Fuse matmul-reduce-scatters when reduce scatters have multiple users, and save fused node for backward instead of reduce_scatter node ([#149946](https://github.com/pytorch/pytorch/pull/149946))
 - Fix detection of GPU multicast ([#150563](https://github.com/pytorch/pytorch/pull/150563))
@@ -337,18 +337,3 @@ The categories below are as follows:
 - [a2av] Improve tuning for 4 GPUs ([#154580](https://github.com/pytorch/pytorch/pull/154580))
 - Fixed simple-fsdp mixed-precision training bugs ([#154975](https://github.com/pytorch/pytorch/pull/154975))
 - Improved All to All Perf for inter-node use-case (#156376) ([#156389](https://github.com/pytorch/pytorch/pull/156389))
-
-### Not related to distributed
-- [partitioner] always ban compiler-driven recompute of collectives by default ([#147561](https://github.com/pytorch/pytorch/pull/147561))
-- Support subclass constructor capturing in export ([#147014](https://github.com/pytorch/pytorch/pull/147014))
-- [AOTI][reland] Update test runner to use the new APIs ([#149412](https://github.com/pytorch/pytorch/pull/149412))
-- [export] specialize for aten.to ([#149235](https://github.com/pytorch/pytorch/pull/149235))
-- [1/N] Use internal linkage in torch/csrc C++ files. ([#150930](https://github.com/pytorch/pytorch/pull/150930))
-- Reland fast gather and index implementation ([#151917](https://github.com/pytorch/pytorch/pull/151917))
-- Support XPU in memory tracker ([#150703](https://github.com/pytorch/pytorch/pull/150703))
-- Fix xrefs ([#151888](https://github.com/pytorch/pytorch/pull/151888))
-- Add option to use mempool on OOM ([#151487](https://github.com/pytorch/pytorch/pull/151487))
-- [ca] Functionalize AccumulateGrad ([#155521](https://github.com/pytorch/pytorch/pull/155521))
-- [pt2d] Add reorder_comms_preserving_peak_memory pass ([#146562](https://github.com/pytorch/pytorch/pull/146562))
-- fix numpy compatibility for 2d small list indices ([#154806](https://github.com/pytorch/pytorch/pull/154806))
-- Resubmit Remove MemPoolContext  (#154042) ([#154746](https://github.com/pytorch/pytorch/pull/154746))
