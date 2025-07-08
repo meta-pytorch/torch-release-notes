@@ -30,32 +30,27 @@ The categories below are as follows:
 - Support Intel distributed backend (XCCL) in PyTorch ([#141856](https://github.com/pytorch/pytorch/pull/141856))
 - Support int4 WOQ GEMM on Intel GPU ([#137566](https://github.com/pytorch/pytorch/pull/137566))
 - Support SYCL kernels through CPP Extension([#132945](https://github.com/pytorch/pytorch/pull/132945))
-- Support safe softmax for SDPA on Intel GPU ([#151999](https://github.com/pytorch/pytorch/pull/151999))
-- Support GQA and different head_dim of value for SDPA on Intel GPU([#150992](https://github.com/pytorch/pytorch/pull/150992))
 
 ### improvements
+- Support safe softmax, GQA, fp32 causal mask for SDP and Increase maximum headdim from 256 to 576 on Intel GPU ([#151999](https://github.com/pytorch/pytorch/pull/151999), [#150992](https://github.com/pytorch/pytorch/pull/150992), [#152091](https://github.com/pytorch/pytorch/pull/152091))
 - Add memory reporting to Memory Profiler for Intel GPU ([#152842](https://github.com/pytorch/pytorch/pull/152842))
 - Support Intel GPU profiler toggle functionality ([#155135](https://github.com/pytorch/pytorch/pull/155135))
 - Support distributed memory tracker integration for Intel GPU ([#150703](https://github.com/pytorch/pytorch/pull/150703))
 - Improve scalar tensor case handling in addmm, baddmm on Intel GPU ([#153051](https://github.com/pytorch/pytorch/pull/153051))
-- Support f32 intermediate dtype, headdim <= 576, and f32 causal mask for SDPA ([#152091](https://github.com/pytorch/pytorch/pull/152091))
-- Add Intel GPU device support for nested_layer_norm ([#148593](https://github.com/pytorch/pytorch/pull/148593))
-- Refine oneDNN context manager API on Intel GPU ([#147349](https://github.com/pytorch/pytorch/pull/147349))
 - Improve error handling and reporting in Intel GPU CMake files ([#149353](https://github.com/pytorch/pytorch/pull/149353))
-- Support multi_arch_kernel_binary option in AOTInductor for Intel GPU ([#154514](https://github.com/pytorch/pytorch/pull/154514))
-- Embed SPIR-V files into .so for Intel GPU ([#153924](https://github.com/pytorch/pytorch/pull/153924))
+- Support embed kernel and multi_arch_kernel_binary options in AOTInductor for Intel GPU ([#154514](https://github.com/pytorch/pytorch/pull/154514), [#153924](https://github.com/pytorch/pytorch/pull/153924))
 - Add generic and Intel GPU specific Stream & Event in UserDefineClass ([#155787](https://github.com/pytorch/pytorch/pull/155787))
 
 ### bug fixes
 - Fix matmul accuracy when offset > 0 ([#154495](https://github.com/pytorch/pytorch/pull/154495))
-- Correct torch.xpu.is_bf16_supported to return False if no Intel GPU detected ([#152317](https://github.com/pytorch/pytorch/pull/152317))
+- Fix the issue that `torch.xpu.is_bf16_supported` always returns `True` even if Intel GPU is not available ([#152317](https://github.com/pytorch/pytorch/pull/152317))
 - Fix AOT compilation in SYCL C++ extension ([#156364](https://github.com/pytorch/pytorch/pull/156364))
 - Add device guard for Cov to handle the case that the input tensors reside on different devices([#153067](https://github.com/pytorch/pytorch/pull/153067))
 
 ### performance
-- Enable post-op fusion for mkldnn Conv on Intel GPU ([#150287](https://github.com/pytorch/pytorch/pull/150287))
-- Skip CUDA API calls in AMP to save Intel GPU host overhead ([#151111](https://github.com/pytorch/pytorch/pull/151111))
-- Add OneDNN primitive cache support for Int4 WOQ GEMM on Intel GPU ([#147693](https://github.com/pytorch/pytorch/pull/147693))
+- Enable post-op fusion for oneDNN Conv on Intel GPU ([#150287](https://github.com/pytorch/pytorch/pull/150287))
+- Reduce host overhead for Intel GPU by eliminating meaningless API calls ([#151111](https://github.com/pytorch/pytorch/pull/151111))
+- Improve INT4 WOQ GEMM for Intel GPU by introducing a cache mechanism to reduce the oneDNN integration overhead further. ([#147693](https://github.com/pytorch/pytorch/pull/147693))
 
 
 ### docs
