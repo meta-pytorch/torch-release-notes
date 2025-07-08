@@ -34,7 +34,4 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 ### not user facing
-- remove allow-untyped-defs from elastic_distributed_sampler.py ([#154620](https://github.com/pytorch/pytorch/pull/154620))
-- remove allow-untyped-defs from torch/distributed/elastic/utils/logging.py ([#154625](https://github.com/pytorch/pytorch/pull/154625))
-- Fix #155018 (convert distributed rst to markdown) ([#155528](https://github.com/pytorch/pytorch/pull/155528))
 ### security

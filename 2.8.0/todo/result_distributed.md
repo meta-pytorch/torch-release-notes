@@ -125,6 +125,8 @@ The categories below are as follows:
   - Fixed `local_map` with multi-threading ([#149070](https://github.com/pytorch/pytorch/pull/149070))
   - Fixed `new_local_tensor` in `redistribute` be None case ([#152303](https://github.com/pytorch/pytorch/pull/152303))
   - Fixed bug visualizing 1D Tensor using rich ([#152871](https://github.com/pytorch/pytorch/pull/152871))
+- Pipeline Parallelism
+  - Optimized memory usage by releasing output memory earlier ([#153383](https://github.com/pytorch/pytorch/pull/153383))
 - RPC
   - Made torch importable if compiled without TensorPipe ([#154382](https://github.com/pytorch/pytorch/pull/154382))
 - ShardedTensor
@@ -167,6 +169,14 @@ The categories below are as follows:
   - Added torch.distributed.run option to provide destination for event logging (#154644) ([#155268](https://github.com/pytorch/pytorch/pull/155268))
 ### Untopiced
 ### not user facing
+- remove allow-untyped-defs from elastic_distributed_sampler.py ([#154620](https://github.com/pytorch/pytorch/pull/154620))
+- remove allow-untyped-defs from torch/distributed/elastic/utils/logging.py ([#154625](https://github.com/pytorch/pytorch/pull/154625))
+- Fix #155018 (convert distributed rst to markdown) ([#155528](https://github.com/pytorch/pytorch/pull/155528))
+- [symm_mem] Add sym mem test into ptd h100 ci ([#156634](https://github.com/pytorch/pytorch/pull/156634))
+- [PP] Fix disabled flaky tests ([#154856](https://github.com/pytorch/pytorch/pull/154856))
+- Rename inductor cache ([#156128](https://github.com/pytorch/pytorch/pull/156128))
+- [CI][CUDA] Re-enable the test-nan-assert on CUDA12 ([#154448](https://github.com/pytorch/pytorch/pull/154448))
+- [dtensor] add op support for select_backward and slice_backward ([#150357](https://github.com/pytorch/pytorch/pull/150357))
 - add device generalisation support for distributed tests ([#152471](https://github.com/pytorch/pytorch/pull/152471))
 - [c10d] Disable stack trace call in logging ([#156362](https://github.com/pytorch/pytorch/pull/156362))
 - Made watchdog thread a class ([#155831](https://github.com/pytorch/pytorch/pull/155831))

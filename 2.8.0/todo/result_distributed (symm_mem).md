@@ -34,5 +34,4 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 ### not user facing
-- [symm_mem] Add sym mem test into ptd h100 ci ([#156634](https://github.com/pytorch/pytorch/pull/156634))
 ### security

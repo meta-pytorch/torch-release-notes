@@ -29,12 +29,9 @@ The categories below are as follows:
 ### new features
 ### improvements
 ### bug fixes
-- [PP] Optimize memory usage by releasing output memory earlier ([#153383](https://github.com/pytorch/pytorch/pull/153383))
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- [PP] Fix disabled flaky tests ([#154856](https://github.com/pytorch/pytorch/pull/154856))
-- Rename inductor cache ([#156128](https://github.com/pytorch/pytorch/pull/156128))
 ### security
