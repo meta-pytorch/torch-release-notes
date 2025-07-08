@@ -44,7 +44,6 @@ The categories below are as follows:
 - Improve error handling and reporting in Intel GPU CMake files ([#149353](https://github.com/pytorch/pytorch/pull/149353))
 - Support multi_arch_kernel_binary option in AOTInductor for Intel GPU ([#154514](https://github.com/pytorch/pytorch/pull/154514))
 - Embed SPIR-V files into .so for Intel GPU ([#153924](https://github.com/pytorch/pytorch/pull/153924))
-- Use get_device_context in runtime for Intel GPU ([#154360](https://github.com/pytorch/pytorch/pull/154360))
 - Add generic and Intel GPU specific Stream & Event in UserDefineClass ([#155787](https://github.com/pytorch/pytorch/pull/155787))
 
 ### bug fixes
