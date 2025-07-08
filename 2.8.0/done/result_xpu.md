@@ -36,9 +36,8 @@ The categories below are as follows:
 - Add memory reporting to Memory Profiler for Intel GPU ([#152842](https://github.com/pytorch/pytorch/pull/152842))
 - Support Intel GPU profiler toggle functionality ([#155135](https://github.com/pytorch/pytorch/pull/155135))
 - Support distributed memory tracker integration for Intel GPU ([#150703](https://github.com/pytorch/pytorch/pull/150703))
-- Improve scalar tensor case handling in addmm, baddmm on Intel GPU ([#153051](https://github.com/pytorch/pytorch/pull/153051))
 - Improve error handling and reporting in Intel GPU CMake files ([#149353](https://github.com/pytorch/pytorch/pull/149353))
-- Support embed kernel and multi_arch_kernel_binary options in AOTInductor for Intel GPU ([#154514](https://github.com/pytorch/pytorch/pull/154514), [#153924](https://github.com/pytorch/pytorch/pull/153924))
+- Support `embed_cubin` and `multi_arch_kernel_binary` options in AOTInductor for Intel GPU ([#154514](https://github.com/pytorch/pytorch/pull/154514), [#153924](https://github.com/pytorch/pytorch/pull/153924))
 - Add generic and Intel GPU specific Stream & Event in UserDefineClass ([#155787](https://github.com/pytorch/pytorch/pull/155787))
 
 ### bug fixes
@@ -51,6 +50,7 @@ The categories below are as follows:
 - Enable post-op fusion for oneDNN Conv on Intel GPU ([#150287](https://github.com/pytorch/pytorch/pull/150287))
 - Reduce host overhead for Intel GPU by eliminating meaningless API calls ([#151111](https://github.com/pytorch/pytorch/pull/151111))
 - Improve INT4 WOQ GEMM for Intel GPU by introducing a cache mechanism to reduce the oneDNN integration overhead further. ([#147693](https://github.com/pytorch/pytorch/pull/147693))
+- Improve scalar tensor case handling in addmm, baddmm to reduce oneDNN integration overhead on Intel GPU ([#153051](https://github.com/pytorch/pytorch/pull/153051))
 
 
 ### docs
