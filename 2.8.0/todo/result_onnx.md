@@ -114,7 +114,7 @@ To learn more, refer to the [docs](https://docs.pytorch.org/docs/main/onnx_ops.h
 
 Uses of `torch.scan` can now be converted to ONNX.
 
-#### Support 0/1 on dynamic dimension ([#155717](https://github.com/pytorch/pytorch/pull/155717))
+#### Support 0/1-sized example inputs on dynamic dimensions ([#155717](https://github.com/pytorch/pytorch/pull/155717))
 
 You may now use a size 1 dimension in example inputs on the dynamic dimensions. Prior to this release, users were required to provide size>=2 example inputs on the dynamic dimensions due to the [0/1 specialization behavior in torch.export](https://docs.google.com/document/d/16VPOa3d-Liikf48teAOmxLc92rgvJdfosIy-yoT38Io)
 
