@@ -61,7 +61,7 @@ You must upgrade `onnxscript` to version 0.3.1 or higher for it to be compatible
 
 The default will be `dynamo=True` starting from PyTorch 2.9. You are encouraged to migrate to use the `dynamo=True` option in `torch.onnx.export`. This flag makes `torch.export.export` the default export path, replacing `TorchScript`, as `TorchScript` is nearing end-of-life"
 
-To maintain the old behavior, set `dynamo=True`. You are encouraged to also experiment with the `fallback=True` option that will make the exporter fall back to the `dynamo=False` path if there are errors.
+To maintain the old behavior, set `dynamo=False`. You are encouraged to also experiment with the `fallback=True` option that will make the exporter fall back to the `dynamo=False` path if there are errors.
 
 ### new features
 
@@ -71,7 +71,7 @@ Opsets 18-23 are supported with `dynamo=True`. Importantly, you will be able to 
 
 #### Support for symbolic operators in the `dynamo=True` export path ([#148905](https://github.com/pytorch/pytorch/pull/148905), [#149678](https://github.com/pytorch/pytorch/pull/149678), [#150038](https://github.com/pytorch/pytorch/pull/150038))
 
-Two operators `torch.onnx.ops.symbolic` and `torch.onnx.ops.symbolic_multi_out` are defined to allow you to create symbolic ONNX operators directly in your PyTorch models. You can use them in a forward function:
+Two operators `torch.onnx.ops.symbolic` and `torch.onnx.ops.symbolic_multi_out` are defined to allow you to create symbolic ONNX operators directly in your PyTorch models. You can use them in a `forward` method:
 
 ```py
 def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -96,7 +96,7 @@ To learn more, refer to the [docs](https://docs.pytorch.org/docs/main/onnx_ops.h
 
 #### ONNX operators as native PyTorch ops ([#156431](https://github.com/pytorch/pytorch/pull/156431), [#156367](https://github.com/pytorch/pytorch/pull/156367), [#154745](https://github.com/pytorch/pytorch/pull/154745))
 
-You can now use the ONNX operators `Attention-23` and `RotaryEmbedding-23` as native PyTorch operators in your nn.Module, which will be converted directly in the exported ONNX models. You can use them in your forward functions like so:
+You can now use the ONNX operators `Attention-23` and `RotaryEmbedding-23` as native PyTorch operators in your nn.Module, which will be converted directly in the exported ONNX models. You can use them in your `forward` methods like so:
 
 ```py
 def forward(
