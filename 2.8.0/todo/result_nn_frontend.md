@@ -31,6 +31,7 @@ The categories below are as follows:
 - Add warning for module full backward hook when no input requires gradient ([#155339](https://github.com/pytorch/pytorch/pull/155339))
 ### bug fixes
 ### performance
+- Add Half support for weight_norm on CPU ([#148878](https://github.com/pytorch/pytorch/pull/148878))
 ### docs
 - Fix docs format error in `torch.nn` ([#150156](https://github.com/pytorch/pytorch/pull/150156))
 - Optimize transformer encoder/decoder init suggestion ([#146882](https://github.com/pytorch/pytorch/pull/146882))
@@ -48,7 +49,6 @@ The categories below are as follows:
 ### Untopiced
 - Add `nn.Bilinear` param validation ([#149018](https://github.com/pytorch/pytorch/pull/149018))
 - Fix broken LazyLinear init ([#149693](https://github.com/pytorch/pytorch/pull/149693))
-- Add Half support for weight_norm on CPU ([#148878](https://github.com/pytorch/pytorch/pull/148878))
 - Add check for ctc_loss targets param ([#150981](https://github.com/pytorch/pytorch/pull/150981))
 - Optimize register_full_backward_hook description when all input no grad ([#151785](https://github.com/pytorch/pytorch/pull/151785))
 - Native channel shuffle floating point exception ([#144010](https://github.com/pytorch/pytorch/pull/144010))
