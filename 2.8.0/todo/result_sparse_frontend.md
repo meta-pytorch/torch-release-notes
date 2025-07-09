@@ -25,28 +25,28 @@ The categories below are as follows:
 
 ## sparse_frontend
 ### bc breaking
-- API change for new enum in cusparseltsplitkmode-t for cusparseLT 0.7.0+ ([#150536](https://github.com/pytorch/pytorch/pull/150536))
 ### deprecation
 ### new features
 ### improvements
 - [PrivateUse1] Allow out-of-tree devices to pass check when validating csr tensor args ([#149374](https://github.com/pytorch/pytorch/pull/149374))
 - [ROCm] improve sparse addmm, enable complex ([#153262](https://github.com/pytorch/pytorch/pull/153262))
-- Fix signature of torch.sparse_coo_tensor() ([#152681](https://github.com/pytorch/pytorch/pull/152681))
-- ROCm Sparsity through HipSparseLT ([#150578](https://github.com/pytorch/pytorch/pull/150578))
 ### bug fixes
+- Fix signature of torch.sparse_coo_tensor() ([#152681](https://github.com/pytorch/pytorch/pull/152681))
 ### performance
+- ROCm Sparsity through HipSparseLT ([#150578](https://github.com/pytorch/pytorch/pull/150578))
 - User-controlled sparse tensor validation when loading data from external storage ([#154610](https://github.com/pytorch/pytorch/pull/154610))
 ### docs
 - [Docs] Reformat sparse example ([#154785](https://github.com/pytorch/pytorch/pull/154785))
 - Fix spelling ([#149277](https://github.com/pytorch/pytorch/pull/149277))
 ### devs
-- Fix missing braces for clang CUDA ([#150736](https://github.com/pytorch/pytorch/pull/150736))
-- Fix `-Wmissing-braces` in a few files ([#150802](https://github.com/pytorch/pytorch/pull/150802))
-- [BE] Delete pre-CUDA-10.1 code from SparseCUDABlas ([#155079](https://github.com/pytorch/pytorch/pull/155079))
 ### Untopiced
 
 ### not user facing
+- Fix missing braces for clang CUDA ([#150736](https://github.com/pytorch/pytorch/pull/150736))
+- Fix `-Wmissing-braces` in a few files ([#150802](https://github.com/pytorch/pytorch/pull/150802))
+- [BE] Delete pre-CUDA-10.1 code from SparseCUDABlas ([#155079](https://github.com/pytorch/pytorch/pull/155079))
 - Fix sparse CUTLASS-based kernels ([#150023](https://github.com/pytorch/pytorch/pull/150023))
 - Add optional check_pinning argument to _validate_sparse_compressed_tensor/coo_args ([#154759](https://github.com/pytorch/pytorch/pull/154759))
 - [BE] Delete IS_SPMM_AVAILABLE() logic ([#155296](https://github.com/pytorch/pytorch/pull/155296))
+- API change for new enum in cusparseltsplitkmode-t for cusparseLT 0.7.0+ ([#150536](https://github.com/pytorch/pytorch/pull/150536))
 ### security
