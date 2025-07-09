@@ -33,11 +33,11 @@ The categories below are as follows:
 ### bug fixes
 - Fix signature of torch.sparse_coo_tensor() ([#152681](https://github.com/pytorch/pytorch/pull/152681))
 ### performance
-- ROCm Sparsity through HipSparseLT ([#150578](https://github.com/pytorch/pytorch/pull/150578))
-- User-controlled sparse tensor validation when loading data from external storage ([#154610](https://github.com/pytorch/pytorch/pull/154610), [#154759](https://github.com/pytorch/pytorch/pull/154759), https://github.com/pytorch/pytorch/pull/154638)
+- Use HipSparseLT to further accelerate semi-structured (e.g. 2:4) sparsity on ROCm (AMD) ([#150578](https://github.com/pytorch/pytorch/pull/150578))
+- Skip sparse tensor invariant validation when loading sparse Tensors from external storage ([#154610](https://github.com/pytorch/pytorch/pull/154610), [#154759](https://github.com/pytorch/pytorch/pull/154759), [154638](https://github.com/pytorch/pytorch/pull/154638))
 ### docs
-- [Docs] Reformat sparse example ([#154785](https://github.com/pytorch/pytorch/pull/154785))
-- Fix spelling ([#149277](https://github.com/pytorch/pytorch/pull/149277))
+- Fix code highlighting in torch.sparse ([#154785](https://github.com/pytorch/pytorch/pull/154785))
+- Fix word spelling in torch.sparse ([#149277](https://github.com/pytorch/pytorch/pull/149277))
 ### devs
 ### Untopiced
 
