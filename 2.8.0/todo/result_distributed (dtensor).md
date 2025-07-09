@@ -34,5 +34,4 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 ### not user facing
-- [dtensor] add op support for select_backward and slice_backward ([#150357](https://github.com/pytorch/pytorch/pull/150357))
 ### security

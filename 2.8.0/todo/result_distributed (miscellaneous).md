@@ -34,5 +34,4 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 ### not user facing
-- [CI][CUDA] Re-enable the test-nan-assert on CUDA12 ([#154448](https://github.com/pytorch/pytorch/pull/154448))
 ### security
