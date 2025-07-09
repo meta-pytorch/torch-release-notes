@@ -35,7 +35,6 @@ The categories below are as follows:
 - [Inductor][CPP] Enable WOQ int4 concat linear ([#156387](https://github.com/pytorch/pytorch/pull/156387))
 ### improvements
 - [AOTI] Add num_runners to AOTIModelPackageLoader ([#149364](https://github.com/pytorch/pytorch/pull/149364))
-- [AOTI] Add _weight_int4pack_mm to the C shim fallback list ([#151059](https://github.com/pytorch/pytorch/pull/151059))
 - Scheduler Flops refactor ([#152708](https://github.com/pytorch/pytorch/pull/152708))
 - Add `flag _metrics_log_runtime` to disable runtime metric logging by default ([#153506](https://github.com/pytorch/pytorch/pull/153506))
 - Inductor logging + analysis of torch.profile ([#149697](https://github.com/pytorch/pytorch/pull/149697))
@@ -254,7 +253,6 @@ The categories below are as follows:
 - [Inductor] Fallback embedding when sparse is True ([#150659](https://github.com/pytorch/pytorch/pull/150659))
 - [MPSInductor] Fix tiled reduction logic ([#150737](https://github.com/pytorch/pytorch/pull/150737))
 - cpp_wrapper: Re-enable code disabled for forward compatibility ([#150671](https://github.com/pytorch/pytorch/pull/150671))
-- Add RECORD_FUNCTION for AOTI ([#150150](https://github.com/pytorch/pytorch/pull/150150))
 - [Inductor] fix alignement assumption for fallback ([#150777](https://github.com/pytorch/pytorch/pull/150777))
 - Fill config2launcher with correct launchers during cache hit coordinate descent ([#150860](https://github.com/pytorch/pytorch/pull/150860))
 - Hipify global scrach defintion in AOTI codegen ([#150893](https://github.com/pytorch/pytorch/pull/150893))
