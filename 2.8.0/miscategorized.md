@@ -29,24 +29,6 @@ Handle any commits that actually do belong to your domain and remove them from t
 - fix numpy compatibility for 2d small list indices ([#154806](https://github.com/pytorch/pytorch/pull/154806))
 - Resubmit Remove MemPoolContext  (#154042) ([#154746](https://github.com/pytorch/pytorch/pull/154746))
 
-## ROCm
-- [ROCm] Improve softmax performance ([#149076](https://github.com/pytorch/pytorch/pull/149076))
-- [ROCm] NLLLoss (torch.nll_loss) Performance Tuning by Dynamically Selecting # of GPU threads ([#149548](https://github.com/pytorch/pytorch/pull/149548))
-- [ROCm] Extend vectorized elementwise kernel to more heterogenous tensor types. ([#149738](https://github.com/pytorch/pytorch/pull/149738))
-- Removed ROCM ifdef that governs thread count + smem parallel reduction. ([#149779](https://github.com/pytorch/pytorch/pull/149779))
-- [ROCM] Fix in-place aten sum with specialized templated kernels. ([#151230](https://github.com/pytorch/pytorch/pull/151230))
-- Document non-pytorch CUDA memory allocation and how to query it ([#150880](https://github.com/pytorch/pytorch/pull/150880))
-- [ROCm] opportunistic fastatomics - fix build error with newer compilers ([#152841](https://github.com/pytorch/pytorch/pull/152841))
-- [ROCm] Maxpool backward NHWC Perf Improvement targeting Resnet scenarios ([#152267](https://github.com/pytorch/pytorch/pull/152267))
-- [ROCm] Improvements to non-vectorized elementwise kernels ([#153184](https://github.com/pytorch/pytorch/pull/153184))
-- [ROCm] Fix 3D tensor perf degradation with NHWC format ([#154522](https://github.com/pytorch/pytorch/pull/154522))
-- [ROCm] Update maxpool launch config ([#154619](https://github.com/pytorch/pytorch/pull/154619))
-- support CUBLASLT_MATMUL_MATRIX_SCALE_OUTER_VEC_32F ([#154680](https://github.com/pytorch/pytorch/pull/154680))
-- [ROCm] Enable more parallelism for multi-dimensional reductions ([#155806](https://github.com/pytorch/pytorch/pull/155806))
-
-## CUDA
-- Don't call `sum()` on a tensor that is not summable in layer_norm ([#156600](https://github.com/pytorch/pytorch/pull/156600))
-
 ## CPU
 - [Pytorch] Add option to CPU Blas GEMM to avoid output downcast ([#154012](https://github.com/pytorch/pytorch/pull/154012))
 

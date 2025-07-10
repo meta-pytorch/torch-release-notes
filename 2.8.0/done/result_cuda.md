@@ -47,6 +47,7 @@ The categories below are as follows:
 - Enable AsyncMM on Blackwell ([#153519](https://github.com/pytorch/pytorch/pull/153519))
 - Fix torch.cuda.MemPool for multithreaded use-cases ([#153356](https://github.com/pytorch/pytorch/pull/153356))
 - Properly clean up hooks in `torch.cuda.memory._record_memory_history` ([#153839](https://github.com/pytorch/pytorch/pull/153839))
+- Fix to avoid calling `sum()` on a default-constructed gamma / beta in `layer_norm` ([#156600](https://github.com/pytorch/pytorch/pull/156600))
 ### performance
 - 8 bytes aligned vector loads for bf16 and fp16 dtypes in torch.cat ([#150233](https://github.com/pytorch/pytorch/pull/150233))
 - Enable vectorized 8byte copy for fp16/bf16 for index select kernel ([#152380](https://github.com/pytorch/pytorch/pull/152380))
