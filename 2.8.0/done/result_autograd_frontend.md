@@ -26,28 +26,55 @@ The categories below are as follows:
 ## autograd_frontend
 ### bc breaking
 - Add missing in-place on view check to custom autograd.Function ([#153094](https://github.com/pytorch/pytorch/pull/153094))
+
+In 2.8, if a custom autograd.Function mutates a view of a leaf requiring grad,
+it now properly raises an error. Previously, it would silently leak memory.
+```
+   class Func(torch.autograd.Function):
+        @staticmethod
+        def forward(ctx, inp):
+            inp.add_(1)
+            ctx.mark_dirty(inp)
+            return inp
+
+        @staticmethod
+        def backward(ctx, gO):
+            pass
+
+    a = torch.tensor([1.0, 2.0], requires_grad=True)
+    b = a.view_as(a)
+    Func.apply(b)
+```
+Output:
+
+2.8
+```
+RuntimeError: a view of a leaf Variable that requires grad is being used in an in-place operation
+```
+2.7
+```
+Runs without error, but leaks memory
+```
+
 ### deprecation
 ### new features
 ### improvements
 - Improve error message when view of intermediate is returned from autograd.Function and marked dirty ([#149543](https://github.com/pytorch/pytorch/pull/149543))
+- Fix `torch.autograd.backward` `inputs` validation ([#150975](https://github.com/pytorch/pytorch/pull/150975))
+
 ### bug fixes
 ### performance
+- Rewrite autograd streams synchronization ([#151079](https://github.com/pytorch/pytorch/pull/151079))
 ### docs
-- Update docs of saved_tensors_hooks to avoid ref cycle ([#153049](https://github.com/pytorch/pytorch/pull/153049))
-- [BE] Mention debug=True in AC error messages ([#155593](https://github.com/pytorch/pytorch/pull/155593))
+- Update docs of `torch.autograd.graph.saved_tensors_hooks` to avoid ref cycle ([#153049](https://github.com/pytorch/pytorch/pull/153049))
+- Mention that it's possible to set debug=True in `torch.utils.checkpoint.checkpoint` error messages ([#155593](https://github.com/pytorch/pytorch/pull/155593))
+- Add more details on why `ctx.save_for_backward` is important in extending autograd note ([#153005](https://github.com/pytorch/pytorch/pull/153005))
+- Update gradient behavior note in `torch.amin` and `torch.amax` ([#155071](https://github.com/pytorch/pytorch/pull/155071))
+
 ### devs
 ### Untopiced
-- support multinomial for dynamic num_samples ([#149463](https://github.com/pytorch/pytorch/pull/149463))
-- partitioner: ensure collectives saved by SAC that are actually unused in the bw are properly not saved ([#149652](https://github.com/pytorch/pytorch/pull/149652))
-- Fix `torch.autograd.backward` `inputs` validation ([#150975](https://github.com/pytorch/pytorch/pull/150975))
-- add min/max_seqlen to non_differentiable ([#151750](https://github.com/pytorch/pytorch/pull/151750))
-- [dynamic shapes] support SymInt inputs for kthvalue ([#152151](https://github.com/pytorch/pytorch/pull/152151))
-- SAC: fix recompute tag propagation for ops with list[tensor] inputs ([#152195](https://github.com/pytorch/pytorch/pull/152195))
-- [3/N] Use internal linkage in C++ files  ([#151297](https://github.com/pytorch/pytorch/pull/151297))
-- [autograd][docs] Add more details on why save_for_backward is important in extending autograd note ([#153005](https://github.com/pytorch/pytorch/pull/153005))
-- Add missing attr access check for legacy autograd.Function ([#155055](https://github.com/pytorch/pytorch/pull/155055))
 ### not user facing
-- bf16 grouped gemm ([#150374](https://github.com/pytorch/pytorch/pull/150374))
-- Update gradient behavior note in torch.amin and torch.amax ([#155071](https://github.com/pytorch/pytorch/pull/155071))
-- [BE] fix typos in tools/ ([#156082](https://github.com/pytorch/pytorch/pull/156082))
+- Add missing attr access check for legacy autograd.Function ([#155055](https://github.com/pytorch/pytorch/pull/155055))
+- [3/N] Use internal linkage in C++ files  ([#151297](https://github.com/pytorch/pytorch/pull/151297))
+
 ### security
