@@ -34,7 +34,7 @@ The categories below are as follows:
 - Fix TypeError incorrectly raised by torch.sparse_coo_tensor when is_coalesced is specified and size is unspecified ([#152681](https://github.com/pytorch/pytorch/pull/152681))
 ### performance
 - Use HipSparseLT to further accelerate semi-structured (e.g. 2:4) sparsity on ROCm (AMD) ([#150578](https://github.com/pytorch/pytorch/pull/150578))
-- Skip sparse tensor invariant validation when loading sparse Tensors from external storage ([#154610](https://github.com/pytorch/pytorch/pull/154610), [#154759](https://github.com/pytorch/pytorch/pull/154759), [154638](https://github.com/pytorch/pytorch/pull/154638))
+- Skip sparse tensor invariant validation when loading sparse Tensors from external storage ([#154610](https://github.com/pytorch/pytorch/pull/154610), [#154759](https://github.com/pytorch/pytorch/pull/154759), [#154638](https://github.com/pytorch/pytorch/pull/154638))
 ### docs
 - Fix code highlighting in torch.sparse ([#154785](https://github.com/pytorch/pytorch/pull/154785))
 - Fix word spelling in torch.sparse ([#149277](https://github.com/pytorch/pytorch/pull/149277))
