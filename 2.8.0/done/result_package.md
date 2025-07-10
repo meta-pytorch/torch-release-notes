@@ -33,7 +33,7 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- Preserve GrpahModule node stack trace after torch package deserializaion re-tracing ([#155638](https://github.com/pytorch/pytorch/pull/155638))
 ### not user facing
+- Preserve GrpahModule node stack trace after torch package deserializaion re-tracing ([#155638](https://github.com/pytorch/pytorch/pull/155638))
 - [BE]: Enable ruff YTT linter for Python version checks ([#153547](https://github.com/pytorch/pytorch/pull/153547))
 ### security

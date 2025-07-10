@@ -29,7 +29,7 @@ The categories below are as follows:
 ### new features
 ### improvements
 ### bug fixes
-- Unbreak torch.is_vulkan_available() on Mac (re-send of #154675, please stamp) ([#155595](https://github.com/pytorch/pytorch/pull/155595))
+- Fix `torch.is_vulkan_available()` on Mac ([#155595](https://github.com/pytorch/pytorch/pull/155595))
 ### performance
 ### docs
 ### devs

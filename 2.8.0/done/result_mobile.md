@@ -33,7 +33,6 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- [pytorch] add experimental TORCH_LIBRARY_THREAD_UNSAFE_LAZY_INIT ([#150537](https://github.com/pytorch/pytorch/pull/150537))
-- [pytorch] add header docs for TORCH_LIBRARY_THREAD_UNSAFE_LAZY_INIT ([#150854](https://github.com/pytorch/pytorch/pull/150854))
 ### not user facing
+- Add experimental TORCH_LIBRARY_THREAD_UNSAFE_LAZY_INIT ([#150537](https://github.com/pytorch/pytorch/pull/150537), [#150854](https://github.com/pytorch/pytorch/pull/150854))
 ### security

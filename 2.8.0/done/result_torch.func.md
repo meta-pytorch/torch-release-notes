@@ -28,11 +28,11 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+- Add batching rule for `torch.Tensor.scatter_add_` ([#150543](https://github.com/pytorch/pytorch/pull/150543))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- add batching rule for `torch.Tensor.scatter_add_` ([#150543](https://github.com/pytorch/pytorch/pull/150543))
 ### not user facing
 ### security
