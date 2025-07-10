@@ -33,7 +33,6 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- Address the ignored warnings for `-Wmissing-field-initializers `in the file fbcode/caffe2/aten/src/ATen/native/cuda/RowwiseScaledMM.cu ([#153958](https://github.com/pytorch/pytorch/pull/153958))
 ### not user facing
 - [caffe2] Do not use --no-as-needed on macOS ([#149421](https://github.com/pytorch/pytorch/pull/149421))
 - [fbcode]Removing `@NoIntBaseDeprecated` annotation in `caffe2.thrift` file (#149742) ([#149744](https://github.com/pytorch/pytorch/pull/149744))
@@ -44,4 +43,5 @@ The categories below are as follows:
 - [caffe2] Support building for armv8.1 ([#152766](https://github.com/pytorch/pytorch/pull/152766))
 - [caffe2] Make c10::str works with scoped enum (#152705) ([#152705](https://github.com/pytorch/pytorch/pull/152705))
 - [libc++ readiness][caffe2] No reason to check for "ext/stdio_filebuf.h" ([#154080](https://github.com/pytorch/pytorch/pull/154080))
+- Address the ignored warnings for `-Wmissing-field-initializers `in the file fbcode/caffe2/aten/src/ATen/native/cuda/RowwiseScaledMM.cu ([#153958](https://github.com/pytorch/pytorch/pull/153958))
 ### security
