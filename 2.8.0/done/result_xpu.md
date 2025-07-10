@@ -27,7 +27,7 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
-- Support Intel distributed backend (XCCL) in PyTorch ([#141856](https://github.com/pytorch/pytorch/pull/141856))
+- Support Intel distributed backend (XCCL) ([#141856](https://github.com/pytorch/pytorch/pull/141856))
 - Support int4 WOQ GEMM on Intel GPU ([#137566](https://github.com/pytorch/pytorch/pull/137566))
 - Support SYCL kernels through CPP Extension([#132945](https://github.com/pytorch/pytorch/pull/132945))
 
