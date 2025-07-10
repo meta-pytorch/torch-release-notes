@@ -29,39 +29,33 @@ The categories below are as follows:
 ### new features
 ### improvements
 - Add warning for module full backward hook when no input requires gradient ([#155339](https://github.com/pytorch/pytorch/pull/155339))
+- Add Half support for `weight_norm` on CPU ([#148878](https://github.com/pytorch/pytorch/pull/148878))
 ### bug fixes
+- Fix `load_state_dict` behavior for `nn.LazyLinear` ([#147599](https://github.com/pytorch/pytorch/pull/147599))
 ### performance
-- Add Half support for weight_norm on CPU ([#148878](https://github.com/pytorch/pytorch/pull/148878))
 ### docs
-- Fix docs format error in `torch.nn` ([#150156](https://github.com/pytorch/pytorch/pull/150156))
-- Optimize transformer encoder/decoder init suggestion ([#146882](https://github.com/pytorch/pytorch/pull/146882))
-- Optimize `ConvTranspose2d` stride description ([#150819](https://github.com/pytorch/pytorch/pull/150819))
-- [Easy] Add `output_size` in forward method of ConvTranspose2d ([#150609](https://github.com/pytorch/pytorch/pull/150609))
-- Expand docs for `nn.functional`, and make the wording consistent ([#148436](https://github.com/pytorch/pytorch/pull/148436))
-- [Easy] Optimize `clip_grad` param description ([#151532](https://github.com/pytorch/pytorch/pull/151532))
-- Optimize `interpolate` saturate description ([#151304](https://github.com/pytorch/pytorch/pull/151304))
-- Optimize `Sequential` methods description ([#147304](https://github.com/pytorch/pytorch/pull/147304))
-- Fix nn.LazyModuleMixin examples ([#150596](https://github.com/pytorch/pytorch/pull/150596))
-- Fix RMSNorm doc rendering ([#154205](https://github.com/pytorch/pytorch/pull/154205))
 - Update documentation wording for transformer-related layers ([#155123](https://github.com/pytorch/pytorch/pull/155123))
-- Address docs for clip_grad functions ([#155125](https://github.com/pytorch/pytorch/pull/155125))
+- Add warning about tied init for `nn.Transformer{Encoder/Decoder}` ([#146882](https://github.com/pytorch/pytorch/pull/146882))
+- Improve documentation for `ConvTranspose2d` stride argument ([#150819](https://github.com/pytorch/pytorch/pull/150819))
+- Add `output_size` in forward method of ConvTranspose2d ([#150609](https://github.com/pytorch/pytorch/pull/150609))
+- Improve documentation for `nn.functional` loss functions([#148436](https://github.com/pytorch/pytorch/pull/148436))
+- Improve documentation for `interpolate` saturate cast behavior ([#151304](https://github.com/pytorch/pytorch/pull/151304))
+- Add examples for methods of `nn.Sequential` ([#147304](https://github.com/pytorch/pytorch/pull/147304))
+- Fix examples in documnetation for `nn.LazyModuleMixin` ([#150596](https://github.com/pytorch/pytorch/pull/150596))
+- Document padding size limitations in nn.modules.padding (#134840) ([#155618](https://github.com/pytorch/pytorch/pull/155618))
+- Document padding size limitatation of `AvgPoolND` ([#152680](https://github.com/pytorch/pytorch/pull/152680))
+- Document behavior of `register_full_backward_hook` when no inputs require gradients ([#151785](https://github.com/pytorch/pytorch/pull/151785))
+- Fix code snippet for `nn.RNN` ([#153620](https://github.com/pytorch/pytorch/pull/153620))
+
 ### devs
 ### Untopiced
-- Add `nn.Bilinear` param validation ([#149018](https://github.com/pytorch/pytorch/pull/149018))
-- Fix broken LazyLinear init ([#149693](https://github.com/pytorch/pytorch/pull/149693))
-- Add check for ctc_loss targets param ([#150981](https://github.com/pytorch/pytorch/pull/150981))
-- Optimize register_full_backward_hook description when all input no grad ([#151785](https://github.com/pytorch/pytorch/pull/151785))
-- Native channel shuffle floating point exception ([#144010](https://github.com/pytorch/pytorch/pull/144010))
-- Add pad limit of avg_poolnd and AvgPoolnd ([#152680](https://github.com/pytorch/pytorch/pull/152680))
-- [Pytorch] Add option to CPU Blas GEMM to avoid output downcast ([#154012](https://github.com/pytorch/pytorch/pull/154012))
-- Don't call `sum()` on a tensor that is not summable in layer_norm ([#156600](https://github.com/pytorch/pytorch/pull/156600))
+
+
 ### not user facing
 - Remove outdated skipCUDAIfCudnnVersionLessThan decoration ([#148940](https://github.com/pytorch/pytorch/pull/148940))
 - Optimize `MaxPool1d` param `ceil_mode` description ([#148869](https://github.com/pytorch/pytorch/pull/148869))
-- Fixed abnormal behavior of LazyLinear when using LayzLinear and load_state together ([#147599](https://github.com/pytorch/pytorch/pull/147599))
 - [ROCm] skip test_RNN_dropout_state ([#149446](https://github.com/pytorch/pytorch/pull/149446))
 - Move formulas on separate line in loss.py ([#150565](https://github.com/pytorch/pytorch/pull/150565))
-- Add plot for `torch.nn.Threshold` and `torch.nn.GLU` ([#150171](https://github.com/pytorch/pytorch/pull/150171))
 - docs: allow empty targets tensor in ctc_loss ([#151080](https://github.com/pytorch/pytorch/pull/151080))
 - [Easy] Optimize container.py typing ([#151653](https://github.com/pytorch/pytorch/pull/151653))
 - [BE][Easy]: Simplify ModuleList reversed method ([#151673](https://github.com/pytorch/pytorch/pull/151673))
@@ -72,7 +66,6 @@ The categories below are as follows:
 - [BE] Update `.pyi` stub template to use Generic TypeAlias (PEP 585) and Union Type (PEP 604) ([#150728](https://github.com/pytorch/pytorch/pull/150728))
 - [BE] Add `__all__` to `torch/nn/functional.pyi` and `torch/return_types.pyi` ([#150729](https://github.com/pytorch/pytorch/pull/150729))
 - [BE][Ez]: Improve typing in torch/modules/container.py ([#153728](https://github.com/pytorch/pytorch/pull/153728))
-- Update rnn.py, fix `torch.nn.RNN` document error ([#153620](https://github.com/pytorch/pytorch/pull/153620))
 - docs: fix "should not to be" typo in `register_buffer` docstring ([#153817](https://github.com/pytorch/pytorch/pull/153817))
 - Add hint message when parameters is empty in clip_grad_norm_ ([#151529](https://github.com/pytorch/pytorch/pull/151529))
 - Fix load_state_dict description ([#154599](https://github.com/pytorch/pytorch/pull/154599))
@@ -80,6 +73,13 @@ The categories below are as follows:
 - Fix weight tensor documentation #134896 ([#155093](https://github.com/pytorch/pytorch/pull/155093))
 - [CUDA] Fix missing bounds check in `Softmax.cu` ([#154778](https://github.com/pytorch/pytorch/pull/154778))
 - [BE][PYFMT] migrate PYFMT for `{torch,test}/{nn,optim}/**` to `ruff format` ([#144548](https://github.com/pytorch/pytorch/pull/144548))
-- Document padding size limitations in nn.modules.padding (#134840) ([#155618](https://github.com/pytorch/pytorch/pull/155618))
 - fix hack to check if register_buffer has been overridden ([#155963](https://github.com/pytorch/pytorch/pull/155963))
+- Fix docs format error in `torch.nn` ([#150156](https://github.com/pytorch/pytorch/pull/150156))
+- Add `nn.Bilinear` param validation ([#149018](https://github.com/pytorch/pytorch/pull/149018))
+- Fix broken LazyLinear init ([#149693](https://github.com/pytorch/pytorch/pull/149693))
+- Fix RMSNorm doc rendering ([#154205](https://github.com/pytorch/pytorch/pull/154205))
+- Optimize `clip_grad` param description ([#151532](https://github.com/pytorch/pytorch/pull/151532))
+- Native channel shuffle floating point exception ([#144010](https://github.com/pytorch/pytorch/pull/144010))
+- Address docs for clip_grad functions ([#155125](https://github.com/pytorch/pytorch/pull/155125))
+
 ### security

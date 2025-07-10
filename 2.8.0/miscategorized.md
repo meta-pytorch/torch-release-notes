@@ -44,4 +44,10 @@ Handle any commits that actually do belong to your domain and remove them from t
 - support CUBLASLT_MATMUL_MATRIX_SCALE_OUTER_VEC_32F ([#154680](https://github.com/pytorch/pytorch/pull/154680))
 - [ROCm] Enable more parallelism for multi-dimensional reductions ([#155806](https://github.com/pytorch/pytorch/pull/155806))
 
+## CUDA
+- Don't call `sum()` on a tensor that is not summable in layer_norm ([#156600](https://github.com/pytorch/pytorch/pull/156600))
+
+## CPU
+- [Pytorch] Add option to CPU Blas GEMM to avoid output downcast ([#154012](https://github.com/pytorch/pytorch/pull/154012))
+
 ## not user facing
