@@ -27,11 +27,11 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
-- [Quant][PT2E] add a lowering pass for x86 backend ([#149708](https://github.com/pytorch/pytorch/pull/149708))
-- [Quant][PT2E][X86] enable qconv1d-relu fusion ([#150751](https://github.com/pytorch/pytorch/pull/150751))
-- [Quant][X86] add an op to compute uint8 pointwise mul ([#151112](https://github.com/pytorch/pytorch/pull/151112))
-- [Quant][X86] add ops to compute uint8 pointwise add/add_relu ([#152411](https://github.com/pytorch/pytorch/pull/152411))
-- [Quant][X86] add an op to compute uint8 batch norm 2d ([#152811](https://github.com/pytorch/pytorch/pull/152811))
+- Add a lowering pass for x86 backend of PT2E quantization ([#149708](https://github.com/pytorch/pytorch/pull/149708))
+- Enable qconv1d-relu fusion for PT2E quantization on X86 CPU ([#150751](https://github.com/pytorch/pytorch/pull/150751))
+- Add an op to compute uint8 pointwise mul for PT2E quantization on X86 CPU ([#151112](https://github.com/pytorch/pytorch/pull/151112))
+- Add ops to compute uint8 pointwise add/add_relu for PT2E quantization on X86 CPU ([#152411](https://github.com/pytorch/pytorch/pull/152411))
+- Add an op to compute uint8 batch norm 2d for PT2E quantization on X86 CPU ([#152811](https://github.com/pytorch/pytorch/pull/152811))
 ### improvements
 ### bug fixes
 ### performance
