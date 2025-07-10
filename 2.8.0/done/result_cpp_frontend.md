@@ -25,31 +25,22 @@ The categories below are as follows:
 
 ## cpp_frontend
 ### bc breaking
-- [BE] Eliminate TODO for 2022 ([#149557](https://github.com/pytorch/pytorch/pull/149557))
+**`torch/types.h` no longer includes `Dispatcher.h`. This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).** (#149557)
+
+`Dispatcher.h` does not belong as an include from `torch/types.h` and was only present as a short-term
+hack to appease `torchvision`. If you run into `torchvision` build errors, please update to a more recent version of `torchvision` to resolve this.
+
 ### deprecation
 ### new features
 ### improvements
+- Expose bicubic mode for `torch::nn::functional::grid_sample` in LibTorch ([#150817](https://github.com/pytorch/pytorch/pull/150817))
 - Refine host caching allocator ([#151403](https://github.com/pytorch/pytorch/pull/151403))
+- Introduce `no_implicit_headers` mode for `load_inline()` on custom CUDA extensions ([#149480](https://github.com/pytorch/pytorch/pull/149480))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Fix AOTI update_constant_buffer issue. ([#149243](https://github.com/pytorch/pytorch/pull/149243))
-- load_inline no_implicit_headers mode ([#149480](https://github.com/pytorch/pytorch/pull/149480))
-- Set requires grad in TensorMaker::make_tensor()  ([#148255](https://github.com/pytorch/pytorch/pull/148255))
-- Make at::vec::Vectorized ops work with scalars ([#150380](https://github.com/pytorch/pytorch/pull/150380))
-- Overload unary - operator on at::vec::Vectorized to call neg() ([#150568](https://github.com/pytorch/pytorch/pull/150568))
-- Add HostAllocator as the unified parent class ([#151431](https://github.com/pytorch/pytorch/pull/151431))
-- Expose bicubic mode for torch::nn::functional::grid_sample in LibTorch ([#150817](https://github.com/pytorch/pytorch/pull/150817))
-- Remove `reinterpret_cast`s with undefined behavior from stable/library.h ([#151595](https://github.com/pytorch/pytorch/pull/151595))
-- Remove std::is_arithmetic specialization from c10/util/strong_type.h ([#153424](https://github.com/pytorch/pytorch/pull/153424))
-- add is_vec_specialized_for ([#152365](https://github.com/pytorch/pytorch/pull/152365))
-- vec::map: directly process reduced-precision floats when reasonable ([#152366](https://github.com/pytorch/pytorch/pull/152366))
-- Add vec_reduce_all specialization for std::plus on AArch64 ([#152388](https://github.com/pytorch/pytorch/pull/152388))
-- add #pragma once to stable/library.h ([#154920](https://github.com/pytorch/pytorch/pull/154920))
-- torch::stable::Tensor beginnings, mainly mem mgmt ([#155367](https://github.com/pytorch/pytorch/pull/155367))
-- Extract CPU log_softmax kernels to header ([#156243](https://github.com/pytorch/pytorch/pull/156243))
 ### not user facing
 - [codemod][lowrisk] Fix deprecated use of 0/NULL in caffe2/aten/src/ATen/native/quantized/cpu/qnnpack/src/fc-unpack.cc + 1 ([#148996](https://github.com/pytorch/pytorch/pull/148996))
 - [codemod][lowrisk] Remove unused exception parameter from caffe2/aten/src/ATen/cuda/CUDABlas.cpp ([#149328](https://github.com/pytorch/pytorch/pull/149328))
@@ -62,4 +53,16 @@ The categories below are as follows:
 - [2/N] Fix cppcoreguidelines-init-variables suppression ([#146237](https://github.com/pytorch/pytorch/pull/146237))
 - [BE][9/16] fix typos in torch/ (torch/csrc/) ([#156319](https://github.com/pytorch/pytorch/pull/156319))
 - [BE][9/16] fix typos in torch/ (torch/csrc/) ([#156319](https://github.com/pytorch/pytorch/pull/156319))
+- Remove `reinterpret_cast`s with undefined behavior from stable/library.h ([#151595](https://github.com/pytorch/pytorch/pull/151595))
+- add #pragma once to stable/library.h ([#154920](https://github.com/pytorch/pytorch/pull/154920))
+- Extract CPU log_softmax kernels to header ([#156243](https://github.com/pytorch/pytorch/pull/156243))
+- Make at::vec::Vectorized ops work with scalars ([#150380](https://github.com/pytorch/pytorch/pull/150380))
+- Add HostAllocator as the unified parent class ([#151431](https://github.com/pytorch/pytorch/pull/151431))
+- Remove std::is_arithmetic specialization from c10/util/strong_type.h ([#153424](https://github.com/pytorch/pytorch/pull/153424))
+- add is_vec_specialized_for ([#152365](https://github.com/pytorch/pytorch/pull/152365))
+- vec::map: directly process reduced-precision floats when reasonable ([#152366](https://github.com/pytorch/pytorch/pull/152366))
+- Add vec_reduce_all specialization for std::plus on AArch64 ([#152388](https://github.com/pytorch/pytorch/pull/152388))
+- Memory management for the beginnings of torch::stable::Tensor ([#155367](https://github.com/pytorch/pytorch/pull/155367))
+- Set requires grad in TensorMaker::make_tensor()  ([#148255](https://github.com/pytorch/pytorch/pull/148255))
+- Overload unary - operator on at::vec::Vectorized to call neg() ([#150568](https://github.com/pytorch/pytorch/pull/150568))
 ### security

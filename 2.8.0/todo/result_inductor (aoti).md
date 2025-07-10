@@ -37,6 +37,7 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
+- Fix AOTI update_constant_buffer issue. ([#149243](https://github.com/pytorch/pytorch/pull/149243))
 - Improve stable library apis per Scott's feedback ([#152040](https://github.com/pytorch/pytorch/pull/152040))
 - [AOTInductor] Inherit Buffer if not being updated ([#152092](https://github.com/pytorch/pytorch/pull/152092))
 - [AOTI] Fix a memory leak in model_package_loader ([#152334](https://github.com/pytorch/pytorch/pull/152334))
