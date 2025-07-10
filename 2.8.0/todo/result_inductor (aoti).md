@@ -30,7 +30,7 @@ The categories below are as follows:
 - Torchbind objects supported in AOTInductor ([#150196](https://github.com/pytorch/pytorch/pull/150196), [#154265](https://github.com/pytorch/pytorch/pull/154265))
 ### improvements
 - [MPS] Implement backward pass for interpolate_trilinear ([#156373](https://github.com/pytorch/pytorch/pull/156373))
-- [AOTI] Add _weight_int4pack_mm to the C shim fallback list ([#151059](https://github.com/pytorch/pytorch/pull/151059))
+- Add _weight_int4pack_mm to the C shim fallback list ([#151059](https://github.com/pytorch/pytorch/pull/151059))
 - Add RECORD_FUNCTION for AOTI ([#150150](https://github.com/pytorch/pytorch/pull/150150))
 ### bug fixes
 ### performance

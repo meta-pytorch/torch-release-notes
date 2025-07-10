@@ -29,30 +29,30 @@ The categories below are as follows:
 - inductor.config.descriptive_names = False is not actually supported (#145523) (#146051) ([#151481](https://github.com/pytorch/pytorch/pull/151481))
 ### new features
 - [CUDAGraph] Graph Partition ([#147648](https://github.com/pytorch/pytorch/pull/147648))
-- [Inductor][CPP] Add block sparse for FlexAttention CPU  ([#147196](https://github.com/pytorch/pytorch/pull/147196))
-- [Inductor][CPU] Add GEMM templates for _weight_int4pack_mm_for_cpu with AMX ([#150603](https://github.com/pytorch/pytorch/pull/150603))
-- [Inductor-CPU] int8 WoQ concat linear  ([#153004](https://github.com/pytorch/pytorch/pull/153004))
-- [Inductor][CPP] Enable WOQ int4 concat linear ([#156387](https://github.com/pytorch/pytorch/pull/156387))
+- Add block sparse for FlexAttention CPU  ([#147196](https://github.com/pytorch/pytorch/pull/147196))
+- Add GEMM templates for _weight_int4pack_mm_for_cpu with AMX ([#150603](https://github.com/pytorch/pytorch/pull/150603))
+- int8 WoQ concat linear  ([#153004](https://github.com/pytorch/pytorch/pull/153004))
+- Enable WOQ int4 concat linear ([#156387](https://github.com/pytorch/pytorch/pull/156387))
 ### improvements
 - [AOTI] Add num_runners to AOTIModelPackageLoader ([#149364](https://github.com/pytorch/pytorch/pull/149364))
 - Scheduler Flops refactor ([#152708](https://github.com/pytorch/pytorch/pull/152708))
 - Add `flag _metrics_log_runtime` to disable runtime metric logging by default ([#153506](https://github.com/pytorch/pytorch/pull/153506))
 - Inductor logging + analysis of torch.profile ([#149697](https://github.com/pytorch/pytorch/pull/149697))
 - Inductor logging + analysis of torch.profile ([#149697](https://github.com/pytorch/pytorch/pull/149697))
-- [Inductor] optimize welford reduction ([#145061](https://github.com/pytorch/pytorch/pull/145061))
+- optimize welford reduction ([#145061](https://github.com/pytorch/pytorch/pull/145061))
 - Add SDPA patterns for T5 models ([#155455](https://github.com/pytorch/pytorch/pull/155455))
 ### bug fixes
 - [inductor][AMD] support special kwargs in AMD triton configs ([#154605](https://github.com/pytorch/pytorch/pull/154605))
 - [BE] Fix minifier when one has multiple Python runtimes ([#155918](https://github.com/pytorch/pytorch/pull/155918))
-- [Inductor][CPU] bug fix for int8 GEMM compensation epilogue ([#152408](https://github.com/pytorch/pytorch/pull/152408))
+- bug fix for int8 GEMM compensation epilogue ([#152408](https://github.com/pytorch/pytorch/pull/152408))
 ### performance
 - Add pack support and use micro gemm for Half flex attention on CPU ([#151530](https://github.com/pytorch/pytorch/pull/151530))
-- [Inductor][CPP] Enable a config to use a small dequant buffer for woq int4 ([#156395](https://github.com/pytorch/pytorch/pull/156395))
-- [Inductor-CPU] Faster int8 WoQ GEMM for small M with explicit prefetching and different outer loops ([#149373](https://github.com/pytorch/pytorch/pull/149373))
-- [CPU][Inductor] Improve A16W4 GEMM template performance by using block_n=32 ([#156174](https://github.com/pytorch/pytorch/pull/156174))
-- [Inductor][CPU] Use AMX-based microkernels when M > 4 for GEMM template for INT4 weight ([#155444](https://github.com/pytorch/pytorch/pull/155444))
-- [Inductor] optimize the heuristics of parallel reduction ([#149614](https://github.com/pytorch/pytorch/pull/149614))
-- [Inductor] Set prop_kind to forward_inference when grad is not needed for mkldnn_linear_pointwise and mkldnn_convolution_pointwise ([#147072](https://github.com/pytorch/pytorch/pull/147072))
+- Enable a config to use a small dequant buffer for woq int4 ([#156395](https://github.com/pytorch/pytorch/pull/156395))
+- Faster int8 WoQ GEMM for small M with explicit prefetching and different outer loops ([#149373](https://github.com/pytorch/pytorch/pull/149373))
+- Improve A16W4 GEMM template performance by using block_n=32 ([#156174](https://github.com/pytorch/pytorch/pull/156174))
+- Use AMX-based microkernels when M > 4 for GEMM template for INT4 weight ([#155444](https://github.com/pytorch/pytorch/pull/155444))
+- optimize the heuristics of parallel reduction ([#149614](https://github.com/pytorch/pytorch/pull/149614))
+- Set prop_kind to forward_inference when grad is not needed for mkldnn_linear_pointwise and mkldnn_convolution_pointwise ([#147072](https://github.com/pytorch/pytorch/pull/147072))
 ### docs
 ### devs
 ### Untopiced
