@@ -28,7 +28,7 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
-- add s8s8 GEMM microkernel API ([#154358](https://github.com/pytorch/pytorch/pull/154358))
+- Add s8s8 GEMM microkernel API ([#154358](https://github.com/pytorch/pytorch/pull/154358))
 ### bug fixes
 - fix apparent copy-paste bug in log_softmax reduced-precision fp kernel ([#156379](https://github.com/pytorch/pytorch/pull/156379))
 ### performance
