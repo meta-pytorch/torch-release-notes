@@ -29,7 +29,7 @@ The categories below are as follows:
 ### new features
 ### improvements
 ### bug fixes
-- [DCP][Ez]: Fix broadcast_object bug in DCP utils ([#155912](https://github.com/pytorch/pytorch/pull/155912))
+- Fix to use global coordinator rank in `broadcast_object` util function ([#155912](https://github.com/pytorch/pytorch/pull/155912))
 ### performance
 ### docs
 ### devs
