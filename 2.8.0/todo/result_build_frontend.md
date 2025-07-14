@@ -26,26 +26,24 @@ The categories below are as follows:
 ## build_frontend
 ### bc breaking
 - Upgrade to DLPack 1.0 ([#145000](https://github.com/pytorch/pytorch/pull/145000))
-- [CUDA][NVTX] Move nvtx3 code from cmake/public/cuda.cmake to cmake/Dependencies.cmake ([#151583](https://github.com/pytorch/pytorch/pull/151583))
+- Move nvtx3 code from `cmake/public/cuda.cmake` to `cmake/Dependencies.cmake` ([#151583](https://github.com/pytorch/pytorch/pull/151583))
 ### deprecation
 ### new features
 ### improvements
-- Use torch_compile_options for c10 libraries ([#147821](https://github.com/pytorch/pytorch/pull/147821))
-- Fix broken build within xplat/caffe2 ([#149403](https://github.com/pytorch/pytorch/pull/149403))
-- [Build] Remove pre-CXX11 ABI logic from build script ([#149888](https://github.com/pytorch/pytorch/pull/149888))
-- [BE] Make Eigen an optional dependency ([#155955](https://github.com/pytorch/pytorch/pull/155955))
-- [BE] Make Eigen an optional dependency ([#155955](https://github.com/pytorch/pytorch/pull/155955))
+- Remove outdated warning about `TORCH_CUDA_ARCH_LIST` ([#152715](https://github.com/pytorch/pytorch/pull/152715), ([#155314](https://github.com/pytorch/pytorch/pull/155314)))
+- Use `torch_compile_options` for c10 libraries ([#147821](https://github.com/pytorch/pytorch/pull/147821))
+- Remove pre-CXX11 ABI logic from build script ([#149888](https://github.com/pytorch/pytorch/pull/149888))
+- Make Eigen an optional build dependency ([#155955](https://github.com/pytorch/pytorch/pull/155955))
 ### bug fixes
-- [Cmake] Make PyTorch buildable by CMake-4.x ([#150203](https://github.com/pytorch/pytorch/pull/150203))
-- [Build] Fix fbgemm build with gcc-12+ ([#150847](https://github.com/pytorch/pytorch/pull/150847))
+- Make PyTorch buildable by `CMake-4.x` ([#150203](https://github.com/pytorch/pytorch/pull/150203))
+- Fix `fbgemm` build with `gcc-12+` ([#150847](https://github.com/pytorch/pytorch/pull/150847))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [BE] remove outdated warning about TORCH_CUDA_ARCH_LIST ([#152715](https://github.com/pytorch/pytorch/pull/152715))
-- [CUDA][BUILD] Add back the capability to use env TORCH_CUDA_ARCH_LIST ([#155314](https://github.com/pytorch/pytorch/pull/155314))
-- Unbreak //c10/util:base ([#156216](https://github.com/pytorch/pytorch/pull/156216))
 ### not user facing
+- Fix broken build within xplat/caffe2 ([#149403](https://github.com/pytorch/pytorch/pull/149403))
+- Unbreak //c10/util:base ([#156216](https://github.com/pytorch/pytorch/pull/156216))
 - [BE]: No include left behind - recursive glob setuptools support ([#148258](https://github.com/pytorch/pytorch/pull/148258))
 - [bazel] Build flatbuffers within bazel ([#151364](https://github.com/pytorch/pytorch/pull/151364))
 - Fix compilation warning with gcc14 ([#155934](https://github.com/pytorch/pytorch/pull/155934))
