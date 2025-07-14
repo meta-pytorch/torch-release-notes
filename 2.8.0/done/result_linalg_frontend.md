@@ -25,29 +25,50 @@ The categories below are as follows:
 
 ## linalg_frontend
 ### bc breaking
-- Add error check for out variant of tensordot function with requries_grad tensor ([#150270](https://github.com/pytorch/pytorch/pull/150270))
+**An error is now properly thrown for the out variant of `tensordot` when called with a
+`requires_grad=True` tensor. Please avoid passing an out tensor with `requires_grad=True` as
+gradients cannot be computed for this tensor.**
+
+In 2.7.0
+```
+a = torch.empty((4, 2), requires_grad=True)
+b = torch.empty((2, 4), requires_grad=True)
+c = torch.empty((2, 2), requires_grad=True)
+# does not error, but gradients for c cannot be computed
+torch.tensordot(a, b, dims=([1], [0]), out=c)
+```
+
+In 2.8.0
+```
+a = torch.empty((4, 2), requires_grad=True)
+b = torch.empty((2, 4), requires_grad=True)
+c = torch.empty((2, 2), requires_grad=True)
+torch.tensordot(a, b, dims=([1], [0]), out=c)
+# RuntimeError: tensordot(): the 'out' tensor was specified and requires gradients, and
+# its shape does not match the expected result. Either remove the 'out' argument, ensure
+# it does not require gradients, or make sure its shape matches the expected output.
+```
 ### deprecation
 ### new features
 ### improvements
+- Support submatrices in offline tuning for ROCm ([#151138](https://github.com/pytorch/pytorch/pull/151138))
+- Add tensor overlap check for `cross` ([#154999](https://github.com/pytorch/pytorch/pull/154999))
 ### bug fixes
-- [BE] Introduce `lapack_work_to_int` function ([#149682](https://github.com/pytorch/pytorch/pull/149682))
-- [float16]: Fix the accumulation type for dot and gemv ([#152676](https://github.com/pytorch/pytorch/pull/152676))
+- Fix to workaround LAPACK workspace size being returned as a floating point value ([#149682](https://github.com/pytorch/pytorch/pull/149682))
+- Fix the accumulation type for `dot` and `gemv` ([#152676](https://github.com/pytorch/pytorch/pull/152676))
+- Fix `torch.lobpcg` to compute same largest eigenvalue as scipy and `np.linalg.eig` ([#152789](https://github.com/pytorch/pytorch/pull/152789))
+- Fix `tau` value check for `torch.ormqr` ([#150759](https://github.com/pytorch/pytorch/pull/150759))
+- Fix 32-bit indexing overflows in `ReducedPrecisionGemV` ([#150949](https://github.com/pytorch/pytorch/pull/150949))
 ### performance
-- [float16]: Fast path for torch.dot with float16/bfloat16 ([#152799](https://github.com/pytorch/pytorch/pull/152799))
-- [float16]: Fast path for torch.dot with float16/bfloat16 ([#152799](https://github.com/pytorch/pytorch/pull/152799))
+- Fast path for `torch.dot` with float16/bfloat16 ([#152799](https://github.com/pytorch/pytorch/pull/152799))
 ### docs
+- Address ambiguity in docs for `torch.linalg.norm()`'s ord argument of +2 & -2 ([#155148](https://github.com/pytorch/pytorch/pull/155148))
 ### devs
 ### Untopiced
-- Add more check for torch.ormqr ([#150759](https://github.com/pytorch/pytorch/pull/150759))
-- Fix 32-bit indexing overflows in ReducedPrecisionGemV ([#150949](https://github.com/pytorch/pytorch/pull/150949))
-- [2/N] Use internal linkage in aten C++ files ([#151070](https://github.com/pytorch/pytorch/pull/151070))
-- [ROCm][TunableOp] Support submatrices in offline tuning ([#151138](https://github.com/pytorch/pytorch/pull/151138))
-- irangeify ReducedPrecisionFloatGemvKernel.cpp ([#152232](https://github.com/pytorch/pytorch/pull/152232))
-- ReducedPrecisionFloatGemvFastPathKernel: Correctly type parallel_for lambda arguments as int64_t ([#152233](https://github.com/pytorch/pytorch/pull/152233))
-- Fixed rerr computation in lobpcg  ([#152789](https://github.com/pytorch/pytorch/pull/152789))
-- Fix for ambiguity in linalg.norm()'s ord argument of +2 & -2  ([#155148](https://github.com/pytorch/pytorch/pull/155148))
-- Add tensor overlap check for `cross` ([#154999](https://github.com/pytorch/pytorch/pull/154999))
 ### not user facing
+- ReducedPrecisionFloatGemvFastPathKernel: Correctly type parallel_for lambda arguments as int64_t ([#152233](https://github.com/pytorch/pytorch/pull/152233))
+- irangeify ReducedPrecisionFloatGemvKernel.cpp ([#152232](https://github.com/pytorch/pytorch/pull/152232))
+- [2/N] Use internal linkage in aten C++ files ([#151070](https://github.com/pytorch/pytorch/pull/151070))
 - do not run `test_ck_blas_library` on cpu ([#148316](https://github.com/pytorch/pytorch/pull/148316))
 - [ROCm][TunableOp] More TF32 support. ([#149088](https://github.com/pytorch/pytorch/pull/149088))
 - [ROCm][TunableOp] Unit test for TunableOp BLAS logging. ([#148982](https://github.com/pytorch/pytorch/pull/148982))
@@ -56,7 +77,6 @@ The categories below are as follows:
 - [ROCm][TunableOp] Stricter unit tests for online and offline tuning ([#150142](https://github.com/pytorch/pytorch/pull/150142))
 - [ROCm][TunableOp] Fix UT race condition and reduce UT duration. ([#150463](https://github.com/pytorch/pytorch/pull/150463))
 - Remove guard_size_oblivious from vector_norm decomposition. ([#148809](https://github.com/pytorch/pytorch/pull/148809))
-- Fix setUpClass() / tearDownClass() for device-specific tests ([#151129](https://github.com/pytorch/pytorch/pull/151129))
 - Fix setUpClass() / tearDownClass() for device-specific tests ([#151129](https://github.com/pytorch/pytorch/pull/151129))
 - Fix typos in multiple files ([#152254](https://github.com/pytorch/pytorch/pull/152254))
 - ROCm: Enable tf32 testing on test_nn ([#148945](https://github.com/pytorch/pytorch/pull/148945))
