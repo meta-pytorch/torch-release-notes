@@ -25,25 +25,6 @@ The categories below are as follows:
 
 ## python_frontend
 ### bc breaking
-**Empty inputs to `torch.[con]cat[enate]` now raise `ValueError` instead of `RuntimeError` when
-a dimname is specified. Please update exception handling logic to reflect this.** ([#155460](https://github.com/pytorch/pytorch/pull/155460))
-
-In 2.7.0
-```
-try:
-    torch.cat([], dim='N')
-except RuntimeError:
-    ...
-```
-
-In 2.8.0
-```
-try:
-    torch.cat([], dim='N')
-except ValueError:
-    ...
-```
-
 **Calling an op with an input dtype that is unsupported now raise `NotImplementedError` instead of `RuntimeError`. Please update exception handling logic to reflect this.** ([#155470](https://github.com/pytorch/pytorch/pull/155470))
 
 In 2.7.0
@@ -79,6 +60,7 @@ except NotImplementedError:
 - Fix sample validation for `MixtureSameFamily` distribution ([#151317](https://github.com/pytorch/pytorch/pull/151317))
 - Fix bug where creating a second `Wishart` or `Uniform` distribution modifies constraints on the first ([#154361](https://github.com/pytorch/pytorch/pull/154361))
 - Fix to properly export `torch::utils::tensor_to_numpy` symbol ([#154178](https://github.com/pytorch/pytorch/pull/154178))
+- Fix `torch.[con]cat[enate]` to raise `ValueError` instead of crashing on empty inputs ([#155460](https://github.com/pytorch/pytorch/pull/155460))
 ### performance
 - Optimize SVE embedding performance ([#150176](https://github.com/pytorch/pytorch/pull/150176))
 - `torch.tensordot`: performance improvements when contracting to a scalar. ([#145936](https://github.com/pytorch/pytorch/pull/145936))
