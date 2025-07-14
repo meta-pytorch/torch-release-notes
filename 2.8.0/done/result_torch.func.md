@@ -28,7 +28,7 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
-- Add batching rule for `torch.Tensor.scatter_add_` ([#150543](https://github.com/pytorch/pytorch/pull/150543))
+- Add batching rules for ops: `torch.Tensor.scatter_add_` ([#150543](https://github.com/pytorch/pytorch/pull/150543)), `torch.matrix_exp` ([#155202](https://github.com/pytorch/pytorch/pull/155202))
 ### bug fixes
 ### performance
 ### docs

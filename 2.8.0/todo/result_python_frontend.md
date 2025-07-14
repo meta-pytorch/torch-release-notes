@@ -25,59 +25,88 @@ The categories below are as follows:
 
 ## python_frontend
 ### bc breaking
-- [BE] Raise better exception in `torch.[con]cat[enate]` ([#155460](https://github.com/pytorch/pytorch/pull/155460))
-- [BE] Raise `NotImplementedError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
-- [BE] Raise `NotImplementedError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
-- Upgrade to DLPack 1.0. ([#145000](https://github.com/pytorch/pytorch/pull/145000))
+**Empty inputs to `torch.[con]cat[enate]` now raise `ValueError` instead of `RuntimeError` when
+a dimname is specified. Please update exception handling logic to reflect this.** ([#155460](https://github.com/pytorch/pytorch/pull/155460))
+
+In 2.7.0
+```
+try:
+    torch.cat([], dim='N')
+except RuntimeError:
+    ...
+```
+
+In 2.8.0
+```
+try:
+    torch.cat([], dim='N')
+except ValueError:
+    ...
+```
+
+**Calling an op with an input dtype that is unsupported now raise `NotImplementedError` instead of `RuntimeError`. Please update exception handling logic to reflect this.** ([#155470](https://github.com/pytorch/pytorch/pull/155470))
+
+In 2.7.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except RuntimeError:
+    ...
+```
+
+In 2.8.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except NotImplementedError:
+    ...
+```
 ### deprecation
 ### new features
+- Add Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
 ### improvements
-- Add a warning when a tensor with requires_grad=True is converted to a scalar ([#143261](https://github.com/pytorch/pytorch/pull/143261))
-- Add a warning when a tensor with requires_grad=True is converted to a scalar ([#143261](https://github.com/pytorch/pytorch/pull/143261))
-- Add `Any` return annotation to `__getattr__` methods that return a union of types. ([#150204](https://github.com/pytorch/pytorch/pull/150204))
-- Avoid triggering ignored requires_grad warning in our code ([#152686](https://github.com/pytorch/pytorch/pull/152686))
+- Add a warning when a tensor with `requires_grad=True` is converted to a scalar ([#143261](https://github.com/pytorch/pytorch/pull/143261))
 - Move warning from item to specific number conversions ([#152709](https://github.com/pytorch/pytorch/pull/152709))
-- Avoid triggering ignored requires_grad warning in our code ([#152686](https://github.com/pytorch/pytorch/pull/152686))
-- [BE] Introduce torch.AcceleratorError ([#152023](https://github.com/pytorch/pytorch/pull/152023))
+- Avoid triggering ignored `requires_grad` warning during tensor string formatting ([#152686](https://github.com/pytorch/pytorch/pull/152686))
+- Introduce `torch.AcceleratorError` ([#152023](https://github.com/pytorch/pytorch/pull/152023))
+- Implement `Size.__radd__` ([#152554](https://github.com/pytorch/pytorch/pull/152554))
+- Update `get_default_device()` to also respect `torch.device` context manager ([#148621](https://github.com/pytorch/pytorch/pull/148621))
+- Delegate `torch.accelerator.device_count` to `torch.xxx.device_count` for multi-process usage ([#149924](https://github.com/pytorch/pytorch/pull/149924))
 ### bug fixes
-- collect_env: gracefully handle no pip ([#151607](https://github.com/pytorch/pytorch/pull/151607))
-- [BE] Migrate dtype_abbrs into one location ([#152229](https://github.com/pytorch/pytorch/pull/152229))
+- Gracefully handle missing pip installation in `collect_env.py` ([#151607](https://github.com/pytorch/pytorch/pull/151607))
 - Fix segfault during NumPy string tensor conversion ([#155364](https://github.com/pytorch/pytorch/pull/155364))
 - Add checks for empty tensor list ([#155383](https://github.com/pytorch/pytorch/pull/155383))
+- Fix sample validation for `MixtureSameFamily` distribution ([#151317](https://github.com/pytorch/pytorch/pull/151317))
+- Fix bug where creating a second `Wishart` or `Uniform` distribution modifies constraints on the first ([#154361](https://github.com/pytorch/pytorch/pull/154361))
+- Fix to properly export `torch::utils::tensor_to_numpy` symbol ([#154178](https://github.com/pytorch/pytorch/pull/154178))
 ### performance
 - Optimize SVE embedding performance ([#150176](https://github.com/pytorch/pytorch/pull/150176))
 - `torch.tensordot`: performance improvements when contracting to a scalar. ([#145936](https://github.com/pytorch/pytorch/pull/145936))
 ### docs
-- [Docs] Make `torch.Library`'s `kind` have no default value to be consistent with the code ([#149390](https://github.com/pytorch/pytorch/pull/149390))
-- [docs] Add 32-bit complex to the list of dtypes ([#144590](https://github.com/pytorch/pytorch/pull/144590))
-- [Docs] Clarify behavior when integer dtype is used with requires_grad=True in `tensor.to()` ([#150913](https://github.com/pytorch/pytorch/pull/150913))
+- Make `torch.Library`'s `kind` have no default value to be consistent with the code ([#149390](https://github.com/pytorch/pytorch/pull/149390))
+- Add 32-bit complex to the list of dtypes ([#144590](https://github.com/pytorch/pytorch/pull/144590))
+- Clarify behavior when integer dtype is used with requires_grad=True in `tensor.to()` ([#150913](https://github.com/pytorch/pytorch/pull/150913))
 - Optimize `cdist` param description ([#151178](https://github.com/pytorch/pytorch/pull/151178))
 - Update serialization docs ([#153631](https://github.com/pytorch/pytorch/pull/153631))
-- Render Example: and not Example:: in docs ([#153978](https://github.com/pytorch/pytorch/pull/153978))
-- [docs] Add docstring indicating UB for converting inf to int ([#154781](https://github.com/pytorch/pytorch/pull/154781))
+- Render `Example:` and not `Example::` in docs ([#153978](https://github.com/pytorch/pytorch/pull/153978))
+- Add docstring indicating undefined behavior for converting inf to int ([#154781](https://github.com/pytorch/pytorch/pull/154781))
+- Update `as_strided()` docs ([#149146](https://github.com/pytorch/pytorch/pull/149146))
+- Fix `keepdim` param optional description ([#151197](https://github.com/pytorch/pytorch/pull/151197))
+- Clarify that x and dx are mutually exclusive in `torch.trapezoid` docs ([#151190](https://github.com/pytorch/pytorch/pull/151190))
+- Document `out_dtype` arg for torch GEMM operations ([#151704](https://github.com/pytorch/pytorch/pull/151704))
+- Fix the basic description of `torch.min()`, `torch.max()`, `torch.all()`, and `torch.any()` ([#152658](https://github.com/pytorch/pytorch/pull/152658))
+- Add `torch.triu_indices`, `torch.tril_indices` dtype description ([#150749](https://github.com/pytorch/pytorch/pull/150749))
+- Optimize `torch.equal` description ([#149618](https://github.com/pytorch/pytorch/pull/149618))
 ### devs
 ### Untopiced
-- Update as strided doc ([#149146](https://github.com/pytorch/pytorch/pull/149146))
-- Optimize `torch.equal` description ([#149618](https://github.com/pytorch/pytorch/pull/149618))
-- Use variadic length tuple for `torch.masked.DimOrDims` ([#149870](https://github.com/pytorch/pytorch/pull/149870))
-- [typing] Add type hints to `__init__` methods in `torch.distributions`. ([#144197](https://github.com/pytorch/pytorch/pull/144197))
-- Add `torch.triu_indices`, `torch.tril_indices` dtype description ([#150749](https://github.com/pytorch/pytorch/pull/150749))
-- Delegate torch.accelerator.device_count to torch.xxx.device_count for multi-process usage ([#149924](https://github.com/pytorch/pytorch/pull/149924))
-- Clarify that x and dx are mutually exclusive in torch.trapezoid doc ([#151190](https://github.com/pytorch/pytorch/pull/151190))
-- Fix `keepdim` param optional description ([#151197](https://github.com/pytorch/pytorch/pull/151197))
-- add generalized pareto distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
-- Added to docs for out_dtype arg in torch gemms ([#151704](https://github.com/pytorch/pytorch/pull/151704))
-- [Testing] Add copysign from scalar regression test ([#152997](https://github.com/pytorch/pytorch/pull/152997))
-- Fix the basic description of torch.min(), torch.max(), torch.all(), torch.any() ([#152658](https://github.com/pytorch/pytorch/pull/152658))
-- Fix support of MixtureSameFamily [bugfix]. ([#151317](https://github.com/pytorch/pytorch/pull/151317))
-- Use property instead of ClassVar for `Uniform.arg_constraints` and `Wishart.arg_constraints` ([#154361](https://github.com/pytorch/pytorch/pull/154361))
-- Type hints for distributions/utils ([#154712](https://github.com/pytorch/pytorch/pull/154712))
-- Export `torch::utils::tensor_to_numpy` ([#154178](https://github.com/pytorch/pytorch/pull/154178))
-- update get_default_device to also respect torch.device ctx manager ([#148621](https://github.com/pytorch/pytorch/pull/148621))
-- typing: allow integer in bitwise operations ([#155704](https://github.com/pytorch/pytorch/pull/155704))
-- Add batching rule for torch.matrix_exp ([#155202](https://github.com/pytorch/pytorch/pull/155202))
-- Implemented `Size.__radd__` ([#152554](https://github.com/pytorch/pytorch/pull/152554))
 ### not user facing
+- Add `Any` return annotation to `__getattr__` methods that return a union of types. ([#150204](https://github.com/pytorch/pytorch/pull/150204))
+- Use variadic length tuple for `torch.masked.DimOrDims` ([#149870](https://github.com/pytorch/pytorch/pull/149870))
+- Type hints for distributions/utils ([#154712](https://github.com/pytorch/pytorch/pull/154712))
+- typing: allow integer in bitwise operations ([#155704](https://github.com/pytorch/pytorch/pull/155704))
+- [typing] Add type hints to `__init__` methods in `torch.distributions`. ([#144197](https://github.com/pytorch/pytorch/pull/144197))
+- [Testing] Add copysign from scalar regression test ([#152997](https://github.com/pytorch/pytorch/pull/152997))
+- Migrate dtype_abbrs into one location ([#152229](https://github.com/pytorch/pytorch/pull/152229))
 - Add `__all__` for `torch.utils.dlpack` ([#149026](https://github.com/pytorch/pytorch/pull/149026))
 - [CUDA][cuBLAS] Aten GEMM overload for FP32 output from FP16/BF16 inputs ([#150812](https://github.com/pytorch/pytorch/pull/150812))
 - Support fp8 dtypes in assert_close ([#150002](https://github.com/pytorch/pytorch/pull/150002))

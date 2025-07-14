@@ -25,6 +25,7 @@ The categories below are as follows:
 
 ## build_frontend
 ### bc breaking
+- Upgrade to DLPack 1.0 ([#145000](https://github.com/pytorch/pytorch/pull/145000))
 - [CUDA][NVTX] Move nvtx3 code from cmake/public/cuda.cmake to cmake/Dependencies.cmake ([#151583](https://github.com/pytorch/pytorch/pull/151583))
 ### deprecation
 ### new features
