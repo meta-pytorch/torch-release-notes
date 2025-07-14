@@ -58,8 +58,6 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 ### not user facing
-- [ROCm] missing AT_CUDA_CHECK for cub and SoftMax ([#149883](https://github.com/pytorch/pytorch/pull/149883))
-- [ROCm] AtomicAdd specialization on AMD for fp64. ([#151724](https://github.com/pytorch/pytorch/pull/151724))
 - Fix missing field initializer warning in build ([#149597](https://github.com/pytorch/pytorch/pull/149597))
 - [Easy][Building] Fix the warning of int4mm.cu when building ([#151427](https://github.com/pytorch/pytorch/pull/151427))
 ### security

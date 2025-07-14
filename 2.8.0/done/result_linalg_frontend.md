@@ -51,7 +51,6 @@ torch.tensordot(a, b, dims=([1], [0]), out=c)
 ### deprecation
 ### new features
 ### improvements
-- Support submatrices in offline tuning for ROCm ([#151138](https://github.com/pytorch/pytorch/pull/151138))
 - Add tensor overlap check for `cross` ([#154999](https://github.com/pytorch/pytorch/pull/154999))
 ### bug fixes
 - Fix to workaround LAPACK workspace size being returned as a floating point value ([#149682](https://github.com/pytorch/pytorch/pull/149682))
@@ -70,19 +69,9 @@ torch.tensordot(a, b, dims=([1], [0]), out=c)
 - irangeify ReducedPrecisionFloatGemvKernel.cpp ([#152232](https://github.com/pytorch/pytorch/pull/152232))
 - [2/N] Use internal linkage in aten C++ files ([#151070](https://github.com/pytorch/pytorch/pull/151070))
 - do not run `test_ck_blas_library` on cpu ([#148316](https://github.com/pytorch/pytorch/pull/148316))
-- [ROCm][TunableOp] More TF32 support. ([#149088](https://github.com/pytorch/pytorch/pull/149088))
-- [ROCm][TunableOp] Unit test for TunableOp BLAS logging. ([#148982](https://github.com/pytorch/pytorch/pull/148982))
-- [ROCm][TunableOp] Fix offline tuning for ScaledGEMM. ([#149677](https://github.com/pytorch/pytorch/pull/149677))
-- [ROCm][TunableOp] TunableOp Context Manager for unit tests ([#149930](https://github.com/pytorch/pytorch/pull/149930))
-- [ROCm][TunableOp] Stricter unit tests for online and offline tuning ([#150142](https://github.com/pytorch/pytorch/pull/150142))
-- [ROCm][TunableOp] Fix UT race condition and reduce UT duration. ([#150463](https://github.com/pytorch/pytorch/pull/150463))
 - Remove guard_size_oblivious from vector_norm decomposition. ([#148809](https://github.com/pytorch/pytorch/pull/148809))
 - Fix setUpClass() / tearDownClass() for device-specific tests ([#151129](https://github.com/pytorch/pytorch/pull/151129))
 - Fix typos in multiple files ([#152254](https://github.com/pytorch/pytorch/pull/152254))
-- ROCm: Enable tf32 testing on test_nn ([#148945](https://github.com/pytorch/pytorch/pull/148945))
-- [ROCm][TunableOp] Fix ScaledGEMM rowwise ([#152403](https://github.com/pytorch/pytorch/pull/152403))
-- [ROCm][TunableOp] Unit test to verify that there is only one kernel launch per PyTorch API invocation. ([#155077](https://github.com/pytorch/pytorch/pull/155077))
 - [ez] Mark linalg svd memory allocation test as serial b/c OOMing on cu128 ([#155811](https://github.com/pytorch/pytorch/pull/155811))
-- [ROCm][CI] fix mi300 test failure after 6.4.1 update ([#156368](https://github.com/pytorch/pytorch/pull/156368))
 - Add option to CPU Blas GEMM to avoid output downcast ([#154012](https://github.com/pytorch/pytorch/pull/154012))
 ### security

@@ -51,5 +51,18 @@ The categories below are as follows:
 - [ROCm] Exposing Some MIOpen Symbols (#2176) ([#154545](https://github.com/pytorch/pytorch/pull/154545))
 - [ROCm] MIOpen: Get current device from Torch rather than HIP in handle creation ([#154549](https://github.com/pytorch/pytorch/pull/154549))
 - [ROCm] Enable BF16 NCHW Mixed batchnorm on MIOpen if ROCm>=6.4 ([#154611](https://github.com/pytorch/pytorch/pull/154611))
+- [ROCm] missing AT_CUDA_CHECK for cub and SoftMax ([#149883](https://github.com/pytorch/pytorch/pull/149883))
+- [ROCm] AtomicAdd specialization on AMD for fp64. ([#151724](https://github.com/pytorch/pytorch/pull/151724))
+- [ROCm][TunableOp] More TF32 support. ([#149088](https://github.com/pytorch/pytorch/pull/149088))
+- [ROCm][TunableOp] Unit test for TunableOp BLAS logging. ([#148982](https://github.com/pytorch/pytorch/pull/148982))
+- [ROCm][TunableOp] Fix offline tuning for ScaledGEMM. ([#149677](https://github.com/pytorch/pytorch/pull/149677))
+- [ROCm][TunableOp] TunableOp Context Manager for unit tests ([#149930](https://github.com/pytorch/pytorch/pull/149930))
+- [ROCm][TunableOp] Stricter unit tests for online and offline tuning ([#150142](https://github.com/pytorch/pytorch/pull/150142))
+- [ROCm][TunableOp] Fix UT race condition and reduce UT duration. ([#150463](https://github.com/pytorch/pytorch/pull/150463))
+- [ROCm][TunableOp] Fix ScaledGEMM rowwise ([#152403](https://github.com/pytorch/pytorch/pull/152403))
+- [ROCm][TunableOp] Unit test to verify that there is only one kernel launch per PyTorch API invocation. ([#155077](https://github.com/pytorch/pytorch/pull/155077))
+- [ROCm][CI] fix mi300 test failure after 6.4.1 update ([#156368](https://github.com/pytorch/pytorch/pull/156368))
+- Support submatrices in offline tuning for ROCm ([#151138](https://github.com/pytorch/pytorch/pull/151138))
+- ROCm: Enable tf32 testing on test_nn ([#148945](https://github.com/pytorch/pytorch/pull/148945))
 ### not user facing
 ### security
