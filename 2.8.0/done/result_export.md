@@ -51,6 +51,7 @@ The categories below are as follows:
 - Suggest dynamic re-export in input constraints hook ([#151624](https://github.com/pytorch/pytorch/pull/151624))
 - Improve handling of builtin ops (min, max, math.pow) ([#151348](https://github.com/pytorch/pytorch/pull/151348))
 - Add `from_node` metadata for nodes in gm.module() ([#155053](https://github.com/pytorch/pytorch/pull/155053))
+- Inline `jit.script`ed functions in export ([#155180](https://github.com/pytorch/pytorch/pull/155180))
 
 ### bug fixes
 - Fix aten.is_nonzero for more than one elem tensors ([#149637](https://github.com/pytorch/pytorch/pull/149637))

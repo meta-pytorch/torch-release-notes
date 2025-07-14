@@ -4,9 +4,6 @@ Welcome to the Pool of Miscategorized commits.
 Add any commits that were miscategorized for your domain below.
 Handle any commits that actually do belong to your domain and remove them from this list.
 
-## Build
-- Force build to conform C++ standard on windows by adding /permissive- flag ([#149035](https://github.com/pytorch/pytorch/pull/149035))
-
 ## Compiled Autograd
 - [ca] default on in CI, with fallback for tests in test/compiled_autograd_skips/ ([#155480](https://github.com/pytorch/pytorch/pull/155480))
 
@@ -31,14 +28,5 @@ Handle any commits that actually do belong to your domain and remove them from t
 - [pt2d] Add reorder_comms_preserving_peak_memory pass ([#146562](https://github.com/pytorch/pytorch/pull/146562))
 - fix numpy compatibility for 2d small list indices ([#154806](https://github.com/pytorch/pytorch/pull/154806))
 - Resubmit Remove MemPoolContext  (#154042) ([#154746](https://github.com/pytorch/pytorch/pull/154746))
-
-## CPU
-- [Pytorch] Add option to CPU Blas GEMM to avoid output downcast ([#154012](https://github.com/pytorch/pytorch/pull/154012))
-
-## Dynamo
-- [hop] support base_hop._gen_schema ([#149688](https://github.com/pytorch/pytorch/pull/149688))
-
-## Export
-- [export] inline jit.scripted function in export ([#155180](https://github.com/pytorch/pytorch/pull/155180))
 
 ## not user facing

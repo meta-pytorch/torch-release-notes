@@ -39,6 +39,7 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
+- [hop] support base_hop._gen_schema ([#149688](https://github.com/pytorch/pytorch/pull/149688))
 - Fix printing INT64_MIN ([#149148](https://github.com/pytorch/pytorch/pull/149148))
 - [compile] Switch off inference mode during compilation ([#149321](https://github.com/pytorch/pytorch/pull/149321))
 - [dynamo] support Python 3.13t ([#149549](https://github.com/pytorch/pytorch/pull/149549))

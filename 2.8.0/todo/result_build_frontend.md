@@ -37,6 +37,7 @@ The categories below are as follows:
 ### bug fixes
 - Make PyTorch buildable by `CMake-4.x` ([#150203](https://github.com/pytorch/pytorch/pull/150203))
 - Fix `fbgemm` build with `gcc-12+` ([#150847](https://github.com/pytorch/pytorch/pull/150847))
+- Force build to conform to C++ standard on Windows by adding `/permissive-` flag ([#149035](https://github.com/pytorch/pytorch/pull/149035))
 ### performance
 ### docs
 ### devs

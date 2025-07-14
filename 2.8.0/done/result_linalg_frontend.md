@@ -84,4 +84,5 @@ torch.tensordot(a, b, dims=([1], [0]), out=c)
 - [ROCm][TunableOp] Unit test to verify that there is only one kernel launch per PyTorch API invocation. ([#155077](https://github.com/pytorch/pytorch/pull/155077))
 - [ez] Mark linalg svd memory allocation test as serial b/c OOMing on cu128 ([#155811](https://github.com/pytorch/pytorch/pull/155811))
 - [ROCm][CI] fix mi300 test failure after 6.4.1 update ([#156368](https://github.com/pytorch/pytorch/pull/156368))
+- Add option to CPU Blas GEMM to avoid output downcast ([#154012](https://github.com/pytorch/pytorch/pull/154012))
 ### security
