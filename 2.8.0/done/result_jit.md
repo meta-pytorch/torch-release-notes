@@ -28,19 +28,24 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
-- Force build to conform C++ standard on windows by adding /permissive- flag ([#149035](https://github.com/pytorch/pytorch/pull/149035))
 ### bug fixes
+- Support LLVM18+ in NNC ([#149058](https://github.com/pytorch/pytorch/pull/149058))
 ### performance
+- Improve Dead Code Elimination compile times for large graphs ([#153645](https://github.com/pytorch/pytorch/pull/153645))
 ### docs
 ### devs
 ### Untopiced
-- [pytorch] Fix duplicated Malloc/Free insertation when using IRBuilderBase::CreateMalloc/CreateFree in LLVM 18+ ([#149058](https://github.com/pytorch/pytorch/pull/149058))
+### not user facing
+- Reserve vector in StringCordView ctor ([#151628](https://github.com/pytorch/pytorch/pull/151628))
+- [Ez][BE]: Fix click ImportError in torch/csrc/jit ([#153323](https://github.com/pytorch/pytorch/pull/153323))
+- [BE] Fix `-Wextra-semi` warning ([#153887](https://github.com/pytorch/pytorch/pull/153887))
+- Add /Zc:preprocessor for torch libraries in MSVC builds ([#147825](https://github.com/pytorch/pytorch/pull/147825))
+- [Easy][Code Clean] Remove the unused and undefined function in pickler ([#155772](https://github.com/pytorch/pytorch/pull/155772))
+- use guard_or_false for expand utils reduction ([#155868](https://github.com/pytorch/pytorch/pull/155868))
 - [Torchscript] Add a flag to use mangled names instead of demangled ([#148906](https://github.com/pytorch/pytorch/pull/148906))
 - [MTIA] Support loading Tensors on mtia:0 for pytorch code ([#149327](https://github.com/pytorch/pytorch/pull/149327))
-- [torch] Fix unsafe concurrent access to autocast_enabled ([#148281](https://github.com/pytorch/pytorch/pull/148281))
 - Enable move warnings for torch targets ([#149923](https://github.com/pytorch/pytorch/pull/149923))
 - Remove cppcoreguidelines-pro-type-member-init_fix suppression ([#148638](https://github.com/pytorch/pytorch/pull/148638))
-- [hop] support base_hop._gen_schema ([#149688](https://github.com/pytorch/pytorch/pull/149688))
 - Don't eagerly create AliasInfo in parseAliasDeclaration ([#151630](https://github.com/pytorch/pytorch/pull/151630))
 - Fix extra heap allocation in Source constructor ([#151800](https://github.com/pytorch/pytorch/pull/151800))
 - Add & use Token::text_view() (which returns a string_view unlike text()) ([#151804](https://github.com/pytorch/pytorch/pull/151804))
@@ -53,15 +58,6 @@ The categories below are as follows:
 - Forward fix D74196435 ([#152926](https://github.com/pytorch/pytorch/pull/152926))
 - Partilally revert https://github.com/pytorch/pytorch/pull/152288 ([#152909](https://github.com/pytorch/pytorch/pull/152909))
 - [JIT] add GRAPH_DEBUG for setGraphExecutorOptimize ([#153549](https://github.com/pytorch/pytorch/pull/153549))
-- [JIT] Optimize DCE by storing a MemoryLocations for an entire set<Value*> ([#153645](https://github.com/pytorch/pytorch/pull/153645))
 - [BE] fix lint errors caused by const SROpFunctor fn ([#154552](https://github.com/pytorch/pytorch/pull/154552))
-- [export] inline jit.scripted function in export ([#155180](https://github.com/pytorch/pytorch/pull/155180))
 - Make benchmark by op for TS model work with sample inputs ([#155988](https://github.com/pytorch/pytorch/pull/155988))
-### not user facing
-- Reserve vector in StringCordView ctor ([#151628](https://github.com/pytorch/pytorch/pull/151628))
-- [Ez][BE]: Fix click ImportError in torch/csrc/jit ([#153323](https://github.com/pytorch/pytorch/pull/153323))
-- [BE] Fix `-Wextra-semi` warning ([#153887](https://github.com/pytorch/pytorch/pull/153887))
-- Add /Zc:preprocessor for torch libraries in MSVC builds ([#147825](https://github.com/pytorch/pytorch/pull/147825))
-- [Easy][Code Clean] Remove the unused and undefined function in pickler ([#155772](https://github.com/pytorch/pytorch/pull/155772))
-- use guard_or_false for expand utils reduction ([#155868](https://github.com/pytorch/pytorch/pull/155868))
 ### security
