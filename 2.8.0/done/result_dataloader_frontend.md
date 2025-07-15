@@ -30,14 +30,14 @@ The categories below are as follows:
 ### improvements
 ### bug fixes
 ### performance
+- Reduce memory usage of `SubsetRandomSampler` by iterating over list instead of tensor ([#149126](https://github.com/pytorch/pytorch/pull/149126))
 ### docs
 ### devs
 ### Untopiced
-- SubsetRandomSampler - changed iteration over tensor to iteration over list ([#149126](https://github.com/pytorch/pytorch/pull/149126))
-- Optimize dataloader Self typing ([#146816](https://github.com/pytorch/pytorch/pull/146816))
-- Remove conda refs in tools  ([#152368](https://github.com/pytorch/pytorch/pull/152368))
-- Enable ruff check for `torch/utils/data/*.ipynb` ([#148654](https://github.com/pytorch/pytorch/pull/148654))
 ### not user facing
+- Optimize dataloader Self typing ([#146816](https://github.com/pytorch/pytorch/pull/146816))
+- Enable ruff check for `torch/utils/data/*.ipynb` ([#148654](https://github.com/pytorch/pytorch/pull/148654))
+- Remove conda refs in tools  ([#152368](https://github.com/pytorch/pytorch/pull/152368))
 - Refactor `torch/utils/data/datapipes/gen_pyi.py` with `torchgen` ([#150626](https://github.com/pytorch/pytorch/pull/150626))
 - remove allow-untyped-defs from torch/utils/data/datapipes/iter/filelister.py ([#154624](https://github.com/pytorch/pytorch/pull/154624))
 - Fix #155016 for Docathon - convert rst to markdown ([#155198](https://github.com/pytorch/pytorch/pull/155198))
