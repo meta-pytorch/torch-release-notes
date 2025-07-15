@@ -29,14 +29,9 @@ The categories below are as follows:
 ### new features
 - Torchbind objects supported in AOTInductor ([#150196](https://github.com/pytorch/pytorch/pull/150196), [#154265](https://github.com/pytorch/pytorch/pull/154265))
 ### improvements
-- Implement backward pass for interpolate_trilinear ([#156373](https://github.com/pytorch/pytorch/pull/156373))
-- Add permute/squueze/abs/aten.hann_window in fallback ops ([#154251](https://github.com/pytorch/pytorch/pull/154251))
-- Add _weight_int4pack_mm to the C shim fallback list ([#151059](https://github.com/pytorch/pytorch/pull/151059))
-- Add shim fallback for narrow ([#156496](https://github.com/pytorch/pytorch/pull/156496))
-- Add C shim fallback for fill_ ([#156245](https://github.com/pytorch/pytorch/pull/156245))
-- Add C shim for at::pad ([#155226](https://github.com/pytorch/pytorch/pull/155226))
+- Implement backward pass for interpolate_trilinear for MPS ([#156373](https://github.com/pytorch/pytorch/pull/156373))
+- Add permute/squueze/abs/aten.hann_window/narrow/_weight_int4pack_mm/fill\_ /pad in c-shim fallback ops ([#154251](https://github.com/pytorch/pytorch/pull/154251), [#156496](https://github.com/pytorch/pytorch/pull/156496), [#151059](https://github.com/pytorch/pytorch/pull/151059), [#156245](https://github.com/pytorch/pytorch/pull/156245), [#155226](https://github.com/pytorch/pytorch/pull/155226))
 - Add RECORD_FUNCTION for AOTI ([#150150](https://github.com/pytorch/pytorch/pull/150150))
-- Add a basic shim and stable::Tensor is_contiguous API ([#156228](https://github.com/pytorch/pytorch/pull/156228))
 - Enable OP `test__weight_int4pack_mm_with_scales_and_zeros` in AOTI. ([#155780](https://github.com/pytorch/pytorch/pull/155780))
 ### bug fixes
 - Fix AOTI update_constant_buffer issue. ([#149243](https://github.com/pytorch/pytorch/pull/149243))
@@ -50,6 +45,7 @@ The categories below are as follows:
 ### devs
 - Refactor AOTInductor runtime API for Intel GPU. ([#153929](https://github.com/pytorch/pytorch/pull/153929))
 - Improve stable library APIs ([#152040](https://github.com/pytorch/pytorch/pull/152040))
+- Add a basic shim and stable::Tensor is_contiguous API ([#156228](https://github.com/pytorch/pytorch/pull/156228))
 ### Untopiced
 
 
