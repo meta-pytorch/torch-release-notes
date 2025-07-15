@@ -25,16 +25,26 @@ The categories below are as follows:
 
 ## dynamo
 ### bc breaking
+- For HigherOrderOperators (e.g. `cond`), we enforced a stricter aliasing/mutation check, which will explicitly error out if they doesn't support alias/mutation among inputs and outputs
+  ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658))
 ### deprecation
+- Deprecate `enable_cpp_framelocals_guard_eval` Dynamo config variable - default: True ([#151008](https://github.com/pytorch/pytorch/pull/151008))
 ### new features
 - Hierarchical compilation via `nested_compile_region` ([#156449](https://github.com/pytorch/pytorch/pull/156449))
 - Allow guards to be dropped with custom filter functions via `guard_filter_fn` ([#150936](https://github.com/pytorch/pytorch/pull/150936))
+- `dont_skip_tracing` decorator to skip over most Dynamo skipfiles rules ([#150586](https://github.com/pytorch/pytorch/pull/150586))
 ### improvements
 - Add reason field to `torch.compiler.disable` ([#150341](https://github.com/pytorch/pytorch/pull/150341))
 - Misc. increased tracing support, e.g. for Python sets ([#153150]https://github.com/pytorch/pytorch/pull/153150))
 - Always trace into a Tensor subclass' `__torch_function__` ([#149792](https://github.com/pytorch/pytorch/pull/149792))
+- [Compiled Autograd] Eliminated all dynamic shapes recompiles for compile time reduction ([#151962](https://github.com/pytorch/pytorch/pull/151962), [#152119](https://github.com/pytorch/pytorch/pull/152119),
+  [#151962](https://github.com/pytorch/pytorch/pull/151962), [#149707](https://github.com/pytorch/pytorch/pull/149707), [#149709](https://github.com/pytorch/pytorch/pull/149709),
+  [#148799](https://github.com/pytorch/pytorch/pull/148799), [#148801](https://github.com/pytorch/pytorch/pull/148801))
 ### bug fixes
 - Fix spammy errors when user passes an invalid `TORCH_LOGS` argument ([#151678](https://github.com/pytorch/pytorch/pull/151678))
+- Eliminated silent incorrectness in the Compiled Autograd initial trace ([#149014](https://github.com/pytorch/pytorch/pull/149014),
+  [#155521](https://github.com/pytorch/pytorch/pull/155521), [#155289](https://github.com/pytorch/pytorch/pull/155289), [#149336](https://github.com/pytorch/pytorch/pull/149336))
+- [Compiled Autograd] Fixed unpack hook semantics for memory savings in checkpointing and offloading ([#147242](https://github.com/pytorch/pytorch/pull/147242), [#153300](https://github.com/pytorch/pytorch/pull/153300))
 ### performance
 ### docs
 <!-- programming model docs, if we can get that in 2.8 -->
