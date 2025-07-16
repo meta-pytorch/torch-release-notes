@@ -37,16 +37,15 @@ see https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/ma
 ### new features
 - Add a lowering pass for x86 backend of PT2E quantization ([#149708](https://github.com/pytorch/pytorch/pull/149708))
 - Enable qconv1d-relu fusion for PT2E quantization on X86 CPU ([#150751](https://github.com/pytorch/pytorch/pull/150751))
-- Add an op to compute uint8 pointwise mul for PT2E quantization on X86 CPU ([#151112](https://github.com/pytorch/pytorch/pull/151112))
-- Add ops to compute uint8 pointwise add/add_relu for PT2E quantization on X86 CPU ([#152411](https://github.com/pytorch/pytorch/pull/152411))
-- Add an op to compute uint8 batch norm 2d for PT2E quantization on X86 CPU ([#152811](https://github.com/pytorch/pytorch/pull/152811))
+- Add an op to compute `uint8` pointwise mul for PT2E quantization on X86 CPU ([#151112](https://github.com/pytorch/pytorch/pull/151112))
+- Add ops to compute `uint8` pointwise add/add_relu for PT2E quantization on X86 CPU ([#152411](https://github.com/pytorch/pytorch/pull/152411))
+- Add an op to compute `uint8` batch_norm2d for PT2E quantization on X86 CPU ([#152811](https://github.com/pytorch/pytorch/pull/152811))
 - Add `torch.float4_e2m1fn_x2` to PyTorch ([#148791](https://github.com/pytorch/pytorch/pull/148791))
 
 ### improvements
 - Support boolean tensor for `torch.fused_moving_avg_obs_fake_quant` on CUDA ([#153699](https://github.com/pytorch/pytorch/pull/153699))
 - Fix torchscript issues with reference quantized modules ([#150870](https://github.com/pytorch/pytorch/pull/150870))
 - Implement `__obj_flatten__` for `LinearPackedParamsBase` ([#152619](https://github.com/pytorch/pytorch/pull/152619))
-
 
 ### bug fixes
 ### performance
