@@ -56,6 +56,7 @@ The categories below are as follows:
 ### docs
 - Fix deprecated amp APIs in docs ([#154553](https://github.com/pytorch/pytorch/pull/154553))
 - Document device memory apis in correct module ([#155126](https://github.com/pytorch/pytorch/pull/155126))
+- Document non-pytorch CUDA memory allocation and how to query it ([#150880](https://github.com/pytorch/pytorch/pull/150880))
 ### devs
 ### Untopiced
 ### not user facing
