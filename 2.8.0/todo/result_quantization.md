@@ -26,45 +26,36 @@ The categories below are as follows:
 ## quantization
 ### bc breaking
 ### deprecation
+* `torch.ao.quantization` is Deprecated ([#153892](https://github.com/pytorch/pytorch/pull/153892))
+torch.ao.quantization is deprecated and will be removed in 2.10.
+For migrations of users:
+1. Eager mode quantization (torch.ao.quantization.quantize, torch.ao.quantization.quantize_dynamic), please migrate to use torchao eager mode quantize_ for weight only and dynamic quantization, or torchao pt2e quantization for static quantization
+2. FX graph mode quantization (torch.ao.quantization.quantize_fx.prepare_fx, torch.ao.quantization.quantize_fx.convert_fx, please migrate to use torchao pt2e quantization API instead (prepare_pt2e, convert_pt2e)
+3. PyTorch pt2e quantization has been migrated to torchao (https://github.com/pytorch/ao/tree/main/torchao/quantization/pt2e)
+see https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/main/quick_start.html#pytorch-2-export-quantization for more details
+
 ### new features
 - Add a lowering pass for x86 backend of PT2E quantization ([#149708](https://github.com/pytorch/pytorch/pull/149708))
 - Enable qconv1d-relu fusion for PT2E quantization on X86 CPU ([#150751](https://github.com/pytorch/pytorch/pull/150751))
 - Add an op to compute uint8 pointwise mul for PT2E quantization on X86 CPU ([#151112](https://github.com/pytorch/pytorch/pull/151112))
 - Add ops to compute uint8 pointwise add/add_relu for PT2E quantization on X86 CPU ([#152411](https://github.com/pytorch/pytorch/pull/152411))
 - Add an op to compute uint8 batch norm 2d for PT2E quantization on X86 CPU ([#152811](https://github.com/pytorch/pytorch/pull/152811))
+- add `torch.float4_e2m1fn_x2` to PyTorch ([#148791](https://github.com/pytorch/pytorch/pull/148791))
+
 ### improvements
+- Support boolean tensor for torch.fused_moving_avg_obs_fake_quant on CUDA ([#153699](https://github.com/pytorch/pytorch/pull/153699))
+- Fix torchscript issues with reference quantized modules ([#150870](https://github.com/pytorch/pytorch/pull/150870))
+- [fbgemm] Implement __obj_flatten__ for LinearPackedParamsBase ([#152619](https://github.com/pytorch/pytorch/pull/152619))
+- Properly strip tracking stats in  _fold_conv_bn_qat for 1D conv in pt2e quantization ([#152982](https://github.com/pytorch/pytorch/pull/152982))
+
+
 ### bug fixes
 ### performance
 ### docs
+- Fix incorrect get_default_qat_qconfig in prepare_qat_fx docs. ([#155100](https://github.com/pytorch/pytorch/pull/155100))
 ### devs
 ### Untopiced
-- [FIX] remove the duplicate key in DEFAULT_STATIC_QUANT_MODULE_MAPPINGS ([#149043](https://github.com/pytorch/pytorch/pull/149043))
-- Update logic when producing key name for keep_original_weights ([#149171](https://github.com/pytorch/pytorch/pull/149171))
-- Enable qint8 and quint8 add for AArch64 using ACL directly ([#148653](https://github.com/pytorch/pytorch/pull/148653))
-- [Build] Guard per-op headers in ACLUtils.cpp ([#149417](https://github.com/pytorch/pytorch/pull/149417))
-- torch.Size input ([#149414](https://github.com/pytorch/pytorch/pull/149414))
-- add `torch.float4_e2m1fn_x2` to PyTorch ([#148791](https://github.com/pytorch/pytorch/pull/148791))
-- Improve attr mismatch msg ([#149576](https://github.com/pytorch/pytorch/pull/149576))
-- [Intel GPU] Allow XPU backend in Quantize operators ([#150288](https://github.com/pytorch/pytorch/pull/150288))
-- [AO] update port_metadata_pass to support quant_affine ops ([#150642](https://github.com/pytorch/pytorch/pull/150642))
-- [AO] Add Moving Average Affine Observer ([#150643](https://github.com/pytorch/pytorch/pull/150643))
-- [AO] Refactor convert and add QuantAffinePlaceholderObserver ([#150644](https://github.com/pytorch/pytorch/pull/150644))
-- [AO] fix per token block size calculation ([#150890](https://github.com/pytorch/pytorch/pull/150890))
-- Fix torchscript issues with reference quantized modules ([#150870](https://github.com/pytorch/pytorch/pull/150870))
-- [BE][1/2] Move original_weights_lookup attribute to constant ([#151241](https://github.com/pytorch/pytorch/pull/151241))
-- [Sana][HybridCache] Fix bug in detect_attr_assignment ([#151824](https://github.com/pytorch/pytorch/pull/151824))
-- [standalone_compile] Dynamic shape handling ([#151788](https://github.com/pytorch/pytorch/pull/151788))
-- [1/N] Deprecate c10::string_view and at::string ([#151972](https://github.com/pytorch/pytorch/pull/151972))
-- [fbgemm] Implement __obj_flatten__ for LinearPackedParamsBase ([#152619](https://github.com/pytorch/pytorch/pull/152619))
-- Avoid  std::chrono::system_clock  ([#153135](https://github.com/pytorch/pytorch/pull/153135))
-- [torch][ao] Properly strip tracking stats in  _fold_conv_bn_qat for 1D ([#152982](https://github.com/pytorch/pytorch/pull/152982))
-- [Refactor] Explicilty spell out the namespace for device() function ([#153248](https://github.com/pytorch/pytorch/pull/153248))
-- Add deprecation warning for `torch.ao.quantization` ([#153892](https://github.com/pytorch/pytorch/pull/153892))
-- BE: Type previously untyped decorators ([#154515](https://github.com/pytorch/pytorch/pull/154515))
-- [Reland][pytorch] Patch the _is_conv_node function ([#154473](https://github.com/pytorch/pytorch/pull/154473))
-- Fix incorrect get_default_qat_qconfig in prepare_qat_fx docs. ([#155100](https://github.com/pytorch/pytorch/pull/155100))
-- Support boolean tensor for torch.fused_moving_avg_obs_fake_quant on CUDA ([#153699](https://github.com/pytorch/pytorch/pull/153699))
-- Remove outdated Android workarounds of nearbyintf ([#151292](https://github.com/pytorch/pytorch/pull/151292))
+
 ### not user facing
 - Add test coverage ([#149182](https://github.com/pytorch/pytorch/pull/149182))
 - Use correct boxed_forward_device_index when running `CompiledFxGraph.post_compile` ([#148130](https://github.com/pytorch/pytorch/pull/148130))
@@ -93,4 +84,21 @@ The categories below are as follows:
 - [Precompile] Hook up backend="inductor"  ([#155387](https://github.com/pytorch/pytorch/pull/155387))
 - [Precompile] Hook up backend="inductor"  ([#155387](https://github.com/pytorch/pytorch/pull/155387))
 - Fix clang-tidy bugprone* warnings ([#148529](https://github.com/pytorch/pytorch/pull/148529))
+- [FIX] remove the duplicate key in DEFAULT_STATIC_QUANT_MODULE_MAPPINGS ([#149043](https://github.com/pytorch/pytorch/pull/149043))
+- Update logic when producing key name for keep_original_weights ([#149171](https://github.com/pytorch/pytorch/pull/149171))
+- Enable qint8 and quint8 add for AArch64 using ACL directly ([#148653](https://github.com/pytorch/pytorch/pull/148653))
+- [Build] Guard per-op headers in ACLUtils.cpp ([#149417](https://github.com/pytorch/pytorch/pull/149417))
+- torch.Size input ([#149414](https://github.com/pytorch/pytorch/pull/149414))
+- [Intel GPU] Allow XPU backend in Quantize operators ([#150288](https://github.com/pytorch/pytorch/pull/150288))
+- [AO] update port_metadata_pass to support quant_affine ops ([#150642](https://github.com/pytorch/pytorch/pull/150642))
+- [AO] Add Moving Average Affine Observer ([#150643](https://github.com/pytorch/pytorch/pull/150643))
+- [AO] Refactor convert and add QuantAffinePlaceholderObserver ([#150644](https://github.com/pytorch/pytorch/pull/150644))
+- [AO] fix per token block size calculation ([#150890](https://github.com/pytorch/pytorch/pull/150890))
+- [BE][1/2] Move original_weights_lookup attribute to constant ([#151241](https://github.com/pytorch/pytorch/pull/151241))
+- [1/N] Deprecate c10::string_view and at::string ([#151972](https://github.com/pytorch/pytorch/pull/151972))
+- Avoid  std::chrono::system_clock  ([#153135](https://github.com/pytorch/pytorch/pull/153135))
+- [Reland][pytorch] Patch the _is_conv_node function ([#154473](https://github.com/pytorch/pytorch/pull/154473))
+- Remove outdated Android workarounds of nearbyintf ([#151292](https://github.com/pytorch/pytorch/pull/151292))
+- BE: Type previously untyped decorators ([#154515](https://github.com/pytorch/pytorch/pull/154515))
+
 ### security
