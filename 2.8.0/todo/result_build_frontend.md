@@ -25,7 +25,27 @@ The categories below are as follows:
 
 ## build_frontend
 ### bc breaking
-- Upgrade to DLPack 1.0 ([#145000](https://github.com/pytorch/pytorch/pull/145000))
+**DLPack has been upgraded to 1.0, with some of the DLDeviceType enum values renamed. Please switch
+to the new names.** ([#145000](https://github.com/pytorch/pytorch/pull/145000))
+
+In 2.7.0
+```
+from torch.utils.dlpack import DLDeviceType
+
+d1 = DLDeviceType.kDLGPU
+d2 = DLDeviceType.kDLCPUPinned
+...
+```
+
+In 2.8.0
+```
+from torch.utils.dlpack import DLDeviceType
+
+d1 = DLDeviceType.kDLCUDA  # formerly kDLGPU
+d2 = DLDeviceType.kDLCUDAHost  # formerly kDLCPUPinned
+...
+```
+
 - Move nvtx3 code from `cmake/public/cuda.cmake` to `cmake/Dependencies.cmake` ([#151583](https://github.com/pytorch/pytorch/pull/151583))
 ### deprecation
 ### new features
