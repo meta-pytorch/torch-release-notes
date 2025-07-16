@@ -30,9 +30,9 @@ The categories below are as follows:
 ### improvements
 ### bug fixes
 ### performance
+- Compute ELU(0) with the cheaper definition ([#155765](https://github.com/pytorch/pytorch/pull/155765))
 ### docs
 ### devs
 ### Untopiced
-- ELU: compute ELU(0) with the cheaper definition ([#155765](https://github.com/pytorch/pytorch/pull/155765))
 ### not user facing
 ### security
