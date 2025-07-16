@@ -96,7 +96,8 @@ The categories below are as follows:
   - Respected `reshard_after_forward=True` for root model ([#154704](https://github.com/pytorch/pytorch/pull/154704))
   - Kept root unsharded when not specifying `reshard_after_forward` ([#155319](https://github.com/pytorch/pytorch/pull/155319))
   - Allowed forcing FSDP2 to always use SUM reductions ([#155915](https://github.com/pytorch/pytorch/pull/155915))
-  - Made assert on all_reduce_event only if it's not CPU device. ([#150316](https://github.com/pytorch/pytorch/pull/150316))
+  - Made assert on `all_reduce_event` only if it's not CPU device. ([#150316](https://github.com/pytorch/pytorch/pull/150316))
+  - Enabled NCCL zero-copy (user buffer registration) for FSDP2 ([#150564](https://github.com/pytorch/pytorch/pull/150564))
 - Pipeline Parallelism
   - Added schedule visualizer ([#150347](https://github.com/pytorch/pytorch/pull/150347))
   - Allowed unused kwargs in ZB path ([#153498](https://github.com/pytorch/pytorch/pull/153498))
