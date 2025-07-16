@@ -26,9 +26,34 @@ The categories below are as follows:
 ## dynamo
 ### bc breaking
 - For HigherOrderOperators (e.g. `cond`), we enforced a stricter aliasing/mutation check, which will explicitly error out if they doesn't support alias/mutation among inputs and outputs
-  ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658))
+  ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658)).
+
+  For affected HigherOrderOperators, add `.clone()` to aliased outputs.
+
+  Version 2.7.0
+  ```python
+  import torch
+
+  @torch.compile(backend="eager")
+  def fn(x):
+      return torch.cond(x.sum() > 0, lambda x: x, lambda x: x + 1, [x])
+
+  fn(torch.ones(3))
+  ```
+
+  Version 2.8.0
+  ```python
+  import torch
+
+  @torch.compile(backend="eager")
+  def fn(x):
+      return torch.cond(x.sum() > 0, lambda x: x.clone(), lambda x: x + 1, [x])
+
+  fn(torch.ones(3))
+  ```
 ### deprecation
-- Deprecate `enable_cpp_framelocals_guard_eval` Dynamo config variable - default: True ([#151008](https://github.com/pytorch/pytorch/pull/151008))
+- Deprecate `enable_cpp_framelocals_guard_eval` Dynamo config variable ([#151008](https://github.com/pytorch/pytorch/pull/151008)).
+  This config no longer has any effect.
 ### new features
 - Hierarchical compilation via `nested_compile_region` ([#156449](https://github.com/pytorch/pytorch/pull/156449))
 - Allow guards to be dropped with custom filter functions via `guard_filter_fn` ([#150936](https://github.com/pytorch/pytorch/pull/150936))
