@@ -27,10 +27,10 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 * `torch.ao.quantization` is Deprecated ([#153892](https://github.com/pytorch/pytorch/pull/153892))
-torch.ao.quantization is deprecated and will be removed in 2.10.
+`torch.ao.quantization` is deprecated and will be removed in 2.10.
 For migrations of users:
-1. Eager mode quantization (torch.ao.quantization.quantize, torch.ao.quantization.quantize_dynamic), please migrate to use torchao eager mode quantize_ for weight only and dynamic quantization, or torchao pt2e quantization for static quantization
-2. FX graph mode quantization (torch.ao.quantization.quantize_fx.prepare_fx, torch.ao.quantization.quantize_fx.convert_fx, please migrate to use torchao pt2e quantization API instead (prepare_pt2e, convert_pt2e)
+1. Eager mode quantization (`torch.ao.quantization.quantize`, `torch.ao.quantization.quantize_dynamic`), please migrate to use torchao eager mode `quantize_` for weight only and dynamic quantization, or torchao pt2e quantization for static quantization
+2. FX graph mode quantization (`torch.ao.quantization.quantize_fx.prepare_fx`, `torch.ao.quantization.quantize_fx.convert_fx`, please migrate to use torchao pt2e quantization API instead (`torchao.quantization.quantize_pt2e.prepare_pt2e`, `torchao.quantization.quantize_pt2e.convert_pt2e`)
 3. PyTorch pt2e quantization has been migrated to torchao (https://github.com/pytorch/ao/tree/main/torchao/quantization/pt2e)
 see https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/main/quick_start.html#pytorch-2-export-quantization for more details
 
@@ -40,19 +40,18 @@ see https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/ma
 - Add an op to compute uint8 pointwise mul for PT2E quantization on X86 CPU ([#151112](https://github.com/pytorch/pytorch/pull/151112))
 - Add ops to compute uint8 pointwise add/add_relu for PT2E quantization on X86 CPU ([#152411](https://github.com/pytorch/pytorch/pull/152411))
 - Add an op to compute uint8 batch norm 2d for PT2E quantization on X86 CPU ([#152811](https://github.com/pytorch/pytorch/pull/152811))
-- add `torch.float4_e2m1fn_x2` to PyTorch ([#148791](https://github.com/pytorch/pytorch/pull/148791))
+- Add `torch.float4_e2m1fn_x2` to PyTorch ([#148791](https://github.com/pytorch/pytorch/pull/148791))
 
 ### improvements
-- Support boolean tensor for torch.fused_moving_avg_obs_fake_quant on CUDA ([#153699](https://github.com/pytorch/pytorch/pull/153699))
+- Support boolean tensor for `torch.fused_moving_avg_obs_fake_quant` on CUDA ([#153699](https://github.com/pytorch/pytorch/pull/153699))
 - Fix torchscript issues with reference quantized modules ([#150870](https://github.com/pytorch/pytorch/pull/150870))
-- [fbgemm] Implement __obj_flatten__ for LinearPackedParamsBase ([#152619](https://github.com/pytorch/pytorch/pull/152619))
-- Properly strip tracking stats in  _fold_conv_bn_qat for 1D conv in pt2e quantization ([#152982](https://github.com/pytorch/pytorch/pull/152982))
+- Implement `__obj_flatten__` for `LinearPackedParamsBase` ([#152619](https://github.com/pytorch/pytorch/pull/152619))
 
 
 ### bug fixes
 ### performance
 ### docs
-- Fix incorrect get_default_qat_qconfig in prepare_qat_fx docs. ([#155100](https://github.com/pytorch/pytorch/pull/155100))
+- Fix incorrect `get_default_qat_qconfig` in `prepare_qat_fx` docs ([#155100](https://github.com/pytorch/pytorch/pull/155100))
 ### devs
 ### Untopiced
 
@@ -100,5 +99,6 @@ see https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/ma
 - [Reland][pytorch] Patch the _is_conv_node function ([#154473](https://github.com/pytorch/pytorch/pull/154473))
 - Remove outdated Android workarounds of nearbyintf ([#151292](https://github.com/pytorch/pytorch/pull/151292))
 - BE: Type previously untyped decorators ([#154515](https://github.com/pytorch/pytorch/pull/154515))
+- Properly strip tracking stats in  `_fold_conv_bn_qat` for 1D conv in pt2e quantization ([#152982](https://github.com/pytorch/pytorch/pull/152982))
 
 ### security
