@@ -99,5 +99,6 @@ see https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/ma
 - Remove outdated Android workarounds of nearbyintf ([#151292](https://github.com/pytorch/pytorch/pull/151292))
 - BE: Type previously untyped decorators ([#154515](https://github.com/pytorch/pytorch/pull/154515))
 - Properly strip tracking stats in  `_fold_conv_bn_qat` for 1D conv in pt2e quantization ([#152982](https://github.com/pytorch/pytorch/pull/152982))
+- Explicitly spell out the namespace for `device()` function ([#153248](https://github.com/pytorch/pytorch/pull/153248))
 
 ### security

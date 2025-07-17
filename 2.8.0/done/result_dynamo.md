@@ -62,15 +62,16 @@ The categories below are as follows:
 - Add reason field to `torch.compiler.disable` ([#150341](https://github.com/pytorch/pytorch/pull/150341))
 - Misc. increased tracing support, e.g. for Python sets ([#153150]https://github.com/pytorch/pytorch/pull/153150))
 - Always trace into a Tensor subclass' `__torch_function__` ([#149792](https://github.com/pytorch/pytorch/pull/149792))
-- [Compiled Autograd] Eliminated all dynamic shapes recompiles for compile time reduction ([#151962](https://github.com/pytorch/pytorch/pull/151962), [#152119](https://github.com/pytorch/pytorch/pull/152119),
+- Eliminate all Compiled Autograd dynamic shapes recompiles for compile time reduction ([#151962](https://github.com/pytorch/pytorch/pull/151962), [#152119](https://github.com/pytorch/pytorch/pull/152119),
   [#151962](https://github.com/pytorch/pytorch/pull/151962), [#149707](https://github.com/pytorch/pytorch/pull/149707), [#149709](https://github.com/pytorch/pytorch/pull/149709),
   [#148799](https://github.com/pytorch/pytorch/pull/148799), [#148801](https://github.com/pytorch/pytorch/pull/148801))
 - Trace `namedtuple` subclasses ([#153982](https://github.com/pytorch/pytorch/pull/153982))
+- Dynamic shape handling for `standalone_compile` ([#151788](https://github.com/pytorch/pytorch/pull/151788))
 ### bug fixes
 - Fix spammy errors when user passes an invalid `TORCH_LOGS` argument ([#151678](https://github.com/pytorch/pytorch/pull/151678))
 - Eliminated silent incorrectness in the Compiled Autograd initial trace ([#149014](https://github.com/pytorch/pytorch/pull/149014),
   [#155521](https://github.com/pytorch/pytorch/pull/155521), [#155289](https://github.com/pytorch/pytorch/pull/155289), [#149336](https://github.com/pytorch/pytorch/pull/149336))
-- [Compiled Autograd] Fixed unpack hook semantics for memory savings in checkpointing and offloading ([#147242](https://github.com/pytorch/pytorch/pull/147242), [#153300](https://github.com/pytorch/pytorch/pull/153300))
+- Fix unpack hook semantics for memory savings in checkpointing and offloading for Compiled Autograd ([#147242](https://github.com/pytorch/pytorch/pull/147242), [#153300](https://github.com/pytorch/pytorch/pull/153300))
 ### performance
 ### docs
 <!-- programming model docs, if we can get that in 2.8 -->
