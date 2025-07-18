@@ -25,6 +25,18 @@ The categories below are as follows:
 
 ## composability
 ### bc breaking
+- Fix evaluate_expr to include suppress_guards_tls in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
+
+Prior to 2.8 it was possible for a guard on a symbolic shape to be incorrectly
+omitted if the symbolic shape evaluation was previously tested with guards
+suppressed (this often happens within the compiler itself). This has been fixed
+in 2.8 and usually will just silently "do the right thing" and add the correct
+guard but if the new guard causes a tensor marked with `mark_dynamic` to become
+specialized then it can result in an error. One workaround is to use
+`maybe_mark_dynamic` instead of `mark_dynamic`.
+
+See the discussion in issue [#157921](https://github.com/pytorch/pytorch/issues/157921).
+
 ### deprecation
 ### new features
 ### improvements
@@ -95,7 +107,6 @@ The categories below are as follows:
 - Simplify int(x / y) pattern ([#153477](https://github.com/pytorch/pytorch/pull/153477))
 - Fix guard_or implementation for better perf and simplicity ([#153674](https://github.com/pytorch/pytorch/pull/153674))
 - Remove guard_size_oblivious from is_nonzero proxy call check ([#154164](https://github.com/pytorch/pytorch/pull/154164))
-- Fix evaluate_expr to include suppress_guards_tls in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
 - [aotd] Support mutations of the same input in fw and bw ([#155354](https://github.com/pytorch/pytorch/pull/155354))
 - [multigraph] use specializations in compile_and_call_fx_graph ([#153449](https://github.com/pytorch/pytorch/pull/153449))
 - Add guard_or_false for computeStorageNbytes ([#150483](https://github.com/pytorch/pytorch/pull/150483))
