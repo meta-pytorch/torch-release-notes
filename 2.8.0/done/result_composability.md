@@ -25,7 +25,7 @@ The categories below are as follows:
 
 ## composability
 ### bc breaking
-- Fix evaluate_expr to include suppress_guards_tls in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
+- Fix `evaluate_expr` to include `suppress_guards_tls` in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
 
 Prior to 2.8 it was possible for a guard on a symbolic shape to be incorrectly
 omitted if the symbolic shape evaluation was previously tested with guards
