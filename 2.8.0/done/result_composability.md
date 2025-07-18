@@ -37,6 +37,42 @@ specialized then it can result in an error. One workaround is to use
 
 See the discussion in issue [#157921](https://github.com/pytorch/pytorch/issues/157921).
 
+Version 2.7.0
+```
+import torch
+
+embed = torch.randn(2, 8192)
+x = torch.zeros(8192)
+
+torch._dynamo.mark_dynamic(x, 0)
+
+@torch.compile
+def f(embedding_indices, x):
+    added_tokens_mask = torch.where(x > 10000, 1, 0)
+    ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
+    return ei.clone()
+
+f(embed, x)
+```
+
+Version 2.8.0
+```
+import torch
+
+embed = torch.randn(2, 8192)
+x = torch.zeros(8192)
+
+torch._dynamo.maybe_mark_dynamic(x, 0)
+
+@torch.compile
+def f(embedding_indices, x):
+    added_tokens_mask = torch.where(x > 10000, 1, 0)
+    ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
+    return ei.clone()
+
+f(embed, x)
+```
+
 ### deprecation
 ### new features
 ### improvements
