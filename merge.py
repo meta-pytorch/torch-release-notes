@@ -53,8 +53,7 @@ def parse_result_md(md_text):
             continue
 
         # render each child commit line back as markdown
-        commit_list = ast.children[h_child_idx + 1]
-        commits = [m.render(commit.children[0]) for commit in commit_list.children]
+        commits = [m.render(commit) for commit in commit_list.children]
         commit_info[commit_category] = commits
     return module_name, commit_info
 
@@ -135,6 +134,9 @@ def write_output(per_category_commits, output_filename):
     with open(output_filename, 'w') as f:
         for cat_short_name, cat_nice_name in category_order:
             f.write(f"# {cat_nice_name}\n")
+            if cat_short_name not in per_category_commits:
+                print(f'Found no commits for category {cat_short_name}; skipping')
+                continue
             cat_commits = per_category_commits[cat_short_name]
             module_names = sorted(cat_commits.keys())
             for module_name in module_names:
