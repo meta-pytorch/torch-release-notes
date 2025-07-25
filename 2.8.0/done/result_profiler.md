@@ -23,7 +23,7 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## Profiler
+## profiler
 ### bc breaking
 ### deprecation
 ### new features

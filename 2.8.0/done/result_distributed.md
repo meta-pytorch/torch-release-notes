@@ -295,9 +295,6 @@ The categories below are as follows:
 - Register hpu device to fake backend ([#156076](https://github.com/pytorch/pytorch/pull/156076))
 - [ROCm] update state check for test_trace_while_active* ([#153545](https://github.com/pytorch/pytorch/pull/153545))
 - [BE][PYFMT] migrate PYFMT for `test/inductor/` to `ruff format` ([#148186](https://github.com/pytorch/pytorch/pull/148186))
-### security
-
-### Removed because not released yet (not mention in 2.8 and will be mentioned retrospectively in later release notes)
 - [Async TP] More robust support for rowwise scales when fusing matmul reduce-scatter ([#149247](https://github.com/pytorch/pytorch/pull/149247))
 - [Async TP] Fuse matmul-reduce-scatters when reduce scatters have multiple users, and save fused node for backward instead of reduce_scatter node ([#149946](https://github.com/pytorch/pytorch/pull/149946))
 - Fix detection of GPU multicast ([#150563](https://github.com/pytorch/pytorch/pull/150563))
@@ -338,3 +335,4 @@ The categories below are as follows:
 - [a2av] Improve tuning for 4 GPUs ([#154580](https://github.com/pytorch/pytorch/pull/154580))
 - Fixed simple-fsdp mixed-precision training bugs ([#154975](https://github.com/pytorch/pytorch/pull/154975))
 - Improved All to All Perf for inter-node use-case (#156376) ([#156389](https://github.com/pytorch/pytorch/pull/156389))
+### security
