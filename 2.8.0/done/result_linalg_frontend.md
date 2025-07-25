@@ -25,29 +25,29 @@ The categories below are as follows:
 
 ## linalg_frontend
 ### bc breaking
-**An error is now properly thrown for the out variant of `tensordot` when called with a
-`requires_grad=True` tensor. Please avoid passing an out tensor with `requires_grad=True` as
-gradients cannot be computed for this tensor.**
+- **An error is now properly thrown for the out variant of `tensordot` when called with a
+  `requires_grad=True` tensor. Please avoid passing an out tensor with `requires_grad=True` as
+  gradients cannot be computed for this tensor.**
 
-In 2.7.0
-```
-a = torch.empty((4, 2), requires_grad=True)
-b = torch.empty((2, 4), requires_grad=True)
-c = torch.empty((2, 2), requires_grad=True)
-# does not error, but gradients for c cannot be computed
-torch.tensordot(a, b, dims=([1], [0]), out=c)
-```
+  In 2.7.0
+  ```
+  a = torch.empty((4, 2), requires_grad=True)
+  b = torch.empty((2, 4), requires_grad=True)
+  c = torch.empty((2, 2), requires_grad=True)
+  # does not error, but gradients for c cannot be computed
+  torch.tensordot(a, b, dims=([1], [0]), out=c)
+  ```
 
-In 2.8.0
-```
-a = torch.empty((4, 2), requires_grad=True)
-b = torch.empty((2, 4), requires_grad=True)
-c = torch.empty((2, 2), requires_grad=True)
-torch.tensordot(a, b, dims=([1], [0]), out=c)
-# RuntimeError: tensordot(): the 'out' tensor was specified and requires gradients, and
-# its shape does not match the expected result. Either remove the 'out' argument, ensure
-# it does not require gradients, or make sure its shape matches the expected output.
-```
+  In 2.8.0
+  ```
+  a = torch.empty((4, 2), requires_grad=True)
+  b = torch.empty((2, 4), requires_grad=True)
+  c = torch.empty((2, 2), requires_grad=True)
+  torch.tensordot(a, b, dims=([1], [0]), out=c)
+  # RuntimeError: tensordot(): the 'out' tensor was specified and requires gradients, and
+  # its shape does not match the expected result. Either remove the 'out' argument, ensure
+  # it does not require gradients, or make sure its shape matches the expected output.
+  ```
 ### deprecation
 ### new features
 ### improvements

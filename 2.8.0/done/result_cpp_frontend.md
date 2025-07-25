@@ -25,10 +25,10 @@ The categories below are as follows:
 
 ## cpp_frontend
 ### bc breaking
-**`torch/types.h` no longer includes `Dispatcher.h`. This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).** (#149557)
+- **`torch/types.h` no longer includes `Dispatcher.h`. This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).** (#149557)
 
-`Dispatcher.h` does not belong as an include from `torch/types.h` and was only present as a short-term
-hack to appease `torchvision`. If you run into `torchvision` build errors, please update to a more recent version of `torchvision` to resolve this.
+  `Dispatcher.h` does not belong as an include from `torch/types.h` and was only present as a short-term
+  hack to appease `torchvision`. If you run into `torchvision` build errors, please update to a more recent version of `torchvision` to resolve this.
 
 ### deprecation
 ### new features

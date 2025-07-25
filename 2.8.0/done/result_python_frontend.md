@@ -25,23 +25,23 @@ The categories below are as follows:
 
 ## python_frontend
 ### bc breaking
-**Calling an op with an input dtype that is unsupported now raise `NotImplementedError` instead of `RuntimeError`. Please update exception handling logic to reflect this.** ([#155470](https://github.com/pytorch/pytorch/pull/155470))
+- **Calling an op with an input dtype that is unsupported now raise `NotImplementedError` instead of `RuntimeError`. Please update exception handling logic to reflect this.** ([#155470](https://github.com/pytorch/pytorch/pull/155470))
 
-In 2.7.0
-```
-try:
-    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
-except RuntimeError:
-    ...
-```
+  In 2.7.0
+  ```
+  try:
+      torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+  except RuntimeError:
+      ...
+  ```
 
-In 2.8.0
-```
-try:
-    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
-except NotImplementedError:
-    ...
-```
+  In 2.8.0
+  ```
+  try:
+      torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+  except NotImplementedError:
+      ...
+  ```
 ### deprecation
 ### new features
 - Add Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))

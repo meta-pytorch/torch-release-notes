@@ -27,51 +27,51 @@ The categories below are as follows:
 ### bc breaking
 - Fix `evaluate_expr` to include `suppress_guards_tls` in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
 
-Prior to 2.8 it was possible for a guard on a symbolic shape to be incorrectly
-omitted if the symbolic shape evaluation was previously tested with guards
-suppressed (this often happens within the compiler itself). This has been fixed
-in 2.8 and usually will just silently "do the right thing" and add the correct
-guard but if the new guard causes a tensor marked with `mark_dynamic` to become
-specialized then it can result in an error. One workaround is to use
-`maybe_mark_dynamic` instead of `mark_dynamic`.
+  Prior to 2.8 it was possible for a guard on a symbolic shape to be incorrectly
+  omitted if the symbolic shape evaluation was previously tested with guards
+  suppressed (this often happens within the compiler itself). This has been fixed
+  in 2.8 and usually will just silently "do the right thing" and add the correct
+  guard but if the new guard causes a tensor marked with `mark_dynamic` to become
+  specialized then it can result in an error. One workaround is to use
+  `maybe_mark_dynamic` instead of `mark_dynamic`.
 
-See the discussion in issue [#157921](https://github.com/pytorch/pytorch/issues/157921).
+  See the discussion in issue [#157921](https://github.com/pytorch/pytorch/issues/157921).
 
-Version 2.7.0
-```
-import torch
+  Version 2.7.0
+  ```
+  import torch
+  
+  embed = torch.randn(2, 8192)
+  x = torch.zeros(8192)
+  
+  torch._dynamo.mark_dynamic(x, 0)
+  
+  @torch.compile
+  def f(embedding_indices, x):
+      added_tokens_mask = torch.where(x > 10000, 1, 0)
+      ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
+      return ei.clone()
+  
+  f(embed, x)
+  ```
 
-embed = torch.randn(2, 8192)
-x = torch.zeros(8192)
-
-torch._dynamo.mark_dynamic(x, 0)
-
-@torch.compile
-def f(embedding_indices, x):
-    added_tokens_mask = torch.where(x > 10000, 1, 0)
-    ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
-    return ei.clone()
-
-f(embed, x)
-```
-
-Version 2.8.0
-```
-import torch
-
-embed = torch.randn(2, 8192)
-x = torch.zeros(8192)
-
-torch._dynamo.maybe_mark_dynamic(x, 0)
-
-@torch.compile
-def f(embedding_indices, x):
-    added_tokens_mask = torch.where(x > 10000, 1, 0)
-    ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
-    return ei.clone()
-
-f(embed, x)
-```
+  Version 2.8.0
+  ```
+  import torch
+  
+  embed = torch.randn(2, 8192)
+  x = torch.zeros(8192)
+  
+  torch._dynamo.maybe_mark_dynamic(x, 0)
+  
+  @torch.compile
+  def f(embedding_indices, x):
+      added_tokens_mask = torch.where(x > 10000, 1, 0)
+      ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
+      return ei.clone()
+  
+  f(embed, x)
+  ```
 
 ### deprecation
 ### new features

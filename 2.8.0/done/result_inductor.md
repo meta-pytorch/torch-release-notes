@@ -25,6 +25,24 @@ The categories below are as follows:
 
 ## inductor
 ### bc breaking
+- **`guard_or_x` and `definitely_x` have been consolidated. ([#152463](https://github.com/pytorch/pytorch/pull/152463)). We removed `definitely_true` / `definitely_false` and associated APIs, replacing
+them with `guard_or_true` / `guard_or_false`, which offer similar functionality and can be used to
+achieve the same effect.**
+
+  Version 2.7.0
+  ```python
+  import torch
+
+  TODO
+  ```
+
+  Version 2.8.0
+  ```python
+  import torch
+
+  TODO
+  ```
+
 ### deprecation
 - Deprecated: `rocm.n_max_profiling_configs`. Instead, use ck-tile based configs `rocm.ck_max_profiling_configs` and `rocm.ck_tile_max_profiling_configs`. ([#152341](https://github.com/pytorch/pytorch/pull/152341))
 - Deprecated: `autotune_fallback_to_aten`. Inductor will no longer silently fall back to `ATen`. Please add `"ATEN"` to `max_autotune_gemm_backends` for the old behavior. ([#154331](https://github.com/pytorch/pytorch/pull/154331))
@@ -483,7 +501,6 @@ The categories below are as follows:
 - [Inductor] Fix int check again ([#152576](https://github.com/pytorch/pytorch/pull/152576))
 - Support more dtypes for input, indices in gather ([#151822](https://github.com/pytorch/pytorch/pull/151822))
 - [cutlass backend] Move cutlass compiled cache to cache_dir ([#151825](https://github.com/pytorch/pytorch/pull/151825))
-- consolidate guard_or_x and definitely_x ([#152463](https://github.com/pytorch/pytorch/pull/152463))
 - [Inductor] Introduce Wrapper IR line for symbolic call args ([#152587](https://github.com/pytorch/pytorch/pull/152587))
 - Add optional device index to AOTIModelPackageLoader ([#152093](https://github.com/pytorch/pytorch/pull/152093))
 - [inductor] fix lowering for cummin, cummax for one element tensors ([#151931](https://github.com/pytorch/pytorch/pull/151931))

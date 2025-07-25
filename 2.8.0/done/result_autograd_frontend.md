@@ -27,34 +27,34 @@ The categories below are as follows:
 ### bc breaking
 - Add missing in-place on view check to custom autograd.Function ([#153094](https://github.com/pytorch/pytorch/pull/153094))
 
-In 2.8, if a custom autograd.Function mutates a view of a leaf requiring grad,
-it now properly raises an error. Previously, it would silently leak memory.
-```
-   class Func(torch.autograd.Function):
-        @staticmethod
-        def forward(ctx, inp):
-            inp.add_(1)
-            ctx.mark_dirty(inp)
-            return inp
+  In 2.8.0, if a custom autograd.Function mutates a view of a leaf requiring grad,
+  it now properly raises an error. Previously, it would silently leak memory.
+  ```
+     class Func(torch.autograd.Function):
+          @staticmethod
+          def forward(ctx, inp):
+              inp.add_(1)
+              ctx.mark_dirty(inp)
+              return inp
+  
+          @staticmethod
+          def backward(ctx, gO):
+              pass
+  
+      a = torch.tensor([1.0, 2.0], requires_grad=True)
+      b = a.view_as(a)
+      Func.apply(b)
+  ```
+  Output:
 
-        @staticmethod
-        def backward(ctx, gO):
-            pass
-
-    a = torch.tensor([1.0, 2.0], requires_grad=True)
-    b = a.view_as(a)
-    Func.apply(b)
-```
-Output:
-
-2.8
-```
-RuntimeError: a view of a leaf Variable that requires grad is being used in an in-place operation
-```
-2.7
-```
-Runs without error, but leaks memory
-```
+  2.8.0
+  ```
+  RuntimeError: a view of a leaf Variable that requires grad is being used in an in-place operation
+  ```
+  2.7.0
+  ```
+  Runs without error, but leaks memory
+  ```
 
 ### deprecation
 ### new features
