@@ -442,7 +442,6 @@ The categories below are as follows:
 - [aoti] Check longlong upperbound for codegening input size check ([#156522](https://github.com/pytorch/pytorch/pull/156522))
 - [Inductor] Subgraph as a choice symbolic expression as input ([#156185](https://github.com/pytorch/pytorch/pull/156185))
 - [Inductor] Allow exhaustive autotuning across all GEMM options ([#156610](https://github.com/pytorch/pytorch/pull/156610))
-### security
 - Fix sympy float priting ([#147552](https://github.com/pytorch/pytorch/pull/147552))
 - partitioner: treat inputs with static indices as free to save ([#148922](https://github.com/pytorch/pytorch/pull/148922))
 - [Inductor][Optimus] split cat aten pass ([#149027](https://github.com/pytorch/pytorch/pull/149027))
@@ -553,3 +552,4 @@ The categories below are as follows:
 - Add inductor.config.fallback_random which DCEs unused rand calls ([#147790](https://github.com/pytorch/pytorch/pull/147790))
 - [2/n][Optimus][Auto-AC] Support activation quantization with scaling ([#151770](https://github.com/pytorch/pytorch/pull/151770))
 - Refactor layout constraint selection logic ([#148104](https://github.com/pytorch/pytorch/pull/148104))
+### security
