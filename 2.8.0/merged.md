@@ -2,8 +2,124 @@
 ## Autograd
 - Add missing in-place on view check to custom autograd.Function ([#153094](https://github.com/pytorch/pytorch/pull/153094))
 
+In 2.8.0, if a custom autograd.Function mutates a view of a leaf requiring grad,
+it now properly raises an error. Previously, it would silently leak memory.
+```
+   class Func(torch.autograd.Function):
+        @staticmethod
+        def forward(ctx, inp):
+            inp.add_(1)
+            ctx.mark_dirty(inp)
+            return inp
+
+        @staticmethod
+        def backward(ctx, gO):
+            pass
+
+    a = torch.tensor([1.0, 2.0], requires_grad=True)
+    b = a.view_as(a)
+    Func.apply(b)
+```
+Output:
+
+2.8.0
+```
+RuntimeError: a view of a leaf Variable that requires grad is being used in an in-place operation
+```
+2.7.0
+```
+Runs without error, but leaks memory
+```
+
+## Build Frontend
+- **DLPack has been upgraded to 1.0, with some of the DLDeviceType enum values renamed. Please switch
+to the new names.** ([#145000](https://github.com/pytorch/pytorch/pull/145000))
+
+In 2.7.0
+```
+from torch.utils.dlpack import DLDeviceType
+
+d1 = DLDeviceType.kDLGPU
+d2 = DLDeviceType.kDLCPUPinned
+...
+```
+
+In 2.8.0
+```
+from torch.utils.dlpack import DLDeviceType
+
+d1 = DLDeviceType.kDLCUDA  # formerly kDLGPU
+d2 = DLDeviceType.kDLCUDAHost  # formerly kDLCPUPinned
+...
+```
+
+- **NVTX3 code has been moved from `cmake/public/cuda.cmake` to `cmake/Dependencies.cmake` ([#151583](https://github.com/pytorch/pytorch/pull/151583))**
+
+This is a BC-breaking change for the build system interface. Downstream projects that previously got NVTX3 through `cmake/public/cuda.cmake`
+(i.e.. calling `find_package(TORCH REQUIRED)`) will now need to explicitly configure NVTX3 support in the library itself (i.e. use `USE_SYSTEM_NVTX=1`).
+The change is to fix the broken behavior where downstream projects couldn't find NVTX3 anyway due to the `PROJECT_SOURCE_DIR` mismatch.
+
+`2.7.0`: A downstream project using `-DUSE_SYSTEM_NVTX` would be able to find NVTX3 and `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake` logic.
+`2.8.0`: A downstream project using `-DUSE_SYSTEM_NVTX` will not be able to find NVTX3 or `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake`.
+The downstream project now needs to explicitly find NVTX3 and torch::nvtx3 by implementing the same logic in PyTorch's `cmake/Dependences.cmake`.
+
+`2.7.0`: A downstream project NOT using `-DUSE_SYSTEM_NVTX` would encounter build errors with CUDA 12.8 or above.
+`2.8.0`: A downstream project NOT using `-DUSE_SYSTEM_NVTX` will proceed building without NVTX unless another part of the build process re-enables NVTX.
+
 ## Composability
 - Fix `evaluate_expr` to include `suppress_guards_tls` in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
+
+Prior to 2.8 it was possible for a guard on a symbolic shape to be incorrectly
+omitted if the symbolic shape evaluation was previously tested with guards
+suppressed (this often happens within the compiler itself). This has been fixed
+in 2.8 and usually will just silently "do the right thing" and add the correct
+guard but if the new guard causes a tensor marked with `mark_dynamic` to become
+specialized then it can result in an error. One workaround is to use
+`maybe_mark_dynamic` instead of `mark_dynamic`.
+
+See the discussion in issue [#157921](https://github.com/pytorch/pytorch/issues/157921).
+
+Version 2.7.0
+```
+import torch
+
+embed = torch.randn(2, 8192)
+x = torch.zeros(8192)
+
+torch._dynamo.mark_dynamic(x, 0)
+
+@torch.compile
+def f(embedding_indices, x):
+    added_tokens_mask = torch.where(x > 10000, 1, 0)
+    ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
+    return ei.clone()
+
+f(embed, x)
+```
+
+Version 2.8.0
+```
+import torch
+
+embed = torch.randn(2, 8192)
+x = torch.zeros(8192)
+
+torch._dynamo.maybe_mark_dynamic(x, 0)
+
+@torch.compile
+def f(embedding_indices, x):
+    added_tokens_mask = torch.where(x > 10000, 1, 0)
+    ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
+    return ei.clone()
+
+f(embed, x)
+```
+
+## C++ Frontend
+- **`torch/types.h` no longer includes `Dispatcher.h`. This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).** (#149557)
+
+`Dispatcher.h` does not belong as an include from `torch/types.h` and was only present as a short-term
+hack to appease `torchvision`. If you run into `torchvision` build errors, please update to a more recent version of `torchvision` to resolve this.
 
 ## Dynamo
 - For HigherOrderOperators (e.g. `cond`), we enforced a stricter aliasing/mutation check, which will explicitly error out if they doesn't support alias/mutation among inputs and outputs
@@ -37,6 +153,69 @@ fn(torch.ones(3))
 - `strict=False` is set as the default in `torch.export.export` and `export_for_training`. ([#148790](https://github.com/pytorch/pytorch/pull/148790), [#150941](https://github.com/pytorch/pytorch/pull/150941))
 
 - Remove `torch.export.export_for_inference` in favor of doing `torch.export.export_for_training().run_decompositions()`. ([#149078](https://github.com/pytorch/pytorch/pull/149078))
+
+## Inductor
+- **`guard_or_x` and `definitely_x` have been consolidated. ([#152463](https://github.com/pytorch/pytorch/pull/152463)). We removed `definitely_true` / `definitely_false` and associated APIs, replacing
+them with `guard_or_true` / `guard_or_false`, which offer similar functionality and can be used to
+achieve the same effect.**
+
+Version 2.7.0
+```python
+import torch
+
+TODO
+```
+
+Version 2.8.0
+```python
+import torch
+
+TODO
+```
+
+## Linear Algebra Frontend
+- **An error is now properly thrown for the out variant of `tensordot` when called with a
+`requires_grad=True` tensor. Please avoid passing an out tensor with `requires_grad=True` as
+gradients cannot be computed for this tensor.**
+
+In 2.7.0
+```
+a = torch.empty((4, 2), requires_grad=True)
+b = torch.empty((2, 4), requires_grad=True)
+c = torch.empty((2, 2), requires_grad=True)
+# does not error, but gradients for c cannot be computed
+torch.tensordot(a, b, dims=([1], [0]), out=c)
+```
+
+In 2.8.0
+```
+a = torch.empty((4, 2), requires_grad=True)
+b = torch.empty((2, 4), requires_grad=True)
+c = torch.empty((2, 2), requires_grad=True)
+torch.tensordot(a, b, dims=([1], [0]), out=c)
+# RuntimeError: tensordot(): the 'out' tensor was specified and requires gradients, and
+# its shape does not match the expected result. Either remove the 'out' argument, ensure
+# it does not require gradients, or make sure its shape matches the expected output.
+```
+
+## Python Frontend
+- **Calling an op with an input dtype that is unsupported now raise `NotImplementedError` instead of `RuntimeError`. Please update exception handling logic to reflect this.** ([#155470](https://github.com/pytorch/pytorch/pull/155470))
+
+In 2.7.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except RuntimeError:
+    ...
+```
+
+In 2.8.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except NotImplementedError:
+    ...
+```
 
 # Deprecations
 ## Dynamo
