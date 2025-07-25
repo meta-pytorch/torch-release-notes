@@ -54,6 +54,8 @@ def parse_result_md(md_text):
 
         # render each child commit line back as markdown
         commits = [m.render(commit) for commit in commit_list.children]
+        num_commits = len(commits)
+        print(f'found {num_commits} commits for module {module_name} + category {commit_category}')
         commit_info[commit_category] = commits
     return module_name, commit_info
 

@@ -150,9 +150,47 @@ fn(torch.ones(3))
 ```
 
 ## Export
-- `strict=False` is set as the default in `torch.export.export` and `export_for_training`. ([#148790](https://github.com/pytorch/pytorch/pull/148790), [#150941](https://github.com/pytorch/pytorch/pull/150941))
+- **`strict=False` is now set as the default in `torch.export.export` and `export_for_training`; this differs from the previous release default of `strict=True`. ([#148790](https://github.com/pytorch/pytorch/pull/148790), [#150941](https://github.com/pytorch/pytorch/pull/150941))**
 
-- Remove `torch.export.export_for_inference` in favor of doing `torch.export.export_for_training().run_decompositions()`. ([#149078](https://github.com/pytorch/pytorch/pull/149078))
+To get the old default behavior, please explicitly pass `strict=True`.
+
+Version 2.7.0
+```python
+import torch
+
+# default behavior is strict=True
+torch.export.export(...)
+torch.export.export_for_training(...)
+```
+
+Version 2.8.0
+```python
+import torch
+
+# strict=True must be explicitly passed to get the old behavior
+torch.export.export(..., strict=True)
+torch.export.export_for_training(..., strict=True)
+```
+
+- **`torch.export.export_for_inference` has been removed in favor of `torch.export.export_for_training().run_decompositions()`. ([#149078](https://github.com/pytorch/pytorch/pull/149078))**
+
+Version 2.7.0
+```python
+import torch
+
+...
+exported_program = torch.export.export_for_inference(mod, args, kwargs)
+```
+
+Version 2.8.0
+```python
+import torch
+
+...
+exported_program = torch.export.export_for_training(
+    mod, args, kwargs
+).run_decompositions(decomp_table=decomp_table)
+```
 
 ## Inductor
 - **`guard_or_x` and `definitely_x` have been consolidated. ([#152463](https://github.com/pytorch/pytorch/pull/152463)). We removed `definitely_true` / `definitely_false` and associated APIs, replacing
