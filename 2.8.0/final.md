@@ -33,37 +33,6 @@ CUDA 12.6 instead.
 - Removed CUDA 11.8 and 12.4 support in CI/CD ([#155509](https://github.com/pytorch/pytorch/pull/155509), [#154169](https://github.com/pytorch/pytorch/pull/154169), [#152362](https://github.com/pytorch/pytorch/pull/152362), [#155555](https://github.com/pytorch/pytorch/pull/155555), [#154893](https://github.com/pytorch/pytorch/pull/154893))
 - Removed Anaconda support in CI/CD ([#147789](https://github.com/pytorch/pytorch/pull/147789), [#152338](https://github.com/pytorch/pytorch/pull/152338), [#152431](https://github.com/pytorch/pytorch/pull/152431), [#152377](https://github.com/pytorch/pytorch/pull/152377), [#152433](https://github.com/pytorch/pytorch/pull/152433), [#147476](https://github.com/pytorch/pytorch/pull/147476), [#151035](https://github.com/pytorch/pytorch/pull/151035), [#152860](https://github.com/pytorch/pytorch/pull/152860), [#152702](https://github.com/pytorch/pytorch/pull/152702), [#154303](https://github.com/pytorch/pytorch/pull/154303), [#154309](https://github.com/pytorch/pytorch/pull/154309) )
 
-### Added missing in-place on view check to custom `autograd.Function` ([#153094](https://github.com/pytorch/pytorch/pull/153094))
-
-In 2.8.0, if a custom `autograd.Function` mutates a view of a leaf requiring grad,
-it now properly raises an error. Previously, it would silently leak memory.
-```
-   class Func(torch.autograd.Function):
-        @staticmethod
-        def forward(ctx, inp):
-            inp.add_(1)
-            ctx.mark_dirty(inp)
-            return inp
-
-        @staticmethod
-        def backward(ctx, gO):
-            pass
-
-    a = torch.tensor([1.0, 2.0], requires_grad=True)
-    b = a.view_as(a)
-    Func.apply(b)
-```
-Output:
-
-Version 2.7.0
-```
-Runs without error, but leaks memory
-```
-Version 2.8.0
-```
-RuntimeError: a view of a leaf Variable that requires grad is being used in an in-place operation
-```
-
 ### Upgraded `DLPack` to 1.0 ([#145000](https://github.com/pytorch/pytorch/pull/145000))
 As part of the upgrade, some of the `DLDeviceType` enum values have been renamed. Please switch
 to the new names.
@@ -99,6 +68,68 @@ Version 2.7.0:
 Version 2.8.0:
 - A downstream project using `-DUSE_SYSTEM_NVTX` will not be able to find NVTX3 or `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake`. The downstream project now needs to explicitly find NVTX3 and torch::nvtx3 by implementing the same logic in PyTorch's `cmake/Dependences.cmake`.
 - A downstream project NOT using `-DUSE_SYSTEM_NVTX` will proceed building without NVTX unless another part of the build process re-enables NVTX.
+
+### Calling an op with an input dtype that is unsupported now raises `NotImplementedError` instead of `RuntimeError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
+Please update exception handling logic to reflect this.
+
+In 2.7.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except RuntimeError:
+    ...
+```
+
+In 2.8.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except NotImplementedError:
+    ...
+```
+
+### Switched default to `strict=False` in `torch.export.export` and `export_for_training` ([#148790](https://github.com/pytorch/pytorch/pull/148790), [#150941](https://github.com/pytorch/pytorch/pull/150941))
+
+This differs from the previous release default of `strict=True`. To revert to the old default
+behavior, please explicitly pass `strict=True`.
+
+Version 2.7.0
+```python
+import torch
+
+# default behavior is strict=True
+torch.export.export(...)
+torch.export.export_for_training(...)
+```
+
+Version 2.8.0
+```python
+import torch
+
+# strict=True must be explicitly passed to get the old behavior
+torch.export.export(..., strict=True)
+torch.export.export_for_training(..., strict=True)
+```
+
+### `torch.export.export_for_inference` has been removed in favor of `torch.export.export_for_training().run_decompositions()` ([#149078](https://github.com/pytorch/pytorch/pull/149078))
+
+Version 2.7.0
+```python
+import torch
+
+...
+exported_program = torch.export.export_for_inference(mod, args, kwargs)
+```
+
+Version 2.8.0
+```python
+import torch
+
+...
+exported_program = torch.export.export_for_training(
+    mod, args, kwargs
+).run_decompositions(decomp_table=decomp_table)
+```
 
 ### `ShapeEnv.evaluate_expr` has been fixed to include `suppress_guards_tls` in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
 
@@ -149,13 +180,6 @@ def f(embedding_indices, x):
 f(embed, x)
 ```
 
-### Removed the `torch/types.h` include from `Dispatcher.h` ([#149557](https://github.com/pytorch/pytorch/pull/149557))
-This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).
-
-Note that `Dispatcher.h` does not belong as an include from `torch/types.h` and was only present as a
-short-term hack to appease `torchvision`. If you run into `torchvision` build errors, please
-update to a more recent version of `torchvision` to resolve this.
-
 ### Added a stricter aliasing/mutation check for `HigherOrderOperator`s (e.g. `cond`), which will explicitly error out if alias/mutation among inputs and outputs is unsupported ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658)).
 
 For affected `HigherOrderOperator`s, add `.clone()` to aliased outputs to address this.
@@ -182,48 +206,68 @@ def fn(x):
 fn(torch.ones(3))
 ```
 
-### Switched default to `strict=False` in `torch.export.export` and `export_for_training` ([#148790](https://github.com/pytorch/pytorch/pull/148790), [#150941](https://github.com/pytorch/pytorch/pull/150941))
+### Added missing in-place on view check to custom `autograd.Function` ([#153094](https://github.com/pytorch/pytorch/pull/153094))
 
-This differs from the previous release default of `strict=True`. To revert to the old default
-behavior, please explicitly pass `strict=True`.
+In 2.8.0, if a custom `autograd.Function` mutates a view of a leaf requiring grad,
+it now properly raises an error. Previously, it would silently leak memory.
+```
+   class Func(torch.autograd.Function):
+        @staticmethod
+        def forward(ctx, inp):
+            inp.add_(1)
+            ctx.mark_dirty(inp)
+            return inp
+
+        @staticmethod
+        def backward(ctx, gO):
+            pass
+
+    a = torch.tensor([1.0, 2.0], requires_grad=True)
+    b = a.view_as(a)
+    Func.apply(b)
+```
+Output:
 
 Version 2.7.0
-```python
-import torch
-
-# default behavior is strict=True
-torch.export.export(...)
-torch.export.export_for_training(...)
 ```
-
+Runs without error, but leaks memory
+```
 Version 2.8.0
-```python
-import torch
-
-# strict=True must be explicitly passed to get the old behavior
-torch.export.export(..., strict=True)
-torch.export.export_for_training(..., strict=True)
+```
+RuntimeError: a view of a leaf Variable that requires grad is being used in an in-place operation
 ```
 
-### `torch.export.export_for_inference` has been removed in favor of `torch.export.export_for_training().run_decompositions()` ([#149078](https://github.com/pytorch/pytorch/pull/149078))
+### An error is now properly thrown for the out variant of `tensordot` when called with a `requires_grad=True` tensor ([#150270](https://github.com/pytorch/pytorch/pull/150270))
 
-Version 2.7.0
-```python
-import torch
+Please avoid passing an out tensor with `requires_grad=True` as gradients cannot be
+computed for this tensor.
 
-...
-exported_program = torch.export.export_for_inference(mod, args, kwargs)
+In 2.7.0
+```
+a = torch.empty((4, 2), requires_grad=True)
+b = torch.empty((2, 4), requires_grad=True)
+c = torch.empty((2, 2), requires_grad=True)
+# does not error, but gradients for c cannot be computed
+torch.tensordot(a, b, dims=([1], [0]), out=c)
 ```
 
-Version 2.8.0
-```python
-import torch
-
-...
-exported_program = torch.export.export_for_training(
-    mod, args, kwargs
-).run_decompositions(decomp_table=decomp_table)
+In 2.8.0
 ```
+a = torch.empty((4, 2), requires_grad=True)
+b = torch.empty((2, 4), requires_grad=True)
+c = torch.empty((2, 2), requires_grad=True)
+torch.tensordot(a, b, dims=([1], [0]), out=c)
+# RuntimeError: tensordot(): the 'out' tensor was specified and requires gradients, and
+# its shape does not match the expected result. Either remove the 'out' argument, ensure
+# it does not require gradients, or make sure its shape matches the expected output.
+```
+
+### Removed the `torch/types.h` include from `Dispatcher.h` ([#149557](https://github.com/pytorch/pytorch/pull/149557))
+This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).
+
+Note that `Dispatcher.h` does not belong as an include from `torch/types.h` and was only present as a
+short-term hack to appease `torchvision`. If you run into `torchvision` build errors, please
+update to a more recent version of `torchvision` to resolve this.
 
 ### `guard_or_x` and `definitely_x` have been consolidated ([#152463](https://github.com/pytorch/pytorch/pull/152463))
 We removed `definitely_true` / `definitely_false` and associated APIs, replacing them with
@@ -253,50 +297,6 @@ if guard_or_false(x):
 # alternatively: if guard_or_false(torch.sym_not(y))
 if not guard_or_true(y):
   ...
-```
-
-### An error is now properly thrown for the out variant of `tensordot` when called with a `requires_grad=True` tensor ([#150270](https://github.com/pytorch/pytorch/pull/150270))
-
-Please avoid passing an out tensor with `requires_grad=True` as gradients cannot be
-computed for this tensor.
-
-In 2.7.0
-```
-a = torch.empty((4, 2), requires_grad=True)
-b = torch.empty((2, 4), requires_grad=True)
-c = torch.empty((2, 2), requires_grad=True)
-# does not error, but gradients for c cannot be computed
-torch.tensordot(a, b, dims=([1], [0]), out=c)
-```
-
-In 2.8.0
-```
-a = torch.empty((4, 2), requires_grad=True)
-b = torch.empty((2, 4), requires_grad=True)
-c = torch.empty((2, 2), requires_grad=True)
-torch.tensordot(a, b, dims=([1], [0]), out=c)
-# RuntimeError: tensordot(): the 'out' tensor was specified and requires gradients, and
-# its shape does not match the expected result. Either remove the 'out' argument, ensure
-# it does not require gradients, or make sure its shape matches the expected output.
-```
-
-### Calling an op with an input dtype that is unsupported now raises `NotImplementedError` instead of `RuntimeError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
-Please update exception handling logic to reflect this.
-
-In 2.7.0
-```
-try:
-    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
-except RuntimeError:
-    ...
-```
-
-In 2.8.0
-```
-try:
-    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
-except NotImplementedError:
-    ...
 ```
 
 # Deprecations
