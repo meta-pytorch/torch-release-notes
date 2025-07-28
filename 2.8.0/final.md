@@ -8,7 +8,6 @@
 - [Performance](#performance)
 - [Documentation](#documentation)
 - [Developers](#developers)
-- [Security](#security)
 
 
 # Highlights
