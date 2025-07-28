@@ -318,10 +318,10 @@ special cases now.
 options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - `custom_op_default_layout_constraint` has moved from inductor config to functorch config ([#148104](https://github.com/pytorch/pytorch/pull/148104)). Please reference it via
-`torch._functorch.config.custom_op_default_layout_constraint` instead of 
+`torch._functorch.config.custom_op_default_layout_constraint` instead of
 `torch._inductor.config.custom_op_default_layout_constraint`.
 
-- AOTI config variable `emit_current_arch_binary` is deprecated ([#155768](https://github.com/pytorch/pytorch/pull/155768)). 
+- AOTI config variable `emit_current_arch_binary` is deprecated ([#155768](https://github.com/pytorch/pytorch/pull/155768)).
 
 - AOTI config variable `aot_inductor.embed_cubin` has been renamed to `aot_inductor.embed_kernel_binary` ([#154412](https://github.com/pytorch/pytorch/pull/154412)).
 
@@ -463,6 +463,21 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Support SYCL kernels through CPP Extension([#132945](https://github.com/pytorch/pytorch/pull/132945))
 
 # Improvements
+## Release Engineering
+- Enable testing of Binary Docker builds in CI/CD ([#151483](https://github.com/pytorch/pytorch/pull/151483), [#151488](https://github.com/pytorch/pytorch/pull/151488), [#151489](https://github.com/pytorch/pytorch/pull/151489), [#151706](https://github.com/pytorch/pytorch/pull/151706))
+
+- Add smoke test to validate nccl and cudnn versions in pypi packages ([#149885](https://github.com/pytorch/pytorch/pull/149885), [#150194](https://github.com/pytorch/pytorch/pull/150194))
+
+- Update gcc11 to gcc13 in manylinux images ([#152825](https://github.com/pytorch/pytorch/pull/152825), [#152825](https://github.com/pytorch/pytorch/pull/152825), [#150635](https://github.com/pytorch/pytorch/pull/150635))
+
+- Update to cmake 3.27.2 ([#154783](https://github.com/pytorch/pytorch/pull/154783), [#150549](https://github.com/pytorch/pytorch/pull/150549), [#153380](https://github.com/pytorch/pytorch/pull/153380))
+
+- Enable Monitoring for performance tests ([#153452](https://github.com/pytorch/pytorch/pull/153452), [#153453](https://github.com/pytorch/pytorch/pull/153453), [#153454](https://github.com/pytorch/pytorch/pull/153454), [#153456](https://github.com/pytorch/pytorch/pull/153456))
+
+- Improve benchmarking and performance testing on MacOS ([#151721](https://github.com/pytorch/pytorch/pull/151721), [#151747](https://github.com/pytorch/pytorch/pull/151747), [#151748](https://github.com/pytorch/pytorch/pull/151748), [#153897](https://github.com/pytorch/pytorch/pull/153897), [#155493](https://github.com/pytorch/pytorch/pull/155493), [#153897](https://github.com/pytorch/pytorch/pull/153897), [#155493](https://github.com/pytorch/pytorch/pull/155493))
+
+- Fix vs2022 caused AVX512 illegal instruction issue. ([#153480](https://github.com/pytorch/pytorch/pull/153480))
+
 ## Autograd
 - Improve error message when view of intermediate is returned from autograd.Function and marked dirty ([#149543](https://github.com/pytorch/pytorch/pull/149543))
 
@@ -696,37 +711,37 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Add tensor overlap check for `cross` ([#154999](https://github.com/pytorch/pytorch/pull/154999))
 
 ## MPS
-- Add support for operations: `i0e`, `i1e,` `torch.special.bessel_[jy][01], modified_bessel_i1, bicubic2d_aa, modified_bessel_k0, modified_bessel_k1, scaled_modified_bessel_k0, scaled_modified_bessel_k1, nanmedian, hermite_polynomial_h, hermite_polynomial_he, rsub, index_copy, hardshrink, upsample_trilinear, erfc, isin_Scalar_Tensor, isin_Tensor_Scalar, chebyshev_polynomial_t, col2im, nearest_3d, chebyshev_polynomial_[uvw]` ([\#149174](https://github.com/pytorch/pytorch/pull/149174), [\#149203](https://github.com/pytorch/pytorch/pull/149203) [\#149123](https://github.com/pytorch/pytorch/pull/149123), [\#149368](https://github.com/pytorch/pytorch/pull/149368), [\#149378](https://github.com/pytorch/pytorch/pull/149378), [\#149563](https://github.com/pytorch/pytorch/pull/149563), [\#149687](https://github.com/pytorch/pytorch/pull/149687), [\#149705](https://github.com/pytorch/pytorch/pull/149705), [\#149783](https://github.com/pytorch/pytorch/pull/149783), [\#149407](https://github.com/pytorch/pytorch/pull/149407)/[\#149680](https://github.com/pytorch/pytorch/pull/149680), [\#150279](https://github.com/pytorch/pytorch/pull/150279), [\#151754](https://github.com/pytorch/pytorch/pull/151754), [\#153786](https://github.com/pytorch/pytorch/pull/153786), [\#154326](https://github.com/pytorch/pytorch/pull/154326), [\#155304](https://github.com/pytorch/pytorch/pull/155304), [\#156263](https://github.com/pytorch/pytorch/pull/156263), [\#155382](https://github.com/pytorch/pytorch/pull/155382), [\#154010](https://github.com/pytorch/pytorch/pull/154010), [\#149816](https://github.com/pytorch/pytorch/pull/149816), [\#152282](https://github.com/pytorch/pytorch/pull/152282), [\#156090](https://github.com/pytorch/pytorch/pull/156090), [\#150060](https://github.com/pytorch/pytorch/pull/150060))  
+- Add support for operations: `i0e`, `i1e,` `torch.special.bessel_[jy][01], modified_bessel_i1, bicubic2d_aa, modified_bessel_k0, modified_bessel_k1, scaled_modified_bessel_k0, scaled_modified_bessel_k1, nanmedian, hermite_polynomial_h, hermite_polynomial_he, rsub, index_copy, hardshrink, upsample_trilinear, erfc, isin_Scalar_Tensor, isin_Tensor_Scalar, chebyshev_polynomial_t, col2im, nearest_3d, chebyshev_polynomial_[uvw]` ([\#149174](https://github.com/pytorch/pytorch/pull/149174), [\#149203](https://github.com/pytorch/pytorch/pull/149203) [\#149123](https://github.com/pytorch/pytorch/pull/149123), [\#149368](https://github.com/pytorch/pytorch/pull/149368), [\#149378](https://github.com/pytorch/pytorch/pull/149378), [\#149563](https://github.com/pytorch/pytorch/pull/149563), [\#149687](https://github.com/pytorch/pytorch/pull/149687), [\#149705](https://github.com/pytorch/pytorch/pull/149705), [\#149783](https://github.com/pytorch/pytorch/pull/149783), [\#149407](https://github.com/pytorch/pytorch/pull/149407)/[\#149680](https://github.com/pytorch/pytorch/pull/149680), [\#150279](https://github.com/pytorch/pytorch/pull/150279), [\#151754](https://github.com/pytorch/pytorch/pull/151754), [\#153786](https://github.com/pytorch/pytorch/pull/153786), [\#154326](https://github.com/pytorch/pytorch/pull/154326), [\#155304](https://github.com/pytorch/pytorch/pull/155304), [\#156263](https://github.com/pytorch/pytorch/pull/156263), [\#155382](https://github.com/pytorch/pytorch/pull/155382), [\#154010](https://github.com/pytorch/pytorch/pull/154010), [\#149816](https://github.com/pytorch/pytorch/pull/149816), [\#152282](https://github.com/pytorch/pytorch/pull/152282), [\#156090](https://github.com/pytorch/pytorch/pull/156090), [\#150060](https://github.com/pytorch/pytorch/pull/150060))
 
-- Add MPSInductor support for:  `modified_bessel_i0, pow, log2, floorToInt, hermite_polynomial_he, modified_bessel_k1, i0e, i1e,` ([\#149342](https://github.com/pytorch/pytorch/pull/149342), [\#151449](https://github.com/pytorch/pytorch/pull/151449), [\#151754](https://github.com/pytorch/pytorch/pull/151754), [\#149687](https://github.com/pytorch/pytorch/pull/149687), [\#149180](https://github.com/pytorch/pytorch/pull/149180), [\#149221](https://github.com/pytorch/pytorch/pull/149221))  
+- Add MPSInductor support for:  `modified_bessel_i0, pow, log2, floorToInt, hermite_polynomial_he, modified_bessel_k1, i0e, i1e,` ([\#149342](https://github.com/pytorch/pytorch/pull/149342), [\#151449](https://github.com/pytorch/pytorch/pull/151449), [\#151754](https://github.com/pytorch/pytorch/pull/151754), [\#149687](https://github.com/pytorch/pytorch/pull/149687), [\#149180](https://github.com/pytorch/pytorch/pull/149180), [\#149221](https://github.com/pytorch/pytorch/pull/149221))
 
-- Extended dtype support for:  
-  * `index\_put` to half precision floats ([\#151869](https://github.com/pytorch/pytorch/pull/151869))  
-  * `ConvTranspose3D` for FP32 and complex ([\#154696](https://github.com/pytorch/pytorch/pull/154696))  
-  * Extend `index\_copy` support to complex dtypes ([\#154671](https://github.com/pytorch/pytorch/pull/154671))  
-  * Extend `torch.special.*` to integer dtypes ([\#155002](https://github.com/pytorch/pytorch/pull/155002))  
-  * Enable `log1p` and `sigmoid` for `int64` ([\#151791](https://github.com/pytorch/pytorch/pull/151791))  
+- Extended dtype support for:
+  * `index_put` to half precision floats ([\#151869](https://github.com/pytorch/pytorch/pull/151869))
+  * `ConvTranspose3D` for FP32 and complex ([\#154696](https://github.com/pytorch/pytorch/pull/154696))
+  * Extend `index_copy` support to complex dtypes ([\#154671](https://github.com/pytorch/pytorch/pull/154671))
+  * Extend `torch.special.*` to integer dtypes ([\#155002](https://github.com/pytorch/pytorch/pull/155002))
+  * Enable `log1p` and `sigmoid` for `int64` ([\#151791](https://github.com/pytorch/pytorch/pull/151791))
 
-- Support `ArgumentBuffer` bindings from C++/Python ([\#150780](https://github.com/pytorch/pytorch/pull/150780))  
+- Support `ArgumentBuffer` bindings from C++/Python ([\#150780](https://github.com/pytorch/pytorch/pull/150780))
 
-- Migrate div rounding modes ([\#152758](https://github.com/pytorch/pytorch/pull/152758))  
+- Migrate div rounding modes ([\#152758](https://github.com/pytorch/pytorch/pull/152758))
 
-- Support numpy scalars handling in MPSInductor ([\#153598](https://github.com/pytorch/pytorch/pull/153598))  
+- Support numpy scalars handling in MPSInductor ([\#153598](https://github.com/pytorch/pytorch/pull/153598))
 
-- Improve error message for `CUDAGuardImpl`, `MPSGuardImpl`, `XPUGuardImpl` ([\#149838](https://github.com/pytorch/pytorch/pull/149838))  
+- Improve error message for `CUDAGuardImpl`, `MPSGuardImpl`, `XPUGuardImpl` ([\#149838](https://github.com/pytorch/pytorch/pull/149838))
 
-- More descriptive error message for `torch.nanmean()` with complex dtypes ([\#153252](https://github.com/pytorch/pytorch/pull/153252))  
+- More descriptive error message for `torch.nanmean()` with complex dtypes ([\#153252](https://github.com/pytorch/pytorch/pull/153252))
 
-- Grad Scaler implementation ([\#150255](https://github.com/pytorch/pytorch/pull/150255))  
+- Grad Scaler implementation ([\#150255](https://github.com/pytorch/pytorch/pull/150255))
 
-- Add error message with assert to topK if ndims() \- dim \> 4 ([\#155475](https://github.com/pytorch/pytorch/pull/155475))  
+- Add error message with assert to topK if ndims() \- dim \> 4 ([\#155475](https://github.com/pytorch/pytorch/pull/155475))
 
 - Activation kernels: do compute at float precision ([\#155735](https://github.com/pytorch/pytorch/pull/155735))
 
 ## Nested Tensor (NJT)
 - Fix contiguity in NJT string representation ([#153529](https://github.com/pytorch/pytorch/pull/153529))
 
-## `torch.nn`
+## torch.nn
 - Add warning for module full backward hook when no input requires gradient ([#155339](https://github.com/pytorch/pytorch/pull/155339))
 
 - Add Half support for `weight_norm` on CPU ([#148878](https://github.com/pytorch/pytorch/pull/148878))
@@ -780,21 +795,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Implement `__obj_flatten__` for `LinearPackedParamsBase` ([#152619](https://github.com/pytorch/pytorch/pull/152619))
 
-## Release Engineering
-- Enable testing of Binary Docker builds in CI/CD ([#151483](https://github.com/pytorch/pytorch/pull/151483), [#151488](https://github.com/pytorch/pytorch/pull/151488), [#151489](https://github.com/pytorch/pytorch/pull/151489), [#151706](https://github.com/pytorch/pytorch/pull/151706))
-
-- Add smoke test to validate nccl and cudnn versions in pypi packages ([#149885](https://github.com/pytorch/pytorch/pull/149885), [#150194](https://github.com/pytorch/pytorch/pull/150194))
-
-- Update gcc11 to gcc13 in manylinux images ([#152825](https://github.com/pytorch/pytorch/pull/152825), [#152825](https://github.com/pytorch/pytorch/pull/152825), [#150635](https://github.com/pytorch/pytorch/pull/150635))
-
-- Update to cmake 3.27.2 ([#154783](https://github.com/pytorch/pytorch/pull/154783), [#150549](https://github.com/pytorch/pytorch/pull/150549), [#153380](https://github.com/pytorch/pytorch/pull/153380))
-
-- Enable Monitoring for performance tests ([#153452](https://github.com/pytorch/pytorch/pull/153452), [#153453](https://github.com/pytorch/pytorch/pull/153453), [#153454](https://github.com/pytorch/pytorch/pull/153454), [#153456](https://github.com/pytorch/pytorch/pull/153456))
-
-- Improve benchmarking and performance testing on MacOS ([#151721](https://github.com/pytorch/pytorch/pull/151721), [#151747](https://github.com/pytorch/pytorch/pull/151747), [#151748](https://github.com/pytorch/pytorch/pull/151748), [#153897](https://github.com/pytorch/pytorch/pull/153897), [#155493](https://github.com/pytorch/pytorch/pull/155493), [#153897](https://github.com/pytorch/pytorch/pull/153897), [#155493](https://github.com/pytorch/pytorch/pull/155493))
-
-- Fix vs2022 caused AVX512 illegal instruction issue. ([#153480](https://github.com/pytorch/pytorch/pull/153480))
-
 ## ROCm
 - cpp_extension allow user to override default flags ([#152432](https://github.com/pytorch/pytorch/pull/152432))
 
@@ -824,6 +824,15 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Add generic and Intel GPU specific Stream & Event in UserDefineClass ([#155787](https://github.com/pytorch/pytorch/pull/155787))
 
 # Bug Fixes
+## Release Engineering
+- [CI] Use `setup-python` from for Mac tests ([#155698](https://github.com/pytorch/pytorch/pull/155698))
+
+- Checkout optional submodules when publishing a release tarball ([#156615](https://github.com/pytorch/pytorch/pull/156615))
+
+- Fix MacOS MP hang in Python-3.12+ ([#155698](https://github.com/pytorch/pytorch/pull/155698))
+
+- Fix static functions when using module in MSVC ([#148675](https://github.com/pytorch/pytorch/pull/148675))
+
 ## Build Frontend
 - Make PyTorch buildable by `CMake-4.x` ([#150203](https://github.com/pytorch/pytorch/pull/150203))
 
@@ -981,69 +990,69 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Fix 32-bit indexing overflows in `ReducedPrecisionGemV` ([#150949](https://github.com/pytorch/pytorch/pull/150949))
 
 ## MPS
-- Fix codegen for nested multistage reductions in MPSInductor ([\#154578](https://github.com/pytorch/pytorch/pull/154578))  
+- Fix codegen for nested multistage reductions in MPSInductor ([\#154578](https://github.com/pytorch/pytorch/pull/154578))
 
-- Fix torch.arange bound validation for large float inputs ([\#154320](https://github.com/pytorch/pytorch/pull/154320))  
+- Fix torch.arange bound validation for large float inputs ([\#154320](https://github.com/pytorch/pytorch/pull/154320))
 
-- Fix larger-than-threadgroup Welford reductions ([\#151152](https://github.com/pytorch/pytorch/pull/151152))  
+- Fix larger-than-threadgroup Welford reductions ([\#151152](https://github.com/pytorch/pytorch/pull/151152))
 
-- Specify `max_total_threads_per_threadgroup` ([\#150247](https://github.com/pytorch/pytorch/pull/150247))  
+- Specify `max_total_threads_per_threadgroup` ([\#150247](https://github.com/pytorch/pytorch/pull/150247))
 
-- Fix `determine_backend_memory_format` logic ([\#151042](https://github.com/pytorch/pytorch/pull/151042))  
+- Fix `determine_backend_memory_format` logic ([\#151042](https://github.com/pytorch/pytorch/pull/151042))
 
-- Fix silent correctness in bitcast ([\#151272](https://github.com/pytorch/pytorch/pull/151272))  
+- Fix silent correctness in bitcast ([\#151272](https://github.com/pytorch/pytorch/pull/151272))
 
-- Adjust memory format detection ([\#151288](https://github.com/pytorch/pytorch/pull/151288))  
+- Adjust memory format detection ([\#151288](https://github.com/pytorch/pytorch/pull/151288))
 
-- Make fused rms\_norm traceable ([\#150661](https://github.com/pytorch/pytorch/pull/150661))  
+- Make fused rms\_norm traceable ([\#150661](https://github.com/pytorch/pytorch/pull/150661))
 
-- Allow isin for mixed types ([\#151600](https://github.com/pytorch/pytorch/pull/151600))  
+- Allow isin for mixed types ([\#151600](https://github.com/pytorch/pytorch/pull/151600))
 
-- Implement `atomic_add` store mode ([\#151871](https://github.com/pytorch/pytorch/pull/151871))  
+- Implement `atomic_add` store mode ([\#151871](https://github.com/pytorch/pytorch/pull/151871))
 
-- Make sure sizevars are computed ([\#152436](https://github.com/pytorch/pytorch/pull/152436))  
+- Make sure sizevars are computed ([\#152436](https://github.com/pytorch/pytorch/pull/152436))
 
-- Fix lerp for complex numbers ([\#152479](https://github.com/pytorch/pytorch/pull/152479))  
+- Fix lerp for complex numbers ([\#152479](https://github.com/pytorch/pytorch/pull/152479))
 
-- Fix `truncdiv` implementation ([\#152788](https://github.com/pytorch/pytorch/pull/152788))  
+- Fix `truncdiv` implementation ([\#152788](https://github.com/pytorch/pytorch/pull/152788))
 
-- Fix multistage reduction suffixes ([\#153362](https://github.com/pytorch/pytorch/pull/153362))  
+- Fix multistage reduction suffixes ([\#153362](https://github.com/pytorch/pytorch/pull/153362))
 
-- Fix float64 scalar tensor handling ([\#153582](https://github.com/pytorch/pytorch/pull/153582))  
+- Fix float64 scalar tensor handling ([\#153582](https://github.com/pytorch/pytorch/pull/153582))
 
-- Fix conv\_transpose channels last ([\#153787](https://github.com/pytorch/pytorch/pull/153787))  
+- Fix conv\_transpose channels last ([\#153787](https://github.com/pytorch/pytorch/pull/153787))
 
-- Fix indexing calculation ([\#153997](https://github.com/pytorch/pytorch/pull/153997))  
+- Fix indexing calculation ([\#153997](https://github.com/pytorch/pytorch/pull/153997))
 
-- Fix memory leaks in mps\_linear\_nograph ([\#154765](https://github.com/pytorch/pytorch/pull/154765))  
+- Fix memory leaks in mps\_linear\_nograph ([\#154765](https://github.com/pytorch/pytorch/pull/154765))
 
-- Fix complex scalar binding to Metal tensors ([\#155184](https://github.com/pytorch/pytorch/pull/155184))  
+- Fix complex scalar binding to Metal tensors ([\#155184](https://github.com/pytorch/pytorch/pull/155184))
 
-- Fix unary/binary ops for 2\*\*32+ elem tensors ([\#155183](https://github.com/pytorch/pytorch/pull/155183))  
+- Fix unary/binary ops for 2\*\*32+ elem tensors ([\#155183](https://github.com/pytorch/pytorch/pull/155183))
 
-- Fix remainder implementation for int types ([\#155891](https://github.com/pytorch/pytorch/pull/155891))  
+- Fix remainder implementation for int types ([\#155891](https://github.com/pytorch/pytorch/pull/155891))
 
-- Fix bug in 3d coords calculation ([\#156375](https://github.com/pytorch/pytorch/pull/156375))  
+- Fix bug in 3d coords calculation ([\#156375](https://github.com/pytorch/pytorch/pull/156375))
 
-- Fix nested loop var elimination ([\#156566](https://github.com/pytorch/pytorch/pull/156566))  
+- Fix nested loop var elimination ([\#156566](https://github.com/pytorch/pytorch/pull/156566))
 
-- Fix multistage reduction check ([\#156567](https://github.com/pytorch/pytorch/pull/156567))  
+- Fix multistage reduction check ([\#156567](https://github.com/pytorch/pytorch/pull/156567))
 
-- Fix type promotion for `torch.floor_divide` ([\#149233](https://github.com/pytorch/pytorch/pull/149233))  
+- Fix type promotion for `torch.floor_divide` ([\#149233](https://github.com/pytorch/pytorch/pull/149233))
 
-- Add assertion to align with cuda ([\#153233](https://github.com/pytorch/pytorch/pull/153233))  
+- Add assertion to align with cuda ([\#153233](https://github.com/pytorch/pytorch/pull/153233))
 
-- Fix inverse bug for N\>1024 ([\#146754](https://github.com/pytorch/pytorch/pull/146754))  
+- Fix inverse bug for N\>1024 ([\#146754](https://github.com/pytorch/pytorch/pull/146754))
 
-- Fix where ([\#151176](https://github.com/pytorch/pytorch/pull/151176))  
+- Fix where ([\#151176](https://github.com/pytorch/pytorch/pull/151176))
 
-- Fix logit output for half/bfloat ([\#151282](https://github.com/pytorch/pytorch/pull/151282))  
+- Fix logit output for half/bfloat ([\#151282](https://github.com/pytorch/pytorch/pull/151282))
 
-- Fix ICE for entr bool instantiation on M1/M2 ([\#152204](https://github.com/pytorch/pytorch/pull/152204))  
+- Fix ICE for entr bool instantiation on M1/M2 ([\#152204](https://github.com/pytorch/pytorch/pull/152204))
 
-- Fix the approximation of polygamma for n \== 0\. ([\#152214](https://github.com/pytorch/pytorch/pull/152214))  
+- Fix the approximation of polygamma for n \== 0\. ([\#152214](https://github.com/pytorch/pytorch/pull/152214))
 
-- Fix memory leak in SDPA float32 ([\#152371](https://github.com/pytorch/pytorch/pull/152371))  
+- Fix memory leak in SDPA float32 ([\#152371](https://github.com/pytorch/pytorch/pull/152371))
 
 - Fix metal ops with different dtypes ([\#149974](https://github.com/pytorch/pytorch/pull/149974))
 
@@ -1089,15 +1098,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Fix to properly export `torch::utils::tensor_to_numpy` symbol ([#154178](https://github.com/pytorch/pytorch/pull/154178))
 
 - Fix `torch.[con]cat[enate]` to raise `ValueError` instead of crashing on empty inputs ([#155460](https://github.com/pytorch/pytorch/pull/155460))
-
-## Release Engineering
-- [CI] Use `setup-python` from for Mac tests ([#155698](https://github.com/pytorch/pytorch/pull/155698))
-
-- Checkout optional submodules when publishing a release tarball ([#156615](https://github.com/pytorch/pytorch/pull/156615))
-
-- Fix MacOS MP hang in Python-3.12+ ([#155698](https://github.com/pytorch/pytorch/pull/155698))
-
-- Fix static functions when using module in MSVC ([#148675](https://github.com/pytorch/pytorch/pull/148675))
 
 ## ROCm
 - opportunistic fastatomics - fix build error with newer compilers ([#152841](https://github.com/pytorch/pytorch/pull/152841))
@@ -1175,17 +1175,17 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Fast path for `torch.dot` with float16/bfloat16 ([#152799](https://github.com/pytorch/pytorch/pull/152799))
 
 ## MPS
-- Layernorm forward speedup with new kernel  ([\#152010](https://github.com/pytorch/pytorch/pull/152010))  
+- Layernorm forward speedup with new kernel  ([\#152010](https://github.com/pytorch/pytorch/pull/152010))
 
-- Disable mm/bmm decompositions ([\#150541](https://github.com/pytorch/pytorch/pull/150541))  
+- Disable mm/bmm decompositions ([\#150541](https://github.com/pytorch/pytorch/pull/150541))
 
-- Speedup `sum`/`prod` reductions ([\#150566](https://github.com/pytorch/pytorch/pull/150566))  
+- Speedup `sum`/`prod` reductions ([\#150566](https://github.com/pytorch/pytorch/pull/150566))
 
-- Implement metal kernel for basic MPS arithmetic ops using TensorIterator ([\#147644](https://github.com/pytorch/pytorch/pull/147644))  
+- Implement metal kernel for basic MPS arithmetic ops using TensorIterator ([\#147644](https://github.com/pytorch/pytorch/pull/147644))
 
-- Replace indexed with strided flavor ([\#149730](https://github.com/pytorch/pytorch/pull/149730))  
+- Replace indexed with strided flavor ([\#149730](https://github.com/pytorch/pytorch/pull/149730))
 
-- SDPA specialized kernels ([\#152781](https://github.com/pytorch/pytorch/pull/152781))  
+- SDPA specialized kernels ([\#152781](https://github.com/pytorch/pytorch/pull/152781))
 
 - Move mps\_linear forward to use MPS kernels directly instead of MPSGraph ([\#152210](https://github.com/pytorch/pytorch/pull/152210))
 
@@ -1232,10 +1232,13 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Improve scalar tensor case handling in addmm, baddmm to reduce oneDNN integration overhead on Intel GPU ([#153051](https://github.com/pytorch/pytorch/pull/153051))
 
 # Documentation
+## Release Engineering
+- Migrate to new theme ([#149331](https://github.com/pytorch/pytorch/pull/149331))
+
 ## Autograd
 - Update docs of `torch.autograd.graph.saved_tensors_hooks` to avoid ref cycle ([#153049](https://github.com/pytorch/pytorch/pull/153049))
 
-- Mention that it's possible to set debug=True in `torch.utils.checkpoint.checkpoint` error messages ([#155593](https://github.com/pytorch/pytorch/pull/155593))
+- Mention that it's possible to set `debug=True` in `torch.utils.checkpoint.checkpoint` error messages ([#155593](https://github.com/pytorch/pytorch/pull/155593))
 
 - Add more details on why `ctx.save_for_backward` is important in extending autograd note ([#153005](https://github.com/pytorch/pytorch/pull/153005))
 
@@ -1256,7 +1259,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Documented object collectives limitations ([#150815](https://github.com/pytorch/pytorch/pull/150815))
 - Updated `NCCLConfig` with QOS variable ([#151821](https://github.com/pytorch/pytorch/pull/151821))
 
-`FullyShardedDataParallel2` (FSDP2)
+#### FullyShardedDataParallel2 (FSDP2)
 - Updated `ignored_params` docstring and added unit tests ([#149074](https://github.com/pytorch/pytorch/pull/149074))
 - Added warning that `reshard_after_forward` = 1 and True are different ([#149750](https://github.com/pytorch/pytorch/pull/149750))
 - Added pointer to torchtitan ([#153079](https://github.com/pytorch/pytorch/pull/153079))
@@ -1315,22 +1318,16 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Fix code snippet for `nn.RNN` ([#153620](https://github.com/pytorch/pytorch/pull/153620))
 
 ## ONNX
-- Update types in VerificationInfo ([#149377](https://github.com/pytorch/pytorch/pull/149377))
+- Convert .rst doc files to markdown ([#155228](https://github.com/pytorch/pytorch/pull/155228), [#155556](https://github.com/pytorch/pytorch/pull/155556))
 
-- Improve docstring of onnx symbolic ops ([#149668](https://github.com/pytorch/pytorch/pull/149668))
+- Improve docstring of ONNX symbolic ops ([#149668](https://github.com/pytorch/pytorch/pull/149668))
 
-- Note on attention op symbolic function ([#156441](https://github.com/pytorch/pytorch/pull/156441))
-
-- Convert to .md: onnx_verification.rst, onnx.rst, package.rst, ([#155556](https://github.com/pytorch/pytorch/pull/155556))
+- Add note for attention op symbolic function ([#156441](https://github.com/pytorch/pytorch/pull/156441))
 
 - Add ONNX dynamo metadata documentation ([#155816](https://github.com/pytorch/pytorch/pull/155816))
 
-- [BE] fix typos in docs/ ([#156080](https://github.com/pytorch/pytorch/pull/156080))
-
-- Convert to markdown onnx rst ([#155228](https://github.com/pytorch/pytorch/pull/155228))
-
 ## Optimizer
-- Add scripts to generate plots of LRSchedulers ([#149189](https://github.com/pytorch/pytorch/pull/149189))
+- Add scripts to generate plots of `LRScheduler`s ([#149189](https://github.com/pytorch/pytorch/pull/149189))
 
 - Include other accelerators in capturable docstr for optimizers ([#149770](https://github.com/pytorch/pytorch/pull/149770))
 
@@ -1373,9 +1370,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 ## Quantization
 - Fix incorrect `get_default_qat_qconfig` in `prepare_qat_fx` docs ([#155100](https://github.com/pytorch/pytorch/pull/155100))
-
-## Release Engineering
-- Migrate to new theme ([#149331](https://github.com/pytorch/pytorch/pull/149331))
 
 ## Sparse Frontend
 - Fix code highlighting in torch.sparse ([#154785](https://github.com/pytorch/pytorch/pull/154785))
@@ -1470,7 +1464,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Improve stable library APIs ([#152040](https://github.com/pytorch/pytorch/pull/152040))
 
-- Add a basic shim and stable::Tensor is_contiguous API ([#156228](https://github.com/pytorch/pytorch/pull/156228))
+- Add a basic shim and `stable::Tensor is_contiguous` API ([#156228](https://github.com/pytorch/pytorch/pull/156228))
 
 ## Optimizer
 - Improve decorator typing for Optimizer subclasses ([#153374](https://github.com/pytorch/pytorch/pull/153374))
