@@ -867,9 +867,9 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Fix `torch.backends.cuda.matmul.allow_fp16_accumulation` crash when using cuBLASLt ([#153083](https://github.com/pytorch/pytorch/pull/153083))
 
-- Enable AsyncMM on Blackwell ([#153519](https://github.com/pytorch/pytorch/pull/153519))
+- Enable `AsyncMM` on Blackwell ([#153519](https://github.com/pytorch/pytorch/pull/153519))
 
-- Fix torch.cuda.MemPool for multithreaded use-cases ([#153356](https://github.com/pytorch/pytorch/pull/153356))
+- Fixed `torch.cuda.MemPool` for multithreaded use-cases ([#153356](https://github.com/pytorch/pytorch/pull/153356))
 
 - Properly clean up hooks in `torch.cuda.memory._record_memory_history` ([#153839](https://github.com/pytorch/pytorch/pull/153839))
 
@@ -884,7 +884,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Fixed ET trace collection of all_to_all ([#149485](https://github.com/pytorch/pytorch/pull/149485))
 - Disabled start event recording for coalesced col and improved profile title ([#150863](https://github.com/pytorch/pytorch/pull/150863))
 - Fixed connection reset caused by wrong socket close in tcp store ([#150987](https://github.com/pytorch/pytorch/pull/150987))
-- Added back correct EOF case check in the libuv backend of TCPStore ([#151052](https://github.com/pytorch/pytorch/pull/151052))
+- Added back correct EOF case check in the libuv backend of `TCPStore` ([#151052](https://github.com/pytorch/pytorch/pull/151052))
 - Fixed unused `group` input argument in `new_subgroups()` ([#152765](https://github.com/pytorch/pytorch/pull/152765))
 - Fixed `new_subgroups(group=)` bug ([#153798](https://github.com/pytorch/pytorch/pull/153798))
 - Fixed tcp init when using port 0 ([#154156](https://github.com/pytorch/pytorch/pull/154156))
@@ -905,7 +905,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Optimized memory usage by releasing output memory earlier ([#153383](https://github.com/pytorch/pytorch/pull/153383))
 
 #### RPC
-- Made torch importable if compiled without TensorPipe ([#154382](https://github.com/pytorch/pytorch/pull/154382))
+- Made torch importable if compiled without `TensorPipe` ([#154382](https://github.com/pytorch/pytorch/pull/154382))
 
 #### ShardedTensor
 - Fixed sharded tensor `gather` when a local tensor on certain ranks has zero elements ([#150914](https://github.com/pytorch/pytorch/pull/150914))
@@ -978,15 +978,15 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Preserve enum types during `torch.export` serialization and deserialization ([#154821](https://github.com/pytorch/pytorch/pull/154821))
 
 ## Ahead-Of-Time Inductor (AOTI)
-- Fix AOTI update_constant_buffer issue ([#149243](https://github.com/pytorch/pytorch/pull/149243))
+- Fix AOTI `update_constant_buffer` issue ([#149243](https://github.com/pytorch/pytorch/pull/149243))
 
-- Fix a memory leak in model_package_loader ([#152334](https://github.com/pytorch/pytorch/pull/152334))
+- Fix a memory leak in `model_package_loader` ([#152334](https://github.com/pytorch/pytorch/pull/152334))
 
-- Don't alloc weights in AOTIModel if they don't exist ([#152692](https://github.com/pytorch/pytorch/pull/152692))
+- Don't alloc weights in `AOTIModel` if they don't exist ([#152692](https://github.com/pytorch/pytorch/pull/152692))
 
-- Fix state of ConstantFolding ([#153152](https://github.com/pytorch/pytorch/pull/153152))
+- Fix state of `ConstantFolding` ([#153152](https://github.com/pytorch/pytorch/pull/153152))
 
-- Fix index offset for Optional Tensor Return ([#155073](https://github.com/pytorch/pytorch/pull/155073))
+- Fix index offset for optional tensor return ([#155073](https://github.com/pytorch/pytorch/pull/155073))
 
 - Fix float8 type printing for min/max value printing ([#154466](https://github.com/pytorch/pytorch/pull/154466))
 
@@ -1100,9 +1100,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Enable all configured activities in CUPTI Range Profiler mode ([#154749](https://github.com/pytorch/pytorch/pull/154749))
 
 ## ROCm
-- Opportunistic fastatomics - fix build error with newer compilers ([#152841](https://github.com/pytorch/pytorch/pull/152841))
-
-- Update spack includes ([#152569](https://github.com/pytorch/pytorch/pull/152569))
+- Fixed build error for opportunistic fastatomics with newer compilers ([#152841](https://github.com/pytorch/pytorch/pull/152841))
 
 #### TunableOp
 - More TF32 support ([#149088](https://github.com/pytorch/pytorch/pull/149088))
@@ -1172,7 +1170,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Set `prop_kind` to `forward_inference` when grad is not needed for `mkldnn_linear_pointwise` and `mkldnn_convolution_pointwise` ([#147072](https://github.com/pytorch/pytorch/pull/147072))
 
 ## torch.export
-- Cache unflattened gm ([#150030](https://github.com/pytorch/pytorch/pull/150030))
+- Cache unflattened graph module ([#150030](https://github.com/pytorch/pytorch/pull/150030))
 
 ## JIT
 - Improved Dead Code Elimination (DCE) compile times for large graphs ([#153645](https://github.com/pytorch/pytorch/pull/153645))
