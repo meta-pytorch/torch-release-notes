@@ -142,8 +142,7 @@ Note that `Dispatcher.h` does not belong as an include from `torch/types.h` and 
 short-term hack to appease `torchvision`. If you run into `torchvision` build errors, please
 update to a more recent version of `torchvision` to resolve this.
 
-### Added a stricter aliasing/mutation check for `HigherOrderOperator`s (e.g. `cond`), which will explicitly error out if they don't support alias/mutation among inputs and outputs
-([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658)).
+### Added a stricter aliasing/mutation check for `HigherOrderOperator`s (e.g. `cond`), which will explicitly error out if alias/mutation among inputs and outputs is unsupported ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658)).
 
 For affected `HigherOrderOperator`s, add `.clone()` to aliased outputs to address this.
 
