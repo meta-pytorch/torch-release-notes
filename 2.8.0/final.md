@@ -332,28 +332,28 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Add `torch._scaled_mm` for CPU ([#150410](https://github.com/pytorch/pytorch/pull/150410))
 
 ## CUDA
-- Support capture of event record and wait in cuda graphs for timing ([#155372](https://github.com/pytorch/pytorch/pull/155372))
+- Support capture of event record and wait in CUDAGraphs for timing ([#155372](https://github.com/pytorch/pytorch/pull/155372))
 
 ## Distributed
 - `c10d`
   - Added a collective time estimator for NCCL comms ([#149343](https://github.com/pytorch/pytorch/pull/149343))
-  - Added support ReduceOp::AVG in `ProcessGroupGloo` ([#149781](https://github.com/pytorch/pytorch/pull/149781))
-  - Added support `reduce_scatter` + updated support chart in `ProcessGroupGloo` ([#149869](https://github.com/pytorch/pytorch/pull/149869))
-  - Added `clone` feature for tcpstore (#150966) (#150966) ([#151045](https://github.com/pytorch/pytorch/pull/151045))
-  - Added `queues` for tcpstore ([#150969](https://github.com/pytorch/pytorch/pull/150969))
-  - Added `_allgather_base` , `reduce_scatter` , and `_reduce_scatter_base` into ProcessGroupMPI to enable FSDP with MPI backend ([#150162](https://github.com/pytorch/pytorch/pull/150162))
+  - Added support for `ReduceOp::AVG` in `ProcessGroupGloo` ([#149781](https://github.com/pytorch/pytorch/pull/149781))
+  - Added support for `reduce_scatter` + updated support chart in `ProcessGroupGloo` ([#149869](https://github.com/pytorch/pytorch/pull/149869))
+  - Added `clone` feature for `tcpstore` ([#150966](https://github.com/pytorch/pytorch/pull/150966)), ([#151045](https://github.com/pytorch/pytorch/pull/151045))
+  - Added `queues` for `tcpstore` ([#150969](https://github.com/pytorch/pytorch/pull/150969))
+  - Added `_allgather_base` , `reduce_scatter` , and `_reduce_scatter_base` into `ProcessGroupMPI` to enable FSDP with MPI backend ([#150162](https://github.com/pytorch/pytorch/pull/150162))
   - Added nonblocking mode to `queue_pop` for tcpstore ([#151485](https://github.com/pytorch/pytorch/pull/151485))
   - Added api to enable/disable NaN detector per-PG ([#151723](https://github.com/pytorch/pytorch/pull/151723))
   - Added FP8 support in `ProcessGroupNCCL` ([#152706](https://github.com/pytorch/pytorch/pull/152706))
   - Added `ibverbs` backend in gloo ([#153015](https://github.com/pytorch/pytorch/pull/153015), [#153425](https://github.com/pytorch/pytorch/pull/153425))
-  - Enabled Gloo CUDA when used with a backend that supports GPUDirect ([#153406](https://github.com/pytorch/pytorch/pull/153406))
+  - Enabled Gloo CUDA when used with a backend that supports `GPUDirect` ([#153406](https://github.com/pytorch/pytorch/pull/153406))
 
 ## Dynamo
 - Hierarchical compilation via `nested_compile_region` ([#156449](https://github.com/pytorch/pytorch/pull/156449))
 
 - Allow guards to be dropped with custom filter functions via `guard_filter_fn` ([#150936](https://github.com/pytorch/pytorch/pull/150936))
 
-- `dont_skip_tracing` decorator to skip over most Dynamo skipfiles rules ([#150586](https://github.com/pytorch/pytorch/pull/150586))
+- `dont_skip_tracing` decorator to skip over most Dynamo `skipfiles` rules ([#150586](https://github.com/pytorch/pytorch/pull/150586))
 
 ## Export
 - Introduced a new version of export `draft-export` -- https://docs.pytorch.org/docs/main/draft_export.html ([#152637](https://github.com/pytorch/pytorch/pull/152637), [#153219](https://github.com/pytorch/pytorch/pull/153219), [#149465](https://github.com/pytorch/pytorch/pull/149465), [#153627](https://github.com/pytorch/pytorch/pull/153627), [#154190](https://github.com/pytorch/pytorch/pull/154190), [#155744](https://github.com/pytorch/pytorch/pull/155744), [#150876](https://github.com/pytorch/pytorch/pull/150876), [#150948](https://github.com/pytorch/pytorch/pull/150948), [#151051](https://github.com/pytorch/pytorch/pull/151051), [#151065](https://github.com/pytorch/pytorch/pull/151065), [#150809](https://github.com/pytorch/pytorch/pull/150809), [#151797](https://github.com/pytorch/pytorch/pull/151797))
@@ -367,7 +367,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Allow specifying integer inputs as dynamic ([#151842](https://github.com/pytorch/pytorch/pull/151842))
 
 ## Inductor
-- We can now map a Dynamo graph to multiple different Inductor graphs, which can be optimized separaetly. ([#147648](https://github.com/pytorch/pytorch/pull/147648)) ([#147038](https://github.com/pytorch/pytorch/pull/147038))
+- We can now map a Dynamo graph to multiple different Inductor graphs, which can be optimized separaetly ([#147648](https://github.com/pytorch/pytorch/pull/147648)) ([#147038](https://github.com/pytorch/pytorch/pull/147038))
 
 - Add config to specify custom op C shim: `aot_inductor.custom_ops_to_c_shims` and `aot_inductor.custom_op_libs`. ([#153968](https://github.com/pytorch/pytorch/pull/153968))
 
@@ -399,7 +399,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Add block sparse for FlexAttention CPU. ([#147196](https://github.com/pytorch/pytorch/pull/147196))
 
-- Add GEMM templates for _weight_int4pack_mm_for_cpu with AMX. ([#150603](https://github.com/pytorch/pytorch/pull/150603))
+- Add GEMM templates for `_weight_int4pack_mm_for_cpu` with AMX. ([#150603](https://github.com/pytorch/pytorch/pull/150603))
 
 ## Ahead-Of-Time Inductor (AOTI)
 - Torchbind objects supported in AOTInductor ([#150196](https://github.com/pytorch/pytorch/pull/150196), [#154265](https://github.com/pytorch/pytorch/pull/154265))
