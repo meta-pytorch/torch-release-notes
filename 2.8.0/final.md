@@ -304,10 +304,10 @@ if not guard_or_true(y):
 To migrate:
 - Eager mode quantization (`torch.ao.quantization.quantize`, `torch.ao.quantization.quantize_dynamic`)
   - Weight-only and dynamic quantization: use `torchao` eager mode `quantize_`.
-  - Static quantization: use `torchao` pt2e quantization.
-- FX graph mode quantization (`torch.ao.quantization.quantize_fx.prepare_fx`, `torch.ao.quantization.quantize_fx.convert_fx`): use `torchao` pt2e quantization (`torchao.quantization.quantize_pt2e.prepare_pt2e`, `torchao.quantization.quantize_pt2e.convert_pt2e`).
+  - Static quantization: use `torchao` PT2E quantization.
+- FX graph mode quantization (`torch.ao.quantization.quantize_fx.prepare_fx`, `torch.ao.quantization.quantize_fx.convert_fx`): use `torchao` PT2E quantization (`torchao.quantization.quantize_pt2e.prepare_pt2e`, `torchao.quantization.quantize_pt2e.convert_pt2e`).
 
-Note that pt2e quantization has been migrated to `torchao` (https://github.com/pytorch/ao/tree/main/torchao/quantization/pt2e). See https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/main/quick_start.html#pytorch-2-export-quantization for more details.
+Note that PT2E quantization has been migrated to `torchao` (https://github.com/pytorch/ao/tree/main/torchao/quantization/pt2e). See https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/main/quick_start.html#pytorch-2-export-quantization for more details.
 
 ### Several config variables related to `torch.compile` have been deprecated, renamed, or moved
 - Dynamo config variable `enable_cpp_framelocals_guard_eval` is deprecated ([#151008](https://github.com/pytorch/pytorch/pull/151008)). This config no longer has any effect.
@@ -352,6 +352,9 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Enabled CD for Windows Arm64 ([#150310](https://github.com/pytorch/pytorch/pull/150310), [#152109](https://github.com/pytorch/pytorch/pull/152109), [#149850](https://github.com/pytorch/pytorch/pull/149850), [#152099](https://github.com/pytorch/pytorch/pull/152099))
 
+## Python Frontend
+- Add Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
+
 ## CPU (x86)
 - Add `torch._scaled_mm` for CPU ([#150410](https://github.com/pytorch/pytorch/pull/150410))
 
@@ -372,14 +375,38 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added `ibverbs` backend in gloo ([#153015](https://github.com/pytorch/pytorch/pull/153015), [#153425](https://github.com/pytorch/pytorch/pull/153425))
 - Enabled Gloo CUDA when used with a backend that supports `GPUDirect` ([#153406](https://github.com/pytorch/pytorch/pull/153406))
 
-## Dynamo
+## torch.compile
+#### Dynamo
 - Hierarchical compilation via `nested_compile_region` ([#156449](https://github.com/pytorch/pytorch/pull/156449))
 
 - Allow guards to be dropped with custom filter functions via `guard_filter_fn` ([#150936](https://github.com/pytorch/pytorch/pull/150936))
 
 - `dont_skip_tracing` decorator to skip over most Dynamo `skipfiles` rules ([#150586](https://github.com/pytorch/pytorch/pull/150586))
 
-## Export
+#### Inductor
+- Added support for mapping a Dynamo graph to multiple different Inductor graphs, which can be optimized separately ([#147648](https://github.com/pytorch/pytorch/pull/147648)) ([#147038](https://github.com/pytorch/pytorch/pull/147038))
+
+- Added block sparse support for FlexAttention on CPU ([#147196](https://github.com/pytorch/pytorch/pull/147196))
+
+- Added GEMM templates for `_weight_int4pack_mm_for_cpu` with AMX ([#150603](https://github.com/pytorch/pytorch/pull/150603))
+
+- Introduced new config settings:
+  - Add config to specify custom op C shim: `aot_inductor.custom_ops_to_c_shims` and `aot_inductor.custom_op_libs`. ([#153968](https://github.com/pytorch/pytorch/pull/153968))
+  - Add AOTI model name config `aot_inductor.model_name_for_generated_files` ([#154129](https://github.com/pytorch/pytorch/pull/154129))
+  - New config to limit fusions to a node distance of 64: `max_fusion_buffer_group_pairwise_attempts`. ([#154688](https://github.com/pytorch/pytorch/pull/154688))
+  - Add config control for CUTLASS operation selection: `cuda.cutlass_enabled_ops` ([#155770](https://github.com/pytorch/pytorch/pull/155770))
+  - Add config `triton.cudagraph_capture_sizes` to specify dynamic shapes to capture cudagraphs and skip cudagraph for other shapes ([#156551](https://github.com/pytorch/pytorch/pull/156551))
+  - New config `use_static_cuda_launcher` to launch compiled Triton statically to improve cold start times ([#148890](https://github.com/pytorch/pytorch/pull/148890))
+  - New config `assume_unaligned_fallback_output` to allow inductor to track unaligned outputs ([#150777](https://github.com/pytorch/pytorch/pull/150777))
+  - New config `cuda.cutlass_tma_only` controls whether or not to only use TMA-compatible kernels in CUTLASS ([#152815](https://github.com/pytorch/pytorch/pull/152815))
+  - Add config `static_launch_user_defined_triton_kernels` to statically launch user defined triton kernels ([#153725](https://github.com/pytorch/pytorch/pull/153725))
+  - New config `precompilation_timeout_seconds` to control the timeout on precompilation ([#153788](https://github.com/pytorch/pytorch/pull/153788))
+  - New config `disable_decompose_k` to disable new  DecomposeK GEMM Kernels ([#154421](https://github.com/pytorch/pytorch/pull/154421))
+  - New config `_post_fusion_custom_pass` to register a custom pass to be run right after fusion in Inductor Scheduler ([#153723](https://github.com/pytorch/pytorch/pull/153723))
+  - New config `min_num_split` sets the minimum number of splits in a split reduction ([#155941](https://github.com/pytorch/pytorch/pull/155941))
+  - New config `max_autotune_flex_search_space` allows specifying the size of the search space for flex attention autotuning ([#156307](https://github.com/pytorch/pytorch/pull/156307))
+
+## torch.export
 - Introduced a new version of export `draft-export` -- https://docs.pytorch.org/docs/main/draft_export.html ([#152637](https://github.com/pytorch/pytorch/pull/152637), [#153219](https://github.com/pytorch/pytorch/pull/153219), [#149465](https://github.com/pytorch/pytorch/pull/149465), [#153627](https://github.com/pytorch/pytorch/pull/153627), [#154190](https://github.com/pytorch/pytorch/pull/154190), [#155744](https://github.com/pytorch/pytorch/pull/155744), [#150876](https://github.com/pytorch/pytorch/pull/150876), [#150948](https://github.com/pytorch/pytorch/pull/150948), [#151051](https://github.com/pytorch/pytorch/pull/151051), [#151065](https://github.com/pytorch/pytorch/pull/151065), [#150809](https://github.com/pytorch/pytorch/pull/150809), [#151797](https://github.com/pytorch/pytorch/pull/151797))
 
 - Introduce `AdditionalInputs` to specify dynamic shapes -- https://docs.pytorch.org/docs/main/export.html#torch.export.dynamic_shapes.AdditionalInputs ([#150144](https://github.com/pytorch/pytorch/pull/150144), [#151970](https://github.com/pytorch/pytorch/pull/151970))
@@ -390,59 +417,21 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Allow specifying integer inputs as dynamic ([#151842](https://github.com/pytorch/pytorch/pull/151842))
 
-## Inductor
-- We can now map a Dynamo graph to multiple different Inductor graphs, which can be optimized separaetly ([#147648](https://github.com/pytorch/pytorch/pull/147648)) ([#147038](https://github.com/pytorch/pytorch/pull/147038))
-
-- Add config to specify custom op C shim: `aot_inductor.custom_ops_to_c_shims` and `aot_inductor.custom_op_libs`. ([#153968](https://github.com/pytorch/pytorch/pull/153968))
-
-- Add AOTI model name config `aot_inductor.model_name_for_generated_files`. ([#154129](https://github.com/pytorch/pytorch/pull/154129))
-
-- New config to limit fusions to a node distance of 64: `max_fusion_buffer_group_pairwise_attempts`. ([#154688](https://github.com/pytorch/pytorch/pull/154688))
-
-- Add config control for CUTLASS operation selection: `cuda.cutlass_enabled_ops`. ([#155770](https://github.com/pytorch/pytorch/pull/155770))
-
-- Add config `triton.cudagraph_capture_sizes` to specify dynamic shapes to capture cudagraphs and skip cudagraph for other shapes. ([#156551](https://github.com/pytorch/pytorch/pull/156551))
-
-- New config `use_static_cuda_launcher` to launch compiled Triton statically to improve cold start times. ([#148890](https://github.com/pytorch/pytorch/pull/148890))
-
-- New config `assume_unaligned_fallback_output` to allow inductor to track unaligned outputs. ([#150777](https://github.com/pytorch/pytorch/pull/150777))
-
-- New config `cuda.cutlass_tma_only` controls whether or not to only use TMA-compatible kernels in CUTLASS. ([#152815](https://github.com/pytorch/pytorch/pull/152815))
-
-- Add config `static_launch_user_defined_triton_kernels` to statically launch user defined triton kernels. ([#153725](https://github.com/pytorch/pytorch/pull/153725))
-
-- New config `precompilation_timeout_seconds` to control the timeout on precompilation. ([#153788](https://github.com/pytorch/pytorch/pull/153788))
-
-- New config `disable_decompose_k` to disable new  DecomposeK GEMM Kernels. ([#154421](https://github.com/pytorch/pytorch/pull/154421))
-
-- New config `_post_fusion_custom_pass` to register a custom pass to be run right after fusion in Inductor Scheduler. ([#153723](https://github.com/pytorch/pytorch/pull/153723))
-
-- New config `min_num_split` sets the minimum number of splits in a split reduction. ([#155941](https://github.com/pytorch/pytorch/pull/155941))
-
-- New config `max_autotune_flex_search_space` allows specifying the size of the search space for flex attention autotuning. ([#156307](https://github.com/pytorch/pytorch/pull/156307))
-
-- Add block sparse for FlexAttention CPU. ([#147196](https://github.com/pytorch/pytorch/pull/147196))
-
-- Add GEMM templates for `_weight_int4pack_mm_for_cpu` with AMX. ([#150603](https://github.com/pytorch/pytorch/pull/150603))
-
 ## Ahead-Of-Time Inductor (AOTI)
-- Torchbind objects supported in AOTInductor ([#150196](https://github.com/pytorch/pytorch/pull/150196), [#154265](https://github.com/pytorch/pytorch/pull/154265))
+- Added support for Torchbind objects ([#150196](https://github.com/pytorch/pytorch/pull/150196), [#154265](https://github.com/pytorch/pytorch/pull/154265))
 
 ## Profiler
-- Add Flag to Toggle Global and Local Callbacks for Annotations ([#154932](https://github.com/pytorch/pytorch/pull/154932))
+- Add flag to toggle global and local callbacks for annotations ([#154932](https://github.com/pytorch/pytorch/pull/154932))
 
-- Pass Overload Names To Kineto ([#149333](https://github.com/pytorch/pytorch/pull/149333))
+- Pass overload names To Kineto ([#149333](https://github.com/pytorch/pytorch/pull/149333))
 
-- Memory Snapshot On Demand ([#150559](https://github.com/pytorch/pytorch/pull/150559))
+- Memory snapshot on demand ([#150559](https://github.com/pytorch/pytorch/pull/150559))
 
-- Add PT2 Compile Context to Visualizer ([#152862](https://github.com/pytorch/pytorch/pull/152862))
+- Add PT2 compile context to visualizer ([#152862](https://github.com/pytorch/pytorch/pull/152862))
 
-- Add PT2 to Memory Snapshot ([#152707](https://github.com/pytorch/pytorch/pull/152707))
+- Add PT2 to memory snapshot ([#152707](https://github.com/pytorch/pytorch/pull/152707))
 
 - Enable `Profiler.key_averages().table()` for HPU devices ([#150770](https://github.com/pytorch/pytorch/pull/150770))
-
-## Python Frontend
-- Add Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
 
 ## Quantization
 - Add a lowering pass for x86 backend of PT2E quantization ([#149708](https://github.com/pytorch/pytorch/pull/149708))
@@ -455,21 +444,21 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Add an op to compute `uint8` batch_norm2d for PT2E quantization on X86 CPU ([#152811](https://github.com/pytorch/pytorch/pull/152811))
 
-- Add `torch.float4_e2m1fn_x2` to PyTorch ([#148791](https://github.com/pytorch/pytorch/pull/148791))
+- Introduce `torch.float4_e2m1fn_x2` ([#148791](https://github.com/pytorch/pytorch/pull/148791))
 
 ## ROCm
-- support CUBLASLT_MATMUL_MATRIX_SCALE_OUTER_VEC_32F ([#154680](https://github.com/pytorch/pytorch/pull/154680))
+- Support `CUBLASLT_MATMUL_MATRIX_SCALE_OUTER_VEC_32F` ([#154680](https://github.com/pytorch/pytorch/pull/154680))
 
-- Exposing Some MIOpen Symbols (#2176) ([#154545](https://github.com/pytorch/pytorch/pull/154545))
+- Expose several MIOpen symbols ([#154545](https://github.com/pytorch/pytorch/pull/154545))
 
-- Enable BF16 NCHW Mixed batchnorm on MIOpen if ROCm>=6.4 ([#154611](https://github.com/pytorch/pytorch/pull/154611))
+- Enable BF16 NCHW mixed batchnorm on MIOpen if ROCm>=6.4 ([#154611](https://github.com/pytorch/pytorch/pull/154611))
 
 ## XPU
 - Support Intel distributed backend (XCCL) ([#141856](https://github.com/pytorch/pytorch/pull/141856))
 
 - Support int4 WOQ GEMM on Intel GPU ([#137566](https://github.com/pytorch/pytorch/pull/137566))
 
-- Support SYCL kernels through CPP Extension([#132945](https://github.com/pytorch/pytorch/pull/132945))
+- Support SYCL kernels through C++ extension ([#132945](https://github.com/pytorch/pytorch/pull/132945))
 
 # Improvements
 ## Release Engineering
