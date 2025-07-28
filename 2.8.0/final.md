@@ -19,6 +19,11 @@ Below are the full release notes for this release.
 
 
 # Backwards Incompatible Changes
+
+### Remove support for CUDA 11.8, CUDA 12.4, and Anaconda in CI/CD
+- Removed CUDA 11.8 and 12.4 support in CI/CD ([#155509](https://github.com/pytorch/pytorch/pull/155509), [#154169](https://github.com/pytorch/pytorch/pull/154169), [#152362](https://github.com/pytorch/pytorch/pull/152362), [#155555](https://github.com/pytorch/pytorch/pull/155555), [#154893](https://github.com/pytorch/pytorch/pull/154893))
+- Removed Anaconda support in CI/CD ([#147789](https://github.com/pytorch/pytorch/pull/147789), [#152338](https://github.com/pytorch/pytorch/pull/152338), [#152431](https://github.com/pytorch/pytorch/pull/152431), [#152377](https://github.com/pytorch/pytorch/pull/152377), [#152433](https://github.com/pytorch/pytorch/pull/152433), [#147476](https://github.com/pytorch/pytorch/pull/147476), [#151035](https://github.com/pytorch/pytorch/pull/151035), [#152860](https://github.com/pytorch/pytorch/pull/152860), [#152702](https://github.com/pytorch/pytorch/pull/152702), [#154303](https://github.com/pytorch/pytorch/pull/154303), [#154309](https://github.com/pytorch/pytorch/pull/154309) )
+
 ### Added missing in-place on view check to custom `autograd.Function` ([#153094](https://github.com/pytorch/pytorch/pull/153094))
 
 In 2.8.0, if a custom `autograd.Function` mutates a view of a leaf requiring grad,
@@ -286,36 +291,39 @@ except NotImplementedError:
 ```
 
 # Deprecations
-## Dynamo
-- Deprecate `enable_cpp_framelocals_guard_eval` Dynamo config variable ([#151008](https://github.com/pytorch/pytorch/pull/151008)).
+### Dynamo config variable `enable_cpp_framelocals_guard_eval` is deprecated ([#151008](https://github.com/pytorch/pytorch/pull/151008))
 This config no longer has any effect.
 
-## Inductor
-- Deprecated: `rocm.n_max_profiling_configs`. Instead, use ck-tile based configs `rocm.ck_max_profiling_configs` and `rocm.ck_tile_max_profiling_configs`. ([#152341](https://github.com/pytorch/pytorch/pull/152341))
+### Inductor config variable `rocm.n_max_profiling_configs` is deprecated ([#152341](https://github.com/pytorch/pytorch/pull/152341))
+Instead, use ck-tile based configs `rocm.ck_max_profiling_configs` and
+`rocm.ck_tile_max_profiling_configs`.
+TODO: Add note!
 
-- Deprecated: `autotune_fallback_to_aten`. Inductor will no longer silently fall back to `ATen`. Please add `"ATEN"` to `max_autotune_gemm_backends` for the old behavior. ([#154331](https://github.com/pytorch/pytorch/pull/154331))
+### Inductor config variable `autotune_fallback_to_aten` is deprecated ([#154331](https://github.com/pytorch/pytorch/pull/154331))
+Inductor will no longer silently fall back to `ATen`. Please add `"ATEN"` to
+`max_autotune_gemm_backends` for the old behavior.
+TODO: Add note!
 
-- Deprecated: `use_mixed_mm` and `mixed_mm_choice`. Torch Inductor now supports prologue fusion, so there is no need for special cases now. ([#152071](https://github.com/pytorch/pytorch/pull/152071))
+### Inductor config variables `use_mixed_mm` and `mixed_mm_choice` are deprecated ([#152071](https://github.com/pytorch/pytorch/pull/152071))
+Inductor now supports prologue fusion, so there is no need for special cases now.
 
-- Deprecated: `inductor.config.descriptive_names = False`. Use one of the other available options. ([#151481](https://github.com/pytorch/pytorch/pull/151481))
+### Inductor config setting `descriptive_names = False` is deprecated ([#151481](https://github.com/pytorch/pytorch/pull/151481))
+Please use one of the other available options.
 
-- Rename `aot_inductor.embed_cubin` to `aot_inductor.embed_kernel_binary`. ([#154412](https://github.com/pytorch/pytorch/pull/154412))
+### `custom_op_default_layout_constraint` has moved from inductor config to functorch config ([#148104](https://github.com/pytorch/pytorch/pull/148104))
 
-- Remove the `aot_inductor.emit_current_arch_binary` option. ([#155768](https://github.com/pytorch/pytorch/pull/155768))
+### AOTI config option `emit_current_arch_binary` is deprecated ([#155768](https://github.com/pytorch/pytorch/pull/155768))
 
-- `custom_op_default_layout_constraint` moved from inductor config to functorch config. ([#148104](https://github.com/pytorch/pytorch/pull/148104))
+### AOTI config variable `aot_inductor.embed_cubin` has been renamed to `aot_inductor.embed_kernel_binary` ([#154412](https://github.com/pytorch/pytorch/pull/154412))
 
-- Config `aot_inductor.compile_wrapper_with_O0` changed to `compile_wrapper_opt_level`. ([#148714](https://github.com/pytorch/pytorch/pull/148714))
+### AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been changed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714))
 
-## Quantization
-- `torch.ao.quantization` is Deprecated ([#153892](https://github.com/pytorch/pytorch/pull/153892))
-`torch.ao.quantization` is deprecated and will be removed in 2.10.
+### `torch.ao.quantization` is deprecated and will be removed in 2.10 ([#153892](https://github.com/pytorch/pytorch/pull/153892))
 For migrations of users:
-
-## Release Engineering
-- Removed Anaconda support in CI/CD ([#147789](https://github.com/pytorch/pytorch/pull/147789), [#152338](https://github.com/pytorch/pytorch/pull/152338), [#152431](https://github.com/pytorch/pytorch/pull/152431), [#152377](https://github.com/pytorch/pytorch/pull/152377), [#152433](https://github.com/pytorch/pytorch/pull/152433), [#147476](https://github.com/pytorch/pytorch/pull/147476), [#151035](https://github.com/pytorch/pytorch/pull/151035), [#152860](https://github.com/pytorch/pytorch/pull/152860), [#152702](https://github.com/pytorch/pytorch/pull/152702), [#154303](https://github.com/pytorch/pytorch/pull/154303), [#154309](https://github.com/pytorch/pytorch/pull/154309) )
-
-- Removed CUDA 11.8 and 12.4 support in CI/CD ([#155509](https://github.com/pytorch/pytorch/pull/155509), [#154169](https://github.com/pytorch/pytorch/pull/154169), [#152362](https://github.com/pytorch/pytorch/pull/152362), [#155555](https://github.com/pytorch/pytorch/pull/155555), [#154893](https://github.com/pytorch/pytorch/pull/154893))
+1. Eager mode quantization (`torch.ao.quantization.quantize`, `torch.ao.quantization.quantize_dynamic`), please migrate to use torchao eager mode `quantize_` for weight only and dynamic quantization, or torchao pt2e quantization for static quantization
+2. FX graph mode quantization (`torch.ao.quantization.quantize_fx.prepare_fx`, `torch.ao.quantization.quantize_fx.convert_fx`, please migrate to use torchao pt2e quantization API instead (`torchao.quantization.quantize_pt2e.prepare_pt2e`, `torchao.quantization.quantize_pt2e.convert_pt2e`)
+3. PyTorch pt2e quantization has been migrated to torchao (https://github.com/pytorch/ao/tree/main/torchao/quantization/pt2e)
+see https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/main/quick_start.html#pytorch-2-export-quantization for more details
 
 # New Features
 ## CPU (x86)
