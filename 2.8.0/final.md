@@ -386,10 +386,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 #### Inductor
 - Added support for mapping a Dynamo graph to multiple different Inductor graphs, which can be optimized separately ([#147648](https://github.com/pytorch/pytorch/pull/147648), [#147038](https://github.com/pytorch/pytorch/pull/147038))
 
-- Added block sparse support for FlexAttention on CPU ([#147196](https://github.com/pytorch/pytorch/pull/147196))
-
-- Added GEMM templates for `_weight_int4pack_mm_for_cpu` with AMX ([#150603](https://github.com/pytorch/pytorch/pull/150603))
-
 - Introduced new config settings:
   - Add config to specify custom op C shim: `aot_inductor.custom_ops_to_c_shims` and `aot_inductor.custom_op_libs` ([#153968](https://github.com/pytorch/pytorch/pull/153968))
   - New config to limit fusions to a node distance of 64: `max_fusion_buffer_group_pairwise_attempts` ([#154688](https://github.com/pytorch/pytorch/pull/154688))
@@ -632,6 +628,10 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Dynamic shape handling for `standalone_compile` ([#151788](https://github.com/pytorch/pytorch/pull/151788))
 
 #### Inductor
+- Added block sparse support for FlexAttention on CPU ([#147196](https://github.com/pytorch/pytorch/pull/147196))
+
+- Added GEMM templates for `_weight_int4pack_mm_for_cpu` with AMX ([#150603](https://github.com/pytorch/pytorch/pull/150603))
+
 - New script `profile_analysis.py` to diff kernel usage from `torch.profile` traces ([#149697](https://github.com/pytorch/pytorch/pull/149697))
 
 - Improvements on CPU welford reduction ([#145061](https://github.com/pytorch/pytorch/pull/145061))
