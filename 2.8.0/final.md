@@ -17,8 +17,17 @@ TODO
 For more details about these highlighted features, you can look at the release blogpost.
 Below are the full release notes for this release.
 
+# Tracked Regressions
+### Windows wheel builds with CUDA 12.9.1 stack overflow during build ([#156181](https://github.com/pytorch/pytorch/issues/156181))
+Due to a bug introduced in CUDA 12.9.1, we are unable to complete Windows wheel builds with this
+version.
 
 # Backwards Incompatible Changes
+
+### Remove support for Maxwell, Pascal, and Volta architectures with CUDA 12.8 and 12.9 builds ([#157517](https://github.com/pytorch/pytorch/issues/157517))
+Due to binary size limitations, support for sm50 - sm70 architectures with CUDA 12.8 and 12.9 has
+been dropped for the 2.8.0 release. If you need support for these architectures, please utilize
+CUDA 12.6 instead.
 
 ### Remove support for CUDA 11.8, CUDA 12.4, and Anaconda in CI/CD
 - Removed CUDA 11.8 and 12.4 support in CI/CD ([#155509](https://github.com/pytorch/pytorch/pull/155509), [#154169](https://github.com/pytorch/pytorch/pull/154169), [#152362](https://github.com/pytorch/pytorch/pull/152362), [#155555](https://github.com/pytorch/pytorch/pull/155555), [#154893](https://github.com/pytorch/pytorch/pull/154893))
