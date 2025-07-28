@@ -328,6 +328,21 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been renamed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714)).
 
 # New Features
+## Release Engineering
+- Add support for CUDA 12.9 in CI/CD ([#154980](https://github.com/pytorch/pytorch/pull/154980), [#156630](https://github.com/pytorch/pytorch/pull/156630), [#155895](https://github.com/pytorch/pytorch/pull/155895), [#155799](https://github.com/pytorch/pytorch/pull/155799), [#155496](https://github.com/pytorch/pytorch/pull/155496), [#155340](https://github.com/pytorch/pytorch/pull/155340), [#155819](https://github.com/pytorch/pytorch/pull/155819), [#156108](https://github.com/pytorch/pytorch/pull/156108))
+
+- Add support for ROCm 6.4 in CI/CD ([#151236](https://github.com/pytorch/pytorch/pull/151236), [#151345](https://github.com/pytorch/pytorch/pull/151345), [#151355](https://github.com/pytorch/pytorch/pull/151355), [#153253](https://github.com/pytorch/pytorch/pull/153253), [#156112](https://github.com/pytorch/pytorch/pull/156112))
+
+- Move CI from ubuntu 20.04 images to ubuntu 22.04 and 24.04 ([#154437](https://github.com/pytorch/pytorch/pull/154437), [#154153](https://github.com/pytorch/pytorch/pull/154153), [#149142](https://github.com/pytorch/pytorch/pull/149142))
+
+- Move CI to CUDA 12.8 ([#154004](https://github.com/pytorch/pytorch/pull/154004), [#152810](https://github.com/pytorch/pytorch/pull/152810), [#155087](https://github.com/pytorch/pytorch/pull/155087), [#148963](https://github.com/pytorch/pytorch/pull/148963))
+
+- Enable CI on MI300 ([#150667](https://github.com/pytorch/pytorch/pull/150667), [#152133](https://github.com/pytorch/pytorch/pull/152133), [#148394](https://github.com/pytorch/pytorch/pull/148394), [#153134](https://github.com/pytorch/pytorch/pull/153134))
+
+- Enable CI on H100 ([#153900](https://github.com/pytorch/pytorch/pull/153900), [#154562](https://github.com/pytorch/pytorch/pull/154562), [#153170](https://github.com/pytorch/pytorch/pull/153170), [#155861](https://github.com/pytorch/pytorch/pull/155861), [#155719](https://github.com/pytorch/pytorch/pull/155719), [#156429](https://github.com/pytorch/pytorch/pull/156429))
+
+- Enable CD for Windows Arm64 ([#150310](https://github.com/pytorch/pytorch/pull/150310), [#152109](https://github.com/pytorch/pytorch/pull/152109), [#149850](https://github.com/pytorch/pytorch/pull/149850), [#152099](https://github.com/pytorch/pytorch/pull/152099))
+
 ## CPU (x86)
 - Add `torch._scaled_mm` for CPU ([#150410](https://github.com/pytorch/pytorch/pull/150410))
 
@@ -432,21 +447,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Add an op to compute `uint8` batch_norm2d for PT2E quantization on X86 CPU ([#152811](https://github.com/pytorch/pytorch/pull/152811))
 
 - Add `torch.float4_e2m1fn_x2` to PyTorch ([#148791](https://github.com/pytorch/pytorch/pull/148791))
-
-## Release Engineering
-- Add support for CUDA 12.9 in CI/CD ([#154980](https://github.com/pytorch/pytorch/pull/154980), [#156630](https://github.com/pytorch/pytorch/pull/156630), [#155895](https://github.com/pytorch/pytorch/pull/155895), [#155799](https://github.com/pytorch/pytorch/pull/155799), [#155496](https://github.com/pytorch/pytorch/pull/155496), [#155340](https://github.com/pytorch/pytorch/pull/155340), [#155819](https://github.com/pytorch/pytorch/pull/155819), [#156108](https://github.com/pytorch/pytorch/pull/156108))
-
-- Add support for ROCm 6.4 in CI/CD ([#151236](https://github.com/pytorch/pytorch/pull/151236), [#151345](https://github.com/pytorch/pytorch/pull/151345), [#151355](https://github.com/pytorch/pytorch/pull/151355), [#153253](https://github.com/pytorch/pytorch/pull/153253), [#156112](https://github.com/pytorch/pytorch/pull/156112))
-
-- Move CI from ubuntu 20.04 images to ubuntu 22.04 and 24.04 ([#154437](https://github.com/pytorch/pytorch/pull/154437), [#154153](https://github.com/pytorch/pytorch/pull/154153), [#149142](https://github.com/pytorch/pytorch/pull/149142))
-
-- Move CI to CUDA 12.8 ([#154004](https://github.com/pytorch/pytorch/pull/154004), [#152810](https://github.com/pytorch/pytorch/pull/152810), [#155087](https://github.com/pytorch/pytorch/pull/155087), [#148963](https://github.com/pytorch/pytorch/pull/148963))
-
-- Enable CI on MI300 ([#150667](https://github.com/pytorch/pytorch/pull/150667), [#152133](https://github.com/pytorch/pytorch/pull/152133), [#148394](https://github.com/pytorch/pytorch/pull/148394), [#153134](https://github.com/pytorch/pytorch/pull/153134))
-
-- Enable CI on H100 ([#153900](https://github.com/pytorch/pytorch/pull/153900), [#154562](https://github.com/pytorch/pytorch/pull/154562), [#153170](https://github.com/pytorch/pytorch/pull/153170), [#155861](https://github.com/pytorch/pytorch/pull/155861), [#155719](https://github.com/pytorch/pytorch/pull/155719), [#156429](https://github.com/pytorch/pytorch/pull/156429))
-
-- Enable CD for Windows Arm64 ([#150310](https://github.com/pytorch/pytorch/pull/150310), [#152109](https://github.com/pytorch/pytorch/pull/152109), [#149850](https://github.com/pytorch/pytorch/pull/149850), [#152099](https://github.com/pytorch/pytorch/pull/152099))
 
 ## ROCm
 - support CUBLASLT_MATMUL_MATRIX_SCALE_OUTER_VEC_32F ([#154680](https://github.com/pytorch/pytorch/pull/154680))
