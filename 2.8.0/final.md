@@ -824,7 +824,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 # Bug Fixes
 ## Release Engineering
-- [CI] Use `setup-python` from for Mac tests ([#155698](https://github.com/pytorch/pytorch/pull/155698))
+- Use `setup-python` from for Mac tests ([#155698](https://github.com/pytorch/pytorch/pull/155698))
 
 - Checkout optional submodules when publishing a release tarball ([#156615](https://github.com/pytorch/pytorch/pull/156615))
 
@@ -1133,14 +1133,14 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Rewrite autograd streams synchronization ([#151079](https://github.com/pytorch/pytorch/pull/151079))
 
 ## CPU (AArch64)
-- Compute ELU(0) with the cheaper definition ([#155765](https://github.com/pytorch/pytorch/pull/155765))
+- Compute `ELU(0)` with the cheaper definition ([#155765](https://github.com/pytorch/pytorch/pull/155765))
 
 ## CUDA
-- 8 bytes aligned vector loads for bf16 and fp16 dtypes in torch.cat ([#150233](https://github.com/pytorch/pytorch/pull/150233))
+- 8 bytes aligned vector loads for bf16 and fp16 dtypes in `torch.cat` ([#150233](https://github.com/pytorch/pytorch/pull/150233))
 
-- Enable vectorized 8byte copy for fp16/bf16 for index select kernel ([#152380](https://github.com/pytorch/pytorch/pull/152380))
+- Enable vectorized 8byte copy for fp16/bf16 for `index_select` kernel ([#152380](https://github.com/pytorch/pytorch/pull/152380))
 
-- Use gather in index_select to improve performance ([#151715](https://github.com/pytorch/pytorch/pull/151715))
+- Use gather in `index_select` to improve performance ([#151715](https://github.com/pytorch/pytorch/pull/151715))
 
 ## Dataloader Frontend
 - Reduce memory usage of `SubsetRandomSampler` by iterating over list instead of tensor ([#149126](https://github.com/pytorch/pytorch/pull/149126))
@@ -1151,7 +1151,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 ## torch.compile
 #### Inductor
-- Support Graph Partitioning on custom ops ([#149782](https://github.com/pytorch/pytorch/pull/149782))
+- Support graph partitioning on custom ops ([#149782](https://github.com/pytorch/pytorch/pull/149782))
 
 - New AMD-specific GEMM Configs ([#147315](https://github.com/pytorch/pytorch/pull/147315))
 
@@ -1196,7 +1196,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 ## ROCm
 - Improve softmax performance ([#149076](https://github.com/pytorch/pytorch/pull/149076))
 
-- NLLLoss (torch.nll_loss) Performance Tuning by Dynamically Selecting # of GPU threads ([#149548](https://github.com/pytorch/pytorch/pull/149548))
+- NLLLoss performance tuning by dynamically selecting number of GPU threads ([#149548](https://github.com/pytorch/pytorch/pull/149548))
 
 - Extend vectorized elementwise kernel to more heterogenous tensor types ([#149738](https://github.com/pytorch/pytorch/pull/149738))
 
