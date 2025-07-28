@@ -1149,13 +1149,13 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 ## Distributed
 #### c10d
-- Added support of `lazy_init` in `ProcessGroupGloo` (#150801)" ([#151031](https://github.com/pytorch/pytorch/pull/151031))
+- Added support of `lazy_init` in `ProcessGroupGloo` ([#151031](https://github.com/pytorch/pytorch/pull/151031))
 
 ## torch.compile
-## Inductor
+#### Inductor
 - Support Graph Partitioning on custom ops ([#149782](https://github.com/pytorch/pytorch/pull/149782))
 
-- New AMD specific GEMM Configs ([#147315](https://github.com/pytorch/pytorch/pull/147315))
+- New AMD-specific GEMM Configs ([#147315](https://github.com/pytorch/pytorch/pull/147315))
 
 - Add pack support and use micro gemm for Half `FlexAttention` on CPU ([#151530](https://github.com/pytorch/pytorch/pull/151530))
 
@@ -1163,11 +1163,11 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Faster int8 WoQ GEMM for small M with explicit prefetching and different outer loops ([#149373](https://github.com/pytorch/pytorch/pull/149373))
 
-- Improve A16W4 GEMM template performance by using `block_n=32` ([#156174](https://github.com/pytorch/pytorch/pull/156174))
+- Improved A16W4 GEMM template performance by using `block_n=32` ([#156174](https://github.com/pytorch/pytorch/pull/156174))
 
 - Use AMX-based microkernels when `M > 4` for GEMM template for INT4 weight ([#155444](https://github.com/pytorch/pytorch/pull/155444))
 
-- Optimize the heuristics of parallel reduction on CPU ([#149614](https://github.com/pytorch/pytorch/pull/149614))
+- Optimized the heuristics of parallel reduction on CPU ([#149614](https://github.com/pytorch/pytorch/pull/149614))
 
 - Set `prop_kind` to `forward_inference` when grad is not needed for `mkldnn_linear_pointwise` and `mkldnn_convolution_pointwise` ([#147072](https://github.com/pytorch/pytorch/pull/147072))
 
@@ -1175,10 +1175,10 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Cache unflattened gm ([#150030](https://github.com/pytorch/pytorch/pull/150030))
 
 ## JIT
-- Improve Dead Code Elimination compile times for large graphs ([#153645](https://github.com/pytorch/pytorch/pull/153645))
+- Improved Dead Code Elimination (DCE) compile times for large graphs ([#153645](https://github.com/pytorch/pytorch/pull/153645))
 
 ## Linear Algebra Frontend
-- Fast path for `torch.dot` with float16/bfloat16 ([#152799](https://github.com/pytorch/pytorch/pull/152799))
+- Introduced fast path for `torch.dot` with float16/bfloat16 ([#152799](https://github.com/pytorch/pytorch/pull/152799))
 
 ## MPS
 - `LayerNorm` forward speedup with new kernel  ([\#152010](https://github.com/pytorch/pytorch/pull/152010))
@@ -1230,7 +1230,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Improved INT4 WOQ GEMM for Intel GPU by introducing a cache mechanism to reduce the oneDNN integration overhead further ([#147693](https://github.com/pytorch/pytorch/pull/147693))
 
-- Improved scalar tensor case handling in addmm, baddmm to reduce oneDNN integration overhead on Intel GPU ([#153051](https://github.com/pytorch/pytorch/pull/153051))
+- Improved scalar tensor case handling in `addmm`, `baddmm` to reduce oneDNN integration overhead on Intel GPU ([#153051](https://github.com/pytorch/pytorch/pull/153051))
 
 # Documentation
 ## Release Engineering
@@ -1380,16 +1380,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 # Developers
 ## Composability
-- Allow duck typing for 0/1 ([#150222](https://github.com/pytorch/pytorch/pull/150222))
-
-- Introduced `sym_and` and `sym_or` ([#150456](https://github.com/pytorch/pytorch/pull/150456))
-
-- Support `statically_known_true` in C++ ([#151346](https://github.com/pytorch/pytorch/pull/151346))
-
-- Added C++ bindings for `guard_or_false` and `guard_or_true` ([#150148](https://github.com/pytorch/pytorch/pull/150148))
-
-- Introduced `statically_known_false` ([#154291](https://github.com/pytorch/pytorch/pull/154291))
-
 - Don't log exception when recording is disabled or already recording ([#151038](https://github.com/pytorch/pytorch/pull/151038))
 
 - Log suppressed data dependent errors ([#151041](https://github.com/pytorch/pytorch/pull/151041))
@@ -1397,16 +1387,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Demote `runtime_asserts_frozen` logger to debug mode ([#149832](https://github.com/pytorch/pytorch/pull/149832))
 
 - Demote constant registration warnings to debug ([#149833](https://github.com/pytorch/pytorch/pull/149833))
-
-- Rewrite `expand` with `guard_or_false` ([#150236](https://github.com/pytorch/pytorch/pull/150236))
-
-- Unbacked safe unsqueeze ([#154087](https://github.com/pytorch/pytorch/pull/154087))
-
-- Use `guard_or_false` for `cat` and `repeat` ([#155290](https://github.com/pytorch/pytorch/pull/155290))
-
-- Skip fused linear path if not definitely contiguous ([#155051](https://github.com/pytorch/pytorch/pull/155051))
-
-- Use try-catch instead of guard_or_true for reshape_view_helper ([#152638](https://github.com/pytorch/pytorch/pull/152638))
 
 ## Distributed
 #### c10d
@@ -1423,18 +1403,18 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added a logger for all nccl collectives with its time duration when completed ([#156008](https://github.com/pytorch/pytorch/pull/156008))
 
 #### FullyShardedDataParallel (FSDP1)
-- Printed fqns when debug `FlatParamHandle` ([#151336](https://github.com/pytorch/pytorch/pull/151336))
+- Print FQNs when debugging `FlatParamHandle` ([#151336](https://github.com/pytorch/pytorch/pull/151336))
 
 #### FullyShardedDataParallel2 (FSDP2)
 - Added FSDP2 logging ([#155826](https://github.com/pytorch/pytorch/pull/155826))
 
 #### RPC
-- Correctly passed exceptions raised from `rpc_init` to CPython ([#154325](https://github.com/pytorch/pytorch/pull/154325))
+- Correctly pass exceptions raised from `rpc_init` to CPython ([#154325](https://github.com/pytorch/pytorch/pull/154325))
 
 #### torchelastic
 - Added the logging of start of torch elastic workers ([#150849](https://github.com/pytorch/pytorch/pull/150849))
 - Passed event log handler to record function calls ([#155457](https://github.com/pytorch/pytorch/pull/155457))
-- Added `torch.distributed.run` option to provide destination for event logging (#154644) ([#155268](https://github.com/pytorch/pytorch/pull/155268))
+- Added `torch.distributed.run` option to provide destination for event logging ([#155268](https://github.com/pytorch/pytorch/pull/155268))
 
 ## torch.export
 - Add `TracingContext` ([#149294](https://github.com/pytorch/pytorch/pull/149294))
@@ -1446,10 +1426,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Improved error message for deserializing custom triton op ([#152029](https://github.com/pytorch/pytorch/pull/152029))
 
 - Better type annotation for lift_constants_pass ([#152072](https://github.com/pytorch/pytorch/pull/152072))
-
-- Refactor `InputAdapter` (#152459) ([#152575](https://github.com/pytorch/pytorch/pull/152575))
-
-- Swap functorch --> `torch._higher_order_ops` ([#152620](https://github.com/pytorch/pytorch/pull/152620))
 
 - Fixed bug in `detect_attr_assignment` ([#151824](https://github.com/pytorch/pytorch/pull/151824))
 
