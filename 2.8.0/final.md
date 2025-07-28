@@ -1429,17 +1429,17 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Fixed bug in `detect_attr_assignment` ([#151824](https://github.com/pytorch/pytorch/pull/151824))
 
-## FX
-- Gracefully exit minimizer when there is no discrepancy in block mode ([#154076](https://github.com/pytorch/pytorch/pull/154076))
-
-- Add `__main__` guards to FX tests ([#154715](https://github.com/pytorch/pytorch/pull/154715))
-
 ## Ahead-Of-Time Inductor (AOTI)
 - Refactor AOTInductor runtime API for Intel GPU ([#153929](https://github.com/pytorch/pytorch/pull/153929))
 
 - Improve stable library APIs ([#152040](https://github.com/pytorch/pytorch/pull/152040))
 
 - Add a basic shim and `stable::Tensor is_contiguous` API ([#156228](https://github.com/pytorch/pytorch/pull/156228))
+
+## FX
+- Gracefully exit minimizer when there is no discrepancy in block mode ([#154076](https://github.com/pytorch/pytorch/pull/154076))
+
+- Add `__main__` guards to FX tests ([#154715](https://github.com/pytorch/pytorch/pull/154715))
 
 ## Optimizer
 - Improve decorator typing for Optimizer subclasses ([#153374](https://github.com/pytorch/pytorch/pull/153374))
