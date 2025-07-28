@@ -291,7 +291,7 @@ except NotImplementedError:
 ```
 
 # Deprecations
-### Several configuration variables related to `torch.compile` have been deprecated, renamed, or moved
+### Several config variables related to `torch.compile` have been deprecated, renamed, or moved
 - Dynamo config variable `enable_cpp_framelocals_guard_eval` is deprecated ([#151008](https://github.com/pytorch/pytorch/pull/151008)). This config no longer has any effect.
 
 - Inductor config variable `rocm.n_max_profiling_configs` is deprecated ([#152341](https://github.com/pytorch/pytorch/pull/152341)).
