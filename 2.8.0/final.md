@@ -392,7 +392,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Introduced new config settings:
   - Add config to specify custom op C shim: `aot_inductor.custom_ops_to_c_shims` and `aot_inductor.custom_op_libs` ([#153968](https://github.com/pytorch/pytorch/pull/153968))
-  - Add AOTI model name config `aot_inductor.model_name_for_generated_files` ([#154129](https://github.com/pytorch/pytorch/pull/154129))
   - New config to limit fusions to a node distance of 64: `max_fusion_buffer_group_pairwise_attempts` ([#154688](https://github.com/pytorch/pytorch/pull/154688))
   - Add config control for CUTLASS operation selection: `cuda.cutlass_enabled_ops` ([#155770](https://github.com/pytorch/pytorch/pull/155770))
   - Add config `triton.cudagraph_capture_sizes` to specify dynamic shapes to capture cudagraphs and skip cudagraph for other shapes ([#156551](https://github.com/pytorch/pytorch/pull/156551))
@@ -420,18 +419,14 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 ## Ahead-Of-Time Inductor (AOTI)
 - Added support for Torchbind objects ([#150196](https://github.com/pytorch/pytorch/pull/150196), [#154265](https://github.com/pytorch/pytorch/pull/154265))
 
+- Add AOTI model name config `aot_inductor.model_name_for_generated_files` ([#154129](https://github.com/pytorch/pytorch/pull/154129))
+
 ## Profiler
-- Added flag to toggle global and local callbacks for annotations ([#154932](https://github.com/pytorch/pytorch/pull/154932))
-
-- Pass overload names To Kineto ([#149333](https://github.com/pytorch/pytorch/pull/149333))
-
-- Memory snapshot on demand ([#150559](https://github.com/pytorch/pytorch/pull/150559))
+- Added support for on-demand memory snapshot ([#150559](https://github.com/pytorch/pytorch/pull/150559))
 
 - Added PT2 compile context to visualizer ([#152862](https://github.com/pytorch/pytorch/pull/152862))
 
 - Added PT2 to memory snapshot ([#152707](https://github.com/pytorch/pytorch/pull/152707))
-
-- Enabled `Profiler.key_averages().table()` for HPU devices ([#150770](https://github.com/pytorch/pytorch/pull/150770))
 
 ## Quantization
 - Added a lowering pass for x86 backend of PT2E quantization ([#149708](https://github.com/pytorch/pytorch/pull/149708))
@@ -652,8 +647,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Dynamic shape handling for `standalone_compile` ([#151788](https://github.com/pytorch/pytorch/pull/151788))
 
 #### Inductor
-- Add num_runners to AOTIModelPackageLoader ([#149364](https://github.com/pytorch/pytorch/pull/149364))
-
 - New script `profile_analysis.py` to diff kernel usage from `torch.profile` traces ([#149697](https://github.com/pytorch/pytorch/pull/149697))
 
 - Improvements on CPU welford reduction ([#145061](https://github.com/pytorch/pytorch/pull/145061))
@@ -701,6 +694,8 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added `permute`/`squeeze`/`abs`/`aten.hann_window`/`narrow`/`_weight_int4pack_mm`/`fill_`/`pad` in c-shim fallback ops ([#154251](https://github.com/pytorch/pytorch/pull/154251), [#156496](https://github.com/pytorch/pytorch/pull/156496), [#151059](https://github.com/pytorch/pytorch/pull/151059), [#156245](https://github.com/pytorch/pytorch/pull/156245), [#155226](https://github.com/pytorch/pytorch/pull/155226))
 
 - Added `RECORD_FUNCTION` for AOTI ([#150150](https://github.com/pytorch/pytorch/pull/150150))
+
+- Add `num_runners` to `AOTIModelPackageLoader` ([#149364](https://github.com/pytorch/pytorch/pull/149364))
 
 ## FX
 - Removed warnings on non-buffer tensor constants ([#148483](https://github.com/pytorch/pytorch/pull/148483))
@@ -779,13 +774,19 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added `lr_lambda` type check in `MultiplicativeLR` ([#151973](https://github.com/pytorch/pytorch/pull/151973))
 
 ## Profiler
-- Set Duration to -1 for unfinished CPU events ([#150131](https://github.com/pytorch/pytorch/pull/150131))
+- Added flag to toggle global and local callbacks for annotations ([#154932](https://github.com/pytorch/pytorch/pull/154932))
+
+- Pass overload names to Kineto ([#149333](https://github.com/pytorch/pytorch/pull/149333))
+
+- Set duration to -1 for unfinished CPU events ([#150131](https://github.com/pytorch/pytorch/pull/150131))
 
 - Start at index with most events ([#154571](https://github.com/pytorch/pytorch/pull/154571))
 
 - Remove `compile_context` handle even if `compile_context` not set ([#154664](https://github.com/pytorch/pytorch/pull/154664))
 
 - Remove temp flag for on-demand memory snapshot ([#151068](https://github.com/pytorch/pytorch/pull/151068))
+
+- Enabled `Profiler.key_averages().table()` for HPU devices ([#150770](https://github.com/pytorch/pytorch/pull/150770))
 
 ## Quantization
 - Support boolean tensor for `torch.fused_moving_avg_obs_fake_quant` on CUDA ([#153699](https://github.com/pytorch/pytorch/pull/153699))
@@ -818,7 +819,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Improved error handling and reporting in Intel GPU CMake files ([#149353](https://github.com/pytorch/pytorch/pull/149353))
 
-- Support `embed_cubin` and `multi_arch_kernel_binary` options in AOTInductor for Intel GPU ([#154514](https://github.com/pytorch/pytorch/pull/154514), [#153924](https://github.com/pytorch/pytorch/pull/153924))
+- Support `embed_cubin` and `multi_arch_kernel_binary` options in AOTI for Intel GPU ([#154514](https://github.com/pytorch/pytorch/pull/154514), [#153924](https://github.com/pytorch/pytorch/pull/153924))
 
 - Added generic and Intel GPU specific Stream and Event in `UserDefineClass` ([#155787](https://github.com/pytorch/pytorch/pull/155787))
 
@@ -945,8 +946,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Fixed deserialization of `None` inuts ([#150515](https://github.com/pytorch/pytorch/pull/150515))
 
-- Fixed propagating unbacked symint in AOTI lowering ([#150570](https://github.com/pytorch/pytorch/pull/150570))
-
 - Expanded `allowed_getattr_types` to include `torch.Tensor` ([#150867](https://github.com/pytorch/pytorch/pull/150867))
 
 - Fixed `aten.div` type promotion for `FakeTensor` ([#150874](https://github.com/pytorch/pytorch/pull/150874))
@@ -989,6 +988,8 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Fix index offset for optional tensor return ([#155073](https://github.com/pytorch/pytorch/pull/155073))
 
 - Fix float8 type printing for min/max value printing ([#154466](https://github.com/pytorch/pytorch/pull/154466))
+
+- Fixed propagating unbacked symint in AOTI lowering ([#150570](https://github.com/pytorch/pytorch/pull/150570))
 
 ## JIT
 - Support LLVM18+ in NNC ([#149058](https://github.com/pytorch/pytorch/pull/149058))
@@ -1428,7 +1429,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Fixed bug in `detect_attr_assignment` ([#151824](https://github.com/pytorch/pytorch/pull/151824))
 
 ## Ahead-Of-Time Inductor (AOTI)
-- Refactor AOTInductor runtime API for Intel GPU ([#153929](https://github.com/pytorch/pytorch/pull/153929))
+- Refactor `AOTInductor` runtime API for Intel GPU ([#153929](https://github.com/pytorch/pytorch/pull/153929))
 
 - Improve stable library APIs ([#152040](https://github.com/pytorch/pytorch/pull/152040))
 
