@@ -410,12 +410,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Introduced `AdditionalInputs` to specify dynamic shapes -- https://docs.pytorch.org/docs/main/export.html#torch.export.dynamic_shapes.AdditionalInputs ([#150144](https://github.com/pytorch/pytorch/pull/150144), [#151970](https://github.com/pytorch/pytorch/pull/151970))
 
-- Added min/max ranges for dim hints ([#149590](https://github.com/pytorch/pytorch/pull/149590))
-
-- Allow registering normal classes to `pytree.register_dataclass` ([#147752](https://github.com/pytorch/pytorch/pull/147752))
-
-- Allow specifying integer inputs as dynamic ([#151842](https://github.com/pytorch/pytorch/pull/151842))
-
 ## Ahead-Of-Time Inductor (AOTI)
 - Added support for Torchbind objects ([#150196](https://github.com/pytorch/pytorch/pull/150196), [#154265](https://github.com/pytorch/pytorch/pull/154265))
 
@@ -441,17 +435,8 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Introduced `torch.float4_e2m1fn_x2` ([#148791](https://github.com/pytorch/pytorch/pull/148791))
 
-## ROCm
-- Support `CUBLASLT_MATMUL_MATRIX_SCALE_OUTER_VEC_32F` ([#154680](https://github.com/pytorch/pytorch/pull/154680))
-
-- Exposed several MIOpen symbols ([#154545](https://github.com/pytorch/pytorch/pull/154545))
-
-- Enabled BF16 NCHW mixed batchnorm on MIOpen if ROCm>=6.4 ([#154611](https://github.com/pytorch/pytorch/pull/154611))
-
 ## XPU
 - Support Intel distributed backend (XCCL) ([#141856](https://github.com/pytorch/pytorch/pull/141856))
-
-- Support int4 WOQ GEMM on Intel GPU ([#137566](https://github.com/pytorch/pytorch/pull/137566))
 
 - Support SYCL kernels through C++ extension ([#132945](https://github.com/pytorch/pytorch/pull/132945))
 
@@ -654,6 +639,12 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - New environement var `LOG_AUTOTUNE_RESULTS` for autotune log ([#156254](https://github.com/pytorch/pytorch/pull/156254))
 
 ## torch.export
+- Added min/max ranges for dim hints ([#149590](https://github.com/pytorch/pytorch/pull/149590))
+
+- Allow registering normal classes to `pytree.register_dataclass` ([#147752](https://github.com/pytorch/pytorch/pull/147752))
+
+- Allow specifying integer inputs as dynamic ([#151842](https://github.com/pytorch/pytorch/pull/151842))
+
 - Improved error message on constraint violation error ([#155738](https://github.com/pytorch/pytorch/pull/155738), [#152924](https://github.com/pytorch/pytorch/pull/152924), [#155603](https://github.com/pytorch/pytorch/pull/155603), [#151407](https://github.com/pytorch/pytorch/pull/151407))
 
 - Support python assertion with `SymInt`s ([#149444](https://github.com/pytorch/pytorch/pull/149444))
@@ -800,6 +791,12 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Get current device from torch rather than HIP in MIOpen handle creation ([#154549](https://github.com/pytorch/pytorch/pull/154549))
 
+- Support `CUBLASLT_MATMUL_MATRIX_SCALE_OUTER_VEC_32F` ([#154680](https://github.com/pytorch/pytorch/pull/154680))
+
+- Exposed several MIOpen symbols ([#154545](https://github.com/pytorch/pytorch/pull/154545))
+
+- Enabled BF16 NCHW mixed batchnorm on MIOpen if ROCm>=6.4 ([#154611](https://github.com/pytorch/pytorch/pull/154611))
+
 ## Sparse Frontend
 - Enabled sparse compressed tensor invariant checks for `PrivateUse1` extension ([#149374](https://github.com/pytorch/pytorch/pull/149374))
 
@@ -822,6 +819,8 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Support `embed_cubin` and `multi_arch_kernel_binary` options in AOTI for Intel GPU ([#154514](https://github.com/pytorch/pytorch/pull/154514), [#153924](https://github.com/pytorch/pytorch/pull/153924))
 
 - Added generic and Intel GPU specific Stream and Event in `UserDefineClass` ([#155787](https://github.com/pytorch/pytorch/pull/155787))
+
+- Support int4 WOQ GEMM on Intel GPU ([#137566](https://github.com/pytorch/pytorch/pull/137566))
 
 # Bug Fixes
 ## Release Engineering
@@ -882,7 +881,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 #### c10d
 - Fixed extra CUDA context created by barrier ([#149144](https://github.com/pytorch/pytorch/pull/149144))
 - Fixed the logic to use group rank instead of global rank when possible ([#149488](https://github.com/pytorch/pytorch/pull/149488))
-- Fixed ET trace collection of all_to_all ([#149485](https://github.com/pytorch/pytorch/pull/149485))
+- Fixed ET trace collection of `all_to_all` ([#149485](https://github.com/pytorch/pytorch/pull/149485))
 - Disabled start event recording for coalesced col and improved profile title ([#150863](https://github.com/pytorch/pytorch/pull/150863))
 - Fixed connection reset caused by wrong socket close in tcp store ([#150987](https://github.com/pytorch/pytorch/pull/150987))
 - Added back correct EOF case check in the libuv backend of `TCPStore` ([#151052](https://github.com/pytorch/pytorch/pull/151052))
