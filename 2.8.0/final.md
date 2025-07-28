@@ -369,7 +369,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added `clone` feature for `tcpstore` ([#150966](https://github.com/pytorch/pytorch/pull/150966)), ([#151045](https://github.com/pytorch/pytorch/pull/151045))
 - Added `queues` for `tcpstore` ([#150969](https://github.com/pytorch/pytorch/pull/150969))
 - Added `_allgather_base` , `reduce_scatter` , and `_reduce_scatter_base` into `ProcessGroupMPI` to enable FSDP with MPI backend ([#150162](https://github.com/pytorch/pytorch/pull/150162))
-- Added nonblocking mode to `queue_pop` for tcpstore ([#151485](https://github.com/pytorch/pytorch/pull/151485))
+- Added nonblocking mode to `queue_pop` for `tcpstore` ([#151485](https://github.com/pytorch/pytorch/pull/151485))
 - Added api to enable/disable NaN detector per-PG ([#151723](https://github.com/pytorch/pytorch/pull/151723))
 - Added FP8 support in `ProcessGroupNCCL` ([#152706](https://github.com/pytorch/pytorch/pull/152706))
 - Added `ibverbs` backend in gloo ([#153015](https://github.com/pytorch/pytorch/pull/153015), [#153425](https://github.com/pytorch/pytorch/pull/153425))
@@ -511,21 +511,21 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - CUTLASS update to 3.9.2 ([#152779](https://github.com/pytorch/pytorch/pull/152779))
 
-- Report the correct tensor that needs to be GPU in FusedSgdKernel error message ([#153074](https://github.com/pytorch/pytorch/pull/153074))
+- Report the correct tensor that needs to be GPU in `FusedSgdKernel` error message ([#153074](https://github.com/pytorch/pytorch/pull/153074))
 
 - Support SDPA attention backends on sm121 (DGX Spark) ([#152314](https://github.com/pytorch/pytorch/pull/152314))
 
-- Always initialize a CUDA context when torch.cuda.set_device() is called by the user ([#155900](https://github.com/pytorch/pytorch/pull/155900))
+- Always initialize a CUDA context when `torch.cuda.set_device()` is called by the user ([#155900](https://github.com/pytorch/pytorch/pull/155900))
 
-- Add torch.cuda._compile_kernel() to support building inline user CUDA kernels live at runtime ([#151484](https://github.com/pytorch/pytorch/pull/151484))
+- Added `torch.cuda._compile_kernel()` to support building inline user CUDA kernels live at runtime ([#151484](https://github.com/pytorch/pytorch/pull/151484))
 
-- Add FP8 row-wise scaled-mm for sm12x (GeForce Blackwell) ([#155991](https://github.com/pytorch/pytorch/pull/155991))
+- Added FP8 row-wise scaled-mm for sm12x (GeForce Blackwell) ([#155991](https://github.com/pytorch/pytorch/pull/155991))
 
 - Use 4 elements per thread in no-cast elementwise kernel to reduce binary size ([#154558](https://github.com/pytorch/pytorch/pull/154558))
 
 - Add Clear History Flag to cleanup memory snapshots ([#149352](https://github.com/pytorch/pytorch/pull/149352))
 
-- Use cutlass native BroadcastPtrArray in scaled group gemm to simplify implementation ([#152404](https://github.com/pytorch/pytorch/pull/152404))
+- Use cutlass native `BroadcastPtrArray` in scaled group gemm to simplify implementation ([#152404](https://github.com/pytorch/pytorch/pull/152404))
 
 ## cuDNN
 - Update cuDNN frontend version to 1.11.0 ([#149759](https://github.com/pytorch/pytorch/pull/149759))
