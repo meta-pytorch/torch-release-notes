@@ -19,10 +19,9 @@ Below are the full release notes for this release.
 
 
 # Backwards Incompatible Changes
-## Autograd
-- Add missing in-place on view check to custom autograd.Function ([#153094](https://github.com/pytorch/pytorch/pull/153094))
+### Added missing in-place on view check to custom `autograd.Function` ([#153094](https://github.com/pytorch/pytorch/pull/153094))
 
-In 2.8.0, if a custom autograd.Function mutates a view of a leaf requiring grad,
+In 2.8.0, if a custom `autograd.Function` mutates a view of a leaf requiring grad,
 it now properly raises an error. Previously, it would silently leak memory.
 ```
    class Func(torch.autograd.Function):
@@ -42,20 +41,20 @@ it now properly raises an error. Previously, it would silently leak memory.
 ```
 Output:
 
-2.8.0
-```
-RuntimeError: a view of a leaf Variable that requires grad is being used in an in-place operation
-```
-2.7.0
+Version 2.7.0
 ```
 Runs without error, but leaks memory
 ```
+Version 2.8.0
+```
+RuntimeError: a view of a leaf Variable that requires grad is being used in an in-place operation
+```
 
-## Build Frontend
-- **DLPack has been upgraded to 1.0, with some of the DLDeviceType enum values renamed. Please switch
-to the new names.** ([#145000](https://github.com/pytorch/pytorch/pull/145000))
+### Upgraded `DLPack` to 1.0 ([#145000](https://github.com/pytorch/pytorch/pull/145000))
+As part of the upgrade, some of the `DLDeviceType` enum values have been renamed. Please switch
+to the new names.
 
-In 2.7.0
+Version 2.7.0
 ```
 from torch.utils.dlpack import DLDeviceType
 
@@ -64,7 +63,7 @@ d2 = DLDeviceType.kDLCPUPinned
 ...
 ```
 
-In 2.8.0
+Version 2.8.0
 ```
 from torch.utils.dlpack import DLDeviceType
 
@@ -73,31 +72,31 @@ d2 = DLDeviceType.kDLCUDAHost  # formerly kDLCPUPinned
 ...
 ```
 
-- **NVTX3 code has been moved from `cmake/public/cuda.cmake` to `cmake/Dependencies.cmake` ([#151583](https://github.com/pytorch/pytorch/pull/151583))**
+### NVTX3 code has been moved from `cmake/public/cuda.cmake` to `cmake/Dependencies.cmake` ([#151583](https://github.com/pytorch/pytorch/pull/151583))
 
 This is a BC-breaking change for the build system interface. Downstream projects that previously got NVTX3 through `cmake/public/cuda.cmake`
 (i.e.. calling `find_package(TORCH REQUIRED)`) will now need to explicitly configure NVTX3 support in the library itself (i.e. use `USE_SYSTEM_NVTX=1`).
 The change is to fix the broken behavior where downstream projects couldn't find NVTX3 anyway due to the `PROJECT_SOURCE_DIR` mismatch.
 
-`2.7.0`: A downstream project using `-DUSE_SYSTEM_NVTX` would be able to find NVTX3 and `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake` logic.
-`2.8.0`: A downstream project using `-DUSE_SYSTEM_NVTX` will not be able to find NVTX3 or `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake`.
+Version 2.7.0: A downstream project using `-DUSE_SYSTEM_NVTX` would be able to find NVTX3 and `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake` logic.
+Version 2.8.0: A downstream project using `-DUSE_SYSTEM_NVTX` will not be able to find NVTX3 or `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake`.
 The downstream project now needs to explicitly find NVTX3 and torch::nvtx3 by implementing the same logic in PyTorch's `cmake/Dependences.cmake`.
 
-`2.7.0`: A downstream project NOT using `-DUSE_SYSTEM_NVTX` would encounter build errors with CUDA 12.8 or above.
-`2.8.0`: A downstream project NOT using `-DUSE_SYSTEM_NVTX` will proceed building without NVTX unless another part of the build process re-enables NVTX.
+Version 2.7.0: A downstream project NOT using `-DUSE_SYSTEM_NVTX` would encounter build errors with CUDA 12.8 or above.
+Version 2.8.0: A downstream project NOT using `-DUSE_SYSTEM_NVTX` will proceed building without NVTX unless another part of the build process re-enables NVTX.
 
-## Composability
-- Fix `evaluate_expr` to include `suppress_guards_tls` in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
+### `ShapeEnv.evaluate_expr` has been fixed to include `suppress_guards_tls` in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
 
-Prior to 2.8 it was possible for a guard on a symbolic shape to be incorrectly
+Prior to 2.8, it was possible for a guard on a symbolic shape to be incorrectly
 omitted if the symbolic shape evaluation was previously tested with guards
 suppressed (this often happens within the compiler itself). This has been fixed
 in 2.8 and usually will just silently "do the right thing" and add the correct
-guard but if the new guard causes a tensor marked with `mark_dynamic` to become
-specialized then it can result in an error. One workaround is to use
+guard. However, if the new guard causes a tensor marked with `mark_dynamic` to become
+specialized, this can result in an error. One workaround is to use
 `maybe_mark_dynamic` instead of `mark_dynamic`.
 
-See the discussion in issue [#157921](https://github.com/pytorch/pytorch/issues/157921).
+See the discussion in issue [#157921](https://github.com/pytorch/pytorch/issues/157921) for more
+context.
 
 Version 2.7.0
 ```
@@ -135,17 +134,17 @@ def f(embedding_indices, x):
 f(embed, x)
 ```
 
-## C++ Frontend
-- **`torch/types.h` no longer includes `Dispatcher.h`. This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).** (#149557)
+### Removed the `torch/types.h` include from `Dispatcher.h` ([#149557](https://github.com/pytorch/pytorch/pull/149557))
+This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).
 
-`Dispatcher.h` does not belong as an include from `torch/types.h` and was only present as a short-term
-hack to appease `torchvision`. If you run into `torchvision` build errors, please update to a more recent version of `torchvision` to resolve this.
+Note that `Dispatcher.h` does not belong as an include from `torch/types.h` and was only present as a
+short-term hack to appease `torchvision`. If you run into `torchvision` build errors, please
+update to a more recent version of `torchvision` to resolve this.
 
-## Dynamo
-- For HigherOrderOperators (e.g. `cond`), we enforced a stricter aliasing/mutation check, which will explicitly error out if they doesn't support alias/mutation among inputs and outputs
+### Added a stricter aliasing/mutation check for `HigherOrderOperator`s (e.g. `cond`), which will explicitly error out if they don't support alias/mutation among inputs and outputs
 ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658)).
 
-For affected HigherOrderOperators, add `.clone()` to aliased outputs.
+For affected `HigherOrderOperator`s, add `.clone()` to aliased outputs to address this.
 
 Version 2.7.0
 ```python
@@ -169,10 +168,10 @@ def fn(x):
 fn(torch.ones(3))
 ```
 
-## Export
-- **`strict=False` is now set as the default in `torch.export.export` and `export_for_training`; this differs from the previous release default of `strict=True`. ([#148790](https://github.com/pytorch/pytorch/pull/148790), [#150941](https://github.com/pytorch/pytorch/pull/150941))**
+### Switched default to `strict=False` in `torch.export.export` and `export_for_training` ([#148790](https://github.com/pytorch/pytorch/pull/148790), [#150941](https://github.com/pytorch/pytorch/pull/150941))
 
-To get the old default behavior, please explicitly pass `strict=True`.
+This differs from the previous release default of `strict=True`. To revert to the old default
+behavior, please explicitly pass `strict=True`.
 
 Version 2.7.0
 ```python
@@ -192,7 +191,7 @@ torch.export.export(..., strict=True)
 torch.export.export_for_training(..., strict=True)
 ```
 
-- **`torch.export.export_for_inference` has been removed in favor of `torch.export.export_for_training().run_decompositions()`. ([#149078](https://github.com/pytorch/pytorch/pull/149078))**
+### `torch.export.export_for_inference` has been removed in favor of `torch.export.export_for_training().run_decompositions()` ([#149078](https://github.com/pytorch/pytorch/pull/149078))
 
 Version 2.7.0
 ```python
@@ -212,10 +211,10 @@ exported_program = torch.export.export_for_training(
 ).run_decompositions(decomp_table=decomp_table)
 ```
 
-## Inductor
-- **`guard_or_x` and `definitely_x` have been consolidated. ([#152463](https://github.com/pytorch/pytorch/pull/152463)). We removed `definitely_true` / `definitely_false` and associated APIs, replacing
-them with `guard_or_true` / `guard_or_false`, which offer similar functionality and can be used to
-achieve the same effect.**
+### `guard_or_x` and `definitely_x` have been consolidated ([#152463](https://github.com/pytorch/pytorch/pull/152463))
+We removed `definitely_true` / `definitely_false` and associated APIs, replacing them with
+`guard_or_true` / `guard_or_false`, which offer similar functionality and can be used to
+achieve the same effect. Please migrate to the latter.
 
 Version 2.7.0
 ```python
@@ -242,10 +241,10 @@ if not guard_or_true(y):
   ...
 ```
 
-## Linear Algebra Frontend
-- **An error is now properly thrown for the out variant of `tensordot` when called with a
-`requires_grad=True` tensor. Please avoid passing an out tensor with `requires_grad=True` as
-gradients cannot be computed for this tensor.**
+### An error is now properly thrown for the out variant of `tensordot` when called with a `requires_grad=True` tensor ([#150270](https://github.com/pytorch/pytorch/pull/150270))
+
+Please avoid passing an out tensor with `requires_grad=True` as gradients cannot be
+computed for this tensor.
 
 In 2.7.0
 ```
@@ -267,8 +266,8 @@ torch.tensordot(a, b, dims=([1], [0]), out=c)
 # it does not require gradients, or make sure its shape matches the expected output.
 ```
 
-## Python Frontend
-- **Calling an op with an input dtype that is unsupported now raise `NotImplementedError` instead of `RuntimeError`. Please update exception handling logic to reflect this.** ([#155470](https://github.com/pytorch/pytorch/pull/155470))
+### Calling an op with an input dtype that is unsupported now raises `NotImplementedError` instead of `RuntimeError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
+Please update exception handling logic to reflect this.
 
 In 2.7.0
 ```
