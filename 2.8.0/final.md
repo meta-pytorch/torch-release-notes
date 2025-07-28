@@ -292,32 +292,31 @@ except NotImplementedError:
 
 # Deprecations
 ### Several configuration variables related to `torch.compile` have been deprecated, renamed, or moved
-- Dynamo config variable `enable_cpp_framelocals_guard_eval` is deprecated ([#151008](https://github.com/pytorch/pytorch/pull/151008))
-This config no longer has any effect.
+- Dynamo config variable `enable_cpp_framelocals_guard_eval` is deprecated ([#151008](https://github.com/pytorch/pytorch/pull/151008)). This config no longer has any effect.
 
-- Inductor config variable `rocm.n_max_profiling_configs` is deprecated ([#152341](https://github.com/pytorch/pytorch/pull/152341))
+- Inductor config variable `rocm.n_max_profiling_configs` is deprecated ([#152341](https://github.com/pytorch/pytorch/pull/152341)).
 Instead, use ck-tile based configs `rocm.ck_max_profiling_configs` and
 `rocm.ck_tile_max_profiling_configs`.
-TODO: Add note!
 
-- Inductor config variable `autotune_fallback_to_aten` is deprecated ([#154331](https://github.com/pytorch/pytorch/pull/154331))
+- Inductor config variable `autotune_fallback_to_aten` is deprecated ([#154331](https://github.com/pytorch/pytorch/pull/154331)).
 Inductor will no longer silently fall back to `ATen`. Please add `"ATEN"` to
 `max_autotune_gemm_backends` for the old behavior.
-TODO: Add note!
 
-- Inductor config variables `use_mixed_mm` and `mixed_mm_choice` are deprecated ([#152071](https://github.com/pytorch/pytorch/pull/152071))
-Inductor now supports prologue fusion, so there is no need for special cases now.
+- Inductor config variables `use_mixed_mm` and `mixed_mm_choice` are deprecated ([#152071](https://github.com/pytorch/pytorch/pull/152071)). Inductor now supports prologue fusion, so there is no need for
+special cases now.
 
-- Inductor config setting `descriptive_names = False` is deprecated ([#151481](https://github.com/pytorch/pytorch/pull/151481))
-Please use one of the other available options.
+- Inductor config setting `descriptive_names = False` is deprecated ([#151481](https://github.com/pytorch/pytorch/pull/151481)). Please use one of the other available
+options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
-- `custom_op_default_layout_constraint` has moved from inductor config to functorch config ([#148104](https://github.com/pytorch/pytorch/pull/148104))
+- `custom_op_default_layout_constraint` has moved from inductor config to functorch config ([#148104](https://github.com/pytorch/pytorch/pull/148104)). Please reference it via
+`torch._functorch.config.custom_op_default_layout_constraint` instead of 
+`torch._inductor.config.custom_op_default_layout_constraint`.
 
-- AOTI config option `emit_current_arch_binary` is deprecated ([#155768](https://github.com/pytorch/pytorch/pull/155768))
+- AOTI config variable `emit_current_arch_binary` is deprecated ([#155768](https://github.com/pytorch/pytorch/pull/155768)). 
 
-- AOTI config variable `aot_inductor.embed_cubin` has been renamed to `aot_inductor.embed_kernel_binary` ([#154412](https://github.com/pytorch/pytorch/pull/154412))
+- AOTI config variable `aot_inductor.embed_cubin` has been renamed to `aot_inductor.embed_kernel_binary` ([#154412](https://github.com/pytorch/pytorch/pull/154412)).
 
-- AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been changed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714))
+- AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been renamed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714)).
 
 ### `torch.ao.quantization` is deprecated and will be removed in 2.10 ([#153892](https://github.com/pytorch/pytorch/pull/153892))
 For migrations of users:
