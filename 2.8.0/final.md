@@ -291,6 +291,14 @@ except NotImplementedError:
 ```
 
 # Deprecations
+### `torch.ao.quantization` is deprecated and will be removed in 2.10 ([#153892](https://github.com/pytorch/pytorch/pull/153892))
+To migrate:
+- Eager mode quantization (`torch.ao.quantization.quantize`, `torch.ao.quantization.quantize_dynamic`): use torchao eager mode `quantize_` for weight only and dynamic quantization or `torchao` pt2e quantization for static quantization.
+- FX graph mode quantization (`torch.ao.quantization.quantize_fx.prepare_fx`, `torch.ao.quantization.quantize_fx.convert_fx`): use `torchao` pt2e quantization API instead (`torchao.quantization.quantize_pt2e.prepare_pt2e`, `torchao.quantization.quantize_pt2e.convert_pt2e`).
+
+Note that pt2e quantization has been migrated to `torchao` (https://github.com/pytorch/ao/tree/main/torchao/quantization/pt2e).
+See https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/main/quick_start.html#pytorch-2-export-quantization for more details.
+
 ### Several config variables related to `torch.compile` have been deprecated, renamed, or moved
 - Dynamo config variable `enable_cpp_framelocals_guard_eval` is deprecated ([#151008](https://github.com/pytorch/pytorch/pull/151008)). This config no longer has any effect.
 
@@ -317,13 +325,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - AOTI config variable `aot_inductor.embed_cubin` has been renamed to `aot_inductor.embed_kernel_binary` ([#154412](https://github.com/pytorch/pytorch/pull/154412)).
 
 - AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been renamed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714)).
-
-### `torch.ao.quantization` is deprecated and will be removed in 2.10 ([#153892](https://github.com/pytorch/pytorch/pull/153892))
-For migrations of users:
-1. Eager mode quantization (`torch.ao.quantization.quantize`, `torch.ao.quantization.quantize_dynamic`), please migrate to use torchao eager mode `quantize_` for weight only and dynamic quantization, or torchao pt2e quantization for static quantization
-2. FX graph mode quantization (`torch.ao.quantization.quantize_fx.prepare_fx`, `torch.ao.quantization.quantize_fx.convert_fx`, please migrate to use torchao pt2e quantization API instead (`torchao.quantization.quantize_pt2e.prepare_pt2e`, `torchao.quantization.quantize_pt2e.convert_pt2e`)
-3. PyTorch pt2e quantization has been migrated to torchao (https://github.com/pytorch/ao/tree/main/torchao/quantization/pt2e)
-see https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/main/quick_start.html#pytorch-2-export-quantization for more details
 
 # New Features
 ## CPU (x86)
