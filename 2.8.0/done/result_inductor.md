@@ -31,16 +31,27 @@ achieve the same effect.**
 
   Version 2.7.0
   ```python
-  import torch
+  from torch.fx.experimental.symbolic_shapes import definitely_false, definitely_true
 
-  TODO
+  ...
+  if definitely_true(x):
+    ...
+
+  if definitely_false(y):
+    ...
   ```
 
   Version 2.8.0
   ```python
-  import torch
+  from torch.fx.experimental.symbolic_shapes import guard_or_false, guard_or_true
 
-  TODO
+  ...
+  if guard_or_false(x):
+    ...
+
+  # alternatively: if guard_or_false(torch.sym_not(y))
+  if not guard_or_true(y):
+    ...
   ```
 
 ### deprecation
