@@ -353,7 +353,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added api to enable/disable NaN detector per-PG ([#151723](https://github.com/pytorch/pytorch/pull/151723))
 - Added FP8 support in `ProcessGroupNCCL` ([#152706](https://github.com/pytorch/pytorch/pull/152706))
 - Added `ibverbs` backend in gloo ([#153015](https://github.com/pytorch/pytorch/pull/153015), [#153425](https://github.com/pytorch/pytorch/pull/153425))
-- Enabled Gloo CUDA when used with a backend that supports `GPUDirect` ([#153406](https://github.com/pytorch/pytorch/pull/153406))
+- Enabled gloo CUDA when used with a backend that supports `GPUDirect` ([#153406](https://github.com/pytorch/pytorch/pull/153406))
 
 ## torch.compile
 #### Dynamo
@@ -365,21 +365,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 #### Inductor
 - Added support for mapping a Dynamo graph to multiple different Inductor graphs, which can be optimized separately ([#147648](https://github.com/pytorch/pytorch/pull/147648), [#147038](https://github.com/pytorch/pytorch/pull/147038))
-
-- Introduced new config settings:
-  - Add config to specify custom op C shim: `aot_inductor.custom_ops_to_c_shims` and `aot_inductor.custom_op_libs` ([#153968](https://github.com/pytorch/pytorch/pull/153968))
-  - New config to limit fusions to a node distance of 64: `max_fusion_buffer_group_pairwise_attempts` ([#154688](https://github.com/pytorch/pytorch/pull/154688))
-  - Add config control for CUTLASS operation selection: `cuda.cutlass_enabled_ops` ([#155770](https://github.com/pytorch/pytorch/pull/155770))
-  - Add config `triton.cudagraph_capture_sizes` to specify dynamic shapes to capture cudagraphs and skip cudagraph for other shapes ([#156551](https://github.com/pytorch/pytorch/pull/156551))
-  - New config `use_static_cuda_launcher` to launch compiled Triton statically to improve cold start times ([#148890](https://github.com/pytorch/pytorch/pull/148890))
-  - New config `assume_unaligned_fallback_output` to allow inductor to track unaligned outputs ([#150777](https://github.com/pytorch/pytorch/pull/150777))
-  - New config `cuda.cutlass_tma_only` controls whether or not to only use TMA-compatible kernels in CUTLASS ([#152815](https://github.com/pytorch/pytorch/pull/152815))
-  - Add config `static_launch_user_defined_triton_kernels` to statically launch user defined triton kernels ([#153725](https://github.com/pytorch/pytorch/pull/153725))
-  - New config `precompilation_timeout_seconds` to control the timeout on precompilation ([#153788](https://github.com/pytorch/pytorch/pull/153788))
-  - New config `disable_decompose_k` to disable new  DecomposeK GEMM Kernels ([#154421](https://github.com/pytorch/pytorch/pull/154421))
-  - New config `_post_fusion_custom_pass` to register a custom pass to be run right after fusion in Inductor Scheduler ([#153723](https://github.com/pytorch/pytorch/pull/153723))
-  - New config `min_num_split` sets the minimum number of splits in a split reduction ([#155941](https://github.com/pytorch/pytorch/pull/155941))
-  - New config `max_autotune_flex_search_space` allows specifying the size of the search space for flex attention autotuning ([#156307](https://github.com/pytorch/pytorch/pull/156307))
 
 ## torch.export
 - Introduced a new version of export: [`draft-export`](https://docs.pytorch.org/docs/main/export/draft_export.html) ([#152637](https://github.com/pytorch/pytorch/pull/152637), [#153219](https://github.com/pytorch/pytorch/pull/153219), [#149465](https://github.com/pytorch/pytorch/pull/149465), [#153627](https://github.com/pytorch/pytorch/pull/153627), [#154190](https://github.com/pytorch/pytorch/pull/154190), [#155744](https://github.com/pytorch/pytorch/pull/155744), [#150876](https://github.com/pytorch/pytorch/pull/150876), [#150948](https://github.com/pytorch/pytorch/pull/150948), [#151051](https://github.com/pytorch/pytorch/pull/151051), [#151065](https://github.com/pytorch/pytorch/pull/151065), [#150809](https://github.com/pytorch/pytorch/pull/150809), [#151797](https://github.com/pytorch/pytorch/pull/151797))
@@ -605,6 +590,21 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Improvements on CPU welford reduction ([#145061](https://github.com/pytorch/pytorch/pull/145061))
 
 - New environement var `LOG_AUTOTUNE_RESULTS` for autotune log ([#156254](https://github.com/pytorch/pytorch/pull/156254))
+
+- Introduced new config settings:
+  - Add config to specify custom op C shim: `aot_inductor.custom_ops_to_c_shims` and `aot_inductor.custom_op_libs` ([#153968](https://github.com/pytorch/pytorch/pull/153968))
+  - New config to limit fusions to a node distance of 64: `max_fusion_buffer_group_pairwise_attempts` ([#154688](https://github.com/pytorch/pytorch/pull/154688))
+  - Add config control for CUTLASS operation selection: `cuda.cutlass_enabled_ops` ([#155770](https://github.com/pytorch/pytorch/pull/155770))
+  - Add config `triton.cudagraph_capture_sizes` to specify dynamic shapes to capture cudagraphs and skip cudagraph for other shapes ([#156551](https://github.com/pytorch/pytorch/pull/156551))
+  - New config `use_static_cuda_launcher` to launch compiled Triton statically to improve cold start times ([#148890](https://github.com/pytorch/pytorch/pull/148890))
+  - New config `assume_unaligned_fallback_output` to allow inductor to track unaligned outputs ([#150777](https://github.com/pytorch/pytorch/pull/150777))
+  - New config `cuda.cutlass_tma_only` controls whether or not to only use TMA-compatible kernels in CUTLASS ([#152815](https://github.com/pytorch/pytorch/pull/152815))
+  - Add config `static_launch_user_defined_triton_kernels` to statically launch user defined triton kernels ([#153725](https://github.com/pytorch/pytorch/pull/153725))
+  - New config `precompilation_timeout_seconds` to control the timeout on precompilation ([#153788](https://github.com/pytorch/pytorch/pull/153788))
+  - New config `disable_decompose_k` to disable new  DecomposeK GEMM Kernels ([#154421](https://github.com/pytorch/pytorch/pull/154421))
+  - New config `_post_fusion_custom_pass` to register a custom pass to be run right after fusion in Inductor Scheduler ([#153723](https://github.com/pytorch/pytorch/pull/153723))
+  - New config `min_num_split` sets the minimum number of splits in a split reduction ([#155941](https://github.com/pytorch/pytorch/pull/155941))
+  - New config `max_autotune_flex_search_space` allows specifying the size of the search space for flex attention autotuning ([#156307](https://github.com/pytorch/pytorch/pull/156307))
 
 ## torch.export
 - Added min/max ranges for dim hints ([#149590](https://github.com/pytorch/pytorch/pull/149590))
