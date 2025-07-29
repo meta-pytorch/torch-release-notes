@@ -295,6 +295,9 @@ if not guard_or_true(y):
 ```
 
 # Deprecations
+### MPS support for MacOS Ventura will be removed in 2.9
+TODO
+
 ### `torch.ao.quantization` is deprecated and will be removed in 2.10 ([#153892](https://github.com/pytorch/pytorch/pull/153892))
 To migrate:
 - Eager mode quantization (`torch.ao.quantization.quantize`, `torch.ao.quantization.quantize_dynamic`)
@@ -372,7 +375,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Introduced [`AdditionalInputs`](https://docs.pytorch.org/docs/main/export/draft_export.html) to specify dynamic shapes ([#150144](https://github.com/pytorch/pytorch/pull/150144), [#151970](https://github.com/pytorch/pytorch/pull/151970))
 
 ## Ahead-Of-Time Inductor (AOTI)
-- Added support for Torchbind objects ([#150196](https://github.com/pytorch/pytorch/pull/150196), [#154265](https://github.com/pytorch/pytorch/pull/154265))
+- Added support for `TorchBind` objects ([#150196](https://github.com/pytorch/pytorch/pull/150196), [#154265](https://github.com/pytorch/pytorch/pull/154265))
 
 - Add AOTI model name config `aot_inductor.model_name_for_generated_files` ([#154129](https://github.com/pytorch/pytorch/pull/154129))
 
@@ -421,7 +424,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Delegate `torch.accelerator.device_count` to `torch.xxx.device_count` for multi-process usage ([#149924](https://github.com/pytorch/pytorch/pull/149924))
 
 ## Autograd
-- Improved error message when view of intermediate is returned from autograd.Function and marked dirty ([#149543](https://github.com/pytorch/pytorch/pull/149543))
+- Improved error message when view of intermediate is returned from `autograd.Function` and marked dirty ([#149543](https://github.com/pytorch/pytorch/pull/149543))
 
 - Fixed `torch.autograd.backward` `inputs` validation ([#150975](https://github.com/pytorch/pytorch/pull/150975))
 
@@ -491,7 +494,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Update error message in `get_backend()` with more details ([#141796](https://github.com/pytorch/pytorch/pull/141796))
 - Specified the default PyTorch Distributed backend for MPS ([#149538](https://github.com/pytorch/pytorch/pull/149538))
 - Supported `masterListenFd` in `TCPStoreLibUvBackend` ([#150215](https://github.com/pytorch/pytorch/pull/150215))
-- Used shared Stores in gloo ([#150230](https://github.com/pytorch/pytorch/pull/150230))
+- Use shared stores in gloo ([#150230](https://github.com/pytorch/pytorch/pull/150230))
 - Improved FR dump robustness with all watchdog broadcast wait and more frequent store check ([#150652](https://github.com/pytorch/pytorch/pull/150652))
 - Implemented safer book-keeping of NCCL communicators ([#150681](https://github.com/pytorch/pytorch/pull/150681))
 - Clarified behavior of `TORCH_NCCL_USE_TENSOR_REGISTER_ALLOCATOR_HOOK` ([#150682](https://github.com/pytorch/pytorch/pull/150682))
@@ -507,7 +510,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Allowed `split_group` to work with non-nccl backends ([#152175](https://github.com/pytorch/pytorch/pull/152175))
 - Simplified `new_subgroups()` by using `new_subgroups_by_enumeration()` ([#153843](https://github.com/pytorch/pytorch/pull/153843))
 - Made only current thread allocate to pool in `ProcessGroupNCCL` ([#153990](https://github.com/pytorch/pytorch/pull/153990))
-- Enabled using c10::Half for gloo ([#153862](https://github.com/pytorch/pytorch/pull/153862))
+- Enabled using `c10::Half` for gloo ([#153862](https://github.com/pytorch/pytorch/pull/153862))
 - Released GIL in PG destructor ([#154976](https://github.com/pytorch/pytorch/pull/154976))
 - Enhanced `get_process_group_ranks()` to accept `group=None` ([#154902](https://github.com/pytorch/pytorch/pull/154902))
 - Skipped updating the default device distributed backend if already registered ([#155320](https://github.com/pytorch/pytorch/pull/155320))
@@ -527,14 +530,14 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Created and sent `full_tensor` on `ProcessGroup`-supported device in `_broadcast_tensors` ([#148865](https://github.com/pytorch/pytorch/pull/148865))
 - Supported non-tensor-data `write_size` in planner write items ([#149699](https://github.com/pytorch/pytorch/pull/149699))
 - Switched to `_apply_to_tensors` for dataclass input ([#154897](https://github.com/pytorch/pytorch/pull/154897))
-- Not pop tensors if they are on Meta device ([#153185](https://github.com/pytorch/pytorch/pull/153185))
+- Skip popping meta device tensors ([#153185](https://github.com/pytorch/pytorch/pull/153185))
 
 #### DTensor
-- Added more generically support `CompositeImplicitAutograd` ops under inference mode ([#149514](https://github.com/pytorch/pytorch/pull/149514))
+- More generically support `CompositeImplicitAutograd` ops under inference mode ([#149514](https://github.com/pytorch/pytorch/pull/149514))
 - Made `StridedShard` support uneven sharding ([#150490](https://github.com/pytorch/pytorch/pull/150490))
 - Added op support for `torch.cumsum` ([#151071](https://github.com/pytorch/pytorch/pull/151071))
 - Added add op support for `torch._grouped_mm` ([#151072](https://github.com/pytorch/pytorch/pull/151072))
-- Added `DTensor` `redistribute` fwd/bwd datatype conversion to enable SimpleFSDP mixed precision training ([#150740](https://github.com/pytorch/pytorch/pull/150740))
+- Added `DTensor` `redistribute` fwd/bwd datatype conversion to enable `SimpleFSDP` mixed precision training ([#150740](https://github.com/pytorch/pytorch/pull/150740))
 - Added errors on illegal view op during sharding prop ([#149764](https://github.com/pytorch/pytorch/pull/149764))
 - Added rich support to `torch.distributed.tensor.debug.visualize_sharding` ([#152027](https://github.com/pytorch/pytorch/pull/152027))
 
@@ -589,7 +592,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Improvements on CPU welford reduction ([#145061](https://github.com/pytorch/pytorch/pull/145061))
 
-- New environement var `LOG_AUTOTUNE_RESULTS` for autotune log ([#156254](https://github.com/pytorch/pytorch/pull/156254))
+- Introduced environment variable `LOG_AUTOTUNE_RESULTS` for autotune log ([#156254](https://github.com/pytorch/pytorch/pull/156254))
 
 - Introduced new config settings:
   - Add config to specify custom op C shim: `aot_inductor.custom_ops_to_c_shims` and `aot_inductor.custom_op_libs` ([#153968](https://github.com/pytorch/pytorch/pull/153968))
@@ -1169,15 +1172,15 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 ## ROCm
 - Improve softmax performance ([#149076](https://github.com/pytorch/pytorch/pull/149076))
 
-- NLLLoss performance tuning by dynamically selecting number of GPU threads ([#149548](https://github.com/pytorch/pytorch/pull/149548))
+- `NLLLoss` performance tuning by dynamically selecting number of GPU threads ([#149548](https://github.com/pytorch/pytorch/pull/149548))
 
 - Extend vectorized elementwise kernel to more heterogenous tensor types ([#149738](https://github.com/pytorch/pytorch/pull/149738))
 
 - Removed ifdef that governs thread count + smem parallel reduction ([#149779](https://github.com/pytorch/pytorch/pull/149779))
 
-- Fix in-place aten sum with specialized templated kernels ([#151230](https://github.com/pytorch/pytorch/pull/151230))
+- Fix in-place ATen sum with specialized templated kernels ([#151230](https://github.com/pytorch/pytorch/pull/151230))
 
-- Maxpool backward NHWC Perf Improvement targeting Resnet scenarios ([#152267](https://github.com/pytorch/pytorch/pull/152267))
+- Improved performance for max pooling backward with NHWC, targeting ResNet scenarios ([#152267](https://github.com/pytorch/pytorch/pull/152267))
 
 - Improvements to non-vectorized elementwise kernels ([#153184](https://github.com/pytorch/pytorch/pull/153184))
 
