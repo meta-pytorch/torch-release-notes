@@ -42,6 +42,82 @@ Due to binary size limitations, support for sm50 - sm70 architectures with CUDA 
 been dropped for the 2.8.0 release. If you need support for these architectures, please utilize
 CUDA 12.6 instead.
 
+## Python Frontend
+### Calling an op with an input dtype that is unsupported now raises `NotImplementedError` instead of `RuntimeError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
+Please update exception handling logic to reflect this.
+
+In 2.7.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except RuntimeError:
+    ...
+```
+
+In 2.8.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except NotImplementedError:
+    ...
+```
+
+### Added missing in-place on view check to custom `autograd.Function` ([#153094](https://github.com/pytorch/pytorch/pull/153094))
+
+In 2.8.0, if a custom `autograd.Function` mutates a view of a leaf requiring grad,
+it now properly raises an error. Previously, it would silently leak memory.
+```
+   class Func(torch.autograd.Function):
+        @staticmethod
+        def forward(ctx, inp):
+            inp.add_(1)
+            ctx.mark_dirty(inp)
+            return inp
+
+        @staticmethod
+        def backward(ctx, gO):
+            pass
+
+    a = torch.tensor([1.0, 2.0], requires_grad=True)
+    b = a.view_as(a)
+    Func.apply(b)
+```
+Output:
+
+Version 2.7.0
+```
+Runs without error, but leaks memory
+```
+Version 2.8.0
+```
+RuntimeError: a view of a leaf Variable that requires grad is being used in an in-place operation
+```
+
+### An error is now properly thrown for the out variant of `tensordot` when called with a `requires_grad=True` tensor ([#150270](https://github.com/pytorch/pytorch/pull/150270))
+
+Please avoid passing an out tensor with `requires_grad=True` as gradients cannot be
+computed for this tensor.
+
+In 2.7.0
+```
+a = torch.empty((4, 2), requires_grad=True)
+b = torch.empty((2, 4), requires_grad=True)
+c = torch.empty((2, 2), requires_grad=True)
+# does not error, but gradients for c cannot be computed
+torch.tensordot(a, b, dims=([1], [0]), out=c)
+```
+
+In 2.8.0
+```
+a = torch.empty((4, 2), requires_grad=True)
+b = torch.empty((2, 4), requires_grad=True)
+c = torch.empty((2, 2), requires_grad=True)
+torch.tensordot(a, b, dims=([1], [0]), out=c)
+# RuntimeError: tensordot(): the 'out' tensor was specified and requires gradients, and
+# its shape does not match the expected result. Either remove the 'out' argument, ensure
+# it does not require gradients, or make sure its shape matches the expected output.
+```
+
 ## torch.compile
 ### Specialization of a tensor shape with `mark_dynamic` applied now correctly errors ([#152661](https://github.com/pytorch/pytorch/pull/152661))
 
@@ -217,82 +293,6 @@ import torch
 # strict=True must be explicitly passed to get the old behavior
 torch.export.export(..., strict=True)
 torch.export.export_for_training(..., strict=True)
-```
-
-## Python Frontend
-### Calling an op with an input dtype that is unsupported now raises `NotImplementedError` instead of `RuntimeError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
-Please update exception handling logic to reflect this.
-
-In 2.7.0
-```
-try:
-    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
-except RuntimeError:
-    ...
-```
-
-In 2.8.0
-```
-try:
-    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
-except NotImplementedError:
-    ...
-```
-
-### Added missing in-place on view check to custom `autograd.Function` ([#153094](https://github.com/pytorch/pytorch/pull/153094))
-
-In 2.8.0, if a custom `autograd.Function` mutates a view of a leaf requiring grad,
-it now properly raises an error. Previously, it would silently leak memory.
-```
-   class Func(torch.autograd.Function):
-        @staticmethod
-        def forward(ctx, inp):
-            inp.add_(1)
-            ctx.mark_dirty(inp)
-            return inp
-
-        @staticmethod
-        def backward(ctx, gO):
-            pass
-
-    a = torch.tensor([1.0, 2.0], requires_grad=True)
-    b = a.view_as(a)
-    Func.apply(b)
-```
-Output:
-
-Version 2.7.0
-```
-Runs without error, but leaks memory
-```
-Version 2.8.0
-```
-RuntimeError: a view of a leaf Variable that requires grad is being used in an in-place operation
-```
-
-### An error is now properly thrown for the out variant of `tensordot` when called with a `requires_grad=True` tensor ([#150270](https://github.com/pytorch/pytorch/pull/150270))
-
-Please avoid passing an out tensor with `requires_grad=True` as gradients cannot be
-computed for this tensor.
-
-In 2.7.0
-```
-a = torch.empty((4, 2), requires_grad=True)
-b = torch.empty((2, 4), requires_grad=True)
-c = torch.empty((2, 2), requires_grad=True)
-# does not error, but gradients for c cannot be computed
-torch.tensordot(a, b, dims=([1], [0]), out=c)
-```
-
-In 2.8.0
-```
-a = torch.empty((4, 2), requires_grad=True)
-b = torch.empty((2, 4), requires_grad=True)
-c = torch.empty((2, 2), requires_grad=True)
-torch.tensordot(a, b, dims=([1], [0]), out=c)
-# RuntimeError: tensordot(): the 'out' tensor was specified and requires gradients, and
-# its shape does not match the expected result. Either remove the 'out' argument, ensure
-# it does not require gradients, or make sure its shape matches the expected output.
 ```
 
 ## Build Frontend
