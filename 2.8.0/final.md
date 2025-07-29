@@ -348,9 +348,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been renamed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714)).
 
 # New Features
-## CPU (x86)
-- Added `torch._scaled_mm` for CPU ([#150410](https://github.com/pytorch/pytorch/pull/150410))
-
 ## CUDA
 - Support capture of event record and wait in CUDAGraphs for timing ([#155372](https://github.com/pytorch/pytorch/pull/155372))
 
@@ -361,7 +358,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added support for `reduce_scatter` + updated support chart in `ProcessGroupGloo` ([#149869](https://github.com/pytorch/pytorch/pull/149869))
 - Added `clone` feature for `tcpstore` ([#150966](https://github.com/pytorch/pytorch/pull/150966)), ([#151045](https://github.com/pytorch/pytorch/pull/151045))
 - Added `queues` for `tcpstore` ([#150969](https://github.com/pytorch/pytorch/pull/150969))
-- Added `_allgather_base` , `reduce_scatter` , and `_reduce_scatter_base` into `ProcessGroupMPI` to enable FSDP with MPI backend ([#150162](https://github.com/pytorch/pytorch/pull/150162))
 - Added nonblocking mode to `queue_pop` for `tcpstore` ([#151485](https://github.com/pytorch/pytorch/pull/151485))
 - Added api to enable/disable NaN detector per-PG ([#151723](https://github.com/pytorch/pytorch/pull/151723))
 - Added FP8 support in `ProcessGroupNCCL` ([#152706](https://github.com/pytorch/pytorch/pull/152706))
@@ -444,7 +440,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 ## CPU (x86)
 - Add s8s8 GEMM microkernel API ([#154358](https://github.com/pytorch/pytorch/pull/154358))
 
-- Support fp8 output of `_scaled_mm` for CPU ([#153600](https://github.com/pytorch/pytorch/pull/153600))
 
 ## CUDA
 - Support large batch sizes in memory-efficient SDPA backend forward ([#154029](https://github.com/pytorch/pytorch/pull/154029))
@@ -460,8 +455,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Support SDPA attention backends on sm121 (DGX Spark) ([#152314](https://github.com/pytorch/pytorch/pull/152314))
 
 - Always initialize a CUDA context when `torch.cuda.set_device()` is called by the user ([#155900](https://github.com/pytorch/pytorch/pull/155900))
-
-- Added `torch.cuda._compile_kernel()` to support building inline user CUDA kernels live at runtime ([#151484](https://github.com/pytorch/pytorch/pull/151484))
 
 - Added FP8 row-wise scaled-mm for sm12x (GeForce Blackwell) ([#155991](https://github.com/pytorch/pytorch/pull/155991))
 
@@ -515,16 +508,13 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added check on received data to avoid segfault in the DDP reducer ([#152143](https://github.com/pytorch/pytorch/pull/152143))
 - Propagated `use_python_reducer` to C++ reducer ([#152735](https://github.com/pytorch/pytorch/pull/152735))
 `DistributedStateDict` (DSD)
-- Created and sent `full_tensor` on `ProcessGroup`-supported device in `_broadcast_tensors` ([#148865](https://github.com/pytorch/pytorch/pull/148865))
 - Supported non-tensor-data `write_size` in planner write items ([#149699](https://github.com/pytorch/pytorch/pull/149699))
-- Switched to `_apply_to_tensors` for dataclass input ([#154897](https://github.com/pytorch/pytorch/pull/154897))
 - Skip popping meta device tensors ([#153185](https://github.com/pytorch/pytorch/pull/153185))
 
 #### DTensor
 - More generically support `CompositeImplicitAutograd` ops under inference mode ([#149514](https://github.com/pytorch/pytorch/pull/149514))
 - Made `StridedShard` support uneven sharding ([#150490](https://github.com/pytorch/pytorch/pull/150490))
 - Added op support for `torch.cumsum` ([#151071](https://github.com/pytorch/pytorch/pull/151071))
-- Added add op support for `torch._grouped_mm` ([#151072](https://github.com/pytorch/pytorch/pull/151072))
 - Added `DTensor` `redistribute` fwd/bwd datatype conversion to enable `SimpleFSDP` mixed precision training ([#150740](https://github.com/pytorch/pytorch/pull/150740))
 - Added errors on illegal view op during sharding prop ([#149764](https://github.com/pytorch/pytorch/pull/149764))
 - Added rich support to `torch.distributed.tensor.debug.visualize_sharding` ([#152027](https://github.com/pytorch/pytorch/pull/152027))
@@ -595,7 +585,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
   - Add config `static_launch_user_defined_triton_kernels` to statically launch user defined triton kernels ([#153725](https://github.com/pytorch/pytorch/pull/153725))
   - New config `precompilation_timeout_seconds` to control the timeout on precompilation ([#153788](https://github.com/pytorch/pytorch/pull/153788))
   - New config `disable_decompose_k` to disable new  DecomposeK GEMM Kernels ([#154421](https://github.com/pytorch/pytorch/pull/154421))
-  - New config `_post_fusion_custom_pass` to register a custom pass to be run right after fusion in Inductor Scheduler ([#153723](https://github.com/pytorch/pytorch/pull/153723))
   - New config `min_num_split` sets the minimum number of splits in a split reduction ([#155941](https://github.com/pytorch/pytorch/pull/155941))
   - New config `max_autotune_flex_search_space` allows specifying the size of the search space for flex attention autotuning ([#156307](https://github.com/pytorch/pytorch/pull/156307))
 
@@ -643,7 +632,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 ## Ahead-Of-Time Inductor (AOTI)
 - Added `weight_int4pack_mm_with_scales_and_zeros and upsample_trilinear3d_backward` c-shim for MPS ([#155780](https://github.com/pytorch/pytorch/pull/155780), [#156373](https://github.com/pytorch/pytorch/pull/156373))
 
-- Added `permute`/`squeeze`/`abs`/`aten.hann_window`/`narrow`/`_weight_int4pack_mm`/`fill_`/`pad` in c-shim fallback ops ([#154251](https://github.com/pytorch/pytorch/pull/154251), [#156496](https://github.com/pytorch/pytorch/pull/156496), [#151059](https://github.com/pytorch/pytorch/pull/151059), [#156245](https://github.com/pytorch/pytorch/pull/156245), [#155226](https://github.com/pytorch/pytorch/pull/155226))
+- Added `permute`/`squeeze`/`abs`/`aten.hann_window`/`narrow`/`fill_`/`pad` in c-shim fallback ops ([#154251](https://github.com/pytorch/pytorch/pull/154251), [#156496](https://github.com/pytorch/pytorch/pull/156496), [#151059](https://github.com/pytorch/pytorch/pull/151059), [#156245](https://github.com/pytorch/pytorch/pull/156245), [#155226](https://github.com/pytorch/pytorch/pull/155226))
 
 - Added `RECORD_FUNCTION` for AOTI ([#150150](https://github.com/pytorch/pytorch/pull/150150))
 
@@ -836,15 +825,11 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Fixed `torch.cuda.MemPool` for multithreaded use-cases ([#153356](https://github.com/pytorch/pytorch/pull/153356))
 
-- Properly clean up hooks in `torch.cuda.memory._record_memory_history` ([#153839](https://github.com/pytorch/pytorch/pull/153839))
-
 - Fix to avoid calling `sum()` on a default-constructed gamma / beta in `layer_norm` ([#156600](https://github.com/pytorch/pytorch/pull/156600))
 
 - Avoid hangs by erroring out for negative offsets or K=0 in grouped GEMMs ([#153226](https://github.com/pytorch/pytorch/pull/153226))
 
 - Don't error out in `empty_cache` under mempool context ([#158180](https://github.com/pytorch/pytorch/pull/158180))
-
-- Fix IMAs from invalid `_foreach_copy` indexing ([#158238](https://github.com/pytorch/pytorch/pull/158238))
 
 ## Distributed
 #### c10d
@@ -1289,8 +1274,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Added pretty printing for graph signature ([#149710](https://github.com/pytorch/pytorch/pull/149710))
 
-- Fixed typos in docstrings ([#155495](https://github.com/pytorch/pytorch/pull/155495), [#155485](https://github.com/pytorch/pytorch/pull/155485))
-
 - Ran `pyfmt lint` on several export files ([#155783](https://github.com/pytorch/pytorch/pull/155783), [#154485](https://github.com/pytorch/pytorch/pull/154485), [#154487](https://github.com/pytorch/pytorch/pull/154487), [#154488](https://github.com/pytorch/pytorch/pull/154488))
 
 - Improved error message for schema check in `torch.export.load` ([#156361](https://github.com/pytorch/pytorch/pull/156361))
@@ -1298,11 +1281,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Updated docs for `Dims` ([#156262](https://github.com/pytorch/pytorch/pull/156262))
 
 - Updated docs for `ExportGraphSignature` ([#156244](https://github.com/pytorch/pytorch/pull/156244))
-
-## FX
-- Rename `__is_node_supported` to `_is_node_supported` ([#149400](https://github.com/pytorch/pytorch/pull/149400))
-
-- Fix 'intialize' -> 'initialize' typo ([#155301](https://github.com/pytorch/pytorch/pull/155301))
 
 ## Linear Algebra Frontend
 - Addressed ambiguity in docs for `torch.linalg.norm()`'s ord argument of +2 & -2 ([#155148](https://github.com/pytorch/pytorch/pull/155148))
