@@ -11,7 +11,20 @@
 
 
 # Highlights
-TODO
+<table>
+  <tr>
+   <td><strong>Beta</strong>
+   </td>
+   <td><strong>Prototype</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>TODO
+   </td>
+   <td>TODO
+   </td>
+  </tr>
+</table>
 
 For more details about these highlighted features, you can look at the release blogpost.
 Below are the full release notes for this release.
@@ -335,9 +348,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been renamed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714)).
 
 # New Features
-## Python Frontend
-- Added Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
-
 ## CPU (x86)
 - Added `torch._scaled_mm` for CPU ([#150410](https://github.com/pytorch/pytorch/pull/150410))
 
@@ -389,6 +399,9 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Added PT2 to memory snapshot ([#152707](https://github.com/pytorch/pytorch/pull/152707))
 
+## Python Frontend
+- Added Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
+
 ## Quantization
 - Added a lowering pass for x86 backend of PT2E quantization ([#149708](https://github.com/pytorch/pytorch/pull/149708))
 
@@ -408,21 +421,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Support SYCL kernels through C++ extension ([#132945](https://github.com/pytorch/pytorch/pull/132945))
 
 # Improvements
-## Python Frontend
-- Added a warning when a tensor with `requires_grad=True` is converted to a scalar ([#143261](https://github.com/pytorch/pytorch/pull/143261))
-
-- Moved warning from item to specific number conversions ([#152709](https://github.com/pytorch/pytorch/pull/152709))
-
-- Avoid triggering ignored `requires_grad` warning during tensor string formatting ([#152686](https://github.com/pytorch/pytorch/pull/152686))
-
-- Introduced `torch.AcceleratorError` ([#152023](https://github.com/pytorch/pytorch/pull/152023))
-
-- Implemented `Size.__radd__` ([#152554](https://github.com/pytorch/pytorch/pull/152554))
-
-- Updated `get_default_device()` to also respect `torch.device` context manager ([#148621](https://github.com/pytorch/pytorch/pull/148621))
-
-- Delegate `torch.accelerator.device_count` to `torch.xxx.device_count` for multi-process usage ([#149924](https://github.com/pytorch/pytorch/pull/149924))
-
 ## Autograd
 - Improved error message when view of intermediate is returned from `autograd.Function` and marked dirty ([#149543](https://github.com/pytorch/pytorch/pull/149543))
 
@@ -750,6 +748,21 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Enabled `Profiler.key_averages().table()` for HPU devices ([#150770](https://github.com/pytorch/pytorch/pull/150770))
 
+## Python Frontend
+- Added a warning when a tensor with `requires_grad=True` is converted to a scalar ([#143261](https://github.com/pytorch/pytorch/pull/143261))
+
+- Moved warning from item to specific number conversions ([#152709](https://github.com/pytorch/pytorch/pull/152709))
+
+- Avoid triggering ignored `requires_grad` warning during tensor string formatting ([#152686](https://github.com/pytorch/pytorch/pull/152686))
+
+- Introduced `torch.AcceleratorError` ([#152023](https://github.com/pytorch/pytorch/pull/152023))
+
+- Implemented `Size.__radd__` ([#152554](https://github.com/pytorch/pytorch/pull/152554))
+
+- Updated `get_default_device()` to also respect `torch.device` context manager ([#148621](https://github.com/pytorch/pytorch/pull/148621))
+
+- Delegate `torch.accelerator.device_count` to `torch.xxx.device_count` for multi-process usage ([#149924](https://github.com/pytorch/pytorch/pull/149924))
+
 ## Quantization
 - Support boolean tensor for `torch.fused_moving_avg_obs_fake_quant` on CUDA ([#153699](https://github.com/pytorch/pytorch/pull/153699))
 
@@ -807,21 +820,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Fix `fbgemm` build with `gcc-12+` ([#150847](https://github.com/pytorch/pytorch/pull/150847))
 
 - Force build to conform to C++ standard on Windows by adding `/permissive-` flag ([#149035](https://github.com/pytorch/pytorch/pull/149035))
-
-## Python Frontend
-- Gracefully handle missing pip installation in `collect_env.py` ([#151607](https://github.com/pytorch/pytorch/pull/151607))
-
-- Fixed segfault during numpy string tensor conversion ([#155364](https://github.com/pytorch/pytorch/pull/155364))
-
-- Added checks for empty tensor list ([#155383](https://github.com/pytorch/pytorch/pull/155383))
-
-- Fixed sample validation for `MixtureSameFamily` distribution ([#151317](https://github.com/pytorch/pytorch/pull/151317))
-
-- Fixed bug where creating a second `Wishart` or `Uniform` distribution modifies constraints on the first ([#154361](https://github.com/pytorch/pytorch/pull/154361))
-
-- Fix to properly export `torch::utils::tensor_to_numpy` symbol ([#154178](https://github.com/pytorch/pytorch/pull/154178))
-
-- Fixed `torch.[con]cat[enate]` to raise `ValueError` instead of crashing on empty inputs ([#155460](https://github.com/pytorch/pytorch/pull/155460))
 
 ## Composability
 - Fix support for 1-element tuple returns from custom ops ([#155447](https://github.com/pytorch/pytorch/pull/155447))
@@ -1068,6 +1066,21 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Enable all configured activities in CUPTI Range Profiler mode ([#154749](https://github.com/pytorch/pytorch/pull/154749))
 
+## Python Frontend
+- Gracefully handle missing pip installation in `collect_env.py` ([#151607](https://github.com/pytorch/pytorch/pull/151607))
+
+- Fixed segfault during numpy string tensor conversion ([#155364](https://github.com/pytorch/pytorch/pull/155364))
+
+- Added checks for empty tensor list ([#155383](https://github.com/pytorch/pytorch/pull/155383))
+
+- Fixed sample validation for `MixtureSameFamily` distribution ([#151317](https://github.com/pytorch/pytorch/pull/151317))
+
+- Fixed bug where creating a second `Wishart` or `Uniform` distribution modifies constraints on the first ([#154361](https://github.com/pytorch/pytorch/pull/154361))
+
+- Fix to properly export `torch::utils::tensor_to_numpy` symbol ([#154178](https://github.com/pytorch/pytorch/pull/154178))
+
+- Fixed `torch.[con]cat[enate]` to raise `ValueError` instead of crashing on empty inputs ([#155460](https://github.com/pytorch/pytorch/pull/155460))
+
 ## Release Engineering
 - Checkout optional submodules when publishing a release tarball ([#156615](https://github.com/pytorch/pytorch/pull/156615))
 
@@ -1100,11 +1113,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added device guard for Cov to handle the case that the input tensors reside on different devices ([#153067](https://github.com/pytorch/pytorch/pull/153067))
 
 # Performance
-## Python Frontend
-- Optimized SVE embedding performance ([#150176](https://github.com/pytorch/pytorch/pull/150176))
-
-- Improved performance for `torch.tensordot` when contracting to a scalar ([#145936](https://github.com/pytorch/pytorch/pull/145936))
-
 ## Autograd
 - Rewrite autograd streams synchronization ([#151079](https://github.com/pytorch/pytorch/pull/151079))
 
@@ -1169,6 +1177,11 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Move `mps_linear` forward to use MPS kernels directly instead of `MPSGraph` ([\#152210](https://github.com/pytorch/pytorch/pull/152210))
 
+## Python Frontend
+- Optimized SVE embedding performance ([#150176](https://github.com/pytorch/pytorch/pull/150176))
+
+- Improved performance for `torch.tensordot` when contracting to a scalar ([#145936](https://github.com/pytorch/pytorch/pull/145936))
+
 ## ROCm
 - Improve softmax performance ([#149076](https://github.com/pytorch/pytorch/pull/149076))
 
@@ -1207,35 +1220,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Improved scalar tensor case handling in `addmm`, `baddmm` to reduce oneDNN integration overhead on Intel GPU ([#153051](https://github.com/pytorch/pytorch/pull/153051))
 
 # Documentation
-## Python Frontend
-- Make `torch.Library`'s `kind` have no default value to be consistent with the code ([#149390](https://github.com/pytorch/pytorch/pull/149390))
-
-- Added 32-bit complex to the list of dtypes ([#144590](https://github.com/pytorch/pytorch/pull/144590))
-
-- Clarified behavior when integer dtype is used with `requires_grad=True` in `tensor.to()` ([#150913](https://github.com/pytorch/pytorch/pull/150913))
-
-- Optimized `cdist` param description ([#151178](https://github.com/pytorch/pytorch/pull/151178))
-
-- Updated serialization docs ([#153631](https://github.com/pytorch/pytorch/pull/153631))
-
-- Render `Example:` and not `Example::` in docs ([#153978](https://github.com/pytorch/pytorch/pull/153978))
-
-- Added docstring indicating undefined behavior for converting inf to int ([#154781](https://github.com/pytorch/pytorch/pull/154781))
-
-- Updated `as_strided()` docs ([#149146](https://github.com/pytorch/pytorch/pull/149146))
-
-- Fixed `keepdim` param optional description ([#151197](https://github.com/pytorch/pytorch/pull/151197))
-
-- Clarify that x and dx are mutually exclusive in `torch.trapezoid` docs ([#151190](https://github.com/pytorch/pytorch/pull/151190))
-
-- Documented `out_dtype` arg for torch GEMM operations ([#151704](https://github.com/pytorch/pytorch/pull/151704))
-
-- Fixed the basic description of `torch.min()`, `torch.max()`, `torch.all()`, and `torch.any()` ([#152658](https://github.com/pytorch/pytorch/pull/152658))
-
-- Added `torch.triu_indices`, `torch.tril_indices` dtype description ([#150749](https://github.com/pytorch/pytorch/pull/150749))
-
-- Optimized `torch.equal` description ([#149618](https://github.com/pytorch/pytorch/pull/149618))
-
 ## Autograd
 - Updated docs of `torch.autograd.graph.saved_tensors_hooks` to avoid ref cycle ([#153049](https://github.com/pytorch/pytorch/pull/153049))
 
@@ -1337,6 +1321,35 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Fixed incorrect citation of authors in `Adafactor` documentation ([#145209](https://github.com/pytorch/pytorch/pull/145209))
 
 - Added `load_state_dict` hint doc about invoke order work with `lr_scheduler` ([#149942](https://github.com/pytorch/pytorch/pull/149942))
+
+## Python Frontend
+- Make `torch.Library`'s `kind` have no default value to be consistent with the code ([#149390](https://github.com/pytorch/pytorch/pull/149390))
+
+- Added 32-bit complex to the list of dtypes ([#144590](https://github.com/pytorch/pytorch/pull/144590))
+
+- Clarified behavior when integer dtype is used with `requires_grad=True` in `tensor.to()` ([#150913](https://github.com/pytorch/pytorch/pull/150913))
+
+- Optimized `cdist` param description ([#151178](https://github.com/pytorch/pytorch/pull/151178))
+
+- Updated serialization docs ([#153631](https://github.com/pytorch/pytorch/pull/153631))
+
+- Render `Example:` and not `Example::` in docs ([#153978](https://github.com/pytorch/pytorch/pull/153978))
+
+- Added docstring indicating undefined behavior for converting inf to int ([#154781](https://github.com/pytorch/pytorch/pull/154781))
+
+- Updated `as_strided()` docs ([#149146](https://github.com/pytorch/pytorch/pull/149146))
+
+- Fixed `keepdim` param optional description ([#151197](https://github.com/pytorch/pytorch/pull/151197))
+
+- Clarify that x and dx are mutually exclusive in `torch.trapezoid` docs ([#151190](https://github.com/pytorch/pytorch/pull/151190))
+
+- Documented `out_dtype` arg for torch GEMM operations ([#151704](https://github.com/pytorch/pytorch/pull/151704))
+
+- Fixed the basic description of `torch.min()`, `torch.max()`, `torch.all()`, and `torch.any()` ([#152658](https://github.com/pytorch/pytorch/pull/152658))
+
+- Added `torch.triu_indices`, `torch.tril_indices` dtype description ([#150749](https://github.com/pytorch/pytorch/pull/150749))
+
+- Optimized `torch.equal` description ([#149618](https://github.com/pytorch/pytorch/pull/149618))
 
 ## Quantization
 - Fix incorrect `get_default_qat_qconfig` in `prepare_qat_fx` docs ([#155100](https://github.com/pytorch/pytorch/pull/155100))
