@@ -43,6 +43,55 @@ been dropped for the 2.8.0 release. If you need support for these architectures,
 CUDA 12.6 instead.
 
 ## torch.compile
+### Specialization of a tensor shape with `mark_dynamic` applied now correctly errors ([#152661](https://github.com/pytorch/pytorch/pull/152661))
+
+Prior to 2.8, it was possible for a guard on a symbolic shape to be incorrectly
+omitted if the symbolic shape evaluation was previously tested with guards
+suppressed (this often happens within the compiler itself). This has been fixed
+in 2.8 and usually will just silently "do the right thing" and add the correct
+guard. However, if the new guard causes a tensor marked with `mark_dynamic` to become
+specialized, this can result in an error. One workaround is to use
+`maybe_mark_dynamic` instead of `mark_dynamic`.
+
+See the discussion in issue [#157921](https://github.com/pytorch/pytorch/issues/157921) for more
+context.
+
+Version 2.7.0
+```python
+import torch
+
+embed = torch.randn(2, 8192)
+x = torch.zeros(8192)
+
+torch._dynamo.mark_dynamic(x, 0)
+
+@torch.compile
+def f(embedding_indices, x):
+    added_tokens_mask = torch.where(x > 10000, 1, 0)
+    ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
+    return ei.clone()
+
+f(embed, x)
+```
+
+Version 2.8.0
+```python
+import torch
+
+embed = torch.randn(2, 8192)
+x = torch.zeros(8192)
+
+torch._dynamo.maybe_mark_dynamic(x, 0)
+
+@torch.compile
+def f(embedding_indices, x):
+    added_tokens_mask = torch.where(x > 10000, 1, 0)
+    ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
+    return ei.clone()
+
+f(embed, x)
+```
+
 ### Several config variables related to `torch.compile` have been renamed or removed
 - Dynamo config variable `enable_cpp_framelocals_guard_eval` has changed to no longer have any effect ([#151008](https://github.com/pytorch/pytorch/pull/151008)).
 
@@ -69,55 +118,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - AOTI config variable `aot_inductor.embed_cubin` has been renamed to `aot_inductor.embed_kernel_binary` ([#154412](https://github.com/pytorch/pytorch/pull/154412)).
 
 - AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been renamed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714)).
-
-### Specialization of a tensor shape with `mark_dynamic` applied now correctly errors ([#152661](https://github.com/pytorch/pytorch/pull/152661))
-
-Prior to 2.8, it was possible for a guard on a symbolic shape to be incorrectly
-omitted if the symbolic shape evaluation was previously tested with guards
-suppressed (this often happens within the compiler itself). This has been fixed
-in 2.8 and usually will just silently "do the right thing" and add the correct
-guard. However, if the new guard causes a tensor marked with `mark_dynamic` to become
-specialized, this can result in an error. One workaround is to use
-`maybe_mark_dynamic` instead of `mark_dynamic`.
-
-See the discussion in issue [#157921](https://github.com/pytorch/pytorch/issues/157921) for more
-context.
-
-Version 2.7.0
-```
-import torch
-
-embed = torch.randn(2, 8192)
-x = torch.zeros(8192)
-
-torch._dynamo.mark_dynamic(x, 0)
-
-@torch.compile
-def f(embedding_indices, x):
-    added_tokens_mask = torch.where(x > 10000, 1, 0)
-    ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
-    return ei.clone()
-
-f(embed, x)
-```
-
-Version 2.8.0
-```
-import torch
-
-embed = torch.randn(2, 8192)
-x = torch.zeros(8192)
-
-torch._dynamo.maybe_mark_dynamic(x, 0)
-
-@torch.compile
-def f(embedding_indices, x):
-    added_tokens_mask = torch.where(x > 10000, 1, 0)
-    ei = torch.narrow(embedding_indices, 1, 0, x.size(0))
-    return ei.clone()
-
-f(embed, x)
-```
 
 ### Added a stricter aliasing/mutation check for `HigherOrderOperator`s (e.g. `cond`), which will explicitly error out if alias/mutation among inputs and outputs is unsupported ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658)).
 
