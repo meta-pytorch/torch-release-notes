@@ -403,16 +403,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
 
 ## Quantization
-- Added a lowering pass for x86 backend of PT2E quantization ([#149708](https://github.com/pytorch/pytorch/pull/149708))
-
-- Enabled qconv1d-relu fusion for PT2E quantization on X86 CPU ([#150751](https://github.com/pytorch/pytorch/pull/150751))
-
-- Added an op to compute `uint8` pointwise mul for PT2E quantization on X86 CPU ([#151112](https://github.com/pytorch/pytorch/pull/151112))
-
-- Added ops to compute `uint8` pointwise add/add_relu for PT2E quantization on X86 CPU ([#152411](https://github.com/pytorch/pytorch/pull/152411))
-
-- Added an op to compute `uint8` batch_norm2d for PT2E quantization on X86 CPU ([#152811](https://github.com/pytorch/pytorch/pull/152811))
-
 - Introduced `torch.float4_e2m1fn_x2` ([#148791](https://github.com/pytorch/pytorch/pull/148791))
 
 ## XPU
@@ -769,6 +759,8 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Fixed torchscript issues with reference quantized modules ([#150870](https://github.com/pytorch/pytorch/pull/150870))
 
 - Implemented `__obj_flatten__` for `LinearPackedParamsBase` ([#152619](https://github.com/pytorch/pytorch/pull/152619))
+
+- Improved x86 PT2E quantization support with new uint8 ops (pointwise `mul` / `add` / `add_relu` and `batch_norm2d`), qconv1d-relu fusion, and lowering pass ([#151112](https://github.com/pytorch/pytorch/pull/151112), [#152411](https://github.com/pytorch/pytorch/pull/152411), [#152811](https://github.com/pytorch/pytorch/pull/152811), [#150751](https://github.com/pytorch/pytorch/pull/150751), [#149708](https://github.com/pytorch/pytorch/pull/149708))
 
 ## Release Engineering
 - Updated gcc11 to gcc13 in manylinux images ([#152825](https://github.com/pytorch/pytorch/pull/152825), [#152825](https://github.com/pytorch/pytorch/pull/152825), [#150635](https://github.com/pytorch/pytorch/pull/150635))
