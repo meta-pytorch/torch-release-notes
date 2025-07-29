@@ -36,74 +36,41 @@ version.
 
 # Backwards Incompatible Changes
 
+## CUDA Support
 ### Removed support for Maxwell, Pascal, and Volta architectures with CUDA 12.8 and 12.9 builds ([#157517](https://github.com/pytorch/pytorch/issues/157517), [#158478](https://github.com/pytorch/pytorch/pull/158478), [#158744](https://github.com/pytorch/pytorch/pull/158744))
 Due to binary size limitations, support for sm50 - sm70 architectures with CUDA 12.8 and 12.9 has
 been dropped for the 2.8.0 release. If you need support for these architectures, please utilize
 CUDA 12.6 instead.
 
-### Switched default to `strict=False` in `torch.export.export` and `export_for_training` ([#148790](https://github.com/pytorch/pytorch/pull/148790), [#150941](https://github.com/pytorch/pytorch/pull/150941))
+## torch.compile
+### Several config variables related to `torch.compile` have been renamed or removed
+- Dynamo config variable `enable_cpp_framelocals_guard_eval` has changed to no longer have any effect ([#151008](https://github.com/pytorch/pytorch/pull/151008)).
 
-This differs from the previous release default of `strict=True`. To revert to the old default
-behavior, please explicitly pass `strict=True`.
+- Inductor config variable `rocm.n_max_profiling_configs` is deprecated ([#152341](https://github.com/pytorch/pytorch/pull/152341)).
+Instead, use ck-tile based configs `rocm.ck_max_profiling_configs` and
+`rocm.ck_tile_max_profiling_configs`.
 
-Version 2.7.0
-```python
-import torch
+- Inductor config variable `autotune_fallback_to_aten` is deprecated ([#154331](https://github.com/pytorch/pytorch/pull/154331)).
+Inductor will no longer silently fall back to `ATen`. Please add `"ATEN"` to
+`max_autotune_gemm_backends` for the old behavior.
 
-# default behavior is strict=True
-torch.export.export(...)
-torch.export.export_for_training(...)
-```
+- Inductor config variables `use_mixed_mm` and `mixed_mm_choice` are deprecated ([#152071](https://github.com/pytorch/pytorch/pull/152071)). Inductor now supports prologue fusion, so there is no need for
+special cases now.
 
-Version 2.8.0
-```python
-import torch
+- Inductor config setting `descriptive_names = False` is deprecated ([#151481](https://github.com/pytorch/pytorch/pull/151481)). Please use one of the other available
+options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
-# strict=True must be explicitly passed to get the old behavior
-torch.export.export(..., strict=True)
-torch.export.export_for_training(..., strict=True)
-```
+- `custom_op_default_layout_constraint` has moved from inductor config to functorch config ([#148104](https://github.com/pytorch/pytorch/pull/148104)). Please reference it via
+`torch._functorch.config.custom_op_default_layout_constraint` instead of
+`torch._inductor.config.custom_op_default_layout_constraint`.
 
-### `torch.export.export_for_inference` has been removed in favor of `torch.export.export_for_training().run_decompositions()` ([#149078](https://github.com/pytorch/pytorch/pull/149078))
+- AOTI config variable `emit_current_arch_binary` is deprecated ([#155768](https://github.com/pytorch/pytorch/pull/155768)).
 
-Version 2.7.0
-```python
-import torch
+- AOTI config variable `aot_inductor.embed_cubin` has been renamed to `aot_inductor.embed_kernel_binary` ([#154412](https://github.com/pytorch/pytorch/pull/154412)).
 
-...
-exported_program = torch.export.export_for_inference(mod, args, kwargs)
-```
+- AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been renamed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714)).
 
-Version 2.8.0
-```python
-import torch
-
-...
-exported_program = torch.export.export_for_training(
-    mod, args, kwargs
-).run_decompositions(decomp_table=decomp_table)
-```
-
-### Calling an op with an input dtype that is unsupported now raises `NotImplementedError` instead of `RuntimeError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
-Please update exception handling logic to reflect this.
-
-In 2.7.0
-```
-try:
-    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
-except RuntimeError:
-    ...
-```
-
-In 2.8.0
-```
-try:
-    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
-except NotImplementedError:
-    ...
-```
-
-### `ShapeEnv.evaluate_expr` has been fixed to include `suppress_guards_tls` in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
+### Specialization of a tensor shape with `mark_dynamic` applied now correctly errors ([#152661](https://github.com/pytorch/pytorch/pull/152661))
 
 Prior to 2.8, it was possible for a guard on a symbolic shape to be incorrectly
 omitted if the symbolic shape evaluation was previously tested with guards
@@ -150,6 +117,126 @@ def f(embedding_indices, x):
     return ei.clone()
 
 f(embed, x)
+```
+
+### Added a stricter aliasing/mutation check for `HigherOrderOperator`s (e.g. `cond`), which will explicitly error out if alias/mutation among inputs and outputs is unsupported ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658)).
+
+For affected `HigherOrderOperator`s, add `.clone()` to aliased outputs to address this.
+
+Version 2.7.0
+```python
+import torch
+
+@torch.compile(backend="eager")
+def fn(x):
+    return torch.cond(x.sum() > 0, lambda x: x, lambda x: x + 1, [x])
+
+fn(torch.ones(3))
+```
+
+Version 2.8.0
+```python
+import torch
+
+@torch.compile(backend="eager")
+def fn(x):
+    return torch.cond(x.sum() > 0, lambda x: x.clone(), lambda x: x + 1, [x])
+
+fn(torch.ones(3))
+```
+
+### `guard_or_x` and `definitely_x` have been consolidated ([#152463](https://github.com/pytorch/pytorch/pull/152463))
+We removed `definitely_true` / `definitely_false` and associated APIs, replacing them with
+`guard_or_true` / `guard_or_false`, which offer similar functionality and can be used to
+achieve the same effect. Please migrate to the latter.
+
+Version 2.7.0
+```python
+from torch.fx.experimental.symbolic_shapes import definitely_false, definitely_true
+
+...
+if definitely_true(x):
+  ...
+
+if definitely_false(y):
+  ...
+```
+
+Version 2.8.0
+```python
+from torch.fx.experimental.symbolic_shapes import guard_or_false, guard_or_true
+
+...
+if guard_or_false(x):
+  ...
+
+# alternatively: if guard_or_false(torch.sym_not(y))
+if not guard_or_true(y):
+  ...
+```
+
+## torch.export
+### `torch.export.export_for_inference` has been removed in favor of `torch.export.export_for_training().run_decompositions()` ([#149078](https://github.com/pytorch/pytorch/pull/149078))
+
+Version 2.7.0
+```python
+import torch
+
+...
+exported_program = torch.export.export_for_inference(mod, args, kwargs)
+```
+
+Version 2.8.0
+```python
+import torch
+
+...
+exported_program = torch.export.export_for_training(
+    mod, args, kwargs
+).run_decompositions(decomp_table=decomp_table)
+```
+
+### Switched default to `strict=False` in `torch.export.export` and `export_for_training` ([#148790](https://github.com/pytorch/pytorch/pull/148790), [#150941](https://github.com/pytorch/pytorch/pull/150941))
+
+This differs from the previous release default of `strict=True`. To revert to the old default
+behavior, please explicitly pass `strict=True`.
+
+Version 2.7.0
+```python
+import torch
+
+# default behavior is strict=True
+torch.export.export(...)
+torch.export.export_for_training(...)
+```
+
+Version 2.8.0
+```python
+import torch
+
+# strict=True must be explicitly passed to get the old behavior
+torch.export.export(..., strict=True)
+torch.export.export_for_training(..., strict=True)
+```
+
+## Python Frontend
+### Calling an op with an input dtype that is unsupported now raises `NotImplementedError` instead of `RuntimeError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
+Please update exception handling logic to reflect this.
+
+In 2.7.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except RuntimeError:
+    ...
+```
+
+In 2.8.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except NotImplementedError:
+    ...
 ```
 
 ### Added missing in-place on view check to custom `autograd.Function` ([#153094](https://github.com/pytorch/pytorch/pull/153094))
@@ -208,32 +295,7 @@ torch.tensordot(a, b, dims=([1], [0]), out=c)
 # it does not require gradients, or make sure its shape matches the expected output.
 ```
 
-### Added a stricter aliasing/mutation check for `HigherOrderOperator`s (e.g. `cond`), which will explicitly error out if alias/mutation among inputs and outputs is unsupported ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658)).
-
-For affected `HigherOrderOperator`s, add `.clone()` to aliased outputs to address this.
-
-Version 2.7.0
-```python
-import torch
-
-@torch.compile(backend="eager")
-def fn(x):
-    return torch.cond(x.sum() > 0, lambda x: x, lambda x: x + 1, [x])
-
-fn(torch.ones(3))
-```
-
-Version 2.8.0
-```python
-import torch
-
-@torch.compile(backend="eager")
-def fn(x):
-    return torch.cond(x.sum() > 0, lambda x: x.clone(), lambda x: x + 1, [x])
-
-fn(torch.ones(3))
-```
-
+## Build Frontend
 ### Removed the `torch/types.h` include from `Dispatcher.h` ([#149557](https://github.com/pytorch/pytorch/pull/149557))
 This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).
 
@@ -277,36 +339,6 @@ Version 2.8.0:
 - A downstream project using `-DUSE_SYSTEM_NVTX` will not be able to find NVTX3 or `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake`. The downstream project now needs to explicitly find NVTX3 and torch::nvtx3 by implementing the same logic in PyTorch's `cmake/Dependences.cmake`.
 - A downstream project NOT using `-DUSE_SYSTEM_NVTX` will proceed building without NVTX unless another part of the build process re-enables NVTX.
 
-### `guard_or_x` and `definitely_x` have been consolidated ([#152463](https://github.com/pytorch/pytorch/pull/152463))
-We removed `definitely_true` / `definitely_false` and associated APIs, replacing them with
-`guard_or_true` / `guard_or_false`, which offer similar functionality and can be used to
-achieve the same effect. Please migrate to the latter.
-
-Version 2.7.0
-```python
-from torch.fx.experimental.symbolic_shapes import definitely_false, definitely_true
-
-...
-if definitely_true(x):
-  ...
-
-if definitely_false(y):
-  ...
-```
-
-Version 2.8.0
-```python
-from torch.fx.experimental.symbolic_shapes import guard_or_false, guard_or_true
-
-...
-if guard_or_false(x):
-  ...
-
-# alternatively: if guard_or_false(torch.sym_not(y))
-if not guard_or_true(y):
-  ...
-```
-
 # Deprecations
 ### MPS support for MacOS Ventura will be removed in 2.9
 TODO
@@ -319,33 +351,6 @@ To migrate:
 - FX graph mode quantization (`torch.ao.quantization.quantize_fx.prepare_fx`, `torch.ao.quantization.quantize_fx.convert_fx`): use `torchao` PT2E quantization (`torchao.quantization.quantize_pt2e.prepare_pt2e`, `torchao.quantization.quantize_pt2e.convert_pt2e`).
 
 Note that PT2E quantization has been migrated to `torchao` (https://github.com/pytorch/ao/tree/main/torchao/quantization/pt2e). See https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/main/quick_start.html#pytorch-2-export-quantization for more details.
-
-### Several config variables related to `torch.compile` have been deprecated, renamed, or moved
-- Dynamo config variable `enable_cpp_framelocals_guard_eval` is deprecated ([#151008](https://github.com/pytorch/pytorch/pull/151008)). This config no longer has any effect.
-
-- Inductor config variable `rocm.n_max_profiling_configs` is deprecated ([#152341](https://github.com/pytorch/pytorch/pull/152341)).
-Instead, use ck-tile based configs `rocm.ck_max_profiling_configs` and
-`rocm.ck_tile_max_profiling_configs`.
-
-- Inductor config variable `autotune_fallback_to_aten` is deprecated ([#154331](https://github.com/pytorch/pytorch/pull/154331)).
-Inductor will no longer silently fall back to `ATen`. Please add `"ATEN"` to
-`max_autotune_gemm_backends` for the old behavior.
-
-- Inductor config variables `use_mixed_mm` and `mixed_mm_choice` are deprecated ([#152071](https://github.com/pytorch/pytorch/pull/152071)). Inductor now supports prologue fusion, so there is no need for
-special cases now.
-
-- Inductor config setting `descriptive_names = False` is deprecated ([#151481](https://github.com/pytorch/pytorch/pull/151481)). Please use one of the other available
-options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
-
-- `custom_op_default_layout_constraint` has moved from inductor config to functorch config ([#148104](https://github.com/pytorch/pytorch/pull/148104)). Please reference it via
-`torch._functorch.config.custom_op_default_layout_constraint` instead of
-`torch._inductor.config.custom_op_default_layout_constraint`.
-
-- AOTI config variable `emit_current_arch_binary` is deprecated ([#155768](https://github.com/pytorch/pytorch/pull/155768)).
-
-- AOTI config variable `aot_inductor.embed_cubin` has been renamed to `aot_inductor.embed_kernel_binary` ([#154412](https://github.com/pytorch/pytorch/pull/154412)).
-
-- AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been renamed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714)).
 
 # New Features
 ## CUDA
@@ -399,7 +404,7 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
 
 ## Quantization
-- Introduced `torch.float4_e2m1fn_x2` ([#148791](https://github.com/pytorch/pytorch/pull/148791))
+- Introduced `torch.float4_e2m1fn_x2` dtype ([#148791](https://github.com/pytorch/pytorch/pull/148791))
 
 ## XPU
 - Support Intel distributed backend (XCCL) ([#141856](https://github.com/pytorch/pytorch/pull/141856))
@@ -407,19 +412,12 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Support SYCL kernels through C++ extension ([#132945](https://github.com/pytorch/pytorch/pull/132945))
 
 # Improvements
-## Autograd
-- Improved error message when view of intermediate is returned from `autograd.Function` and marked dirty ([#149543](https://github.com/pytorch/pytorch/pull/149543))
-
-- Fixed `torch.autograd.backward` `inputs` validation ([#150975](https://github.com/pytorch/pytorch/pull/150975))
-
 ## Build Frontend
 - Removed outdated warning about `TORCH_CUDA_ARCH_LIST` ([#152715](https://github.com/pytorch/pytorch/pull/152715), ([#155314](https://github.com/pytorch/pytorch/pull/155314)))
 
-- Use `torch_compile_options` for c10 libraries ([#147821](https://github.com/pytorch/pytorch/pull/147821))
-
-- Removed pre-CXX11 ABI logic from build script ([#149888](https://github.com/pytorch/pytorch/pull/149888))
-
 - Made Eigen an optional build dependency ([#155955](https://github.com/pytorch/pytorch/pull/155955))
+
+- Updated CUTLASS to 3.9.2 ([#152779](https://github.com/pytorch/pytorch/pull/152779))
 
 ## Composability
 - Introduce flag to override fake registration for custom ops ([#150806](https://github.com/pytorch/pytorch/pull/150806))
@@ -428,29 +426,15 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Support saving / loading profiles for custom ops ([#151817](https://github.com/pytorch/pytorch/pull/151817))
 
-- Data dependent free reshape ([#153198](https://github.com/pytorch/pytorch/pull/153198))
-
 ## C++ Frontend
-- Expose bicubic mode for `torch::nn::functional::grid_sample` in LibTorch ([#150817](https://github.com/pytorch/pytorch/pull/150817))
-
-- Refine host caching allocator ([#151403](https://github.com/pytorch/pytorch/pull/151403))
+- Expose bicubic mode for `torch::nn::functional::grid_sample` ([#150817](https://github.com/pytorch/pytorch/pull/150817))
 
 - Introduce `no_implicit_headers` mode for `load_inline()` on custom CUDA extensions ([#149480](https://github.com/pytorch/pytorch/pull/149480))
 
-## CPU (x86)
-- Add s8s8 GEMM microkernel API ([#154358](https://github.com/pytorch/pytorch/pull/154358))
-
-
 ## CUDA
-- Support large batch sizes in memory-efficient SDPA backend forward ([#154029](https://github.com/pytorch/pytorch/pull/154029))
+- Support large batch sizes in memory-efficient SDPA backend ([#154029](https://github.com/pytorch/pytorch/pull/154029), [#154663](https://github.com/pytorch/pytorch/pull/154663))
 
-- Memory-efficient attention backward indexing fix (produced an illegal memory access) ([#155397](https://github.com/pytorch/pytorch/pull/155397))
-
-- Support large batch sizes in memory-efficient SDPA backend backward ([#154663](https://github.com/pytorch/pytorch/pull/154663))
-
-- Updated CUTLASS to 3.9.2 ([#152779](https://github.com/pytorch/pytorch/pull/152779))
-
-- Report the correct tensor that needs to be GPU in `FusedSgdKernel` error message ([#153074](https://github.com/pytorch/pytorch/pull/153074))
+- Fixed invalid indexing in memory-efficient attention backward ([#155397](https://github.com/pytorch/pytorch/pull/155397))
 
 - Support SDPA attention backends on sm121 (DGX Spark) ([#152314](https://github.com/pytorch/pytorch/pull/152314))
 
@@ -458,16 +442,8 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Added FP8 row-wise scaled-mm for sm12x (GeForce Blackwell) ([#155991](https://github.com/pytorch/pytorch/pull/155991))
 
-- Use 4 elements per thread in no-cast elementwise kernel to reduce binary size ([#154558](https://github.com/pytorch/pytorch/pull/154558))
-
-- Add Clear History Flag to cleanup memory snapshots ([#149352](https://github.com/pytorch/pytorch/pull/149352))
-
-- Use cutlass native `BroadcastPtrArray` in scaled group GEMM to simplify implementation ([#152404](https://github.com/pytorch/pytorch/pull/152404))
-
 ## cuDNN
-- Update cuDNN frontend version to 1.11.0 ([#149759](https://github.com/pytorch/pytorch/pull/149759))
-
-- Update cuDNN frontend version to 1.12, supersedes 1.11.0 update ([#153888](https://github.com/pytorch/pytorch/pull/153888))
+- Updated cuDNN frontend version to 1.12 ([#153888](https://github.com/pytorch/pytorch/pull/153888))
 
 ## Distributed
 #### c10d
@@ -512,17 +488,15 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Skip popping meta device tensors ([#153185](https://github.com/pytorch/pytorch/pull/153185))
 
 #### DTensor
-- More generically support `CompositeImplicitAutograd` ops under inference mode ([#149514](https://github.com/pytorch/pytorch/pull/149514))
 - Made `StridedShard` support uneven sharding ([#150490](https://github.com/pytorch/pytorch/pull/150490))
 - Added op support for `torch.cumsum` ([#151071](https://github.com/pytorch/pytorch/pull/151071))
 - Added `DTensor` `redistribute` fwd/bwd datatype conversion to enable `SimpleFSDP` mixed precision training ([#150740](https://github.com/pytorch/pytorch/pull/150740))
-- Added errors on illegal view op during sharding prop ([#149764](https://github.com/pytorch/pytorch/pull/149764))
 - Added rich support to `torch.distributed.tensor.debug.visualize_sharding` ([#152027](https://github.com/pytorch/pytorch/pull/152027))
 
 #### FullyShardedDataParallel2 (FSDP2)
-- Added `PrivateUse1` backend in FSDP collecitves ([#147260](https://github.com/pytorch/pytorch/pull/147260))
+- Added `PrivateUse1` backend in FSDP collectives ([#147260](https://github.com/pytorch/pytorch/pull/147260))
 - Added `set_reshard_after_forward` ([#149103](https://github.com/pytorch/pytorch/pull/149103))
-- Added `PrivateUse1` device type to pre forward hook of fsdp ([#149487](https://github.com/pytorch/pytorch/pull/149487))
+- Added `PrivateUse1` device type to pre forward hook of FSDP ([#149487](https://github.com/pytorch/pytorch/pull/149487))
 - Allowed different dtypes for no grad model params ([#154103](https://github.com/pytorch/pytorch/pull/154103))
 - Respected `reshard_after_forward=True` for root model ([#154704](https://github.com/pytorch/pytorch/pull/154704))
 - Kept root unsharded when not specifying `reshard_after_forward` ([#155319](https://github.com/pytorch/pytorch/pull/155319))
@@ -536,10 +510,9 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Added `get_pipeline_order()` for Gpipe and 1F1B ([#155935](https://github.com/pytorch/pytorch/pull/155935))
 
 #### ShardedTensor
-- Added support for 0 size `ShardedTensor` and recalculated metadata from `all_gather` ([#152583](https://github.com/pytorch/pytorch/pull/152583))
+- Added support for 0-size `ShardedTensor` and recalculated metadata from `all_gather` ([#152583](https://github.com/pytorch/pytorch/pull/152583))
 
 #### TensorParallel
-- Added `repr` methods for `ParallelStyle`s ([#149478](https://github.com/pytorch/pytorch/pull/149478))
 - Added a `ParallelStyle PrepareModuleInputOutput` ([#150372](https://github.com/pytorch/pytorch/pull/150372))
 
 #### torchelastic
@@ -547,9 +520,9 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 ## torch.compile
 #### Dynamo
-- Add reason field to `torch.compiler.disable` ([#150341](https://github.com/pytorch/pytorch/pull/150341))
+- Added `reason` field to `torch.compiler.disable` ([#150341](https://github.com/pytorch/pytorch/pull/150341))
 
-- Misc. increased tracing support, e.g. for Python sets ([#153150]https://github.com/pytorch/pytorch/pull/153150))
+- Misc. increased tracing support, e.g. for Python sets ([#153150](https://github.com/pytorch/pytorch/pull/153150))
 
 - Always trace into a Tensor subclass' `__torch_function__` ([#149792](https://github.com/pytorch/pytorch/pull/149792))
 
