@@ -13,9 +13,9 @@
 # Highlights
 <table>
   <tr>
-   <td><strong>Beta</strong>
+   <td><strong>Stable</strong>
    </td>
-   <td><strong>Prototype</strong>
+   <td><strong>Unstable</strong>
    </td>
   </tr>
   <tr>
@@ -40,61 +40,6 @@ version.
 Due to binary size limitations, support for sm50 - sm70 architectures with CUDA 12.8 and 12.9 has
 been dropped for the 2.8.0 release. If you need support for these architectures, please utilize
 CUDA 12.6 instead.
-
-### Upgraded `DLPack` to 1.0 ([#145000](https://github.com/pytorch/pytorch/pull/145000))
-As part of the upgrade, some of the `DLDeviceType` enum values have been renamed. Please switch
-to the new names.
-
-Version 2.7.0
-```
-from torch.utils.dlpack import DLDeviceType
-
-d1 = DLDeviceType.kDLGPU
-d2 = DLDeviceType.kDLCPUPinned
-...
-```
-
-Version 2.8.0
-```
-from torch.utils.dlpack import DLDeviceType
-
-d1 = DLDeviceType.kDLCUDA  # formerly kDLGPU
-d2 = DLDeviceType.kDLCUDAHost  # formerly kDLCPUPinned
-...
-```
-
-### NVTX3 code has been moved from `cmake/public/cuda.cmake` to `cmake/Dependencies.cmake` ([#151583](https://github.com/pytorch/pytorch/pull/151583))
-
-This is a BC-breaking change for the build system interface. Downstream projects that previously got NVTX3 through `cmake/public/cuda.cmake`
-(i.e.. calling `find_package(TORCH REQUIRED)`) will now need to explicitly configure NVTX3 support in the library itself (i.e. use `USE_SYSTEM_NVTX=1`).
-The change is to fix the broken behavior where downstream projects couldn't find NVTX3 anyway due to the `PROJECT_SOURCE_DIR` mismatch.
-
-Version 2.7.0:
-- A downstream project using `-DUSE_SYSTEM_NVTX` would be able to find NVTX3 and `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake` logic.
-- A downstream project NOT using `-DUSE_SYSTEM_NVTX` would encounter build errors with CUDA 12.8 or above.
-
-Version 2.8.0:
-- A downstream project using `-DUSE_SYSTEM_NVTX` will not be able to find NVTX3 or `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake`. The downstream project now needs to explicitly find NVTX3 and torch::nvtx3 by implementing the same logic in PyTorch's `cmake/Dependences.cmake`.
-- A downstream project NOT using `-DUSE_SYSTEM_NVTX` will proceed building without NVTX unless another part of the build process re-enables NVTX.
-
-### Calling an op with an input dtype that is unsupported now raises `NotImplementedError` instead of `RuntimeError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
-Please update exception handling logic to reflect this.
-
-In 2.7.0
-```
-try:
-    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
-except RuntimeError:
-    ...
-```
-
-In 2.8.0
-```
-try:
-    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
-except NotImplementedError:
-    ...
-```
 
 ### Switched default to `strict=False` in `torch.export.export` and `export_for_training` ([#148790](https://github.com/pytorch/pytorch/pull/148790), [#150941](https://github.com/pytorch/pytorch/pull/150941))
 
@@ -137,6 +82,25 @@ import torch
 exported_program = torch.export.export_for_training(
     mod, args, kwargs
 ).run_decompositions(decomp_table=decomp_table)
+```
+
+### Calling an op with an input dtype that is unsupported now raises `NotImplementedError` instead of `RuntimeError` ([#155470](https://github.com/pytorch/pytorch/pull/155470))
+Please update exception handling logic to reflect this.
+
+In 2.7.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except RuntimeError:
+    ...
+```
+
+In 2.8.0
+```
+try:
+    torch.nn.Hardshrink()(torch.randint(0, 5, (10,)))
+except NotImplementedError:
+    ...
 ```
 
 ### `ShapeEnv.evaluate_expr` has been fixed to include `suppress_guards_tls` in cache key ([#152661](https://github.com/pytorch/pytorch/pull/152661))
@@ -186,32 +150,6 @@ def f(embedding_indices, x):
     return ei.clone()
 
 f(embed, x)
-```
-
-### Added a stricter aliasing/mutation check for `HigherOrderOperator`s (e.g. `cond`), which will explicitly error out if alias/mutation among inputs and outputs is unsupported ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658)).
-
-For affected `HigherOrderOperator`s, add `.clone()` to aliased outputs to address this.
-
-Version 2.7.0
-```python
-import torch
-
-@torch.compile(backend="eager")
-def fn(x):
-    return torch.cond(x.sum() > 0, lambda x: x, lambda x: x + 1, [x])
-
-fn(torch.ones(3))
-```
-
-Version 2.8.0
-```python
-import torch
-
-@torch.compile(backend="eager")
-def fn(x):
-    return torch.cond(x.sum() > 0, lambda x: x.clone(), lambda x: x + 1, [x])
-
-fn(torch.ones(3))
 ```
 
 ### Added missing in-place on view check to custom `autograd.Function` ([#153094](https://github.com/pytorch/pytorch/pull/153094))
@@ -270,12 +208,74 @@ torch.tensordot(a, b, dims=([1], [0]), out=c)
 # it does not require gradients, or make sure its shape matches the expected output.
 ```
 
+### Added a stricter aliasing/mutation check for `HigherOrderOperator`s (e.g. `cond`), which will explicitly error out if alias/mutation among inputs and outputs is unsupported ([#148953](https://github.com/pytorch/pytorch/pull/148953), [#146658](https://github.com/pytorch/pytorch/pull/146658)).
+
+For affected `HigherOrderOperator`s, add `.clone()` to aliased outputs to address this.
+
+Version 2.7.0
+```python
+import torch
+
+@torch.compile(backend="eager")
+def fn(x):
+    return torch.cond(x.sum() > 0, lambda x: x, lambda x: x + 1, [x])
+
+fn(torch.ones(3))
+```
+
+Version 2.8.0
+```python
+import torch
+
+@torch.compile(backend="eager")
+def fn(x):
+    return torch.cond(x.sum() > 0, lambda x: x.clone(), lambda x: x + 1, [x])
+
+fn(torch.ones(3))
+```
+
 ### Removed the `torch/types.h` include from `Dispatcher.h` ([#149557](https://github.com/pytorch/pytorch/pull/149557))
 This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).
 
 Note that `Dispatcher.h` does not belong as an include from `torch/types.h` and was only present as a
 short-term hack to appease `torchvision`. If you run into `torchvision` build errors, please
 update to a more recent version of `torchvision` to resolve this.
+
+### Upgraded `DLPack` to 1.0 ([#145000](https://github.com/pytorch/pytorch/pull/145000))
+As part of the upgrade, some of the `DLDeviceType` enum values have been renamed. Please switch
+to the new names.
+
+Version 2.7.0
+```
+from torch.utils.dlpack import DLDeviceType
+
+d1 = DLDeviceType.kDLGPU
+d2 = DLDeviceType.kDLCPUPinned
+...
+```
+
+Version 2.8.0
+```
+from torch.utils.dlpack import DLDeviceType
+
+d1 = DLDeviceType.kDLCUDA  # formerly kDLGPU
+d2 = DLDeviceType.kDLCUDAHost  # formerly kDLCPUPinned
+...
+```
+
+### NVTX3 code has been moved from `cmake/public/cuda.cmake` to `cmake/Dependencies.cmake` ([#151583](https://github.com/pytorch/pytorch/pull/151583))
+
+This is a BC-breaking change for the build system interface. Downstream projects that previously got NVTX3 through `cmake/public/cuda.cmake`
+(i.e.. calling `find_package(TORCH REQUIRED)`) will now need to explicitly configure NVTX3 support in the library itself (i.e. use `USE_SYSTEM_NVTX=1`).
+The change is to fix the broken behavior where downstream projects couldn't find NVTX3 anyway due to the `PROJECT_SOURCE_DIR` mismatch.
+
+Version 2.7.0:
+- A downstream project using `-DUSE_SYSTEM_NVTX` would be able to find NVTX3 and `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake` logic.
+- A downstream project NOT using `-DUSE_SYSTEM_NVTX` would encounter build errors with CUDA 12.8 or above.
+
+Version 2.8.0:
+- A downstream project using `-DUSE_SYSTEM_NVTX` will not be able to find NVTX3 or `torch::nvtx3` via PyTorch's `cmake/public/cuda.cmake`. The downstream project now needs to explicitly find NVTX3 and torch::nvtx3 by implementing the same logic in PyTorch's `cmake/Dependences.cmake`.
+- A downstream project NOT using `-DUSE_SYSTEM_NVTX` will proceed building without NVTX unless another part of the build process re-enables NVTX.
 
 ### `guard_or_x` and `definitely_x` have been consolidated ([#152463](https://github.com/pytorch/pytorch/pull/152463))
 We removed `definitely_true` / `definitely_false` and associated APIs, replacing them with
