@@ -23,14 +23,10 @@ version.
 
 # Backwards Incompatible Changes
 
-### Remove support for Maxwell, Pascal, and Volta architectures with CUDA 12.8 and 12.9 builds ([#157517](https://github.com/pytorch/pytorch/issues/157517))
+### Removed support for Maxwell, Pascal, and Volta architectures with CUDA 12.8 and 12.9 builds ([#157517](https://github.com/pytorch/pytorch/issues/157517))
 Due to binary size limitations, support for sm50 - sm70 architectures with CUDA 12.8 and 12.9 has
 been dropped for the 2.8.0 release. If you need support for these architectures, please utilize
 CUDA 12.6 instead.
-
-### Remove support for CUDA 11.8, CUDA 12.4, and Anaconda in CI/CD
-- Removed CUDA 11.8 and 12.4 support in CI/CD ([#155509](https://github.com/pytorch/pytorch/pull/155509), [#154169](https://github.com/pytorch/pytorch/pull/154169), [#152362](https://github.com/pytorch/pytorch/pull/152362), [#155555](https://github.com/pytorch/pytorch/pull/155555), [#154893](https://github.com/pytorch/pytorch/pull/154893))
-- Removed Anaconda support in CI/CD ([#147789](https://github.com/pytorch/pytorch/pull/147789), [#152338](https://github.com/pytorch/pytorch/pull/152338), [#152431](https://github.com/pytorch/pytorch/pull/152431), [#152377](https://github.com/pytorch/pytorch/pull/152377), [#152433](https://github.com/pytorch/pytorch/pull/152433), [#147476](https://github.com/pytorch/pytorch/pull/147476), [#151035](https://github.com/pytorch/pytorch/pull/151035), [#152860](https://github.com/pytorch/pytorch/pull/152860), [#152702](https://github.com/pytorch/pytorch/pull/152702), [#154303](https://github.com/pytorch/pytorch/pull/154303), [#154309](https://github.com/pytorch/pytorch/pull/154309) )
 
 ### Upgraded `DLPack` to 1.0 ([#145000](https://github.com/pytorch/pytorch/pull/145000))
 As part of the upgrade, some of the `DLDeviceType` enum values have been renamed. Please switch
@@ -336,21 +332,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - AOTI config variable `aot_inductor.compile_wrapper_with_O0` has been renamed to `compile_wrapper_opt_level` ([#148714](https://github.com/pytorch/pytorch/pull/148714)).
 
 # New Features
-## Release Engineering
-- Added support for CUDA 12.9 in CI/CD ([#154980](https://github.com/pytorch/pytorch/pull/154980), [#156630](https://github.com/pytorch/pytorch/pull/156630), [#155895](https://github.com/pytorch/pytorch/pull/155895), [#155799](https://github.com/pytorch/pytorch/pull/155799), [#155496](https://github.com/pytorch/pytorch/pull/155496), [#155340](https://github.com/pytorch/pytorch/pull/155340), [#155819](https://github.com/pytorch/pytorch/pull/155819), [#156108](https://github.com/pytorch/pytorch/pull/156108))
-
-- Added support for ROCm 6.4 in CI/CD ([#151236](https://github.com/pytorch/pytorch/pull/151236), [#151345](https://github.com/pytorch/pytorch/pull/151345), [#151355](https://github.com/pytorch/pytorch/pull/151355), [#153253](https://github.com/pytorch/pytorch/pull/153253), [#156112](https://github.com/pytorch/pytorch/pull/156112))
-
-- Moved CI from ubuntu 20.04 images to ubuntu 22.04 and 24.04 ([#154437](https://github.com/pytorch/pytorch/pull/154437), [#154153](https://github.com/pytorch/pytorch/pull/154153), [#149142](https://github.com/pytorch/pytorch/pull/149142))
-
-- Moved CI to CUDA 12.8 ([#154004](https://github.com/pytorch/pytorch/pull/154004), [#152810](https://github.com/pytorch/pytorch/pull/152810), [#155087](https://github.com/pytorch/pytorch/pull/155087), [#148963](https://github.com/pytorch/pytorch/pull/148963))
-
-- Enabled CI on MI300 ([#150667](https://github.com/pytorch/pytorch/pull/150667), [#152133](https://github.com/pytorch/pytorch/pull/152133), [#148394](https://github.com/pytorch/pytorch/pull/148394), [#153134](https://github.com/pytorch/pytorch/pull/153134))
-
-- Enabled CI on H100 ([#153900](https://github.com/pytorch/pytorch/pull/153900), [#154562](https://github.com/pytorch/pytorch/pull/154562), [#153170](https://github.com/pytorch/pytorch/pull/153170), [#155861](https://github.com/pytorch/pytorch/pull/155861), [#155719](https://github.com/pytorch/pytorch/pull/155719), [#156429](https://github.com/pytorch/pytorch/pull/156429))
-
-- Enabled CD for Windows Arm64 ([#150310](https://github.com/pytorch/pytorch/pull/150310), [#152109](https://github.com/pytorch/pytorch/pull/152109), [#149850](https://github.com/pytorch/pytorch/pull/149850), [#152099](https://github.com/pytorch/pytorch/pull/152099))
-
 ## Python Frontend
 - Added Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
 
@@ -439,21 +420,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Support SYCL kernels through C++ extension ([#132945](https://github.com/pytorch/pytorch/pull/132945))
 
 # Improvements
-## Release Engineering
-- Enabled testing of binary Docker builds in CI/CD ([#151483](https://github.com/pytorch/pytorch/pull/151483), [#151488](https://github.com/pytorch/pytorch/pull/151488), [#151489](https://github.com/pytorch/pytorch/pull/151489), [#151706](https://github.com/pytorch/pytorch/pull/151706))
-
-- Added smoke test to validate NCCL and cuDNN versions in PyPI packages ([#149885](https://github.com/pytorch/pytorch/pull/149885), [#150194](https://github.com/pytorch/pytorch/pull/150194))
-
-- Updated gcc11 to gcc13 in manylinux images ([#152825](https://github.com/pytorch/pytorch/pull/152825), [#152825](https://github.com/pytorch/pytorch/pull/152825), [#150635](https://github.com/pytorch/pytorch/pull/150635))
-
-- Updated to cmake 3.27.2 ([#154783](https://github.com/pytorch/pytorch/pull/154783), [#150549](https://github.com/pytorch/pytorch/pull/150549), [#153380](https://github.com/pytorch/pytorch/pull/153380))
-
-- Enabled monitoring for performance tests ([#153452](https://github.com/pytorch/pytorch/pull/153452), [#153453](https://github.com/pytorch/pytorch/pull/153453), [#153454](https://github.com/pytorch/pytorch/pull/153454), [#153456](https://github.com/pytorch/pytorch/pull/153456))
-
-- Improved benchmarking and performance testing on MacOS ([#151721](https://github.com/pytorch/pytorch/pull/151721), [#151747](https://github.com/pytorch/pytorch/pull/151747), [#151748](https://github.com/pytorch/pytorch/pull/151748), [#153897](https://github.com/pytorch/pytorch/pull/153897), [#155493](https://github.com/pytorch/pytorch/pull/155493), [#153897](https://github.com/pytorch/pytorch/pull/153897), [#155493](https://github.com/pytorch/pytorch/pull/155493))
-
-- Fixed VS2022-caused AVX512 illegal instruction issue ([#153480](https://github.com/pytorch/pytorch/pull/153480))
-
 ## Python Frontend
 - Added a warning when a tensor with `requires_grad=True` is converted to a scalar ([#143261](https://github.com/pytorch/pytorch/pull/143261))
 
@@ -788,6 +754,13 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Implemented `__obj_flatten__` for `LinearPackedParamsBase` ([#152619](https://github.com/pytorch/pytorch/pull/152619))
 
+## Release Engineering
+- Updated gcc11 to gcc13 in manylinux images ([#152825](https://github.com/pytorch/pytorch/pull/152825), [#152825](https://github.com/pytorch/pytorch/pull/152825), [#150635](https://github.com/pytorch/pytorch/pull/150635))
+
+- Updated to cmake 3.27.2 ([#154783](https://github.com/pytorch/pytorch/pull/154783), [#150549](https://github.com/pytorch/pytorch/pull/150549), [#153380](https://github.com/pytorch/pytorch/pull/153380))
+
+- Fixed VS2022-caused AVX512 illegal instruction issue ([#153480](https://github.com/pytorch/pytorch/pull/153480))
+
 ## ROCm
 - Allow user to override default flags for `cpp_extension` ([#152432](https://github.com/pytorch/pytorch/pull/152432))
 
@@ -825,15 +798,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Support int4 WOQ GEMM on Intel GPU ([#137566](https://github.com/pytorch/pytorch/pull/137566))
 
 # Bug Fixes
-## Release Engineering
-- Use `setup-python` from for Mac tests ([#155698](https://github.com/pytorch/pytorch/pull/155698))
-
-- Checkout optional submodules when publishing a release tarball ([#156615](https://github.com/pytorch/pytorch/pull/156615))
-
-- Fix MacOS MP hang in Python-3.12+ ([#155698](https://github.com/pytorch/pytorch/pull/155698))
-
-- Fix static functions when using module in MSVC ([#148675](https://github.com/pytorch/pytorch/pull/148675))
-
 ## Build Frontend
 - Make PyTorch buildable by `CMake-4.x` ([#150203](https://github.com/pytorch/pytorch/pull/150203))
 
@@ -1101,6 +1065,13 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Enable all configured activities in CUPTI Range Profiler mode ([#154749](https://github.com/pytorch/pytorch/pull/154749))
 
+## Release Engineering
+- Checkout optional submodules when publishing a release tarball ([#156615](https://github.com/pytorch/pytorch/pull/156615))
+
+- Fix MacOS MP hang in Python-3.12+ ([#155698](https://github.com/pytorch/pytorch/pull/155698))
+
+- Fix static functions when using module in MSVC ([#148675](https://github.com/pytorch/pytorch/pull/148675))
+
 ## ROCm
 - Fixed build error for opportunistic fastatomics with newer compilers ([#152841](https://github.com/pytorch/pytorch/pull/152841))
 
@@ -1233,9 +1204,6 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Improved scalar tensor case handling in `addmm`, `baddmm` to reduce oneDNN integration overhead on Intel GPU ([#153051](https://github.com/pytorch/pytorch/pull/153051))
 
 # Documentation
-## Release Engineering
-- Migrated to new theme ([#149331](https://github.com/pytorch/pytorch/pull/149331))
-
 ## Python Frontend
 - Make `torch.Library`'s `kind` have no default value to be consistent with the code ([#149390](https://github.com/pytorch/pytorch/pull/149390))
 
@@ -1370,6 +1338,9 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 ## Quantization
 - Fix incorrect `get_default_qat_qconfig` in `prepare_qat_fx` docs ([#155100](https://github.com/pytorch/pytorch/pull/155100))
 
+## Release Engineering
+- Migrated to new theme ([#149331](https://github.com/pytorch/pytorch/pull/149331))
+
 ## Sparse Frontend
 - Fixed code highlighting in `torch.sparse` docs ([#154785](https://github.com/pytorch/pytorch/pull/154785))
 
@@ -1447,3 +1418,31 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 - Optimize typing in `lr_scheduler.py` ([#151219](https://github.com/pytorch/pytorch/pull/151219))
 
 - Fix the type hint of `step()` with default value ([#153367](https://github.com/pytorch/pytorch/pull/153367))
+
+## Release Engineering
+- Added support for CUDA 12.9 in CI/CD ([#154980](https://github.com/pytorch/pytorch/pull/154980), [#156630](https://github.com/pytorch/pytorch/pull/156630), [#155895](https://github.com/pytorch/pytorch/pull/155895), [#155799](https://github.com/pytorch/pytorch/pull/155799), [#155496](https://github.com/pytorch/pytorch/pull/155496), [#155340](https://github.com/pytorch/pytorch/pull/155340), [#155819](https://github.com/pytorch/pytorch/pull/155819), [#156108](https://github.com/pytorch/pytorch/pull/156108))
+
+- Added support for ROCm 6.4 in CI/CD ([#151236](https://github.com/pytorch/pytorch/pull/151236), [#151345](https://github.com/pytorch/pytorch/pull/151345), [#151355](https://github.com/pytorch/pytorch/pull/151355), [#153253](https://github.com/pytorch/pytorch/pull/153253), [#156112](https://github.com/pytorch/pytorch/pull/156112))
+
+- Moved CI from ubuntu 20.04 images to ubuntu 22.04 and 24.04 ([#154437](https://github.com/pytorch/pytorch/pull/154437), [#154153](https://github.com/pytorch/pytorch/pull/154153), [#149142](https://github.com/pytorch/pytorch/pull/149142))
+
+- Moved CI to CUDA 12.8 ([#154004](https://github.com/pytorch/pytorch/pull/154004), [#152810](https://github.com/pytorch/pytorch/pull/152810), [#155087](https://github.com/pytorch/pytorch/pull/155087), [#148963](https://github.com/pytorch/pytorch/pull/148963))
+
+- Enabled CI on MI300 ([#150667](https://github.com/pytorch/pytorch/pull/150667), [#152133](https://github.com/pytorch/pytorch/pull/152133), [#148394](https://github.com/pytorch/pytorch/pull/148394), [#153134](https://github.com/pytorch/pytorch/pull/153134))
+
+- Enabled CI on H100 ([#153900](https://github.com/pytorch/pytorch/pull/153900), [#154562](https://github.com/pytorch/pytorch/pull/154562), [#153170](https://github.com/pytorch/pytorch/pull/153170), [#155861](https://github.com/pytorch/pytorch/pull/155861), [#155719](https://github.com/pytorch/pytorch/pull/155719), [#156429](https://github.com/pytorch/pytorch/pull/156429))
+
+- Enabled CD for Windows Arm64 ([#150310](https://github.com/pytorch/pytorch/pull/150310), [#152109](https://github.com/pytorch/pytorch/pull/152109), [#149850](https://github.com/pytorch/pytorch/pull/149850), [#152099](https://github.com/pytorch/pytorch/pull/152099))
+
+- Enabled testing of binary Docker builds in CI/CD ([#151483](https://github.com/pytorch/pytorch/pull/151483), [#151488](https://github.com/pytorch/pytorch/pull/151488), [#151489](https://github.com/pytorch/pytorch/pull/151489), [#151706](https://github.com/pytorch/pytorch/pull/151706))
+
+- Added smoke test to validate NCCL and cuDNN versions in PyPI packages ([#149885](https://github.com/pytorch/pytorch/pull/149885), [#150194](https://github.com/pytorch/pytorch/pull/150194))
+
+- Enabled monitoring for performance tests ([#153452](https://github.com/pytorch/pytorch/pull/153452), [#153453](https://github.com/pytorch/pytorch/pull/153453), [#153454](https://github.com/pytorch/pytorch/pull/153454), [#153456](https://github.com/pytorch/pytorch/pull/153456))
+
+- Improved benchmarking and performance testing on MacOS ([#151721](https://github.com/pytorch/pytorch/pull/151721), [#151747](https://github.com/pytorch/pytorch/pull/151747), [#151748](https://github.com/pytorch/pytorch/pull/151748), [#153897](https://github.com/pytorch/pytorch/pull/153897), [#155493](https://github.com/pytorch/pytorch/pull/155493), [#153897](https://github.com/pytorch/pytorch/pull/153897), [#155493](https://github.com/pytorch/pytorch/pull/155493))
+
+- Use `setup-python` from for Mac tests ([#155698](https://github.com/pytorch/pytorch/pull/155698))
+
+- Removed CUDA 11.8 and 12.4 support in CI/CD ([#155509](https://github.com/pytorch/pytorch/pull/155509), [#154169](https://github.com/pytorch/pytorch/pull/154169), [#152362](https://github.com/pytorch/pytorch/pull/152362), [#155555](https://github.com/pytorch/pytorch/pull/155555), [#154893](https://github.com/pytorch/pytorch/pull/154893))
+- Removed Anaconda support in CI/CD ([#147789](https://github.com/pytorch/pytorch/pull/147789), [#152338](https://github.com/pytorch/pytorch/pull/152338), [#152431](https://github.com/pytorch/pytorch/pull/152431), [#152377](https://github.com/pytorch/pytorch/pull/152377), [#152433](https://github.com/pytorch/pytorch/pull/152433), [#147476](https://github.com/pytorch/pytorch/pull/147476), [#151035](https://github.com/pytorch/pytorch/pull/151035), [#152860](https://github.com/pytorch/pytorch/pull/152860), [#152702](https://github.com/pytorch/pytorch/pull/152702), [#154303](https://github.com/pytorch/pytorch/pull/154303), [#154309](https://github.com/pytorch/pytorch/pull/154309) )
