@@ -410,6 +410,9 @@ options: `"torch"`, `"original_aten"`, or `"inductor_node"`.
 
 - Add AOTI model name config `aot_inductor.model_name_for_generated_files` ([#154129](https://github.com/pytorch/pytorch/pull/154129))
 
+## MPS
+- MPSInductor: `torch.compile` for Apple GPUs ([#150121](https://github.com/pytorch/pytorch/issues/150121))
+
 ## Profiler
 - Added support for on-demand memory snapshot ([#150559](https://github.com/pytorch/pytorch/pull/150559))
 
