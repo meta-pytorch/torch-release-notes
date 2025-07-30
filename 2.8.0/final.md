@@ -356,19 +356,6 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 ## CUDA
 - Support capture of event record and wait in CUDAGraphs for timing ([#155372](https://github.com/pytorch/pytorch/pull/155372))
 
-## Distributed
-#### c10d
-- Added a collective time estimator for NCCL comms ([#149343](https://github.com/pytorch/pytorch/pull/149343))
-- Added support for `ReduceOp::AVG` in `ProcessGroupGloo` ([#149781](https://github.com/pytorch/pytorch/pull/149781))
-- Added support for `reduce_scatter` + updated support chart in `ProcessGroupGloo` ([#149869](https://github.com/pytorch/pytorch/pull/149869))
-- Added `clone` feature for `tcpstore` ([#150966](https://github.com/pytorch/pytorch/pull/150966)), ([#151045](https://github.com/pytorch/pytorch/pull/151045))
-- Added `queues` for `tcpstore` ([#150969](https://github.com/pytorch/pytorch/pull/150969))
-- Added nonblocking mode to `queue_pop` for `tcpstore` ([#151485](https://github.com/pytorch/pytorch/pull/151485))
-- Added api to enable/disable NaN detector per-PG ([#151723](https://github.com/pytorch/pytorch/pull/151723))
-- Added FP8 support in `ProcessGroupNCCL` ([#152706](https://github.com/pytorch/pytorch/pull/152706))
-- Added `ibverbs` backend in gloo ([#153015](https://github.com/pytorch/pytorch/pull/153015), [#153425](https://github.com/pytorch/pytorch/pull/153425))
-- Enabled gloo CUDA when used with a backend that supports `GPUDirect` ([#153406](https://github.com/pytorch/pytorch/pull/153406))
-
 ## torch.compile
 #### Dynamo
 - Added support for hierarchical compilation via `nested_compile_region` ([#156449](https://github.com/pytorch/pytorch/pull/156449))
@@ -390,13 +377,6 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 
 ## MPS
 - `MPSInductor`: `torch.compile` for Apple GPUs ([#150121](https://github.com/pytorch/pytorch/issues/150121))
-
-## Profiler
-- Added support for on-demand memory snapshot ([#150559](https://github.com/pytorch/pytorch/pull/150559))
-
-- Added PT2 compile context to visualizer ([#152862](https://github.com/pytorch/pytorch/pull/152862))
-
-- Added PT2 to memory snapshot ([#152707](https://github.com/pytorch/pytorch/pull/152707))
 
 ## Python Frontend
 - Added Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
@@ -439,6 +419,8 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 
 ## Distributed
 #### c10d
+- Enhanced `TCPStore` with clone and queuing features ([#150966](https://github.com/pytorch/pytorch/pull/150966), [#151045](https://github.com/pytorch/pytorch/pull/151045), [#150969](https://github.com/pytorch/pytorch/pull/150969), [#151485](https://github.com/pytorch/pytorch/pull/151485))
+- Added a collective time estimator for NCCL comms ([#149343](https://github.com/pytorch/pytorch/pull/149343))
 - Made `getDefaultBackend` more fault tolerant without relying on exceptions ([#149152](https://github.com/pytorch/pytorch/pull/149152))
 - Update error message in `get_backend()` with more details ([#141796](https://github.com/pytorch/pytorch/pull/141796))
 - Specified the default PyTorch Distributed backend for MPS ([#149538](https://github.com/pytorch/pytorch/pull/149538))
@@ -467,6 +449,12 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 - Enabled querying the build and runtime NCCL versions ([#156305](https://github.com/pytorch/pytorch/pull/156305))
 - Disabled NCCL NVLS when using deterministic mode ([#156381](https://github.com/pytorch/pytorch/pull/156381))
 - Made `init_process_group` support index-only device id ([#156214](https://github.com/pytorch/pytorch/pull/156214))
+- Support enabling / disabling NaN detector per-`ProcessGroup` ([#151723](https://github.com/pytorch/pytorch/pull/151723))
+- Added support for `ReduceOp::AVG` in `ProcessGroupGloo` ([#149781](https://github.com/pytorch/pytorch/pull/149781))
+- Added support for `reduce_scatter` + updated support chart in `ProcessGroupGloo` ([#149869](https://github.com/pytorch/pytorch/pull/149869))
+- Added FP8 support in `ProcessGroupNCCL` ([#152706](https://github.com/pytorch/pytorch/pull/152706))
+- Added `ibverbs` backend in gloo ([#153015](https://github.com/pytorch/pytorch/pull/153015), [#153425](https://github.com/pytorch/pytorch/pull/153425))
+- Enabled gloo CUDA when used with a backend that supports `GPUDirect` ([#153406](https://github.com/pytorch/pytorch/pull/153406))
 
 #### DeviceMesh
 - Improved device selection logic ([#150897](https://github.com/pytorch/pytorch/pull/150897))
@@ -623,6 +611,12 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 - Added `lr_lambda` type check in `MultiplicativeLR` ([#151973](https://github.com/pytorch/pytorch/pull/151973))
 
 ## Profiler
+- Added support for on-demand memory snapshot ([#150559](https://github.com/pytorch/pytorch/pull/150559))
+
+- Added PT2 compile context to visualizer ([#152862](https://github.com/pytorch/pytorch/pull/152862))
+
+- Added PT2 to memory snapshot ([#152707](https://github.com/pytorch/pytorch/pull/152707))
+
 - Added flag to toggle global and local callbacks for annotations ([#154932](https://github.com/pytorch/pytorch/pull/154932))
 
 - Pass overload names to Kineto ([#149333](https://github.com/pytorch/pytorch/pull/149333))
@@ -631,35 +625,16 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 
 - Start at index with most events ([#154571](https://github.com/pytorch/pytorch/pull/154571))
 
-- Remove `compile_context` handle even if `compile_context` not set ([#154664](https://github.com/pytorch/pytorch/pull/154664))
-
-- Remove temp flag for on-demand memory snapshot ([#151068](https://github.com/pytorch/pytorch/pull/151068))
-
-- Enabled `Profiler.key_averages().table()` for HPU devices ([#150770](https://github.com/pytorch/pytorch/pull/150770))
-
 ## Python Frontend
-- Added a warning when a tensor with `requires_grad=True` is converted to a scalar ([#143261](https://github.com/pytorch/pytorch/pull/143261))
-
-- Moved warning from item to specific number conversions ([#152709](https://github.com/pytorch/pytorch/pull/152709))
-
-- Avoid triggering ignored `requires_grad` warning during tensor string formatting ([#152686](https://github.com/pytorch/pytorch/pull/152686))
-
 - Introduced `torch.AcceleratorError` ([#152023](https://github.com/pytorch/pytorch/pull/152023))
 
-- Implemented `Size.__radd__` ([#152554](https://github.com/pytorch/pytorch/pull/152554))
+- Implemented `Size.__radd__()` ([#152554](https://github.com/pytorch/pytorch/pull/152554))
 
 - Updated `get_default_device()` to also respect `torch.device` context manager ([#148621](https://github.com/pytorch/pytorch/pull/148621))
 
-- Delegate `torch.accelerator.device_count` to `torch.xxx.device_count` for multi-process usage ([#149924](https://github.com/pytorch/pytorch/pull/149924))
-
 ## Quantization
-- Support boolean tensor for `torch.fused_moving_avg_obs_fake_quant` on CUDA ([#153699](https://github.com/pytorch/pytorch/pull/153699))
-
-- Fixed torchscript issues with reference quantized modules ([#150870](https://github.com/pytorch/pytorch/pull/150870))
-
-- Implemented `__obj_flatten__` for `LinearPackedParamsBase` ([#152619](https://github.com/pytorch/pytorch/pull/152619))
-
 - Improved x86 PT2E quantization support with new uint8 ops (pointwise `mul` / `add` / `add_relu` and `batch_norm2d`), qconv1d-relu fusion, and lowering pass ([#151112](https://github.com/pytorch/pytorch/pull/151112), [#152411](https://github.com/pytorch/pytorch/pull/152411), [#152811](https://github.com/pytorch/pytorch/pull/152811), [#150751](https://github.com/pytorch/pytorch/pull/150751), [#149708](https://github.com/pytorch/pytorch/pull/149708))
+- Support boolean tensor for `torch.fused_moving_avg_obs_fake_quant` on CUDA ([#153699](https://github.com/pytorch/pytorch/pull/153699))
 
 ## Release Engineering
 - Updated gcc11 to gcc13 in manylinux images ([#152825](https://github.com/pytorch/pytorch/pull/152825), [#152825](https://github.com/pytorch/pytorch/pull/152825), [#150635](https://github.com/pytorch/pytorch/pull/150635), [#158445](https://github.com/pytorch/pytorch/pull/158445))
