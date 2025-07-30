@@ -19,6 +19,12 @@
    </td>
   </tr>
   <tr>
+   <td>TODO
+   </td>
+   <td>TODO
+   </td>
+  </tr>
+  <tr>
    <td>
    </td>
    <td>torch::stable::Tensor
