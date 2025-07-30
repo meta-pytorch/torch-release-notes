@@ -942,7 +942,6 @@ inputs, max pooling, multi-dimensional reductions, and non-vectorized elementwis
 
 ## FX
 - Gracefully exit minimizer when there is no discrepancy in block mode ([#154076](https://github.com/pytorch/pytorch/pull/154076))
-- Add `__main__` guards to FX tests ([#154715](https://github.com/pytorch/pytorch/pull/154715))
 
 ## Optimizer
 - Improve decorator typing for Optimizer subclasses ([#153374](https://github.com/pytorch/pytorch/pull/153374))
