@@ -369,7 +369,7 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 - Added config variable `aot_inductor.model_name_for_generated_files` for specifying model name ([#154129](https://github.com/pytorch/pytorch/pull/154129))
 
 ## MPS
-- `MPSInductor`: `torch.compile` for Apple GPUs ([#150121](https://github.com/pytorch/pytorch/issues/150121), [#149342](https://github.com/pytorch/pytorch/pull/149342), [#151449](https://github.com/pytorch/pytorch/pull/151449), [#151754](https://github.com/pytorch/pytorch/pull/151754), [#149687](https://github.com/pytorch/pytorch/pull/149687), [#149180](https://github.com/pytorch/pytorch/pull/149180), [#149221](https://github.com/pytorch/pytorch/pull/149221), [#153598](https://github.com/pytorch/pytorch/pull/153598), [#152788](https://github.com/pytorch/pytorch/pull/152788), [#153787](https://github.com/pytorch/pytorch/pull/153787), [#152214](https://github.com/pytorch/pytorch/pull/152214), [#151152](https://github.com/pytorch/pytorch/pull/151152), [#155891](https://github.com/pytorch/pytorch/pull/155891), [#154578](https://github.com/pytorch/pytorch/pull/154578), [#151272](https://github.com/pytorch/pytorch/pull/151272), [#151288](https://github.com/pytorch/pytorch/pull/151288), [#153997](https://github.com/pytorch/pytorch/pull/153997), [#151871](https://github.com/pytorch/pytorch/pull/151871), [#153362](https://github.com/pytorch/pytorch/pull/153362), [#156566](https://github.com/pytorch/pytorch/pull/156566), [#150661](https://github.com/pytorch/pytorch/pull/150661))
+- `MPSInductor`: `torch.compile` for Apple GPUs ([#150121](https://github.com/pytorch/pytorch/issues/150121), [#149342](https://github.com/pytorch/pytorch/pull/149342), [#151449](https://github.com/pytorch/pytorch/pull/151449), [#151754](https://github.com/pytorch/pytorch/pull/151754), [#149687](https://github.com/pytorch/pytorch/pull/149687), [#149180](https://github.com/pytorch/pytorch/pull/149180), [#149221](https://github.com/pytorch/pytorch/pull/149221), [#153598](https://github.com/pytorch/pytorch/pull/153598), [#152788](https://github.com/pytorch/pytorch/pull/152788), [#153787](https://github.com/pytorch/pytorch/pull/153787), [#152214](https://github.com/pytorch/pytorch/pull/152214), [#151152](https://github.com/pytorch/pytorch/pull/151152), [#155891](https://github.com/pytorch/pytorch/pull/155891), [#154578](https://github.com/pytorch/pytorch/pull/154578), [#151272](https://github.com/pytorch/pytorch/pull/151272), [#151288](https://github.com/pytorch/pytorch/pull/151288), [#153997](https://github.com/pytorch/pytorch/pull/153997), [#151871](https://github.com/pytorch/pytorch/pull/151871), [#153362](https://github.com/pytorch/pytorch/pull/153362), [#156566](https://github.com/pytorch/pytorch/pull/156566), [#150661](https://github.com/pytorch/pytorch/pull/150661), [#153582](https://github.com/pytorch/pytorch/pull/153582))
 
 ## Python Frontend
 - Added Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
@@ -719,20 +719,7 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 - Fixed 32-bit indexing overflows in `ReducedPrecisionGemV` ([#150949](https://github.com/pytorch/pytorch/pull/150949))
 
 ## MPS
-- Fixed `lerp` for complex numbers ([#152479](https://github.com/pytorch/pytorch/pull/152479))
-- Fixed unary/binary ops for `2**32`+ elem tensors ([#155183](https://github.com/pytorch/pytorch/pull/155183))
-- Fixed type promotion for `torch.floor_divide` ([#149233](https://github.com/pytorch/pytorch/pull/149233))
-- Fixed `where` ([#151176](https://github.com/pytorch/pytorch/pull/151176))
-- Fixed logit output for half/bfloat ([#151282](https://github.com/pytorch/pytorch/pull/151282))
-- Fixed `index_kernel` for large tensors ([#158239](https://github.com/pytorch/pytorch/pull/158239))
-- Fixed memory leak in SDPA for float32 ([#152371](https://github.com/pytorch/pytorch/pull/152371))
-- Fixed metal ops with different dtypes ([#149974](https://github.com/pytorch/pytorch/pull/149974))
-- Switch Cholesky decomp to column-wise ([#158237](https://github.com/pytorch/pytorch/pull/158237))
-- Fixed float64 scalar tensor handling ([#153582](https://github.com/pytorch/pytorch/pull/153582))
-- Fixed crash when inverting matrix with `N>1024` ([#146754](https://github.com/pytorch/pytorch/pull/146754))
-- Reimplement `tri[ul]` as Metal shaders ([#158867](https://github.com/pytorch/pytorch/pull/158867))
-- Fixed complex scalar binding to Metal tensors ([#155184](https://github.com/pytorch/pytorch/pull/155184))
-- Fixed ICE for `special.entr` bool instantiation on M1/M2 ([#152204](https://github.com/pytorch/pytorch/pull/152204))
+- Fixed various op support issues: unary/binary ops with `2**32`+ element inputs, binary ops with inputs with different dtypes, ops with complex scalar inputs, `cholesky` decomp, `floor_divide` type promotion, `index_kernel` with large inputs, `lerp` with complex inputs, `logit` with half/bfloat16 inputs, SDPA memory leak, `torch.special.entr`, `tri[ul]`, matrix inversion with `N>1024`, and `where` with non-contiguous `cond` ([#152479](https://github.com/pytorch/pytorch/pull/152479), [#155183](https://github.com/pytorch/pytorch/pull/155183), [#149233](https://github.com/pytorch/pytorch/pull/149233), [#151176](https://github.com/pytorch/pytorch/pull/151176), [#151282](https://github.com/pytorch/pytorch/pull/151282), [#158239](https://github.com/pytorch/pytorch/pull/158239), [#152371](https://github.com/pytorch/pytorch/pull/152371), [#149974](https://github.com/pytorch/pytorch/pull/149974), [#158237](https://github.com/pytorch/pytorch/pull/158237), [#146754](https://github.com/pytorch/pytorch/pull/146754), [#158867](https://github.com/pytorch/pytorch/pull/158867), [#155184](https://github.com/pytorch/pytorch/pull/155184), [#152204](https://github.com/pytorch/pytorch/pull/152204))
 
 ## torch.nn
 - Fixed `load_state_dict` behavior for `nn.LazyLinear` ([#147599](https://github.com/pytorch/pytorch/pull/147599))
