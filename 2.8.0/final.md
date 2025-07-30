@@ -1019,7 +1019,6 @@ inputs, max pooling, multi-dimensional reductions, and non-vectorized elementwis
 
 #### FullyShardedDataParallel2 (FSDP2)
 - Updated `ignored_params` docstring and added unit tests ([#149074](https://github.com/pytorch/pytorch/pull/149074))
-- Added warning that `reshard_after_forward` = 1 and True are different ([#149750](https://github.com/pytorch/pytorch/pull/149750))
 - Added pointer to torchtitan ([#153079](https://github.com/pytorch/pytorch/pull/153079))
 - Added warning for incorrected grad results at world size 1 ([#154928](https://github.com/pytorch/pytorch/pull/154928))
 
@@ -1032,29 +1031,9 @@ inputs, max pooling, multi-dimensional reductions, and non-vectorized elementwis
 - Addressed ambiguity in docs for `torch.linalg.norm()`'s ord argument of +2 & -2 ([#155148](https://github.com/pytorch/pytorch/pull/155148))
 
 ## torch.nn
-- Updated documentation wording for transformer-related layers ([#155123](https://github.com/pytorch/pytorch/pull/155123))
-
-- Added warning about tied init for `nn.Transformer{Encoder/Decoder}` ([#146882](https://github.com/pytorch/pytorch/pull/146882))
-
-- Improved documentation for `ConvTranspose2d` stride argument ([#150819](https://github.com/pytorch/pytorch/pull/150819))
-
-- Added `output_size` in forward method of `ConvTranspose2d` ([#150609](https://github.com/pytorch/pytorch/pull/150609))
-
-- Improved documentation for `nn.functional` loss functions ([#148436](https://github.com/pytorch/pytorch/pull/148436))
-
-- Improved documentation for `interpolate` saturate cast behavior ([#151304](https://github.com/pytorch/pytorch/pull/151304))
-
-- Added examples for methods of `nn.Sequential` ([#147304](https://github.com/pytorch/pytorch/pull/147304))
-
-- Fixed examples in documentation for `nn.LazyModuleMixin` ([#150596](https://github.com/pytorch/pytorch/pull/150596))
-
-- Documented padding size limitations in `nn.modules.padding` ([#155618](https://github.com/pytorch/pytorch/pull/155618))
-
-- Documented padding size limitatation of `AvgPoolND` ([#152680](https://github.com/pytorch/pytorch/pull/152680))
-
-- Documented behavior of `register_full_backward_hook` when no inputs require gradients ([#151785](https://github.com/pytorch/pytorch/pull/151785))
-
-- Fixed code snippet for `nn.RNN` ([#153620](https://github.com/pytorch/pytorch/pull/153620))
+- Improved documentation for transformer-related layers, `nn.RNN`, `nn.functional` loss functions, `interpolate` saturate cast behavior, `ConvTranspose2d` `stride` / `output_size` arguments, and `register_full_backward_hook` ([#155123](https://github.com/pytorch/pytorch/pull/155123), [#153620](https://github.com/pytorch/pytorch/pull/153620), [#148436](https://github.com/pytorch/pytorch/pull/148436), [#151304](https://github.com/pytorch/pytorch/pull/151304), [#150819](https://github.com/pytorch/pytorch/pull/150819), [#150609](https://github.com/pytorch/pytorch/pull/150609), [#151785](https://github.com/pytorch/pytorch/pull/151785))
+- Fixed examples for `nn.Sequential` and `nn.LazyModuleMixin` ([#147304](https://github.com/pytorch/pytorch/pull/147304), [#150596](https://github.com/pytorch/pytorch/pull/150596))
+- Documented padding size limitations in `nn.modules.padding` and `AvgPoolND` ([#155618](https://github.com/pytorch/pytorch/pull/155618), [#152680](https://github.com/pytorch/pytorch/pull/152680))
 
 ## ONNX
 - Convert .rst doc files to markdown ([#155228](https://github.com/pytorch/pytorch/pull/155228), [#155556](https://github.com/pytorch/pytorch/pull/155556))
