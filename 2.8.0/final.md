@@ -335,7 +335,9 @@ Version 2.8.0:
 
 # Deprecations
 ### MPS support for MacOS Ventura will be removed in 2.9
-TODO
+PyTorch 2.8 is the last release that will support GPU acceleration on MacOS Ventura. In the next
+release (2.9), MacOS Sonoma (released in Sept. 2023) or above will be required to use the MPS
+backend.
 
 ### `torch.ao.quantization` is deprecated and will be removed in 2.10 ([#153892](https://github.com/pytorch/pytorch/pull/153892))
 To migrate:
