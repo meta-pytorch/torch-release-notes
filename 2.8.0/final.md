@@ -19,9 +19,21 @@
    </td>
   </tr>
   <tr>
-   <td>TODO
+   <td>
    </td>
-   <td>TODO
+   <td>torch::stable::Tensor
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>Hierarchical compilation with `torch.compile`
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>Support for Intel GPU distributed backend (XCCL)
    </td>
   </tr>
 </table>
@@ -813,22 +825,21 @@ binary kernels, SDPA, `linear`, and `cumsum` / `cumprod` ([#152010](https://gith
 inputs, max pooling, multi-dimensional reductions, and non-vectorized elementwise kernels ([#149076](https://github.com/pytorch/pytorch/pull/149076), [#149779](https://github.com/pytorch/pytorch/pull/149779), [#149548](https://github.com/pytorch/pytorch/pull/149548), [#151230](https://github.com/pytorch/pytorch/pull/151230), [#152267](https://github.com/pytorch/pytorch/pull/152267), [#154522](https://github.com/pytorch/pytorch/pull/154522), [#154619](https://github.com/pytorch/pytorch/pull/154619), [#155806](https://github.com/pytorch/pytorch/pull/155806), [#153184](https://github.com/pytorch/pytorch/pull/153184))
 - Improved scatter add performance on MI250X ([#151724](https://github.com/pytorch/pytorch/pull/151724))
 - Extended vectorized elementwise kernel to more heterogenous tensor types ([#149738](https://github.com/pytorch/pytorch/pull/149738))
+- Use `HipSparseLT` to further accelerate semi-structured (e.g. 2:4) sparsity ([#150578](https://github.com/pytorch/pytorch/pull/150578))
 
 ## Sparse Frontend
-- Use HipSparseLT to further accelerate semi-structured (e.g. 2:4) sparsity on ROCm (AMD) ([#150578](https://github.com/pytorch/pytorch/pull/150578))
 - Skip sparse tensor invariant validation when loading sparse Tensors from external storage ([#154610](https://github.com/pytorch/pytorch/pull/154610), [#154759](https://github.com/pytorch/pytorch/pull/154759), [#154638](https://github.com/pytorch/pytorch/pull/154638))
 
 ## XPU
-- Enabled post-op fusion for oneDNN Conv on Intel GPU ([#150287](https://github.com/pytorch/pytorch/pull/150287))
+- Enabled post-op fusion for oneDNN convolution on Intel GPU ([#150287](https://github.com/pytorch/pytorch/pull/150287))
 - Reduced host overhead for Intel GPU by eliminating meaningless API calls ([#151111](https://github.com/pytorch/pytorch/pull/151111))
 - Improved INT4 WOQ GEMM for Intel GPU by introducing a cache mechanism to reduce the oneDNN integration overhead further ([#147693](https://github.com/pytorch/pytorch/pull/147693))
 - Improved scalar tensor case handling in `addmm`, `baddmm` to reduce oneDNN integration overhead on Intel GPU ([#153051](https://github.com/pytorch/pytorch/pull/153051))
 
 # Documentation
 ## Autograd
-- Updated docs of `torch.autograd.graph.saved_tensors_hooks` to avoid ref cycle ([#153049](https://github.com/pytorch/pytorch/pull/153049))
-- Mention that it's possible to set `debug=True` in `torch.utils.checkpoint.checkpoint` error messages ([#155593](https://github.com/pytorch/pytorch/pull/155593))
-- Added more details on why `ctx.save_for_backward` is important in extending autograd note ([#153005](https://github.com/pytorch/pytorch/pull/153005))
+- Added more details on why `ctx.save_for_backward` is important in note about extending autograd ([#153005](https://github.com/pytorch/pytorch/pull/153005))
+- Updated docs of `torch.autograd.graph.saved_tensors_hooks` to avoid refcycle ([#153049](https://github.com/pytorch/pytorch/pull/153049))
 - Updated gradient behavior note in `torch.amin` and `torch.amax` ([#155071](https://github.com/pytorch/pytorch/pull/155071))
 
 ## CUDA
