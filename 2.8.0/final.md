@@ -27,7 +27,7 @@
   <tr>
    <td>
    </td>
-   <td>Hierarchical compilation with `torch.compile`
+   <td>Hierarchical compilation with torch.compile
    </td>
   </tr>
   <tr>
