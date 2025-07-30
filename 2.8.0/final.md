@@ -31,8 +31,10 @@ Below are the full release notes for this release.
 
 # Tracked Regressions
 ### Windows wheel builds with CUDA 12.9.1 stack overflow during build ([#156181](https://github.com/pytorch/pytorch/issues/156181))
-Due to a bug introduced in CUDA 12.9.1, we are unable to complete Windows wheel builds with this
-version.
+Due to a bug introduced in CUDA 12.9.1, we are unable to complete full Windows wheel builds with this
+version, as compilation of `torch.segment_reduce()` crashes the build. Thus, we provide a wheel
+without `torch.segment_reduce()` included in order to sidestep the issue. If you need support
+for `torch.segment_reduce()`, please utilize a different version.
 
 # Backwards Incompatible Changes
 
