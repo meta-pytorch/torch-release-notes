@@ -369,7 +369,7 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 - Added config variable `aot_inductor.model_name_for_generated_files` for specifying model name ([#154129](https://github.com/pytorch/pytorch/pull/154129))
 
 ## MPS
-- `MPSInductor`: `torch.compile` for Apple GPUs ([#150121](https://github.com/pytorch/pytorch/issues/150121))
+- `MPSInductor`: `torch.compile` for Apple GPUs ([#150121](https://github.com/pytorch/pytorch/issues/150121), [#149342](https://github.com/pytorch/pytorch/pull/149342), [#151449](https://github.com/pytorch/pytorch/pull/151449), [#151754](https://github.com/pytorch/pytorch/pull/151754), [#149687](https://github.com/pytorch/pytorch/pull/149687), [#149180](https://github.com/pytorch/pytorch/pull/149180), [#149221](https://github.com/pytorch/pytorch/pull/149221), [#153598](https://github.com/pytorch/pytorch/pull/153598), [#152788](https://github.com/pytorch/pytorch/pull/152788), [#153787](https://github.com/pytorch/pytorch/pull/153787), [#152214](https://github.com/pytorch/pytorch/pull/152214), [#151152](https://github.com/pytorch/pytorch/pull/151152), [#155891](https://github.com/pytorch/pytorch/pull/155891), [#154578](https://github.com/pytorch/pytorch/pull/154578), [#151272](https://github.com/pytorch/pytorch/pull/151272), [#151288](https://github.com/pytorch/pytorch/pull/151288), [#153997](https://github.com/pytorch/pytorch/pull/153997), [#151871](https://github.com/pytorch/pytorch/pull/151871), [#153362](https://github.com/pytorch/pytorch/pull/153362), [#156566](https://github.com/pytorch/pytorch/pull/156566), [#150661](https://github.com/pytorch/pytorch/pull/150661))
 
 ## Python Frontend
 - Added Generalized Pareto Distribution (GPD) ([#135968](https://github.com/pytorch/pytorch/pull/135968))
@@ -538,7 +538,6 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 
 ## MPS
 - Added support for operations: `i0e`, `i1e,` `torch.special.bessel_[jy][01], modified_bessel_i1, bicubic2d_aa, modified_bessel_k0, modified_bessel_k1, scaled_modified_bessel_k0, scaled_modified_bessel_k1, nanmedian, hermite_polynomial_h, hermite_polynomial_he, rsub, index_copy, hardshrink, upsample_trilinear, erfc, isin_Scalar_Tensor, isin_Tensor_Scalar, chebyshev_polynomial_t, col2im, nearest_3d, chebyshev_polynomial_[uvw]` ([#149174](https://github.com/pytorch/pytorch/pull/149174), [#149203](https://github.com/pytorch/pytorch/pull/149203) [#149123](https://github.com/pytorch/pytorch/pull/149123), [#149368](https://github.com/pytorch/pytorch/pull/149368), [#149378](https://github.com/pytorch/pytorch/pull/149378), [#149563](https://github.com/pytorch/pytorch/pull/149563), [#149687](https://github.com/pytorch/pytorch/pull/149687), [#149705](https://github.com/pytorch/pytorch/pull/149705), [#149783](https://github.com/pytorch/pytorch/pull/149783), [#149407](https://github.com/pytorch/pytorch/pull/149407)/[#149680](https://github.com/pytorch/pytorch/pull/149680), [#150279](https://github.com/pytorch/pytorch/pull/150279), [#151754](https://github.com/pytorch/pytorch/pull/151754), [#153786](https://github.com/pytorch/pytorch/pull/153786), [#154326](https://github.com/pytorch/pytorch/pull/154326), [#155304](https://github.com/pytorch/pytorch/pull/155304), [#156263](https://github.com/pytorch/pytorch/pull/156263), [#155382](https://github.com/pytorch/pytorch/pull/155382), [#154010](https://github.com/pytorch/pytorch/pull/154010), [#149816](https://github.com/pytorch/pytorch/pull/149816), [#152282](https://github.com/pytorch/pytorch/pull/152282), [#156090](https://github.com/pytorch/pytorch/pull/156090), [#150060](https://github.com/pytorch/pytorch/pull/150060))
-- Added `MPSInductor` support for: `modified_bessel_i0, pow, log2, floorToInt, hermite_polynomial_he, modified_bessel_k1, i0e, i1e,`, numpy scalar handling ([#149342](https://github.com/pytorch/pytorch/pull/149342), [#151449](https://github.com/pytorch/pytorch/pull/151449), [#151754](https://github.com/pytorch/pytorch/pull/151754), [#149687](https://github.com/pytorch/pytorch/pull/149687), [#149180](https://github.com/pytorch/pytorch/pull/149180), [#149221](https://github.com/pytorch/pytorch/pull/149221), [#153598](https://github.com/pytorch/pytorch/pull/153598))
 - Extended dtype support for:
   * `index_put` with half precision floats ([#151869](https://github.com/pytorch/pytorch/pull/151869))
   * `ConvTranspose3D` with FP32 and complex ([#154696](https://github.com/pytorch/pytorch/pull/154696))
@@ -732,27 +731,11 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 - Fixed memory leak in SDPA for float32 ([#152371](https://github.com/pytorch/pytorch/pull/152371))
 - Fixed metal ops with different dtypes ([#149974](https://github.com/pytorch/pytorch/pull/149974))
 - Switch Cholesky decomp to column-wise ([#158237](https://github.com/pytorch/pytorch/pull/158237))
-- Fixed bug in 3D coords calculation affecting interpolation ([#156375](https://github.com/pytorch/pytorch/pull/156375))
 - Fixed float64 scalar tensor handling ([#153582](https://github.com/pytorch/pytorch/pull/153582))
 - Fixed crash when inverting matrix with `N>1024` ([#146754](https://github.com/pytorch/pytorch/pull/146754))
-- Made fused `rms_norm` traceable ([#150661](https://github.com/pytorch/pytorch/pull/150661))
 - Reimplement `tri[ul]` as Metal shaders ([#158867](https://github.com/pytorch/pytorch/pull/158867))
 - Fixed complex scalar binding to Metal tensors ([#155184](https://github.com/pytorch/pytorch/pull/155184))
 - Fixed ICE for `special.entr` bool instantiation on M1/M2 ([#152204](https://github.com/pytorch/pytorch/pull/152204))
-
-#### MPSInductor
-- Fixed `truncdiv` implementation ([#152788](https://github.com/pytorch/pytorch/pull/152788))
-- Fixed `conv_transpose` with `channels_last` ([#153787](https://github.com/pytorch/pytorch/pull/153787))
-- Fixed the approximation of `polygamma` for n \== 0\ ([#152214](https://github.com/pytorch/pytorch/pull/152214))
-- Fixed larger-than-threadgroup Welford reductions ([#151152](https://github.com/pytorch/pytorch/pull/151152))
-- Fixed remainder implementation for int types ([#155891](https://github.com/pytorch/pytorch/pull/155891))
-- Fixed codegen for nested multistage reductions in `MPSInductor` ([#154578](https://github.com/pytorch/pytorch/pull/154578))
-- Fixed silent correctness in bitcast ([#151272](https://github.com/pytorch/pytorch/pull/151272))
-- Adjusted convolution memory format detection ([#151288](https://github.com/pytorch/pytorch/pull/151288))
-- Fixed `MPSInductor` indexing calculation ([#153997](https://github.com/pytorch/pytorch/pull/153997))
-- Implemented `atomic_add` store mode ([#151871](https://github.com/pytorch/pytorch/pull/151871))
-- Fixed multistage reduction suffixes ([#153362](https://github.com/pytorch/pytorch/pull/153362))
-- Fixed nested loop var elimination ([#156566](https://github.com/pytorch/pytorch/pull/156566))
 
 ## torch.nn
 - Fixed `load_state_dict` behavior for `nn.LazyLinear` ([#147599](https://github.com/pytorch/pytorch/pull/147599))
