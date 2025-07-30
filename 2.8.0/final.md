@@ -665,15 +665,11 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 
 ## torch.compile
 #### Dynamo
-- Fixed spammy errors when user passes an invalid `TORCH_LOGS` argument ([#151678](https://github.com/pytorch/pytorch/pull/151678))
-- Eliminated silent incorrectness in the Compiled Autograd initial trace ([#149014](https://github.com/pytorch/pytorch/pull/149014),
-[#155521](https://github.com/pytorch/pytorch/pull/155521), [#155289](https://github.com/pytorch/pytorch/pull/155289), [#149336](https://github.com/pytorch/pytorch/pull/149336))
+- Eliminated silent incorrectness issues in the Compiled Autograd initial trace ([#149014](https://github.com/pytorch/pytorch/pull/149014), [#155521](https://github.com/pytorch/pytorch/pull/155521), [#155289](https://github.com/pytorch/pytorch/pull/155289), [#149336](https://github.com/pytorch/pytorch/pull/149336))
+- Fixed various tracing errors involving einops, `dict(mapping_proxy)`, and the FlexAttention HOP ([#157754](https://github.com/pytorch/pytorch/pull/157754), [#157515](https://github.com/pytorch/pytorch/pull/157515), [#157519](https://github.com/pytorch/pytorch/pull/157519))
 - Fixed unpack hook semantics for memory savings in checkpointing and offloading for Compiled Autograd ([#147242](https://github.com/pytorch/pytorch/pull/147242), [#153300](https://github.com/pytorch/pytorch/pull/153300))
-- Fixed einops x `torch.compile` interaction ([#157754](https://github.com/pytorch/pytorch/pull/157754))
-- Use proper sources for constructing dataclass defaults ([#158689](https://github.com/pytorch/pytorch/pull/158689))
-- Fixed source for `lru_cache` method ([#157308](https://github.com/pytorch/pytorch/pull/157308))
-- Fixed bug in `dict(mapping_proxy)` ([#157515](https://github.com/pytorch/pytorch/pull/157515))
-- Handle missing `tags` attribute for fake tensors ([#157519](https://github.com/pytorch/pytorch/pull/157519))
+- Fixed sources for dataclass defaults and the `lru_cache` method ([#158689](https://github.com/pytorch/pytorch/pull/158689), [#157308](https://github.com/pytorch/pytorch/pull/157308))
+- Fixed spammy errors when an invalid `TORCH_LOGS` argument is passed ([#151678](https://github.com/pytorch/pytorch/pull/151678))
 
 #### Inductor
 - Support special kwargs in AMD triton configs ([#154605](https://github.com/pytorch/pytorch/pull/154605))
