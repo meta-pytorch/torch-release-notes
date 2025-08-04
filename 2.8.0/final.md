@@ -13,34 +13,43 @@
 # Highlights
 <table>
   <tr>
-   <td><strong>Stable</strong>
-   </td>
-   <td><strong>Unstable</strong>
-   </td>
+   <td><strong>Unstable</strong></td>
   </tr>
   <tr>
-   <td>TODO
-   </td>
-   <td>TODO
-   </td>
+   <td>torch::stable::Tensor</td>
   </tr>
   <tr>
-   <td>
-   </td>
-   <td>torch::stable::Tensor
-   </td>
+   <td>High-performance quantized LLM inference on Intel CPUs with native PyTorch</td>
   </tr>
   <tr>
-   <td>
-   </td>
-   <td>Hierarchical compilation with torch.compile
-   </td>
+   <td>Experimental Wheel Variant Support</td>
   </tr>
   <tr>
-   <td>
-   </td>
-   <td>Support for Intel GPU distributed backend (XCCL)
-   </td>
+   <td>Inductor CUTLASS backend support</td>
+  </tr>
+  <tr>
+   <td>Inductor Graph Partition for CUDAGraph</td>
+  </tr>
+  <tr>
+   <td>torch.compile Hierarchical Compilation</td>
+  </tr>
+  <tr>
+   <td>Control Flow Operator Library</td>
+  </tr>
+  <tr>
+   <td>HuggingFace SafeTensors support in PyTorch Distributed Checkpointing</td>
+  </tr>
+  <tr>
+   <td>SYCL support in PyTorch CPP Extension API</td>
+  </tr>
+  <tr>
+   <td>A16W4 on XPU Device</td>
+  </tr>
+  <tr>
+   <td>Hierarchical compilation with torch.compile</td>
+  </tr>
+  <tr>
+   <td>Support for Intel GPU distributed backend (XCCL)</td>
   </tr>
 </table>
 
