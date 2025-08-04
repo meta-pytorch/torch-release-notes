@@ -49,7 +49,7 @@
    <td>Hierarchical compilation with torch.compile</td>
   </tr>
   <tr>
-   <td>Support for Intel GPU distributed backend (XCCL)</td>
+   <td>Intel GPU distributed backend (XCCL) support</td>
   </tr>
 </table>
 
