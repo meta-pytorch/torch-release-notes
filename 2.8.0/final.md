@@ -53,7 +53,7 @@
   </tr>
 </table>
 
-For more details about these highlighted features, you can look at the release blogpost.
+For more details about these highlighted features, you can look at the [release blogpost](https://pytorch.org/blog/pytorch-2-8/).
 Below are the full release notes for this release.
 
 # Tracked Regressions
