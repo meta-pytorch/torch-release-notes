@@ -57,7 +57,7 @@ For more details about these highlighted features, you can look at the [release 
 Below are the full release notes for this release.
 
 # Tracked Regressions
-### Windows wheel builds with CUDA 12.9.1 stack overflow during build ([#156181](https://github.com/pytorch/pytorch/issues/156181))
+### Windows wheel builds with CUDA 12.9.1 stack overflow during build (#156181)
 Due to a bug introduced in CUDA 12.9.1, we are unable to complete full Windows wheel builds with this
 version, as compilation of `torch.segment_reduce()` crashes the build. Thus, we provide a wheel
 without `torch.segment_reduce()` included in order to sidestep the issue. If you need support
@@ -66,7 +66,7 @@ for `torch.segment_reduce()`, please utilize a different version.
 # Backwards Incompatible Changes
 
 ## CUDA Support
-### Removed support for Maxwell, Pascal, and Volta architectures with CUDA 12.8 and 12.9 builds ([#157517](https://github.com/pytorch/pytorch/issues/157517), #158478, #158744)
+### Removed support for Maxwell, Pascal, and Volta architectures with CUDA 12.8 and 12.9 builds (#157517, #158478, #158744)
 Due to binary size limitations, support for sm50 - sm70 architectures with CUDA 12.8 and 12.9 has
 been dropped for the 2.8.0 release. If you need support for these architectures, please utilize
 CUDA 12.6 instead.
@@ -158,7 +158,7 @@ guard. However, if the new guard causes a tensor marked with `mark_dynamic` to b
 specialized, this can result in an error. One workaround is to use
 `maybe_mark_dynamic` instead of `mark_dynamic`.
 
-See the discussion in issue [#157921](https://github.com/pytorch/pytorch/issues/157921) for more
+See the discussion in issue #157921 for more
 context.
 
 Version 2.7.0
@@ -396,7 +396,7 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 - Added config variable `aot_inductor.model_name_for_generated_files` for specifying model name (#154129)
 
 ## MPS
-- `MPSInductor`: `torch.compile` for Apple GPUs ([#150121](https://github.com/pytorch/pytorch/issues/150121), #149342, #151449, #151754, #149687, #149180, #149221, #153598, #152788, #153787, #152214, #151152, #155891, #154578, #151272, #151288, #153997, #151871, #153362, #156566, #150661, #153582)
+- `MPSInductor`: `torch.compile` for Apple GPUs (#150121, #149342, #151449, #151754, #149687, #149180, #149221, #153598, #152788, #153787, #152214, #151152, #155891, #154578, #151272, #151288, #153997, #151871, #153362, #156566, #150661, #153582)
 
 ## Python Frontend
 - Added Generalized Pareto Distribution (GPD) (#135968)
