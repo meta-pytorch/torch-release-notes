@@ -46,9 +46,6 @@
    <td>A16W4 on XPU Device</td>
   </tr>
   <tr>
-   <td>Hierarchical compilation with torch.compile</td>
-  </tr>
-  <tr>
    <td>Intel GPU distributed backend (XCCL) support</td>
   </tr>
 </table>
