@@ -317,7 +317,7 @@ torch.export.export_for_training(..., strict=True)
 ```
 
 ## ONNX
-### Default opset in `torch.onnx.export` is now 18 ([#156023](https://github.com/pytorch/pytorch/pull/156023))
+### Default opset in `torch.onnx.export` is now 18 (#156023)
 
 When `dynamo=False`, the default ONNX opset version has been updated from 17 to 18. Users can set `opset_version` to explicitly select an opset version.
 
@@ -338,11 +338,11 @@ torch.onnx.export(..., opset_version=17)
 torch.onnx.export(...)
 ```
 
-### The `JitTraceConvertStrategy` has been removed ([#152556](https://github.com/pytorch/pytorch/pull/152556))
+### The `JitTraceConvertStrategy` has been removed (#152556)
 
 Support for JIT traced and scripted modules in the ONNX exporter when `dynamo=True` has been removed. You are encouraged to export an nn.Module directly, or create an `ExportedProgram` using `torch.export` before exporting to ONNX.
 
-### `onnxscript>=0.3.1` is required for the `dynamo=True` option ([#157017](https://github.com/pytorch/pytorch/pull/157017))
+### `onnxscript>=0.3.1` is required for the `dynamo=True` option (#157017)
 
 You must upgrade `onnxscript` to version 0.3.1 or higher for it to be compatible with PyTorch 2.8.
 
@@ -405,7 +405,7 @@ To migrate:
 
 Note that PT2E quantization has been migrated to `torchao` (https://github.com/pytorch/ao/tree/main/torchao/quantization/pt2e). See https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/main/quick_start.html#pytorch-2-export-quantization for more details.
 
-### The `dynamo=False` (current default) option for `torch.onnx.export` is deprecated ([#152478](https://github.com/pytorch/pytorch/pull/152478), [#155580](https://github.com/pytorch/pytorch/pull/155580))
+### The `dynamo=False` (current default) option for `torch.onnx.export` is deprecated (#152478, #155580)
 
 The default will be `dynamo=True` starting from PyTorch 2.9. You are encouraged to migrate to use the `dynamo=True` option in `torch.onnx.export`. This flag makes `torch.export.export` the default export path, replacing `TorchScript`.
 
@@ -435,9 +435,9 @@ To maintain the old behavior, set `dynamo=False` explicitly. You are encouraged 
 - `MPSInductor`: `torch.compile` for Apple GPUs (#150121, #149342, #151449, #151754, #149687, #149180, #149221, #153598, #152788, #153787, #152214, #151152, #155891, #154578, #151272, #151288, #153997, #151871, #153362, #156566, #150661, #153582)
 
 ## ONNX
-- Added new strategy `draft_export` ([#147529](https://github.com/pytorch/pytorch/pull/147529), [docs](https://docs.pytorch.org/docs/main/draft_export.html)) to provide debugging information upon data-dependent / constraint errors when obtaining an `ExportedProgram` in `torch.onnx.export`
+- Added new strategy `draft_export` (#147529, [docs](https://docs.pytorch.org/docs/main/draft_export.html)) to provide debugging information upon data-dependent / constraint errors when obtaining an `ExportedProgram` with `torch.onnx.export`
 
-- Added support for symbolic operators in the `dynamo=True` export path ([#148905](https://github.com/pytorch/pytorch/pull/148905), [#149678](https://github.com/pytorch/pytorch/pull/149678), [#150038](https://github.com/pytorch/pytorch/pull/150038), [docs](https://docs.pytorch.org/docs/main/onnx_ops.html#symbolic-operators)). Two operators `torch.onnx.ops.symbolic` and `torch.onnx.ops.symbolic_multi_out` are defined to allow you to create symbolic ONNX operators directly in your PyTorch models. You can use them in a `forward` method:
+- Added support for symbolic operators in the `dynamo=True` export path (#148905, #149678, #150038, [docs](https://docs.pytorch.org/docs/main/onnx_ops.html#symbolic-operators)). Two operators `torch.onnx.ops.symbolic` and `torch.onnx.ops.symbolic_multi_out` are defined to allow you to create symbolic ONNX operators directly in your PyTorch models. You can use them in a `forward` method:
 
 ```python
 def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -631,19 +631,19 @@ def forward(self, x: torch.Tensor) -> torch.Tensor:
 - Added Half support for `weight_norm` on CPU (#148878)
 
 ## ONNX
-- Updated ONNX to 1.18 ([#152200](https://github.com/pytorch/pytorch/pull/152200))
-- Added support for opsets (18-23) when `dynamo=True` ([#149901](https://github.com/pytorch/pytorch/pull/149901), [#154596](https://github.com/pytorch/pytorch/pull/154596))
-- Added float4 support ([#151069](https://github.com/pytorch/pytorch/pull/151069), [#156353](https://github.com/pytorch/pytorch/pull/156353))
-- Added support for ONNX operators `Attention-23` and `RotaryEmbedding-23` as native PyTorch ops ([#156431](https://github.com/pytorch/pytorch/pull/156431), [#156367](https://github.com/pytorch/pytorch/pull/156367), [#154745](https://github.com/pytorch/pytorch/pull/154745))
-- Added support for `torch.scan` ([#154513](https://github.com/pytorch/pytorch/pull/154513))
-- Added support for 0/1-sized example inputs on dynamic dimensions ([#155717](https://github.com/pytorch/pytorch/pull/155717))
-- Add `group_norm` support from opset 21 ([#152138](https://github.com/pytorch/pytorch/pull/152138))
+- Updated ONNX to 1.18 (#152200)
+- Added support for opsets (18-23) when `dynamo=True` (#149901, #154596)
+- Added float4 support (#151069, #156353)
+- Added support for ONNX operators `Attention-23` and `RotaryEmbedding-23` as native PyTorch ops (#156431, #156367, #154745)
+- Added support for `torch.scan` (#154513)
+- Added support for 0/1-sized example inputs on dynamic dimensions (#155717)
+- Add `group_norm` support from opset 21 (#152138)
 - Added `asdict` method to `VerificationInfo` class (#151024)
 - Support running bfloat16 models with ONNX Runtime (#149646)
 - Updated ONNX program doc formatting and improve robustness (#151623)
 - Updated `dynamic_shapes` behavior to use `torch.export.dim.DYNAMIC` (#153065)
 - Set the name of the producing node using the value name (#155413)
-- Improved support for symbolic operators `sym_float`, `sym_not`, `sym_min`, `sym_max` ([#153200](https://github.com/pytorch/pytorch/pull/153200), [#152111](https://github.com/pytorch/pytorch/pull/152111), [#152196](https://github.com/pytorch/pytorch/pull/152196))
+- Improved support for symbolic operators `sym_float`, `sym_not`, `sym_min`, `sym_max` (#153200, #152111, #152196)
 
 ## Optimizer
 - Added `TensorLR` variant for fused Adagrad on CPU (#153078)
