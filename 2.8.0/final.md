@@ -316,6 +316,36 @@ torch.export.export(..., strict=True)
 torch.export.export_for_training(..., strict=True)
 ```
 
+## ONNX
+### Default opset in `torch.onnx.export` is now 18 ([#156023](https://github.com/pytorch/pytorch/pull/156023))
+
+When `dynamo=False`, the default ONNX opset version has been updated from 17 to 18. Users can set `opset_version` to explicitly select an opset version.
+
+Version 2.7
+
+```py
+# opset_version=17
+torch.onnx.export(...)
+```
+
+Version 2.8
+
+```py
+# To preserve the original behavior
+torch.onnx.export(..., opset_version=17)
+
+# New: opset_version=18
+torch.onnx.export(...)
+```
+
+### The `JitTraceConvertStrategy` has been removed ([#152556](https://github.com/pytorch/pytorch/pull/152556))
+
+Support for JIT traced and scripted modules in the ONNX exporter when `dynamo=True` has been removed. You are encouraged to export an nn.Module directly, or create an `ExportedProgram` using `torch.export` before exporting to ONNX.
+
+### `onnxscript>=0.3.1` is required for the `dynamo=True` option ([#157017](https://github.com/pytorch/pytorch/pull/157017))
+
+You must upgrade `onnxscript` to version 0.3.1 or higher for it to be compatible with PyTorch 2.8.
+
 ## Build Frontend
 ### Removed the `torch/types.h` include from `Dispatcher.h` (#149557)
 This can cause build errors in C++ code that implicitly relies on this include (e.g. very old versions of `torchvision`).
@@ -375,6 +405,12 @@ To migrate:
 
 Note that PT2E quantization has been migrated to `torchao` (https://github.com/pytorch/ao/tree/main/torchao/quantization/pt2e). See https://github.com/pytorch/ao/issues/2259 and https://docs.pytorch.org/ao/main/quick_start.html#pytorch-2-export-quantization for more details.
 
+### The `dynamo=False` (current default) option for `torch.onnx.export` is deprecated ([#152478](https://github.com/pytorch/pytorch/pull/152478) and [#155580](https://github.com/pytorch/pytorch/pull/155580))
+
+The default will be `dynamo=True` starting from PyTorch 2.9. You are encouraged to migrate to use the `dynamo=True` option in `torch.onnx.export`. This flag makes `torch.export.export` the default export path, replacing `TorchScript`, as `TorchScript` is nearing end-of-life"
+
+To maintain the old behavior, set `dynamo=False`. You are encouraged to also experiment with the `fallback=True` option that will make the exporter fall back to the `dynamo=False` path if there are errors.
+
 # New Features
 ## CUDA
 - Support capture of event record and wait in CUDAGraphs for timing (#155372)
@@ -397,6 +433,74 @@ Note that PT2E quantization has been migrated to `torchao` (https://github.com/p
 
 ## MPS
 - `MPSInductor`: `torch.compile` for Apple GPUs (#150121, #149342, #151449, #151754, #149687, #149180, #149221, #153598, #152788, #153787, #152214, #151152, #155891, #154578, #151272, #151288, #153997, #151871, #153362, #156566, #150661, #153582)
+
+## ONNX
+- Additional opsets (>18) are supported when `dynamo=True` ([#149901](https://github.com/pytorch/pytorch/pull/149901), [#154596](https://github.com/pytorch/pytorch/pull/154596))
+
+Opsets 18-23 are supported with `dynamo=True`. Importantly, you will be able to leverage the `Attention` ONNX operator when setting `opset` to 23.
+
+- Support for symbolic operators in the `dynamo=True` export path ([#148905](https://github.com/pytorch/pytorch/pull/148905), [#149678](https://github.com/pytorch/pytorch/pull/149678), [#150038](https://github.com/pytorch/pytorch/pull/150038))
+
+Two operators `torch.onnx.ops.symbolic` and `torch.onnx.ops.symbolic_multi_out` are defined to allow you to create symbolic ONNX operators directly in your PyTorch models. You can use them in a `forward` method:
+
+```python
+def forward(self, x: torch.Tensor) -> torch.Tensor:
+    # Optionally use is_in_onnx_export to control the behavior during onnx export
+
+    if torch.onnx.is_in_onnx_export():
+        # Create a symbolic ONNX operator with the name "CustomOp" in the "custom_domain" domain.
+        # The output tensor will have the specified dtype and shape
+        return torch.onnx.ops.symbolic(
+            "custom_domain::CustomOp",
+            (x,),
+            dict(attr_key="attr_value"),
+            dtype=x.dtype,
+            shape=x.shape,
+            version=1,
+        )
+    else:
+        return x
+```
+
+To learn more, refer to the [docs](https://docs.pytorch.org/docs/main/onnx_ops.html#symbolic-operators).
+
+- ONNX operators as native PyTorch ops ([#156431](https://github.com/pytorch/pytorch/pull/156431), [#156367](https://github.com/pytorch/pytorch/pull/156367), [#154745](https://github.com/pytorch/pytorch/pull/154745))
+
+You can now use the ONNX operators `Attention-23` and `RotaryEmbedding-23` as native PyTorch operators in your nn.Module, which will be converted directly in the exported ONNX models. You can use them in your `forward` methods like so:
+
+```python
+def forward(
+    self, input_data, cos_cache_data, sin_cache_data, position_ids_data
+):
+    return torch.onnx.ops.rotary_embedding(
+        input_data,
+        cos_cache_data,
+        sin_cache_data,
+        position_ids_data,
+    )
+```
+
+To learn more, refer to the [docs](https://docs.pytorch.org/docs/main/onnx_ops.html#onnx-operators).
+
+- Support for `torch.scan` ([#154513](https://github.com/pytorch/pytorch/pull/154513))
+
+Uses of `torch.scan` can now be converted to ONNX.
+
+- Support 0/1-sized example inputs on dynamic dimensions ([#155717](https://github.com/pytorch/pytorch/pull/155717))
+
+You may now use a size 1 dimension in example inputs on the dynamic dimensions. Prior to this release, users were required to provide size>=2 example inputs on the dynamic dimensions due to the [0/1 specialization behavior in torch.export](https://docs.google.com/document/d/16VPOa3d-Liikf48teAOmxLc92rgvJdfosIy-yoT38Io)
+
+- New strategy `draft_export` ([#147529](https://github.com/pytorch/pytorch/pull/147529))
+
+`draft_export` is added as the last strategy for obtaining an ExportedProgram in `torch.onnx.export` to provide debugging information when there are data dependent / constraint errors. You may learn more in the [docs](https://docs.pytorch.org/docs/main/draft_export.html)
+
+- Others
+  - Support sym_float ([#153200](https://github.com/pytorch/pytorch/pull/153200))
+  - Update ONNX to 1.18 ([#152200](https://github.com/pytorch/pytorch/pull/152200))
+  - Support float4 ([#151069](https://github.com/pytorch/pytorch/pull/151069), [#156353](https://github.com/pytorch/pytorch/pull/156353))
+  - Add group_norm support from opset 21 ([#152138](https://github.com/pytorch/pytorch/pull/152138))
+  - Implement sym_not ([#152111](https://github.com/pytorch/pytorch/pull/152111))
+  - add converters for sym_min, sym_max ([#152196](https://github.com/pytorch/pytorch/pull/152196))
 
 ## Python Frontend
 - Added Generalized Pareto Distribution (GPD) (#135968)
