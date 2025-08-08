@@ -435,9 +435,9 @@ To maintain the old behavior, set `dynamo=False` explicitly. You are encouraged 
 - `MPSInductor`: `torch.compile` for Apple GPUs (#150121, #149342, #151449, #151754, #149687, #149180, #149221, #153598, #152788, #153787, #152214, #151152, #155891, #154578, #151272, #151288, #153997, #151871, #153362, #156566, #150661, #153582)
 
 ## ONNX
-- Added new strategy `draft_export` ([#147529](https://github.com/pytorch/pytorch/pull/147529)). `draft_export` is added as the last strategy for obtaining an ExportedProgram in `torch.onnx.export` to provide debugging information when there are data dependent / constraint errors. You may learn more in the [docs](https://docs.pytorch.org/docs/main/draft_export.html)
+- Added new strategy `draft_export` ([#147529](https://github.com/pytorch/pytorch/pull/147529), [docs](https://docs.pytorch.org/docs/main/draft_export.html)) to provide debugging information upon data-dependent / constraint errors when obtaining an `ExportedProgram` in `torch.onnx.export`
 
-- Added support for symbolic operators in the `dynamo=True` export path ([#148905](https://github.com/pytorch/pytorch/pull/148905), [#149678](https://github.com/pytorch/pytorch/pull/149678), [#150038](https://github.com/pytorch/pytorch/pull/150038)). Two operators `torch.onnx.ops.symbolic` and `torch.onnx.ops.symbolic_multi_out` are defined to allow you to create symbolic ONNX operators directly in your PyTorch models. You can use them in a `forward` method:
+- Added support for symbolic operators in the `dynamo=True` export path ([#148905](https://github.com/pytorch/pytorch/pull/148905), [#149678](https://github.com/pytorch/pytorch/pull/149678), [#150038](https://github.com/pytorch/pytorch/pull/150038), [docs](https://docs.pytorch.org/docs/main/onnx_ops.html#symbolic-operators)). Two operators `torch.onnx.ops.symbolic` and `torch.onnx.ops.symbolic_multi_out` are defined to allow you to create symbolic ONNX operators directly in your PyTorch models. You can use them in a `forward` method:
 
 ```python
 def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -457,9 +457,6 @@ def forward(self, x: torch.Tensor) -> torch.Tensor:
     else:
         return x
 ```
-To learn more, refer to the [docs](https://docs.pytorch.org/docs/main/onnx_ops.html#symbolic-operators).
-
-- Added support for additional opsets (>18) when `dynamo=True` ([#149901](https://github.com/pytorch/pytorch/pull/149901), [#154596](https://github.com/pytorch/pytorch/pull/154596)). Opsets 18-23 are supported with `dynamo=True`. Importantly, you will be able to leverage the `Attention` ONNX operator when setting `opset` to 23.
 
 ## Python Frontend
 - Added Generalized Pareto Distribution (GPD) (#135968)
@@ -635,6 +632,7 @@ To learn more, refer to the [docs](https://docs.pytorch.org/docs/main/onnx_ops.h
 
 ## ONNX
 - Updated ONNX to 1.18 ([#152200](https://github.com/pytorch/pytorch/pull/152200))
+- Added support for opsets (18-23) when `dynamo=True` ([#149901](https://github.com/pytorch/pytorch/pull/149901), [#154596](https://github.com/pytorch/pytorch/pull/154596))
 - Added float4 support ([#151069](https://github.com/pytorch/pytorch/pull/151069), [#156353](https://github.com/pytorch/pytorch/pull/156353))
 - Added support for ONNX operators `Attention-23` and `RotaryEmbedding-23` as native PyTorch ops ([#156431](https://github.com/pytorch/pytorch/pull/156431), [#156367](https://github.com/pytorch/pytorch/pull/156367), [#154745](https://github.com/pytorch/pytorch/pull/154745))
 - Added support for `torch.scan` ([#154513](https://github.com/pytorch/pytorch/pull/154513))
