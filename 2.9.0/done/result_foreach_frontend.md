@@ -28,17 +28,18 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+- Invoke `vector.reserve()` consistently for non-inplace foreach operations ([#161128](https://github.com/pytorch/pytorch/pull/161128))
+- Faster and safer lambda expression capture in `has_integral_tensor()` ([#161042](https://github.com/pytorch/pytorch/pull/161042))
 ### bug fixes
-- chunk_size should always be int64_t for Foreach functors ([#156872](https://github.com/pytorch/pytorch/pull/156872))
+- `chunk_size` should always be `int64_t` for Foreach functors ([#156872](https://github.com/pytorch/pytorch/pull/156872))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [pytorch] Faster and safer lambda expression capture in `has_integral_tensor()` ([#161042](https://github.com/pytorch/pytorch/pull/161042))
-- [pytorch] Invoke `vector.reserve()` consistently for non-inplace foreach operations ([#161128](https://github.com/pytorch/pytorch/pull/161128))
+### not user facing
 - [pytorch] Simplify PyTorch `foreach_*` API restrictions check ([#161039](https://github.com/pytorch/pytorch/pull/161039))
+- [pytorch] Simplify codes using `std::all_of()` for `_check_tensors_share_device_and_dtype()` ([#161411](https://github.com/pytorch/pytorch/pull/161411))
 - [pytorch] Leverage `unordered_map.try_emplace()` to simplify code ([#161388](https://github.com/pytorch/pytorch/pull/161388))
 - [pytorch] Merge two nested if statement checks into one ([#161387](https://github.com/pytorch/pytorch/pull/161387))
-- [pytorch] Simplify codes using `std::all_of()` for `_check_tensors_share_device_and_dtype()` ([#161411](https://github.com/pytorch/pytorch/pull/161411))
-### not user facing
+
 ### security

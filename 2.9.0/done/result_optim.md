@@ -27,24 +27,27 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
+- Introduce Muon optimizer to PyTorch ([#160213](https://github.com/pytorch/pytorch/pull/160213))
 ### improvements
+- Resolve warning in LBFGS when converting a tensor with requires_grad=True to a scalar ([#160389](https://github.com/pytorch/pytorch/pull/160389))
+- Resolve `SequentialLR` deprecation warning about invoking `step(epoch)` ([#149392](https://github.com/pytorch/pytorch/pull/149392))
+
 ### bug fixes
 ### performance
-- [small][muon] Use addmm for Newton–Schulz orthogonalization ([#161379](https://github.com/pytorch/pytorch/pull/161379))
+- Use `addmm` to improve Newton–Schulz orthogonalization in `Muon` ([#161379](https://github.com/pytorch/pytorch/pull/161379))
+- Avoid stream sync in SWA `AveragedModel.update_parameters()` ([#157705](https://github.com/pytorch/pytorch/pull/157705))
+
 ### docs
+- Document specific optimizer modules APIs e.g., `torch.optim.adam.Adam`, properly ([#158483](https://github.com/pytorch/pytorch/pull/158483), [#158669](https://github.com/pytorch/pytorch/pull/158669), [#160194](https://github.com/pytorch/pytorch/pull/160194))
+- Add note for clarity in Adafactor doc  #154862 ([#155248](https://github.com/pytorch/pytorch/pull/155248))
+- Minorly improve `zero_grad` description ([#161239](https://github.com/pytorch/pytorch/pull/161239))
+
 ### devs
 ### Untopiced
-- updated adafactor doc  #154862 ([#155248](https://github.com/pytorch/pytorch/pull/155248))
-- swa avoid stream sync ([#157705](https://github.com/pytorch/pytorch/pull/157705))
-- [BE] document Adadelta and Adagrad APIs properly ([#158483](https://github.com/pytorch/pytorch/pull/158483))
-- Document the rest of the specific optimizer module APIs ([#158669](https://github.com/pytorch/pytorch/pull/158669))
-- Split out C++ code from fused adagrad PR ([#159008](https://github.com/pytorch/pytorch/pull/159008))
-- [BE] Remove more optim entries from docs coverage ignore list ([#160194](https://github.com/pytorch/pytorch/pull/160194))
-- Optimzie `zero_grad` description ([#161239](https://github.com/pytorch/pytorch/pull/161239))
-- [muon] Introduce Muon optimizer to PyTorch ([#160213](https://github.com/pytorch/pytorch/pull/160213))
-- Fix LBFGS warning convert a tensor with requires_grad=True to a scalar ([#160389](https://github.com/pytorch/pytorch/pull/160389))
-- Fix `SequentialLR` deprecate warning about invoke `step(epoch)` ([#149392](https://github.com/pytorch/pytorch/pull/149392))
-- Unify TypeAlias definitions in optimizer.py ([#161493](https://github.com/pytorch/pytorch/pull/161493))
+
 ### not user facing
 - [Pyrefly][Refactor] Replace dict() calls with literal dict syntax for improved readability ([#157735](https://github.com/pytorch/pytorch/pull/157735))
+- Split out C++ code from fused adagrad PR ([#159008](https://github.com/pytorch/pytorch/pull/159008))
+- Unify TypeAlias definitions in optimizer.py ([#161493](https://github.com/pytorch/pytorch/pull/161493))
+
 ### security
