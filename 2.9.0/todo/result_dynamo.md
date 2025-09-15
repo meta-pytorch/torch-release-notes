@@ -52,7 +52,6 @@ The categories below are as follows:
 - [dynamo][be] hide warnings without invalidating warnings cache ([#158520](https://github.com/pytorch/pytorch/pull/158520))
 - [export] runtime asserts for while HOP subgraphs ([#158467](https://github.com/pytorch/pytorch/pull/158467))
 - [dynamo] Added back weblink generation ([#159011](https://github.com/pytorch/pytorch/pull/159011))
-- [ROCm] add flag torch.backends.miopen.immediate ([#158951](https://github.com/pytorch/pytorch/pull/158951))
 - [iter] Add support for sequence protocol in `iter(..)` ([#156371](https://github.com/pytorch/pytorch/pull/156371))
 - [iter] support `iter(callable, sentinel)` ([#156416](https://github.com/pytorch/pytorch/pull/156416))
 - [Dynamo] Make frozen dataclasses hashable ([#159529](https://github.com/pytorch/pytorch/pull/159529))

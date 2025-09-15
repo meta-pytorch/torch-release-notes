@@ -34,7 +34,6 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 - [export] set enable_gqa in export flash->math decomp ([#158604](https://github.com/pytorch/pytorch/pull/158604))
-- [ROCm] Add FP8 rowwise support to _scaled_grouped_mm + Submodule update ([#159075](https://github.com/pytorch/pytorch/pull/159075))
 - Get tensor subclasses and torch.library.triton_op to dispatch correctly ([#160341](https://github.com/pytorch/pytorch/pull/160341))
 - Add dtype checks in meta dispatch for various ordering ops ([#159556](https://github.com/pytorch/pytorch/pull/159556))
 - [dynamic shapes] prims_common non_overlapping_and_dense ([#160462](https://github.com/pytorch/pytorch/pull/160462))

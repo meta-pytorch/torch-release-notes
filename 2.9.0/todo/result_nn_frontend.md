@@ -41,7 +41,6 @@ The categories below are as follows:
 - Support deterministic upsample trilinear backward ([#154239](https://github.com/pytorch/pytorch/pull/154239))
 - Add device check in `mse_loss` ([#155089](https://github.com/pytorch/pytorch/pull/155089))
 - Fused RMSNorm Housekeeping ([#159317](https://github.com/pytorch/pytorch/pull/159317))
-- [ROCm] revamp miopen integration ([#161687](https://github.com/pytorch/pytorch/pull/161687))
 - NLLLoss: validate target is 0D when input is 1D ([#161412](https://github.com/pytorch/pytorch/pull/161412))
 ### not user facing
 - add test_batchnorn_2D and 3D tests ([#156498](https://github.com/pytorch/pytorch/pull/156498))

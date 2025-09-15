@@ -57,5 +57,4 @@ The categories below are as follows:
 - [BE][8/16] fix typos in torch/ (torch/csrc/jit/) ([#156318](https://github.com/pytorch/pytorch/pull/156318))
 - [BE][10/16] fix typos in torch/ (torch/csrc/jit/) ([#156320](https://github.com/pytorch/pytorch/pull/156320))
 - [nativert] Add OSS version of ModelRunner ([#159268](https://github.com/pytorch/pytorch/pull/159268))
-- [ROCm] Fix resource_strings.h ([#159996](https://github.com/pytorch/pytorch/pull/159996))
 ### security

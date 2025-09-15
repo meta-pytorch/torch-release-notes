@@ -33,7 +33,6 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- [ROCm] Improve Type Safety of C10_WARP_SIZE ([#158271](https://github.com/pytorch/pytorch/pull/158271))
 ### not user facing
 - [BE][2/5] fix typos in aten/ (aten/src/ATen/native/) ([#157551](https://github.com/pytorch/pytorch/pull/157551))
 ### security
