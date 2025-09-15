@@ -88,6 +88,5 @@ The categories below are as follows:
 - Fix qembeddingbag_byte_prepack_meta to use sym_sizes ([#159985](https://github.com/pytorch/pytorch/pull/159985))
 - Using std::make_unique<T>() instead of unique<T>(new T()) ([#160723](https://github.com/pytorch/pytorch/pull/160723))
 - Using std::vector or c10::SmallVector instead of CArray ([#160959](https://github.com/pytorch/pytorch/pull/160959))
-- [ROCm] fix numpy version detection and adjust fudge_factors for MI355 ([#161429](https://github.com/pytorch/pytorch/pull/161429))
 - Enable more nightly tests on s390x ([#160893](https://github.com/pytorch/pytorch/pull/160893))
 ### security
