@@ -91,7 +91,7 @@ The categories below are as follows:
   
   ```bash
   # To trigger torch.export.draft_export once
-  # torch.export.export strcit=False/True both
+  # torch.export.export strict=False/True both
   # fail:
   
   TORCH_ONNX_ENABLE_DRAFT_EXPORT=True python export_to_onnx.py
