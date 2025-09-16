@@ -31,16 +31,14 @@ The categories below are as follows:
 - Enable `_int_mm` on Intel GPU ([#157769](https://github.com/pytorch/pytorch/pull/157769))
 
 ### improvements
-- Add UUID to Intel GPU device properties ([#161392](https://github.com/pytorch/pytorch/pull/161392))
 - Support Intel GPU quantization ops in AOTInductor ([#156572](https://github.com/pytorch/pytorch/pull/156572))
-- Enable tensor memory descriptor Triton template for Intel GPU ([#161600](https://github.com/pytorch/pytorch/pull/161600))
 - Support `FlightRecorder` for XCCL to allows debug trace dumps for distributed jobs on Intel GPU ([#158568](https://github.com/pytorch/pytorch/pull/158568))
 
 ### bug fixes
-- Fix cpp_extension compatibility with oneAPI DPC++ 2025.2 compiler ([#161012](https://github.com/pytorch/pytorch/pull/161012))
+- Fix cpp_extension compatibility with OneAPI 2025.2 ([#161012](https://github.com/pytorch/pytorch/pull/161012))
 
 ### performance
-- Integrate OneDNN SDPA training forward and backward on Intel GPU ([#161058](https://github.com/pytorch/pytorch/pull/161058))
+- Enable tensor memory descriptor Triton template for Intel GPU ([#161600](https://github.com/pytorch/pytorch/pull/161600))
 
 ### docs
 - Update supported OS to Windows 11 & Ubuntu 24.04/25.04 for Intel client GPU ([#161699](https://github.com/pytorch/pytorch/pull/161699))
