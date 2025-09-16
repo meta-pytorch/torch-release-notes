@@ -50,7 +50,7 @@ The categories below are as follows:
 
 - Set default opset to 20 ([#158802](https://github.com/pytorch/pytorch/pull/158802))
 
-  Opset 20 enables newer operator definitions. If your tooling or downstream runtime only supports opset 18, pin it explicitly.  
+  Opset 20 enables newer operator definitions. If your tooling or downstream runtime only supports opset 18, pin it explicitly. To use the latest ONNX operators, it is recommended that you experiment with opset 23 (older backends may not support this opset yet).
 
   Version 2.8
   
@@ -67,6 +67,9 @@ The categories below are as follows:
   
   # New: opset_version=20
   torch.onnx.export(...)
+
+  # Use the latest supported opset: opset_version=23
+  torch.onnx.export(..., opset_version=23)
   ```
 
 - Drop draft_export in exporter API ([#161454](https://github.com/pytorch/pytorch/pull/161454), [#162225](https://github.com/pytorch/pytorch/pull/162225))
@@ -102,43 +105,47 @@ The categories below are as follows:
   `torch.onnx.dynamo_export` is removed. Please use `torch.onnx.export` instead. 
   The experimental ONNX Runtime compile backend (`torch.compile(backend="onnxrt")`) is no longer supported.  
 
+- `torch.onnx.enable_fake_mode` is removed ([#161222](https://github.com/pytorch/pytorch/pull/161222))
+
+  The `dynamo=True` mode uses `FakeTensor`s by default, which is memory efficient.
+
 - Some public facing utility APIs for the TorchScript based exporter is now private ([#161323](https://github.com/pytorch/pytorch/pull/161323))
 - `torch.onnx.symbolic_caffe2` is removed ([#157102](https://github.com/pytorch/pytorch/pull/157102))
 
 ### deprecation
 ### new features
+- RMS Norm support in opset 23 ([#159377](https://github.com/pytorch/pytorch/pull/159377))
 ### improvements
+- Support symbolic arguments in onnx exporter ([#157734](https://github.com/pytorch/pytorch/pull/157734))
 - Fix torch.tensor warning in ONNX symbolic_opset10 export  ([#158835](https://github.com/pytorch/pytorch/pull/158835))
-- [ONNX] RMS Norm ([#159377](https://github.com/pytorch/pytorch/pull/159377))
 ### bug fixes
-- [ONNX] Support symbolic arguments in onnx exporter ([#157734](https://github.com/pytorch/pytorch/pull/157734))
 - Make onnx export SDPA match aten behavior ([#159973](https://github.com/pytorch/pytorch/pull/159973))
-- [ONNX] Fix the export of the model having none as output ([#160200](https://github.com/pytorch/pytorch/pull/160200))
-- [ONNX] Fix lower opset version support in dynamo=True ([#161056](https://github.com/pytorch/pytorch/pull/161056))
+- Fix rotary_embedding_23 implementation ([#162865](https://github.com/pytorch/pytorch/pull/162865))
+- Fix export behavior when model has None as output ([#160200](https://github.com/pytorch/pytorch/pull/160200))
+- Fix lower opset version support in dynamo=True ([#161056](https://github.com/pytorch/pytorch/pull/161056))
+- Fix index_put_ usage ([#161263](https://github.com/pytorch/pytorch/pull/161263))
 ### performance
 ### docs
-- [ONNX] Delete deprecated tutorial page link ([#157310](https://github.com/pytorch/pytorch/pull/157310))
-- [ONNX] Filter out torchscript sentences ([#158850](https://github.com/pytorch/pytorch/pull/158850))
-- [ONNX] Fix doc typo for symbolic_multi_out ([#160702](https://github.com/pytorch/pytorch/pull/160702))
-- [ONNX] Remove enable_fake_mode and exporter_legacy ([#161222](https://github.com/pytorch/pytorch/pull/161222))
+- Update export docstring ([#162622](https://github.com/pytorch/pytorch/pull/162622))
+- Delete deprecated tutorial page link ([#157310](https://github.com/pytorch/pytorch/pull/157310))
+- Filter out torchscript sentences ([#158850](https://github.com/pytorch/pytorch/pull/158850))
+- Fix doc typo for symbolic_multi_out ([#160702](https://github.com/pytorch/pytorch/pull/160702))
+- onnx.md to simplify deprecated entities ([#159312](https://github.com/pytorch/pytorch/pull/159312))
 ### devs
 ### Untopiced
-- Tidy  torch/csrc/jit/passes/onnx  code ([#160262](https://github.com/pytorch/pytorch/pull/160262))
-- [ONNX] Remove unused _onnx_supported_ops ([#161322](https://github.com/pytorch/pytorch/pull/161322))
-- [ONNX] Fix index_put_ usage ([#161263](https://github.com/pytorch/pytorch/pull/161263))
 ### not user facing
-- [ONNX] Remove legacy io_adapter ([#158255](https://github.com/pytorch/pytorch/pull/158255))
-- [ONNX] Remove legacy graph passes ([#158256](https://github.com/pytorch/pytorch/pull/158256))
-- [ONNX] Remove legacy modularization ([#158257](https://github.com/pytorch/pytorch/pull/158257))
-- [ONNX] Remove legacy Dort tests ([#158294](https://github.com/pytorch/pytorch/pull/158294))
-- [ONNX] Remove legacy dynamo graph extractor ([#158262](https://github.com/pytorch/pytorch/pull/158262))
-- [ONNX] Remove fx_onnx_interpreter.py ([#158282](https://github.com/pytorch/pytorch/pull/158282))
-- [ONNX] Remove legacy registration and dispatcher ([#158283](https://github.com/pytorch/pytorch/pull/158283))
-- Dont't GC as often when collecting cudagraphs ([#158193](https://github.com/pytorch/pytorch/pull/158193))
+- Remove legacy io_adapter ([#158255](https://github.com/pytorch/pytorch/pull/158255))
+- Remove legacy graph passes ([#158256](https://github.com/pytorch/pytorch/pull/158256))
+- Remove legacy modularization ([#158257](https://github.com/pytorch/pytorch/pull/158257))
+- Remove legacy Dort tests ([#158294](https://github.com/pytorch/pytorch/pull/158294))
+- Remove legacy dynamo graph extractor ([#158262](https://github.com/pytorch/pytorch/pull/158262))
+- Remove fx_onnx_interpreter.py ([#158282](https://github.com/pytorch/pytorch/pull/158282))
+- Remove legacy registration and dispatcher ([#158283](https://github.com/pytorch/pytorch/pull/158283))
 - Remove numpy dependency from onnx ([#159177](https://github.com/pytorch/pytorch/pull/159177))
-- [ONNX] onnx.md to simplify deprecated entities ([#159312](https://github.com/pytorch/pytorch/pull/159312))
-- typing inductor and placeholder backends ([#160366](https://github.com/pytorch/pytorch/pull/160366))
-- [ONNX] Remove unused logic from internal verification module ([#161449](https://github.com/pytorch/pytorch/pull/161449))
-- [ONNX] Remove private members from torch.onnx ([#161546](https://github.com/pytorch/pytorch/pull/161546))
+- Remove unused logic from internal verification module ([#161449](https://github.com/pytorch/pytorch/pull/161449))
+- Remove private members from torch.onnx ([#161546](https://github.com/pytorch/pytorch/pull/161546))
 - Improve typing of ONNX decorators with ParamSpec ([#162332](https://github.com/pytorch/pytorch/pull/162332))
+- Tidy torch/csrc/jit/passes/onnx code ([#160262](https://github.com/pytorch/pytorch/pull/160262))
+- Remove unused _onnx_supported_ops ([#161322](https://github.com/pytorch/pytorch/pull/161322))
+
 ### security
