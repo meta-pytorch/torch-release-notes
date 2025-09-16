@@ -35,7 +35,7 @@ The categories below are as follows:
 - Support `FlightRecorder` for XCCL to allows debug trace dumps for distributed jobs on Intel GPU ([#158568](https://github.com/pytorch/pytorch/pull/158568))
 
 ### bug fixes
-- Fix cpp_extension compatibility with OneAPI 2025.2 ([#161012](https://github.com/pytorch/pytorch/pull/161012))
+- Fix cpp_extension compatibility with intel-deep-learning-essentials-2025.2 ([#161012](https://github.com/pytorch/pytorch/pull/161012))
 
 ### performance
 - Enable tensor memory descriptor Triton template for Intel GPU ([#161600](https://github.com/pytorch/pytorch/pull/161600))
@@ -44,9 +44,7 @@ The categories below are as follows:
 - Update supported OS to Windows 11 & Ubuntu 24.04/25.04 for Intel client GPU ([#161699](https://github.com/pytorch/pytorch/pull/161699))
 
 ### devs
-- Upgrade Intel OneDNN commit pin to v3.9.1 ([#161932](https://github.com/pytorch/pytorch/pull/161932))
-- Upgrade Intel Triton commit pin to 3.5.x ([#161777](https://github.com/pytorch/pytorch/pull/161777))
-- Upgrade Intel GPU support package to OneAPI 2025.2 ([#158733](https://github.com/pytorch/pytorch/pull/158733))
+- Upgrade Intel GPU software stack package to intel-deep-learning-essentials-2025.2 ([#158733](https://github.com/pytorch/pytorch/pull/158733))
 
 ### Untopiced
 ### not user facing
