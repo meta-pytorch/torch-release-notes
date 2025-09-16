@@ -32,6 +32,7 @@ The categories below are as follows:
 
 ### improvements
 - Support Intel GPU quantization ops in AOTInductor ([#156572](https://github.com/pytorch/pytorch/pull/156572))
+- Add device_id to Intel GPU properties to distinguish iGPUs with identical names ([#156481](https://github.com/pytorch/pytorch/pull/156481))
 - Support `FlightRecorder` for XCCL to allows debug trace dumps for distributed jobs on Intel GPU ([#158568](https://github.com/pytorch/pytorch/pull/158568))
 
 ### bug fixes
