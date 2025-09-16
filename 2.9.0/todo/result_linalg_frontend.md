@@ -28,19 +28,15 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+- Use rocSOLVER for Cholesky inversion on AMD. ([#157154](https://github.com/pytorch/pytorch/pull/157154))
+- Add option for using TF32 as fp32 internal precision for matmul/linear/conv on MKLDNN ([#157520](https://github.com/pytorch/pytorch/pull/157520))
+- Make einsum produce contiguous outputs in more cases ([#161755](https://github.com/pytorch/pytorch/pull/161755))
+
 ### bug fixes
-- [BLAS] Avoid downcasts for fp16fp16->fp32 BLAS ([#161999](https://github.com/pytorch/pytorch/pull/161999))
-- [BLAS] Avoid downcasts for fp16fp16->fp32 BLAS ([#161999](https://github.com/pytorch/pytorch/pull/161999))
+- Avoid downcasts for fp16 matmul on the BLAS backend ([#161999](https://github.com/pytorch/pytorch/pull/161999))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [ROCm] Allow use of rocSOLVER for Cholesky inversion. ([#157154](https://github.com/pytorch/pytorch/pull/157154))
-- Enable TF32 as fp32 internal precision for matmul/linear/conv ([#157520](https://github.com/pytorch/pytorch/pull/157520))
-- [WOQ] Add CUDA kernel for _weight_int8pack_mm ([#159325](https://github.com/pytorch/pytorch/pull/159325))
-- Conditionally enable ACL for bmm_out_or_baddbmm_ ([#161065](https://github.com/pytorch/pytorch/pull/161065))
 ### not user facing
-- [ROCm][tunableop] UT tolerance increase for matmul_small_brute_force_tunableop at FP16 ([#158788](https://github.com/pytorch/pytorch/pull/158788))
-- make einsum produce contiguous inputs in more cases ([#161755](https://github.com/pytorch/pytorch/pull/161755))
-- Fix largeTensorTest malfunction on XPU ([#161988](https://github.com/pytorch/pytorch/pull/161988))
 ### security
