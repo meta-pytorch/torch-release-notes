@@ -50,7 +50,7 @@ The categories below are as follows:
 
 - Set default opset to 20 ([#158802](https://github.com/pytorch/pytorch/pull/158802))
 
-  Opset 20 enables newer operator definitions. If your tooling or downstream runtime only supports opset 18, pin it explicitly. To use the latest ONNX operators, it is recommended that you experiment with opset 23 (older backends may not support this opset yet).
+  Opset 20 enables newer operator definitions. If your tooling or downstream runtime only supports opset 18, pin it explicitly. For the latest ONNX operators, you can experiment with opset 23, though note that older backends may not support this opset yet.
 
   Version 2.8
   
