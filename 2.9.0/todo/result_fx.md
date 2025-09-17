@@ -77,6 +77,7 @@ The categories below are as follows:
 - fixed typo error ([#162055](https://github.com/pytorch/pytorch/pull/162055))
 - [fx] fix qualified name for methods of torch.Tensor ([#162224](https://github.com/pytorch/pytorch/pull/162224))
 - Graph split event tracker ([#159795](https://github.com/pytorch/pytorch/pull/159795))
+- [fx] Add is_fx_symbolic_tracing flag ([#161385](https://github.com/pytorch/pytorch/pull/161385))
 ### not user facing
 - python definitely_contiguous-> is_contiguous_or_false ([#156515](https://github.com/pytorch/pytorch/pull/156515))
 - [aotd] Support mutations of the same input in fw and bw ([#155354](https://github.com/pytorch/pytorch/pull/155354))
