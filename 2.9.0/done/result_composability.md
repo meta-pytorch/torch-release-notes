@@ -28,35 +28,32 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+
+*Decompositions, FakeTensor and meta tensors*
+
+Several operator decomps + meta implementations received improvements/bugfixes:
+- aten._scaled_dot_product_attention_math decomp: set enable_gqa ([#158604](https://github.com/pytorch/pytorch/pull/158604))
+- aten._scaled_dot_product_attention_math_for_mps meta impl ([#159695](https://github.com/pytorch/pytorch/pull/159695))
+- aten.add.Scalar meta impl ([#161332](https://github.com/pytorch/pytorch/pull/161332))
+- aten.expand_copy decomp ([#161688](https://github.com/pytorch/pytorch/pull/161688))
+- aten.linalg_vector_norm: fix result dtype cast in decomp ([#155111](https://github.com/pytorch/pytorch/pull/155111))
+- Add dtype checks in meta impls for several ordering ops ([#159556](https://github.com/pytorch/pytorch/pull/159556))
+- aten.complex: fix meta function ([#160894](https://github.com/pytorch/pytorch/pull/160894))
+- aten._grouped_mm: improve shape checks ([#159666](https://github.com/pytorch/pytorch/pull/159666))
+- improved unbacked symint (dynamic shape) support for several decompositions ([#148815](https://github.com/pytorch/pytorch/pull/148815), [#156902](https://github.com/pytorch/pytorch/pull/156902), [#157008](https://github.com/pytorch/pytorch/pull/157008), [#158894](https://github.com/pytorch/pytorch/pull/158894), [#159184](https://github.com/pytorch/pytorch/pull/159184), [#160683](https://github.com/pytorch/pytorch/pull/160683), [#160253](https://github.com/pytorch/pytorch/pull/160253), [#162084](https://github.com/pytorch/pytorch/pull/162084), [#162099](https://github.com/pytorch/pytorch/pull/162099), [#162109](https://github.com/pytorch/pytorch/pull/162109), [#160462](https://github.com/pytorch/pytorch/pull/160462))
+
+*Custom ops*
+- Get tensor subclasses and torch.library.triton_op to dispatch correctly ([#160341](https://github.com/pytorch/pytorch/pull/160341))
+
+
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [export] set enable_gqa in export flash->math decomp ([#158604](https://github.com/pytorch/pytorch/pull/158604))
-- [ROCm] Add FP8 rowwise support to _scaled_grouped_mm + Submodule update ([#159075](https://github.com/pytorch/pytorch/pull/159075))
-- Get tensor subclasses and torch.library.triton_op to dispatch correctly ([#160341](https://github.com/pytorch/pytorch/pull/160341))
-- Add dtype checks in meta dispatch for various ordering ops ([#159556](https://github.com/pytorch/pytorch/pull/159556))
-- [dynamic shapes] prims_common non_overlapping_and_dense ([#160462](https://github.com/pytorch/pytorch/pull/160462))
-- Fix meta function for aten.complex ([#160894](https://github.com/pytorch/pytorch/pull/160894))
 ### not user facing
-- remove guard_size_oblivious from unbind. ([#148815](https://github.com/pytorch/pytorch/pull/148815))
-- address remaining straight forward gso in meta_registrations ([#156902](https://github.com/pytorch/pytorch/pull/156902))
-- _broadcast_shapes gso generalizations ([#157008](https://github.com/pytorch/pytorch/pull/157008))
+
 - Update test after CUTLASS upgrade ([#157903](https://github.com/pytorch/pytorch/pull/157903))
-- [CPU] Support GQA for flash attention ([#157893](https://github.com/pytorch/pytorch/pull/157893))
 - move view_meta to fake impl ([#158406](https://github.com/pytorch/pytorch/pull/158406))
-- (is_non_overlapping_and_dense) gso to guard_or_false in when checking length 1 ([#158894](https://github.com/pytorch/pytorch/pull/158894))
-- (should_fold) gso to guard_or_false when checking folding whether to 3d bmm into 2d mm ([#159184](https://github.com/pytorch/pytorch/pull/159184))
-- improve shape checks for grouped_mm ([#159666](https://github.com/pytorch/pytorch/pull/159666))
-- Add meta kernel for sdpa_math_for_mps ([#159695](https://github.com/pytorch/pytorch/pull/159695))
-- [dde] use sym_or when checking normalized shape in layer_norm ([#160683](https://github.com/pytorch/pytorch/pull/160683))
-- migrate more simple gso checks ([#160253](https://github.com/pytorch/pytorch/pull/160253))
 - unify broadcast_shapes functions and avoid duplicates ([#160251](https://github.com/pytorch/pytorch/pull/160251))
-- Add meta for add.Scalar ([#161332](https://github.com/pytorch/pytorch/pull/161332))
-- use sym_or instead of any to avoid dde in calc_conv_nd_return_shape ([#162084](https://github.com/pytorch/pytorch/pull/162084))
-- Fixes #154982: add missing to_result_dtype in vector_norm ([#155111](https://github.com/pytorch/pytorch/pull/155111))
-- export: add explicit decomposition for aten.expand_copy and unit test ([#161688](https://github.com/pytorch/pytorch/pull/161688))
-- make should_swap more dde friendly ([#162099](https://github.com/pytorch/pytorch/pull/162099))
-- rewrite __maybe_broadcast should_expand check for unbacked ([#162109](https://github.com/pytorch/pytorch/pull/162109))
 ### security
