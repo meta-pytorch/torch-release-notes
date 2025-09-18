@@ -1,5 +1,5 @@
 
-# Release Notes worksheet xpu
+# Release Notes worksheet linalg_frontend
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,24 +23,20 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## xpu
+## linalg_frontend
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+- Use rocSOLVER for Cholesky inversion on AMD. ([#157154](https://github.com/pytorch/pytorch/pull/157154))
+- Add option for using TF32 as fp32 internal precision for matmul/linear/conv on MKLDNN ([#157520](https://github.com/pytorch/pytorch/pull/157520))
+- Make einsum produce contiguous outputs in more cases ([#161755](https://github.com/pytorch/pytorch/pull/161755))
+
 ### bug fixes
+- Avoid downcasts for fp16 matmul on the BLAS backend ([#161999](https://github.com/pytorch/pytorch/pull/161999))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Add device_id to XPU device properties ([#156481](https://github.com/pytorch/pytorch/pull/156481))
-- Generalize support of background thread in pinned allocator ([#160505](https://github.com/pytorch/pytorch/pull/160505))
-- Disable background threads for XPU host allocator ([#161242](https://github.com/pytorch/pytorch/pull/161242))
-- xpu: fix cpp_extension compatibility with oneapi dpc++ 2025.2 compiler ([#161012](https://github.com/pytorch/pytorch/pull/161012))
-- Add uuid to XPU device properties ([#161392](https://github.com/pytorch/pytorch/pull/161392))
-- Update torch-xpu-ops commit pin ([#161919](https://github.com/pytorch/pytorch/pull/161919))
 ### not user facing
-- Add Intel GPU info collection to the collect env script ([#157351](https://github.com/pytorch/pytorch/pull/157351))
-- xpu: support custom ops with torch.library on xpu backend ([#152879](https://github.com/pytorch/pytorch/pull/152879))
-- [CI] Update xpu ci use rolling driver for new features ([#158340](https://github.com/pytorch/pytorch/pull/158340))
 ### security

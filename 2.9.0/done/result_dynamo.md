@@ -1,5 +1,5 @@
 
-# Release Notes worksheet composability
+# Release Notes worksheet dynamo
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,39 +23,32 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## composability
+## dynamo
 ### bc breaking
 ### deprecation
 ### new features
+- Experimental API for ahead-of-time compiling models in fullgraph mode ([#161383](https://github.com/pytorch/pytorch/pull/161383))
+- Toggle erroring/resume on graph break with `torch._dynamo.error_on_graph_break` ([#161739](https://github.com/pytorch/pytorch/pull/161739), [#161747](https://github.com/pytorch/pytorch/pull/161747))
+- Add a hook for recompilations ([#157961](https://github.com/pytorch/pytorch/pull/157961))
 ### improvements
+- Improved tracing support for various Python builtin data structures/modules:
+    - `list`s (e.g. [#153969](https://github.com/pytorch/pytorch/pull/153969))
+    - `set`s (e.g. [#153150](https://github.com/pytorch/pytorch/pull/153150))
+    - `dict`s (e.g. [#154794](https://github.com/pytorch/pytorch/pull/154794))
+    - `iter` (e.g. [#156371](https://github.com/pytorch/pytorch/pull/156371))
+    - `itertools` (e.g. [#159693](https://github.com/pytorch/pytorch/pull/159693))
+    - `collections` (e.g. [#159365](https://github.com/pytorch/pytorch/pull/159365))
+    - `collections.NamedTuple` ([#159367](https://github.com/pytorch/pytorch/pull/159367))
+    - frozen `dataclasses.dataclass` ([#159529](https://github.com/pytorch/pytorch/pull/159529))
+- Graph break error messages link to a website with more information ([#159011](https://github.com/pytorch/pytorch/pull/159011))
+- Add option for TorchDispatchMode to ignore torch.compile internals ([#161648](https://github.com/pytorch/pytorch/pull/161648))
 ### bug fixes
+- Fix segfault due to interaction between Dynamo backends and `torch.compiler.reset()` ([#156527](https://github.com/pytorch/pytorch/pull/156527))
+- Fix crash due to bad interaction with recompilations and with blocks in Python 3.11+ ([#162318](https://github.com/pytorch/pytorch/pull/162318))
 ### performance
+- Recursive `dict` tag optimization for faster guard evaluation ([#159183](https://github.com/pytorch/pytorch/pull/159183))
 ### docs
 ### devs
 ### Untopiced
-- [export] set enable_gqa in export flash->math decomp ([#158604](https://github.com/pytorch/pytorch/pull/158604))
-- Get tensor subclasses and torch.library.triton_op to dispatch correctly ([#160341](https://github.com/pytorch/pytorch/pull/160341))
-- Add dtype checks in meta dispatch for various ordering ops ([#159556](https://github.com/pytorch/pytorch/pull/159556))
-- [dynamic shapes] prims_common non_overlapping_and_dense ([#160462](https://github.com/pytorch/pytorch/pull/160462))
-- Fix meta function for aten.complex ([#160894](https://github.com/pytorch/pytorch/pull/160894))
 ### not user facing
-- remove guard_size_oblivious from unbind. ([#148815](https://github.com/pytorch/pytorch/pull/148815))
-- address remaining straight forward gso in meta_registrations ([#156902](https://github.com/pytorch/pytorch/pull/156902))
-- _broadcast_shapes gso generalizations ([#157008](https://github.com/pytorch/pytorch/pull/157008))
-- Update test after CUTLASS upgrade ([#157903](https://github.com/pytorch/pytorch/pull/157903))
-- [CPU] Support GQA for flash attention ([#157893](https://github.com/pytorch/pytorch/pull/157893))
-- move view_meta to fake impl ([#158406](https://github.com/pytorch/pytorch/pull/158406))
-- (is_non_overlapping_and_dense) gso to guard_or_false in when checking length 1 ([#158894](https://github.com/pytorch/pytorch/pull/158894))
-- (should_fold) gso to guard_or_false when checking folding whether to 3d bmm into 2d mm ([#159184](https://github.com/pytorch/pytorch/pull/159184))
-- improve shape checks for grouped_mm ([#159666](https://github.com/pytorch/pytorch/pull/159666))
-- Add meta kernel for sdpa_math_for_mps ([#159695](https://github.com/pytorch/pytorch/pull/159695))
-- [dde] use sym_or when checking normalized shape in layer_norm ([#160683](https://github.com/pytorch/pytorch/pull/160683))
-- migrate more simple gso checks ([#160253](https://github.com/pytorch/pytorch/pull/160253))
-- unify broadcast_shapes functions and avoid duplicates ([#160251](https://github.com/pytorch/pytorch/pull/160251))
-- Add meta for add.Scalar ([#161332](https://github.com/pytorch/pytorch/pull/161332))
-- use sym_or instead of any to avoid dde in calc_conv_nd_return_shape ([#162084](https://github.com/pytorch/pytorch/pull/162084))
-- Fixes #154982: add missing to_result_dtype in vector_norm ([#155111](https://github.com/pytorch/pytorch/pull/155111))
-- export: add explicit decomposition for aten.expand_copy and unit test ([#161688](https://github.com/pytorch/pytorch/pull/161688))
-- make should_swap more dde friendly ([#162099](https://github.com/pytorch/pytorch/pull/162099))
-- rewrite __maybe_broadcast should_expand check for unbacked ([#162109](https://github.com/pytorch/pytorch/pull/162109))
 ### security

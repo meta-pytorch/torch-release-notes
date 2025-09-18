@@ -1,5 +1,5 @@
 
-# Release Notes worksheet linalg_frontend
+# Release Notes worksheet xpu
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,22 +23,30 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## linalg_frontend
+## xpu
 ### bc breaking
 ### deprecation
 ### new features
+- Enable `FlexAttention` on Intel GPU ([#143553](https://github.com/pytorch/pytorch/pull/143553))
+- Enable `_int_mm` on Intel GPU ([#157769](https://github.com/pytorch/pytorch/pull/157769))
+
 ### improvements
+- Support Intel GPU quantization ops in AOTInductor ([#156572](https://github.com/pytorch/pytorch/pull/156572))
+- Add device_id to Intel GPU properties to distinguish iGPUs with identical names ([#156481](https://github.com/pytorch/pytorch/pull/156481))
+- Support `FlightRecorder` for XCCL to allow debug trace dumps for distributed jobs on Intel GPU ([#158568](https://github.com/pytorch/pytorch/pull/158568))
+
 ### bug fixes
-- [BLAS] Avoid downcasts for fp16fp16->fp32 BLAS ([#161999](https://github.com/pytorch/pytorch/pull/161999))
-- [BLAS] Avoid downcasts for fp16fp16->fp32 BLAS ([#161999](https://github.com/pytorch/pytorch/pull/161999))
+- Fix cpp_extension compatibility with intel-deep-learning-essentials-2025.2 ([#161012](https://github.com/pytorch/pytorch/pull/161012))
+
 ### performance
+- Enable tensor memory descriptor Triton template for Intel GPU ([#161600](https://github.com/pytorch/pytorch/pull/161600))
+
 ### docs
+- Update supported OS to Windows 11 & Ubuntu 24.04/25.04 for Intel client GPU ([#161699](https://github.com/pytorch/pytorch/pull/161699))
+
 ### devs
+- Upgrade Intel GPU software stack package to intel-deep-learning-essentials-2025.2 ([#158733](https://github.com/pytorch/pytorch/pull/158733))
+
 ### Untopiced
-- Enable TF32 as fp32 internal precision for matmul/linear/conv ([#157520](https://github.com/pytorch/pytorch/pull/157520))
-- [WOQ] Add CUDA kernel for _weight_int8pack_mm ([#159325](https://github.com/pytorch/pytorch/pull/159325))
-- Conditionally enable ACL for bmm_out_or_baddbmm_ ([#161065](https://github.com/pytorch/pytorch/pull/161065))
 ### not user facing
-- make einsum produce contiguous inputs in more cases ([#161755](https://github.com/pytorch/pytorch/pull/161755))
-- Fix largeTensorTest malfunction on XPU ([#161988](https://github.com/pytorch/pytorch/pull/161988))
 ### security

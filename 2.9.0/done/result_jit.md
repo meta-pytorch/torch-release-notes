@@ -1,5 +1,5 @@
 
-# Release Notes worksheet devx
+# Release Notes worksheet jit
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,16 +23,38 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## devx
+## jit
 ### bc breaking
 ### deprecation
 ### new features
+- Add torch.\_check compatibility support ([#159988](https://github.com/pytorch/pytorch/pull/159988))
 ### improvements
 ### bug fixes
+- Make ErrorReport::CallStack thread-safe ([#160386](https://github.com/pytorch/pytorch/pull/160386))
+- Fix RemoveProfileNodesAndSpecializeTypes handling for Tensor? that is resolved to None ([#161538](https://github.com/pytorch/pytorch/pull/161538))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- rm platform args xplat/langtech/mobile/BUCK ([#161018](https://github.com/pytorch/pytorch/pull/161018))
 ### not user facing
+- Better fix for `__index__` SymInt issue ([#157201](https://github.com/pytorch/pytorch/pull/157201))
+- [BE][8/16] fix typos in torch/ (torch/csrc/jit/) ([#156318](https://github.com/pytorch/pytorch/pull/156318))
+- [BE][10/16] fix typos in torch/ (torch/csrc/jit/) ([#156320](https://github.com/pytorch/pytorch/pull/156320))
+- [nativert] Add OSS version of ModelRunner ([#159268](https://github.com/pytorch/pytorch/pull/159268))
+- added stubs for jit tree views ([#156504](https://github.com/pytorch/pytorch/pull/156504))
+- Remove ts to export retracer ([#156857](https://github.com/pytorch/pytorch/pull/156857))
+- [BE][12/16] fix typos in torch/ ([#156602](https://github.com/pytorch/pytorch/pull/156602))
+- Fix 'dllimport attribute ignored on inline function' ([#157670](https://github.com/pytorch/pytorch/pull/157670))
+- [BE][EZ] Minor doc fixes (193b29ee0c9)
+- Fix non-const reference arguments in torch/csrc/jit/python/init.cpp ([#161300](https://github.com/pytorch/pytorch/pull/161300))
+- Overload _get_operation_for_overload_or_packet & friends to accept ArrayRef ([#162219](https://github.com/pytorch/pytorch/pull/162219))
+- Avoid redundant PyTuple_GetSize call in _maybe_handle_torch_function ([#161633](https://github.com/pytorch/pytorch/pull/161633))
+- Add C++ function for torch.distributed.tensor._op_schema.is_view_op ([#161595](https://github.com/pytorch/pytorch/pull/161595))
+- Fix forced copying def_property_readonly for FunctionSchema & friends ([#161301](https://github.com/pytorch/pytorch/pull/161301))
+- [PT2]: Allow None for wrapped_fbgemm_linear_fp16_weight ([#160802](https://github.com/pytorch/pytorch/pull/160802))
+- [1/n] Remove references to TorchScript in PyTorch docs ([#158305](https://github.com/pytorch/pytorch/pull/158305))
+- [2/n] Remove references to TorchScript in PyTorch docs ([#158306](https://github.com/pytorch/pytorch/pull/158306))
+- [3/n] Remove references to TorchScript in PyTorch docs ([#158315](https://github.com/pytorch/pytorch/pull/158315))
+- [4/n] Remove references to TorchScript in PyTorch docs ([#158317](https://github.com/pytorch/pytorch/pull/158317))
+- Fix warnings of unused-variable ([#158627](https://github.com/pytorch/pytorch/pull/158627))
 ### security
