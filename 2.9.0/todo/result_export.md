@@ -77,12 +77,6 @@ The categories below are as follows:
 - [export] Fix torch.export.load with storage offset ([#162172](https://github.com/pytorch/pytorch/pull/162172))
 - [export] Move example inputs in move_to_device_pass ([#162301](https://github.com/pytorch/pytorch/pull/162301))
 - [nativert] AOTI lowering and packaging as NativeRT delegate ([#162285](https://github.com/pytorch/pytorch/pull/162285))
-- shape guards ([#161178](https://github.com/pytorch/pytorch/pull/161178))
-- Add support for tracing vmap in pre-dispatch export ([#154650](https://github.com/pytorch/pytorch/pull/154650))
-- New export implementation with flat inp/out ([#162167](https://github.com/pytorch/pytorch/pull/162167))
-- Warn when there is side effect in strict mode ([#160060](https://github.com/pytorch/pytorch/pull/160060))
-- kill allow_complex_guards_as_runtime_asserts ([#161794](https://github.com/pytorch/pytorch/pull/161794))
-- [export] runtime asserts for while HOP subgraphs ([#158467](https://github.com/pytorch/pytorch/pull/158467))
 ### not user facing
 - Document each of the private member variables on ExportedProgram ([#156704](https://github.com/pytorch/pytorch/pull/156704))
 - [resubmit][export] add _union_dataclass to support comparing dataclasses that inherits from union. ([#156765](https://github.com/pytorch/pytorch/pull/156765))
