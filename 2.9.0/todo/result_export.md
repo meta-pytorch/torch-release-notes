@@ -25,20 +25,27 @@ The categories below are as follows:
 
 ## export
 ### bc breaking
-
-testtesttest
-
 ### deprecation
 ### new features
 ### improvements
-- Add _compile_and_package method for ExportPackage ([#156638](https://github.com/pytorch/pytorch/pull/156638))
+- Add `_compile_and_package` method for ExportPackage ([#156638](https://github.com/pytorch/pytorch/pull/156638))
 - Handle None & ellipsis slicing/select in non-strict ([#157821](https://github.com/pytorch/pytorch/pull/157821))
 - Extend FP8 types in serialization ([#158430](https://github.com/pytorch/pytorch/pull/158430))
+- Improve error messages for deserialization ([#159881](https://github.com/pytorch/pytorch/pull/159881))
+- Support serialization for `triton_kernel_wrapper_functional` HOP ([#161314](https://github.com/pytorch/pytorch/pull/161314))
+- Support serialization for complex constants ([#161517](https://github.com/pytorch/pytorch/pull/161517))
 ### bug fixes
 - Bug in constants lifting pass ([#157719](https://github.com/pytorch/pytorch/pull/157719))
-- Fix from_node provenance in unlift pass ([#157943](https://github.com/pytorch/pytorch/pull/157943))
+- Fix `from_node` provenance in unlift pass ([#157943](https://github.com/pytorch/pytorch/pull/157943))
 - Fix NaN serialization ([#155359](https://github.com/pytorch/pytorch/pull/155359))
 - Fix deserialization for unbacked symbol ranges ([#158681](https://github.com/pytorch/pytorch/pull/158681))
+- Fix runtime assert handling in deserialization ([#159060](https://github.com/pytorch/pytorch/pull/159060))
+- Fix for FQN handling in unflattener ([#159418](https://github.com/pytorch/pytorch/pull/159418))
+- Add _ccode method for PythonMod ([#158851](https://github.com/pytorch/pytorch/pull/158851))
+- Fix nn_module_stack for `assert_tensor_metadata` nodes ([#159625](https://github.com/pytorch/pytorch/pull/159625))
+- Fix usage for `move_to_device_pass` ([#159992](https://github.com/pytorch/pytorch/pull/159992), [#160528](https://github.com/pytorch/pytorch/pull/160528))
+- Avoid name overwrites for aliased exported module parameters ([#160600](https://github.com/pytorch/pytorch/pull/160600))
+- Avoid inling dynamo.disables in unflattening ([#161306](https://github.com/pytorch/pytorch/pull/161306))
 ### performance
 - Caching optimizations for placeholder naming pass ([#158594](https://github.com/pytorch/pytorch/pull/158594))
 ### docs
@@ -47,29 +54,11 @@ testtesttest
 ### Untopiced
 - Standalone compile API in _Exporter ([#158139](https://github.com/pytorch/pytorch/pull/158139))
 - Add deprecation warning ([#158203](https://github.com/pytorch/pytorch/pull/158203))
-- [export][ez] Fix packaging ([#158855](https://github.com/pytorch/pytorch/pull/158855))
-- [export] Fix public bindings ([#159109](https://github.com/pytorch/pytorch/pull/159109))
-- [export] assert fix in serdes ([#159060](https://github.com/pytorch/pytorch/pull/159060))
-- unflatten closure ([#159418](https://github.com/pytorch/pytorch/pull/159418))
-- [draft export] logging ([#159004](https://github.com/pytorch/pytorch/pull/159004))
-- [export] _ccode for PythonMod ([#158851](https://github.com/pytorch/pytorch/pull/158851))
-- [export] Fix nn_module_stack of assert_tensor_metadata nodes ([#159625](https://github.com/pytorch/pytorch/pull/159625))
-- [export] Improve error messages ([#159881](https://github.com/pytorch/pytorch/pull/159881))
-- [Export Schema] Remove deviceAllocationMap field ([#159653](https://github.com/pytorch/pytorch/pull/159653))
-- [export] Apply move_to_device_pass to all submodules ([#159992](https://github.com/pytorch/pytorch/pull/159992))
-- [export] Update move_to_device_pass for to.device ([#160528](https://github.com/pytorch/pytorch/pull/160528))
-- [export] Remove unused Model, tensor_paths, constant_paths ([#161185](https://github.com/pytorch/pytorch/pull/161185))
-- [export] Allow tempfile._TemporaryFileWrapper in package_pt2 ([#161203](https://github.com/pytorch/pytorch/pull/161203))
-- Reland D80238201: [Torch.Export] Add flat arg paths in error message ([#160919](https://github.com/pytorch/pytorch/pull/160919))
-- Fix the parity of original and exported module parameters ([#160600](https://github.com/pytorch/pytorch/pull/160600))
-- [1/n][export] Refactor PT2 Archive weight saving and loading ([#160394](https://github.com/pytorch/pytorch/pull/160394))
-- [APS IR] Minfor fix - use GetAttrKey in get_keystr to match with flat args path in unflatten ([#161453](https://github.com/pytorch/pytorch/pull/161453))
-- [export] Update unflattening dynamo.disable ([#161306](https://github.com/pytorch/pytorch/pull/161306))
 - switch prefer_deferred_runtime_asserts_over_guards in export ([#160111](https://github.com/pytorch/pytorch/pull/160111))
-- [export] serialization support for triton_kernel_wrapper_functional ([#161314](https://github.com/pytorch/pytorch/pull/161314))
-- [ez] Improve formatting in error messages for dynamic shapes ([#161573](https://github.com/pytorch/pytorch/pull/161573))
-- fix tests caused by has_triton ([#161737](https://github.com/pytorch/pytorch/pull/161737))
-- [export] Support complex constant in serde ([#161517](https://github.com/pytorch/pytorch/pull/161517))
+- [export] 
+- [ez]
+- 
+- [export] 
 - [unflatten] Fix test by supporting both MappingKey anf GetAttrKey ([#161599](https://github.com/pytorch/pytorch/pull/161599))
 - [2/n][export] Refactor PT2 Archive weight saving and loading ([#161520](https://github.com/pytorch/pytorch/pull/161520))
 - [export] Fix torch.export.load with storage offset ([#162172](https://github.com/pytorch/pytorch/pull/162172))
@@ -87,4 +76,15 @@ testtesttest
 - Remove is_jit_trace option ([#157387](https://github.com/pytorch/pytorch/pull/157387))
 - Remove dead code for _postprocess_graph_module_outputs ([#158059](https://github.com/pytorch/pytorch/pull/158059))
 - Add sym_sum to verified ops ([#159111](https://github.com/pytorch/pytorch/pull/159111))
+- Fix packaging typo ([#158855](https://github.com/pytorch/pytorch/pull/158855))
+- Fix public bindings for PT2 Archive ([#159109](https://github.com/pytorch/pytorch/pull/159109))
+- Logging for draft export ([#159004](https://github.com/pytorch/pytorch/pull/159004))
+- Remove unused `deviceAllocationMap` field in schema ([#159653](https://github.com/pytorch/pytorch/pull/159653))
+- Remove unused `Model`, `tensor_paths`, `constant_paths` fields in schema ([#161185](https://github.com/pytorch/pytorch/pull/161185))
+- Allow `tempfile._TemporaryFileWrapper` in `package_pt2` ([#161203](https://github.com/pytorch/pytorch/pull/161203))
+- Improve arg names for errors in unflatten constraints hook ([#160919](https://github.com/pytorch/pytorch/pull/160919))
+- Refactor PT2 Archive weight saving and loading ([#160394](https://github.com/pytorch/pytorch/pull/160394))
+- Use GetAttrKey in `get_keystr` to match unflattening ([#161453](https://github.com/pytorch/pytorch/pull/161453))
+- Improve formatting in error messages for dynamic shapes ([#161573](https://github.com/pytorch/pytorch/pull/161573))
+- Fix broken tests caused by Triton availabity check ([#161737](https://github.com/pytorch/pytorch/pull/161737))
 ### security
