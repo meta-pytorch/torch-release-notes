@@ -31,29 +31,24 @@ testtesttest
 ### deprecation
 ### new features
 ### improvements
+- Add _compile_and_package method for ExportPackage ([#156638](https://github.com/pytorch/pytorch/pull/156638))
+- Handle None & ellipsis slicing/select in non-strict ([#157821](https://github.com/pytorch/pytorch/pull/157821))
+- Extend FP8 types in serialization ([#158430](https://github.com/pytorch/pytorch/pull/158430))
 ### bug fixes
+- Bug in constants lifting pass ([#157719](https://github.com/pytorch/pytorch/pull/157719))
+- Fix from_node provenance in unlift pass ([#157943](https://github.com/pytorch/pytorch/pull/157943))
+- Fix NaN serialization ([#155359](https://github.com/pytorch/pytorch/pull/155359))
+- Fix deserialization for unbacked symbol ranges ([#158681](https://github.com/pytorch/pytorch/pull/158681))
 ### performance
+- Caching optimizations for placeholder naming pass ([#158594](https://github.com/pytorch/pytorch/pull/158594))
 ### docs
+- Update docs around draft export, dynamism, and PT2 Archive ([#157750](https://github.com/pytorch/pytorch/pull/157750))
 ### devs
 ### Untopiced
-- [export] Implement _compile_and_package for ExportPackage. ([#156638](https://github.com/pytorch/pytorch/pull/156638))
-- [BE] Typo fix ([#156836](https://github.com/pytorch/pytorch/pull/156836))
-- Remove unneccesary code to check autograd state ([#156855](https://github.com/pytorch/pytorch/pull/156855))
-- Remove is_jit_trace option ([#157387](https://github.com/pytorch/pytorch/pull/157387))
-- [export] Fix lift constants bug ([#157719](https://github.com/pytorch/pytorch/pull/157719))
-- Fix from_node's graph_id in unlift() ([#157943](https://github.com/pytorch/pytorch/pull/157943))
-- [non-strict export] uncovered cases of select and slice ([#157821](https://github.com/pytorch/pytorch/pull/157821))
-- [exported_program] Remove _postprocess_graph_module_outputs ([#158059](https://github.com/pytorch/pytorch/pull/158059))
-- Fix serialization of nans in torch.export ([#155359](https://github.com/pytorch/pytorch/pull/155359))
 - Standalone compile API in _Exporter ([#158139](https://github.com/pytorch/pytorch/pull/158139))
-- [export] Update docs ([#157750](https://github.com/pytorch/pytorch/pull/157750))
-- Add FP8 Types ([#158430](https://github.com/pytorch/pytorch/pull/158430))
 - Add deprecation warning ([#158203](https://github.com/pytorch/pytorch/pull/158203))
-- Add caching for `_rename_without_collisions` ([#158594](https://github.com/pytorch/pytorch/pull/158594))
-- [export] fix unbacked range deserialization ([#158681](https://github.com/pytorch/pytorch/pull/158681))
 - [export][ez] Fix packaging ([#158855](https://github.com/pytorch/pytorch/pull/158855))
 - [export] Fix public bindings ([#159109](https://github.com/pytorch/pytorch/pull/159109))
-- [ez][export] add sym_sum to verified ops ([#159111](https://github.com/pytorch/pytorch/pull/159111))
 - [export] assert fix in serdes ([#159060](https://github.com/pytorch/pytorch/pull/159060))
 - unflatten closure ([#159418](https://github.com/pytorch/pytorch/pull/159418))
 - [draft export] logging ([#159004](https://github.com/pytorch/pytorch/pull/159004))
@@ -81,10 +76,15 @@ testtesttest
 - [export] Move example inputs in move_to_device_pass ([#162301](https://github.com/pytorch/pytorch/pull/162301))
 - [nativert] AOTI lowering and packaging as NativeRT delegate ([#162285](https://github.com/pytorch/pytorch/pull/162285))
 ### not user facing
-- Document each of the private member variables on ExportedProgram ([#156704](https://github.com/pytorch/pytorch/pull/156704))
-- [resubmit][export] add _union_dataclass to support comparing dataclasses that inherits from union. ([#156765](https://github.com/pytorch/pytorch/pull/156765))
-- [BE] Add type and docs for _process_export_inputs ([#156830](https://github.com/pytorch/pytorch/pull/156830))
-- [Dynamo][Better Engineering] Add typing annotations to guard and source (#158397) ([#159491](https://github.com/pytorch/pytorch/pull/159491))
-- [AOTI] normalize_path_separator file path for Windows. ([#159726](https://github.com/pytorch/pytorch/pull/159726))
+- Document private member variables on ExportedProgram ([#156704](https://github.com/pytorch/pytorch/pull/156704))
+- Add _union_dataclass to support comparing dataclasses inheriting from Union ([#156765](https://github.com/pytorch/pytorch/pull/156765))
+- Add type and docs for _process_export_inputs ([#156830](https://github.com/pytorch/pytorch/pull/156830))
+- Add typing annotations to guard and source (Dynamo) (#158397) ([#159491](https://github.com/pytorch/pytorch/pull/159491))
+- Normalize_path_separator file path for AOTI (Windows) ([#159726](https://github.com/pytorch/pytorch/pull/159726))
 - Update export/schema.py ([#160220](https://github.com/pytorch/pytorch/pull/160220))
+- Typo fix in _trace.py ([#156836](https://github.com/pytorch/pytorch/pull/156836))
+- Remove dead code for checking autograd state ([#156855](https://github.com/pytorch/pytorch/pull/156855))
+- Remove is_jit_trace option ([#157387](https://github.com/pytorch/pytorch/pull/157387))
+- Remove dead code for _postprocess_graph_module_outputs ([#158059](https://github.com/pytorch/pytorch/pull/158059))
+- Add sym_sum to verified ops ([#159111](https://github.com/pytorch/pytorch/pull/159111))
 ### security
