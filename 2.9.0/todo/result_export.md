@@ -25,7 +25,9 @@ The categories below are as follows:
 
 ## export
 ### bc breaking
+- Switches off runtime asserts by default, in favor of shape guards function. To enable runtime asserts, use `export(..., prefer_deferred_runtime_asserts_over_guards=True)`. Also kills the `allow_complex_guards_as_runtime_asserts` flag, merging it into the former option ([#160111](https://github.com/pytorch/pytorch/pull/160111), [#161178](https://github.com/pytorch/pytorch/pull/161178), [#161794](https://github.com/pytorch/pytorch/pull/161794))
 ### deprecation
+- Deprecation for `export_for_training` API, in favor of equivalent `export` API ([#158203](https://github.com/pytorch/pytorch/pull/158203))
 ### new features
 ### improvements
 - Add `_compile_and_package` method for ExportPackage ([#156638](https://github.com/pytorch/pytorch/pull/156638))
@@ -34,6 +36,9 @@ The categories below are as follows:
 - Improve error messages for deserialization ([#159881](https://github.com/pytorch/pytorch/pull/159881))
 - Support serialization for `triton_kernel_wrapper_functional` HOP ([#161314](https://github.com/pytorch/pytorch/pull/161314))
 - Support serialization for complex constants ([#161517](https://github.com/pytorch/pytorch/pull/161517))
+- Add runtime asserts to `while_loop` HOP subgraphs ([#158467](https://github.com/pytorch/pytorch/pull/158467))
+- Warn on side-effectful code in strict mode ([#160060](https://github.com/pytorch/pytorch/pull/160060))
+- Support for vmap in pre-dispatch export ([#154650](https://github.com/pytorch/pytorch/pull/154650))
 ### bug fixes
 - Bug in constants lifting pass ([#157719](https://github.com/pytorch/pytorch/pull/157719))
 - Fix `from_node` provenance in unlift pass ([#157943](https://github.com/pytorch/pytorch/pull/157943))
@@ -53,10 +58,6 @@ The categories below are as follows:
 - Update docs around draft export, dynamism, and PT2 Archive ([#157750](https://github.com/pytorch/pytorch/pull/157750))
 ### devs
 ### Untopiced
-- Standalone compile API in _Exporter ([#158139](https://github.com/pytorch/pytorch/pull/158139))
-- Add deprecation warning ([#158203](https://github.com/pytorch/pytorch/pull/158203))
-- switch prefer_deferred_runtime_asserts_over_guards in export ([#160111](https://github.com/pytorch/pytorch/pull/160111))
-- [nativert] AOTI lowering and packaging as NativeRT delegate ([#162285](https://github.com/pytorch/pytorch/pull/162285))
 ### not user facing
 - Document private member variables on ExportedProgram ([#156704](https://github.com/pytorch/pytorch/pull/156704))
 - Add _union_dataclass to support comparing dataclasses inheriting from Union ([#156765](https://github.com/pytorch/pytorch/pull/156765))
@@ -81,4 +82,7 @@ The categories below are as follows:
 - Improve formatting in error messages for dynamic shapes ([#161573](https://github.com/pytorch/pytorch/pull/161573))
 - Fix broken tests caused by Triton availabity check ([#161737](https://github.com/pytorch/pytorch/pull/161737))
 - Fix unflattener test by supporting both MappingKey and GetAttrKey ([#161599](https://github.com/pytorch/pytorch/pull/161599))
+- AOTI lowering and packaging as NativeRT delegate ([#162285](https://github.com/pytorch/pytorch/pull/162285))
+- WIP `_dynamo_graph_capture_for_export` API ([#162167](https://github.com/pytorch/pytorch/pull/162167))
+- WIP standalone compile API in _Exporter ([#158139](https://github.com/pytorch/pytorch/pull/158139))
 ### security
