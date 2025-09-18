@@ -27,20 +27,26 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
+- Enable `FlexAttention` on Intel GPU ([#143553](https://github.com/pytorch/pytorch/pull/143553))
+- Enable `_int_mm` on Intel GPU ([#157769](https://github.com/pytorch/pytorch/pull/157769))
+
 ### improvements
+- Support Intel GPU quantization ops in AOTInductor ([#156572](https://github.com/pytorch/pytorch/pull/156572))
+- Add device_id to Intel GPU properties to distinguish iGPUs with identical names ([#156481](https://github.com/pytorch/pytorch/pull/156481))
+- Support `FlightRecorder` for XCCL to allow debug trace dumps for distributed jobs on Intel GPU ([#158568](https://github.com/pytorch/pytorch/pull/158568))
+
 ### bug fixes
+- Fix cpp_extension compatibility with intel-deep-learning-essentials-2025.2 ([#161012](https://github.com/pytorch/pytorch/pull/161012))
+
 ### performance
+- Enable tensor memory descriptor Triton template for Intel GPU ([#161600](https://github.com/pytorch/pytorch/pull/161600))
+
 ### docs
+- Update supported OS to Windows 11 & Ubuntu 24.04/25.04 for Intel client GPU ([#161699](https://github.com/pytorch/pytorch/pull/161699))
+
 ### devs
+- Upgrade Intel GPU software stack package to intel-deep-learning-essentials-2025.2 ([#158733](https://github.com/pytorch/pytorch/pull/158733))
+
 ### Untopiced
-- Add device_id to XPU device properties ([#156481](https://github.com/pytorch/pytorch/pull/156481))
-- Generalize support of background thread in pinned allocator ([#160505](https://github.com/pytorch/pytorch/pull/160505))
-- Disable background threads for XPU host allocator ([#161242](https://github.com/pytorch/pytorch/pull/161242))
-- xpu: fix cpp_extension compatibility with oneapi dpc++ 2025.2 compiler ([#161012](https://github.com/pytorch/pytorch/pull/161012))
-- Add uuid to XPU device properties ([#161392](https://github.com/pytorch/pytorch/pull/161392))
-- Update torch-xpu-ops commit pin ([#161919](https://github.com/pytorch/pytorch/pull/161919))
 ### not user facing
-- Add Intel GPU info collection to the collect env script ([#157351](https://github.com/pytorch/pytorch/pull/157351))
-- xpu: support custom ops with torch.library on xpu backend ([#152879](https://github.com/pytorch/pytorch/pull/152879))
-- [CI] Update xpu ci use rolling driver for new features ([#158340](https://github.com/pytorch/pytorch/pull/158340))
 ### security

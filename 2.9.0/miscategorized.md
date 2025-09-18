@@ -12,4 +12,6 @@ Handle any commits that actually do belong to your domain and remove them from t
 - kill allow_complex_guards_as_runtime_asserts ([#161794](https://github.com/pytorch/pytorch/pull/161794))
 - [export] runtime asserts for while HOP subgraphs ([#158467](https://github.com/pytorch/pytorch/pull/158467))
 - [fx] Add is_fx_symbolic_tracing flag ([#161385](https://github.com/pytorch/pytorch/pull/161385))
+- [ROCm] Add FP8 rowwise support to _scaled_grouped_mm + Submodule update ([#159075](https://github.com/pytorch/pytorch/pull/159075))
+- [CPU] Support GQA for flash attention ([#157893](https://github.com/pytorch/pytorch/pull/157893))
 ## not user facing
