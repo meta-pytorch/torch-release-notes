@@ -38,5 +38,4 @@ __reduce_deploy__ is no longer supported with `torch.fx`. Please do not use torc
 ### devs
 ### Untopiced
 ### not user facing
-- [BE] Modify PyObjectSlot the assume only a single interpreter is in use ([#158407](https://github.com/pytorch/pytorch/pull/158407))
 ### security
