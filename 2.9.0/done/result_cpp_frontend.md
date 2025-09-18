@@ -1,5 +1,5 @@
 
-# Release Notes worksheet package/deploy
+# Release Notes worksheet cpp_frontend
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,19 +23,23 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## package/deploy
+## cpp_frontend
 ### bc breaking
 ### deprecation
-- [BE] Remove torch deploy | remove torch deploy specific files ([#158290](https://github.com/pytorch/pytorch/pull/158290))
-- [BE] Remove torch deploy | remove torch deploy specific files ([#158290](https://github.com/pytorch/pytorch/pull/158290))
-- [BE] Remove torch deploy | remove torch deploy specific files ([#158290](https://github.com/pytorch/pytorch/pull/158290))
 ### new features
 ### improvements
+- Generalized `AllocatorConfig` to be device-agnostic via new `AcceleratorAllocatorConfig` ([#149601](https://github.com/pytorch/pytorch/pull/149601), [#150312](https://github.com/pytorch/pytorch/pull/150312))
+- Added `Scalar::isUnsigned()` method ([#159877](https://github.com/pytorch/pytorch/pull/159877))
+- Exposed `ModelRunner` from nativert as public ([#159989](https://github.com/pytorch/pytorch/pull/159989))
 ### bug fixes
+- Fixed `torch.utils.cpp_extension` parser for clang version 20.1.7+libcxx ([#157666](https://github.com/pytorch/pytorch/pull/157666))
+- Fixed `MakeTensor::computeStorageSize()` calculation ([#158690](https://github.com/pytorch/pytorch/pull/158690))
+- Fixed static initialization order issue with `AllocatorConfig` ([#159629](https://github.com/pytorch/pytorch/pull/159629))
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- Fix Pandas version mismatch upon reinstalling numpy ([#158584](https://github.com/pytorch/pytorch/pull/158584))
+- Removed unsafe `PyTorchError` constructor ([#154961](https://github.com/pytorch/pytorch/pull/154961))
+- Fixed unreachable-break issue in `caffe2/c10/cuda/CUDAFunctions.cpp` ([#160257](https://github.com/pytorch/pytorch/pull/160257))
 ### security

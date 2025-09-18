@@ -28,7 +28,7 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
-- Add minimal nn.functional.log_softmax support for NestedTensor ([#159662](https://github.com/pytorch/pytorch/pull/159662))
+- Added initial `log_softmax()` support ([#159662](https://github.com/pytorch/pytorch/pull/159662))
 ### bug fixes
 ### performance
 ### docs
