@@ -28,8 +28,6 @@ The categories below are as follows:
 - [BE] Remove torch deploy | remove torch deploy specific files ([#158290](https://github.com/pytorch/pytorch/pull/158290))
 With the [deprecation of multipy](https://github.com/meta-pytorch/multipy), we are removing support for the library in PyTorch. This includes removal of ultilites which only supported torch_deploy like the `Freezer` class and the deploy debugger.
 ### deprecation
-- [BE] Remove __reduce_deploy__  ([#158291](https://github.com/pytorch/pytorch/pull/158291))
-__reduce_deploy__ is no longer supported with `torch.fx`. Please do not use torch_deploy / multipy with PyTorch 2.9.0+.
 ### new features
 ### improvements
 ### bug fixes
