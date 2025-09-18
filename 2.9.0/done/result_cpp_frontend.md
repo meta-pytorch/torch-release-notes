@@ -28,27 +28,18 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
-- Introduce AcceleratorAllocatorConfig as the common class ([#149601](https://github.com/pytorch/pytorch/pull/149601))
-- Introduce AcceleratorAllocatorConfig as the common class ([#149601](https://github.com/pytorch/pytorch/pull/149601))
-- Introduce AcceleratorAllocatorConfig as the common class ([#149601](https://github.com/pytorch/pytorch/pull/149601))
-- [C10] Add `Scalar::isUnsigned()` method ([#159877](https://github.com/pytorch/pytorch/pull/159877))
+- Generalized `AllocatorConfig` to be device-agnostic via new `AcceleratorAllocatorConfig` ([#149601](https://github.com/pytorch/pytorch/pull/149601), [#150312](https://github.com/pytorch/pytorch/pull/150312))
+- Added `Scalar::isUnsigned()` method ([#159877](https://github.com/pytorch/pytorch/pull/159877))
+- Exposed `ModelRunner` from nativert as public ([#159989](https://github.com/pytorch/pytorch/pull/159989))
 ### bug fixes
-- Fix torch.utils.cpp_extension parser for clang version 20.1.7+libcxx ([#157666](https://github.com/pytorch/pytorch/pull/157666))
-- Fix `MakeTensor::computeStorageSize()` ([#158690](https://github.com/pytorch/pytorch/pull/158690))
-- Fix AllocatorConfig potential SIO issue ([#159629](https://github.com/pytorch/pytorch/pull/159629))
+- Fixed `torch.utils.cpp_extension` parser for clang version 20.1.7+libcxx ([#157666](https://github.com/pytorch/pytorch/pull/157666))
+- Fixed `MakeTensor::computeStorageSize()` calculation ([#158690](https://github.com/pytorch/pytorch/pull/158690))
+- Fixed static initialization order issue with `AllocatorConfig` ([#159629](https://github.com/pytorch/pytorch/pull/159629))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Improve error message for torch.binomial enforcing float inputs ([#157658](https://github.com/pytorch/pytorch/pull/157658))
-- Detach tensor before clone in SGD optimiser and other code ([#159204](https://github.com/pytorch/pytorch/pull/159204))
-- Feature: Implement support for `cudnn_batch_norm_out` kernel to replace the autogen approach. ([#123020](https://github.com/pytorch/pytorch/pull/123020))
-- [nativert] Expose ModelRunner to public through pmpl type ModelRunnerHandle. ([#159989](https://github.com/pytorch/pytorch/pull/159989))
 ### not user facing
-- Refactor CUDAAllocatorConfig to reuse AcceleratorAllocatorConfig ([#150312](https://github.com/pytorch/pytorch/pull/150312))
-- Remove unsafe PyTorchError constructor ([#154961](https://github.com/pytorch/pytorch/pull/154961))
-- Refactor CUDAAllocatorConfig to reuse AcceleratorAllocatorConfig ([#150312](https://github.com/pytorch/pytorch/pull/150312))
-- Refactor CUDAAllocatorConfig to reuse AcceleratorAllocatorConfig ([#150312](https://github.com/pytorch/pytorch/pull/150312))
-- Refactor CUDAAllocatorConfig to reuse AcceleratorAllocatorConfig ([#150312](https://github.com/pytorch/pytorch/pull/150312))
-- [codemod] Fix unreachable-break issue in caffe2/c10/cuda/CUDAFunctions.cpp +2 ([#160257](https://github.com/pytorch/pytorch/pull/160257))
+- Removed unsafe `PyTorchError` constructor ([#154961](https://github.com/pytorch/pytorch/pull/154961))
+- Fixed unreachable-break issue in `caffe2/c10/cuda/CUDAFunctions.cpp` ([#160257](https://github.com/pytorch/pytorch/pull/160257))
 ### security
