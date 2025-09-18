@@ -35,28 +35,20 @@ The categories below are as follows:
 
 ### improvements
 
-- Add `shifted_chebyshev_polynomial_[tuvw]` ([\#157488](https://github.com/pytorch/pytorch/pull/157488))  
+- Add `shifted_chebyshev_polynomial_[tuvw], simd_[arg][max|min]`,  `igamma/igammac,grid_sampler_3d, native_dropout`/`native_dropout_backward`  ([\#157488](https://github.com/pytorch/pytorch/pull/157488), [\#158990](https://github.com/pytorch/pytorch/pull/158990), [\#161927](https://github.com/pytorch/pytorch/pull/161927), [\#160541](https://github.com/pytorch/pytorch/pull/160541), [\#162108](https://github.com/pytorch/pytorch/pull/162108))  
+- For sparse tensors: Add coalesce, `indices/values,sgn/asinh/atanh/asin/atan/ceil/erf/expm1/floor/frac/isnan/nan_to_num/log1p/rad2deg/deg2rad/neg/round/relu/sin/sinh/sqrt/tan/tanh/sign/signbit/isinf/isposinf/isneginf,cat` ([\#159729](https://github.com/pytorch/pytorch/pull/159729)/[\#160254](https://github.com/pytorch/pytorch/pull/160254), [\#160223](https://github.com/pytorch/pytorch/pull/160223),[\#161846](https://github.com/pytorch/pytorch/pull/161846),[\#162007](https://github.com/pytorch/pytorch/pull/162007))  
 - Extend atomic operations to all int types ([\#158179](https://github.com/pytorch/pytorch/pull/158179))  
-- Add support for unsigned types ([\#159094](https://github.com/pytorch/pytorch/pull/159094))  
-- Add `simd_[arg][max|min]` ([\#158990](https://github.com/pytorch/pytorch/pull/158990))  
-- Move max\_pool2d to Metal for `stride != 1` ([\#157876](https://github.com/pytorch/pytorch/pull/157876))  
 - Extend `index_put` to complex types ([\#160159](https://github.com/pytorch/pytorch/pull/160159))  
+- Extend addmm to integral types ([\#160270](https://github.com/pytorch/pytorch/pull/160270))  
+- Add support for unsigned types ([\#159094](https://github.com/pytorch/pytorch/pull/159094))  
 - Add API to query GPU core count ([\#160414](https://github.com/pytorch/pytorch/pull/160414))  
 - Update `avg_pool3d` kernel to use `opmath_t` ([\#161071](https://github.com/pytorch/pytorch/pull/161071))  
 - Add slow version of `kthvalue` ([\#161817](https://github.com/pytorch/pytorch/pull/161817))  
-- Add `igamma/igammac` ops ([\#161927](https://github.com/pytorch/pytorch/pull/161927))  
-- Enable cat op for sparse ([\#162007](https://github.com/pytorch/pytorch/pull/162007))  
-- Extend addmm to integral types ([\#160270](https://github.com/pytorch/pytorch/pull/160270))  
 - Type-promote tensor-iterator common dtype ([\#160334](https://github.com/pytorch/pytorch/pull/160334))  
-- Migrate round unary op to Metal ([\#161712](https://github.com/pytorch/pytorch/pull/161712))  
 - Add fused\_rms and sdpa\_mps fallback ops for AOTInductor ([\#156844](https://github.com/pytorch/pytorch/pull/156844))  
 - Implement logcumsumexp metal kernel ([\#156858](https://github.com/pytorch/pytorch/pull/156858))  
-- Coalesce for sparse tensors ([\#159729](https://github.com/pytorch/pytorch/pull/159729))  
-- Sparse coalesce more dtypes to match cpu ([\#160254](https://github.com/pytorch/pytorch/pull/160254))  
-- Add `indices` and `values` ops for sparse ([\#160223](https://github.com/pytorch/pytorch/pull/160223))  
-- Add `grid_sampler_3d` for MPS ([\#160541](https://github.com/pytorch/pytorch/pull/160541))  
-- Add bunch of unary funcs for sparse tensors ([\#161846](https://github.com/pytorch/pytorch/pull/161846))  
-- Add `native_dropout` and `native_dropout_backward` ([\#162108](https://github.com/pytorch/pytorch/pull/162108))
+- Migrate round unary op to Metal ([\#161712](https://github.com/pytorch/pytorch/pull/161712))  
+- Move max\_pool2d to Metal for `stride != 1` ([\#157876](https://github.com/pytorch/pytorch/pull/157876))
 
 ### bug fixes
 
@@ -76,8 +68,7 @@ The categories below are as follows:
 - Address NaNs if SDPA is called with all values masked from query ([\#157727](https://github.com/pytorch/pytorch/pull/157727))  
 - Fix invalid formatting ([\#158436](https://github.com/pytorch/pytorch/pull/158436))  
 - Update `avg_pool2d` to use Metal kernel when `ceil_mode=True` ([\#161011](https://github.com/pytorch/pytorch/pull/161011))  
-- Fix empty input in posneg functions ([\#161824](https://github.com/pytorch/pytorch/pull/161824))  
-- 
+- Fix empty input in posneg functions ([\#161824](https://github.com/pytorch/pytorch/pull/161824))
 
 ### performance
 
