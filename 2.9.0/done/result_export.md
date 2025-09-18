@@ -25,7 +25,10 @@ The categories below are as follows:
 
 ## export
 ### bc breaking
-- Switches off runtime asserts by default, in favor of shape guards function. To enable runtime asserts, use `export(..., prefer_deferred_runtime_asserts_over_guards=True)`. Also kills the `allow_complex_guards_as_runtime_asserts` flag, merging it into the former option ([#160111](https://github.com/pytorch/pytorch/pull/160111), [#161178](https://github.com/pytorch/pytorch/pull/161178), [#161794](https://github.com/pytorch/pytorch/pull/161794))
+- Switches off runtime asserts by default, in favor of a shape guards function. ([#160111](https://github.com/pytorch/pytorch/pull/160111), [#161178](https://github.com/pytorch/pytorch/pull/161178), [#161794](https://github.com/pytorch/pytorch/pull/161794))
+To enable runtime asserts, use `export(..., prefer_deferred_runtime_asserts_over_guards=True)`. Also kills the `allow_complex_guards_as_runtime_asserts` flag, merging it into the former option.
+Additionally, `exported_program.module()` will generate a call to a `_guards_fn` submodule that will run additional checks on inputs. Users who do not want this behavior can either remove this call in the graph, or do `exported_program.module(check_guards=False)` to avoid the generation.
+
 ### deprecation
 - Deprecation for `export_for_training` API, in favor of equivalent `export` API ([#158203](https://github.com/pytorch/pytorch/pull/158203))
 ### new features
