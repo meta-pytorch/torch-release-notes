@@ -17,5 +17,9 @@ Handle any commits that actually do belong to your domain and remove them from t
 - Improve error message for torch.binomial enforcing float inputs ([#157658](https://github.com/pytorch/pytorch/pull/157658))
 - Detach tensor before clone in SGD optimiser and other code ([#159204](https://github.com/pytorch/pytorch/pull/159204))
 - Feature: Implement support for `cudnn_batch_norm_out` kernel to replace the autogen approach. ([#123020](https://github.com/pytorch/pytorch/pull/123020))
+
+Serialization:
+- Improve error message for weight-only load errors ([#159935](https://github.com/pytorch/pytorch/pull/159935))
+
 ## not user facing
 - Fix Pandas version mismatch upon reinstalling numpy ([#158584](https://github.com/pytorch/pytorch/pull/158584))
