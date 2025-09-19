@@ -31,7 +31,7 @@ The categories below are as follows:
 ### deprecation
 
 ### new features
-- [Beta] Partial sparse support for MPS backend ([\#159729](https://github.com/pytorch/pytorch/pull/159729)/[\#160254](https://github.com/pytorch/pytorch/pull/160254), [\#160223](https://github.com/pytorch/pytorch/pull/160223),[\#161846](https://github.com/pytorch/pytorch/pull/161846),[\#162007](https://github.com/pytorch/pytorch/pull/162007))
+- [Beta] Partial sparse support for MPS backend ([\#159729](https://github.com/pytorch/pytorch/pull/159729), [\#160254](https://github.com/pytorch/pytorch/pull/160254), [\#160223](https://github.com/pytorch/pytorch/pull/160223), [\#161846](https://github.com/pytorch/pytorch/pull/161846), [\#162007](https://github.com/pytorch/pytorch/pull/162007))
 
 ### improvements
 
