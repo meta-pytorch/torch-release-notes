@@ -26,19 +26,19 @@ The categories below are as follows:
 ## dataloader_frontend
 ### bc breaking
 ### deprecation
+- `torch.utils.data.DataLoader`: Deprecate `pin_memory_device` param ([#158323](https://github.com/pytorch/pytorch/pull/158323))
 ### new features
 ### improvements
 ### bug fixes
 ### performance
 ### docs
 ### devs
+- Add `torch.utils.data` samplers benchmark script ([#156974](https://github.com/pytorch/pytorch/pull/156974))
+- Add `torch.utils.data.Dataloader` benchmark script ([#159432](https://github.com/pytorch/pytorch/pull/159432))
 ### Untopiced
-- PyTorch Data Sampler benchmark ([#156974](https://github.com/pytorch/pytorch/pull/156974))
-- [BE][16/16] fix typos in torch/ (torch/utils/) ([#156606](https://github.com/pytorch/pytorch/pull/156606))
-- Add torch._C._log_api_usage_once to datapipes (mapper) ([#155489](https://github.com/pytorch/pytorch/pull/155489))
-- Deprecate DataLoader pin_memory_device param ([#158323](https://github.com/pytorch/pytorch/pull/158323))
-- Dataloader benchmark script ([#159432](https://github.com/pytorch/pytorch/pull/159432))
 ### not user facing
 - [BE][2/6] fix typos in test/ (test/test_*.py) ([#157636](https://github.com/pytorch/pytorch/pull/157636))
 - skip XPU for dataloader CPU only unit test ([#159811](https://github.com/pytorch/pytorch/pull/159811))
+- [BE][16/16] fix typos in torch/ (torch/utils/) ([#156606](https://github.com/pytorch/pytorch/pull/156606))
+- Add torch._C._log_api_usage_once to datapipes (mapper) ([#155489](https://github.com/pytorch/pytorch/pull/155489))
 ### security
