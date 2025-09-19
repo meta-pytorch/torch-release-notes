@@ -50,6 +50,8 @@ Several operator decomps + meta implementations received improvements/bugfixes:
 ### performance
 ### docs
 ### devs
+- Stop suggesting to use guard_size_oblivious on data dependent errors ([#160510](https://github.com/pytorch/pytorch/pull/160510))
+- Avoid unnecessary slices resulting in data-dependent errors ([#157528](https://github.com/pytorch/pytorch/pull/157528))
 ### Untopiced
 ### not user facing
 

@@ -28,6 +28,7 @@ The categories below are as follows:
 ### deprecation
 ### new features
 - Add contiguous subgraph transformation threshold ([#162192](https://github.com/pytorch/pytorch/pull/162192))
+- Implemented inductor as an FX pass ([#160765](https://github.com/pytorch/pytorch/pull/160765), [#160766](https://github.com/pytorch/pytorch/pull/160766), [#161019](https://github.com/pytorch/pytorch/pull/161019), [#161474](https://github.com/pytorch/pytorch/pull/161474), [#159297](https://github.com/pytorch/pytorch/pull/159297), [#161245](https://github.com/pytorch/pytorch/pull/161245), [#161195](https://github.com/pytorch/pytorch/pull/161195), [#162317](https://github.com/pytorch/pytorch/pull/162317), [#159497](https://github.com/pytorch/pytorch/pull/159497), [#160997](https://github.com/pytorch/pytorch/pull/160997), [#161582](https://github.com/pytorch/pytorch/pull/161582))
 ### improvements
 - Inductor logging + analysis of torch.profile ([#149697](https://github.com/pytorch/pytorch/pull/149697))
 - Inductor logging + analysis of torch.profile ([#149697](https://github.com/pytorch/pytorch/pull/149697))

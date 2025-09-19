@@ -5,7 +5,6 @@ Add any commits that were miscategorized for your domain below.
 Handle any commits that actually do belong to your domain and remove them from this list.
 
 ## Untopiced
-- [fx] Add is_fx_symbolic_tracing flag ([#161385](https://github.com/pytorch/pytorch/pull/161385))
 - [ROCm] Add FP8 rowwise support to _scaled_grouped_mm + Submodule update ([#159075](https://github.com/pytorch/pytorch/pull/159075))
 - [CPU] Support GQA for flash attention ([#157893](https://github.com/pytorch/pytorch/pull/157893))
 - Improve error message for torch.binomial enforcing float inputs ([#157658](https://github.com/pytorch/pytorch/pull/157658))
@@ -17,3 +16,6 @@ Serialization:
 
 ## not user facing
 - Fix Pandas version mismatch upon reinstalling numpy ([#158584](https://github.com/pytorch/pytorch/pull/158584))
+
+- [CUDA-13] Implement workaround for cudaErrorNotSupported ([#162412](https://github.com/pytorch/pytorch/pull/162412))
+- [FP8] FP8 for SwishLayerNorm ([#157574](https://github.com/pytorch/pytorch/pull/157574))
