@@ -33,9 +33,9 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
+### not user facing
 - Name threads in caffe2/torch/distributed/checkpoint AsyncCheckpointExecutor ([#158612](https://github.com/pytorch/pytorch/pull/158612))
 - [caffe2]  Fix Missing override in get_buffer of NCCLSymmetricMemory ([#158597](https://github.com/pytorch/pytorch/pull/158597))
-### not user facing
 - [caffe2] Allow the elimination of implicit calls to strlen when using the RECORD_FUNCTION macros ([#153567](https://github.com/pytorch/pytorch/pull/153567))
 - [TSAN][live speech translation] Fix A data race in caffe2 ([#156378](https://github.com/pytorch/pytorch/pull/156378))
 - [gtest][listing] Enable gtest json listing for the fbcode/caffe2 project ([#156816](https://github.com/pytorch/pytorch/pull/156816))
