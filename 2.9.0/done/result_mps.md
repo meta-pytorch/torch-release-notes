@@ -26,29 +26,28 @@ The categories below are as follows:
 
 ### bc breaking
 
-- Build metal kernels of MacOS-14+ ([\#159733](https://github.com/pytorch/pytorch/pull/159733))  
-- Remove all pre-MacOS14 logic ([\#159912](https://github.com/pytorch/pytorch/pull/159912))
+- Build metal kernels of MacOS-14+ and remove all pre-MacOS-14 specific logic. Requires MacOS-14+ going forwards. ([\#159733](https://github.com/pytorch/pytorch/pull/159733), [\#159912](https://github.com/pytorch/pytorch/pull/159912))
 
 ### deprecation
 
 ### new features
+- [Beta] Partial sparse support for MPS backend ([\#159729](https://github.com/pytorch/pytorch/pull/159729)/[\#160254](https://github.com/pytorch/pytorch/pull/160254), [\#160223](https://github.com/pytorch/pytorch/pull/160223),[\#161846](https://github.com/pytorch/pytorch/pull/161846),[\#162007](https://github.com/pytorch/pytorch/pull/162007))
 
 ### improvements
 
-- Add `shifted_chebyshev_polynomial_[tuvw], simd_[arg][max|min]`,  `igamma/igammac,grid_sampler_3d, native_dropout`/`native_dropout_backward`  ([\#157488](https://github.com/pytorch/pytorch/pull/157488), [\#158990](https://github.com/pytorch/pytorch/pull/158990), [\#161927](https://github.com/pytorch/pytorch/pull/161927), [\#160541](https://github.com/pytorch/pytorch/pull/160541), [\#162108](https://github.com/pytorch/pytorch/pull/162108))  
-- For sparse tensors: Add coalesce, `indices/values,sgn/asinh/atanh/asin/atan/ceil/erf/expm1/floor/frac/isnan/nan_to_num/log1p/rad2deg/deg2rad/neg/round/relu/sin/sinh/sqrt/tan/tanh/sign/signbit/isinf/isposinf/isneginf,cat` ([\#159729](https://github.com/pytorch/pytorch/pull/159729)/[\#160254](https://github.com/pytorch/pytorch/pull/160254), [\#160223](https://github.com/pytorch/pytorch/pull/160223),[\#161846](https://github.com/pytorch/pytorch/pull/161846),[\#162007](https://github.com/pytorch/pytorch/pull/162007))  
+- Add `shifted_chebyshev_polynomial_[tuvw]`, `igamma/igammac,grid_sampler_3d, native_dropout`/`native_dropout_backward`  ([\#157488](https://github.com/pytorch/pytorch/pull/157488), [\#161927](https://github.com/pytorch/pytorch/pull/161927), [\#160541](https://github.com/pytorch/pytorch/pull/160541), [\#162108](https://github.com/pytorch/pytorch/pull/162108))
 - Extend atomic operations to all int types ([\#158179](https://github.com/pytorch/pytorch/pull/158179))  
 - Extend `index_put` to complex types ([\#160159](https://github.com/pytorch/pytorch/pull/160159))  
 - Extend addmm to integral types ([\#160270](https://github.com/pytorch/pytorch/pull/160270))  
 - Add support for unsigned types ([\#159094](https://github.com/pytorch/pytorch/pull/159094))  
 - Add API to query GPU core count ([\#160414](https://github.com/pytorch/pytorch/pull/160414))  
-- Update `avg_pool3d` kernel to use `opmath_t` ([\#161071](https://github.com/pytorch/pytorch/pull/161071))  
-- Add slow version of `kthvalue` ([\#161817](https://github.com/pytorch/pytorch/pull/161817))  
-- Type-promote tensor-iterator common dtype ([\#160334](https://github.com/pytorch/pytorch/pull/160334))  
-- Add fused\_rms and sdpa\_mps fallback ops for AOTInductor ([\#156844](https://github.com/pytorch/pytorch/pull/156844))  
-- Implement logcumsumexp metal kernel ([\#156858](https://github.com/pytorch/pytorch/pull/156858))  
-- Migrate round unary op to Metal ([\#161712](https://github.com/pytorch/pytorch/pull/161712))  
-- Move max\_pool2d to Metal for `stride != 1` ([\#157876](https://github.com/pytorch/pytorch/pull/157876))
+- Update `avg_pool3d` kernel to use `opmath_t` ([\#161071](https://github.com/pytorch/pytorch/pull/161071))
+- Add slow version of `kthvalue` ([\#161817](https://github.com/pytorch/pytorch/pull/161817))
+- Type-promote tensor-iterator common dtype ([\#160334](https://github.com/pytorch/pytorch/pull/160334))
+- Implement logcumsumexp metal kernel ([\#156858](https://github.com/pytorch/pytorch/pull/156858))
+- Enable dlpack integration ([\#158888](https://github.com/pytorch/pytorch/pull/158888))
+- Dynamic reductions ([\#159355](https://github.com/pytorch/pytorch/pull/159355))
+- Update `avg_pool2d` to use Metal kernel when `ceil_mode=True` ([\#161011](https://github.com/pytorch/pytorch/pull/161011))
 
 ### bug fixes
 
@@ -67,8 +66,8 @@ The categories below are as follows:
 - Ensure that tensors are contiguous before using MPS linear kernel ([\#161641](https://github.com/pytorch/pytorch/pull/161641))  
 - Address NaNs if SDPA is called with all values masked from query ([\#157727](https://github.com/pytorch/pytorch/pull/157727))  
 - Fix invalid formatting ([\#158436](https://github.com/pytorch/pytorch/pull/158436))  
-- Update `avg_pool2d` to use Metal kernel when `ceil_mode=True` ([\#161011](https://github.com/pytorch/pytorch/pull/161011))  
 - Fix empty input in posneg functions ([\#161824](https://github.com/pytorch/pytorch/pull/161824))
+- Migrate round unary op to Metal ([\#161712](https://github.com/pytorch/pytorch/pull/161712))
 
 ### performance
 
@@ -77,6 +76,7 @@ The categories below are as follows:
 - Speedup `argmax`/`argmin` ([\#159524](https://github.com/pytorch/pytorch/pull/159524))  
 - Improve performance of max\_pool3d ([\#157875](https://github.com/pytorch/pytorch/pull/157875))  
 - Avoid calling tensor ops in max\_pool3d impl ([\#157874](https://github.com/pytorch/pytorch/pull/157874))
+- Move max\_pool2d to Metal for `stride != 1` ([\#157876](https://github.com/pytorch/pytorch/pull/157876))
 
 ### docs
 
@@ -102,11 +102,11 @@ The categories below are as follows:
 - Fix cpu kernel generation ([\#158350](https://github.com/pytorch/pytorch/pull/158350))  
 - Improve tabbing in cpp generation ([\#158351](https://github.com/pytorch/pytorch/pull/158351))  
 - Enable more tests ([\#158703](https://github.com/pytorch/pytorch/pull/158703))  
-- Enable dlpack integration ([\#158888](https://github.com/pytorch/pytorch/pull/158888))  
-- Dynamic reductions ([\#159355](https://github.com/pytorch/pytorch/pull/159355))  
 - Fix compile benchmark correctness ([\#159731](https://github.com/pytorch/pytorch/pull/159731))  
 - Remove unused size12 variable ([\#159832](https://github.com/pytorch/pytorch/pull/159832))  
 - Combine all pre-MacOS14 xfail lists ([\#160228](https://github.com/pytorch/pytorch/pull/160228))
+- Add `simd_[arg][max|min]` ([\#158990](https://github.com/pytorch/pytorch/pull/158990))
+- Add fused\_rms and sdpa\_mps fallback ops for AOTInductor ([\#156844](https://github.com/pytorch/pytorch/pull/156844))
 
 ### security
 
