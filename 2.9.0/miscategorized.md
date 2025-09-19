@@ -25,6 +25,12 @@ StableABI:
 - Enable generating generic c_shim that doesn't bypass dispatcher ([#158974](https://github.com/pytorch/pytorch/pull/158974))
 - Cut a version of TORCH_ERROR_CODE_CHECK in headeronly from AOTI ([#159604](https://github.com/pytorch/pytorch/pull/159604))
 
+Autograd:
+- Support deterministic upsample trilinear backward ([#154239](https://github.com/pytorch/pytorch/pull/154239))
+
+CUDA:
+- [CUDA] Fix missing `__syncthreads` in MultiMarginLoss backward ([#158994](https://github.com/pytorch/pytorch/pull/158994))
+
 MPS:
 - [MPS] Add boilerplate sparse code support ([#157238](https://github.com/pytorch/pytorch/pull/157238))
 - Add `avg_pool3d` for MPS ([#158877](https://github.com/pytorch/pytorch/pull/158877))
