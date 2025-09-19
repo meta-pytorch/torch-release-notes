@@ -28,20 +28,24 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+- Support deterministic `torch.nn.Upsample` `mode="trilinear"` backward ([#154239](https://github.com/pytorch/pytorch/pull/154239))
 ### bug fixes
-- Add ownership token when needed on GradientEdge ([#160098](https://github.com/pytorch/pytorch/pull/160098))
+- Fix `torch.autograd.Function` memory leak due to `torch.utils.checkpiont` early stopping ([#161171](https://github.com/pytorch/pytorch/pull/161171))
+- Fix `torch.autograd.graph.GradientEdge` for `torch.autograd.Function` ([#160098](https://github.com/pytorch/pytorch/pull/160098))
+- Match 0-dim gradients device type regardless of subclass-ness ([#160165](https://github.com/pytorch/pytorch/pull/160165))
+
 ### performance
+- Fix SVD forward-mode AD multiplication priority ([#161027](https://github.com/pytorch/pytorch/pull/161027))
+
 ### docs
+- Improve `torch.inference_mode` docs and error message ([#161164](https://github.com/pytorch/pytorch/pull/161164))
+
 ### devs
 ### Untopiced
-- Add basic torch.hash_tensor op ([#154149](https://github.com/pytorch/pytorch/pull/154149))
-- [autograd] match 0-dim gradients device type regardless of subclassness ([#160165](https://github.com/pytorch/pytorch/pull/160165))
-- Fix SVD forward-mode AD multiplication priority ([#161027](https://github.com/pytorch/pytorch/pull/161027))
-- [BE] Improve torch.inference_mode docs and error message ([#161164](https://github.com/pytorch/pytorch/pull/161164))
-- Clear custom autograd Function ctx.to_save earlier ([#161171](https://github.com/pytorch/pytorch/pull/161171))
-- [while_loop][autograd] add hop while_loop_stack_output ([#160467](https://github.com/pytorch/pytorch/pull/160467))
-- Remove guard_size_oblivious from default contiguity python check, and add aten.sym_is_contiguous. [attempt2] ([#160869](https://github.com/pytorch/pytorch/pull/160869))
 ### not user facing
 - [autograd] torch._C._set_view_replay_enabled state leaking into other tests ([#159840](https://github.com/pytorch/pytorch/pull/159840))
 - Add new parameter for gen_pyi.py to make it more configureable. ([#161772](https://github.com/pytorch/pytorch/pull/161772))
+- Remove guard_size_oblivious from default contiguity python check, and add aten.sym_is_contiguous. [attempt2] ([#160869](https://github.com/pytorch/pytorch/pull/160869))
+- [while_loop][autograd] add hop while_loop_stack_output ([#160467](https://github.com/pytorch/pytorch/pull/160467))
+
 ### security

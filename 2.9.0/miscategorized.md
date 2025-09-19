@@ -25,9 +25,6 @@ StableABI:
 - Enable generating generic c_shim that doesn't bypass dispatcher ([#158974](https://github.com/pytorch/pytorch/pull/158974))
 - Cut a version of TORCH_ERROR_CODE_CHECK in headeronly from AOTI ([#159604](https://github.com/pytorch/pytorch/pull/159604))
 
-Autograd:
-- Support deterministic upsample trilinear backward ([#154239](https://github.com/pytorch/pytorch/pull/154239))
-
 CUDA:
 - [CUDA] Fix missing `__syncthreads` in MultiMarginLoss backward ([#158994](https://github.com/pytorch/pytorch/pull/158994))
 
@@ -39,6 +36,9 @@ MPS:
 - Add `max_pool3d` backward pass for MPS ([#157498](https://github.com/pytorch/pytorch/pull/157498))
 - Add `avg_pool3d` backward pass for MPS ([#159089](https://github.com/pytorch/pytorch/pull/159089))
 - Enable _int_mm on Intel GPU ([#157769](https://github.com/pytorch/pytorch/pull/157769))
+
+Python Frontend:
+- Add basic torch.hash_tensor op ([#154149](https://github.com/pytorch/pytorch/pull/154149))
 
 ## not user facing
 - Fix Pandas version mismatch upon reinstalling numpy ([#158584](https://github.com/pytorch/pytorch/pull/158584))
