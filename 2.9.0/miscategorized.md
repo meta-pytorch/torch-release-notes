@@ -16,6 +16,17 @@ Serialization:
 
 ## not user facing
 - Fix Pandas version mismatch upon reinstalling numpy ([#158584](https://github.com/pytorch/pytorch/pull/158584))
-
 - [CUDA-13] Implement workaround for cudaErrorNotSupported ([#162412](https://github.com/pytorch/pytorch/pull/162412))
 - [FP8] FP8 for SwishLayerNorm ([#157574](https://github.com/pytorch/pytorch/pull/157574))
+- Add aot_export_joint_with_descriptors and aot_compile_joint_with_descriptors ([#158715](https://github.com/pytorch/pytorch/pull/158715))
+- _aot_export_function: allow keeping input mutations in the graph ([#157730](https://github.com/pytorch/pytorch/pull/157730))
+- Extract out prepare_aot_module_simplified for use in next PR ([#158319](https://github.com/pytorch/pytorch/pull/158319))
+- Rename modules in AOTAutograd ([#158449](https://github.com/pytorch/pytorch/pull/158449))
+- Track descriptors for all inputs/outputs of AOTAutograd traced graph ([#158624](https://github.com/pytorch/pytorch/pull/158624))
+- Improve graph output alias with subclass error message ([#159619](https://github.com/pytorch/pytorch/pull/159619))
+- Pass fw/bw compilers to aot_export_joint_with_descriptors ([#159814](https://github.com/pytorch/pytorch/pull/159814))
+- Add support for param mutation under inference mode ([#159661](https://github.com/pytorch/pytorch/pull/159661))
+- [PT2]: Add Static Dispatch Kernel for fmod.Scalar ([#160654](https://github.com/pytorch/pytorch/pull/160654))
+- [PT2]: Add Static Dispatch Kernel for scale_gradient ([#160454](https://github.com/pytorch/pytorch/pull/160454))
+- [DCP][Quantization] Fix for FP8 multiplication during dequantization ([#162202](https://github.com/pytorch/pytorch/pull/162202))
+- [DCP][Quantization] Fix the issue when scale vector is in a different SafeTensors file ([#162214](https://github.com/pytorch/pytorch/pull/162214))

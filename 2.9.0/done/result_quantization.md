@@ -27,39 +27,32 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
-- Add aot_export_joint_with_descriptors and aot_compile_joint_with_descriptors ([#158715](https://github.com/pytorch/pytorch/pull/158715))
+- Enable cpu fp8 qlinear ([#155678](https://github.com/pytorch/pytorch/pull/155678))
+- Enable cpu fp8 qconv ([#157076](https://github.com/pytorch/pytorch/pull/157076))
+
 ### improvements
-- [pt2e] Avoid getting model device once per node ([#159901](https://github.com/pytorch/pytorch/pull/159901))
+- Avoid getting model device once per node for pt2e quantization flow ([#159901](https://github.com/pytorch/pytorch/pull/159901))
+- Fixes bug in implementation of `HistogramObserver` ([#156457](https://github.com/pytorch/pytorch/pull/156457))
+- Support `bias=None` for `fbgemm_linear_fp16_weight` CPU op ([#158535](https://github.com/pytorch/pytorch/pull/158535))
+- Add Static Dispatch Kernel for `wrapped_fbgemm_linear_fp16_weight` for Sigmoid ([#160451](https://github.com/pytorch/pytorch/pull/160451))
+
+
 ### bug fixes
+- Avoid NaN in fp8 output of CPU qlinear and qconv ops ([#160957](https://github.com/pytorch/pytorch/pull/160957))
+- Fix segmentation fault when `choose_qparams_optimized` ([#161966](https://github.com/pytorch/pytorch/pull/161966))
 ### performance
 ### docs
 ### devs
-- revamp dtype documentation for 2025 ([#156087](https://github.com/pytorch/pytorch/pull/156087))
-### Untopiced
-- [Quant][CPU] Enable fp8 qlinear ([#155678](https://github.com/pytorch/pytorch/pull/155678))
-- Fixes issue #156414: Fixes bug in implementation of _combine_histograms. ([#156457](https://github.com/pytorch/pytorch/pull/156457))
-- _aot_export_function: allow keeping input mutations in the graph ([#157730](https://github.com/pytorch/pytorch/pull/157730))
-- [Quant][CPU] Enable fp8 qconv ([#157076](https://github.com/pytorch/pytorch/pull/157076))
-- [BE][Ez]: Update ruff to 0.12.2 ([#157937](https://github.com/pytorch/pytorch/pull/157937))
-- Extract out prepare_aot_module_simplified for use in next PR ([#158319](https://github.com/pytorch/pytorch/pull/158319))
-- [BE][3/6] fix typos in test/ ([#157637](https://github.com/pytorch/pytorch/pull/157637))
+- Revamp dtype documentation ([#156087](https://github.com/pytorch/pytorch/pull/156087))
 - Use new type statement to fix public API of types ([#158487](https://github.com/pytorch/pytorch/pull/158487))
-- Rename modules in AOTAutograd ([#158449](https://github.com/pytorch/pytorch/pull/158449))
-- [AOTI][CPU] Consider bias=None case for fbgemm_linear_fp16_weight ([#158535](https://github.com/pytorch/pytorch/pull/158535))
-- Track descriptors for all inputs/outputs of AOTAutograd traced graph ([#158624](https://github.com/pytorch/pytorch/pull/158624))
-- Addressing some linter errors ([#158670](https://github.com/pytorch/pytorch/pull/158670))
-- Improve graph output alias with subclass error message ([#159619](https://github.com/pytorch/pytorch/pull/159619))
-- Pass fw/bw compilers to aot_export_joint_with_descriptors ([#159814](https://github.com/pytorch/pytorch/pull/159814))
-- Add support for param mutation under inference mode ([#159661](https://github.com/pytorch/pytorch/pull/159661))
-- [PT2]: Add Static Dispatch Kernel for fmod.Scalar ([#160654](https://github.com/pytorch/pytorch/pull/160654))
-- [PT2]: Add Static Dispatch Kernel for scale_gradient ([#160454](https://github.com/pytorch/pytorch/pull/160454))
-- [PT2]: Add Static Dispatch Kernel for wrapped_fbgemm_linear_fp16_weight ([#160451](https://github.com/pytorch/pytorch/pull/160451))
-- Remove the uncessary empty file ([#160728](https://github.com/pytorch/pytorch/pull/160728))
-- [Quant][CPU] Avoid NaN in fp8 output of qlinear and qconv ([#160957](https://github.com/pytorch/pytorch/pull/160957))
-- fix to segmentation fault when empty tensor is passed to choose_qpara… ([#161966](https://github.com/pytorch/pytorch/pull/161966))
-- [DCP][Quantization] Fix for FP8 multiplication during dequantization ([#162202](https://github.com/pytorch/pytorch/pull/162202))
-- [DCP][Quantization] Fix the issue when scale vector is in a different SafeTensors file ([#162214](https://github.com/pytorch/pytorch/pull/162214))
+
+### Untopiced
+
 ### not user facing
+- [BE][Ez]: Update ruff to 0.12.2 ([#157937](https://github.com/pytorch/pytorch/pull/157937))
+- [BE][3/6] fix typos in test/ ([#157637](https://github.com/pytorch/pytorch/pull/157637))
+- Addressing some linter errors ([#158670](https://github.com/pytorch/pytorch/pull/158670))
+- Remove the uncessary empty file ([#160728](https://github.com/pytorch/pytorch/pull/160728))
 - [BE][13/16] fix typos in torch/ (torch/ao/) ([#156603](https://github.com/pytorch/pytorch/pull/156603))
 - [inductor] Add typing to _inductor/ir.py ([#149958](https://github.com/pytorch/pytorch/pull/149958))
 - [remove untyped defs] batch 1 ([#157011](https://github.com/pytorch/pytorch/pull/157011))
