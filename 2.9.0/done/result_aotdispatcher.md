@@ -27,13 +27,13 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
+- Add AOTDispatcher config to set backward autocast behavior ([#156356](https://github.com/pytorch/pytorch/pull/156356))
 ### improvements
+- Skip logging in fp8 activation quantization if there are no nodes to be quantized ([#158129](https://github.com/pytorch/pytorch/pull/158129))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Add AOTDispatcher config to set backward autocast behavior ([#156356](https://github.com/pytorch/pytorch/pull/156356))
-- [Optimus][fp8_activation_quantization] Only log when there's some node to be quantized ([#158129](https://github.com/pytorch/pytorch/pull/158129))
 ### not user facing
 ### security
