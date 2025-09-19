@@ -42,7 +42,7 @@ The categories below are as follows:
 - Add support for unsigned types ([\#159094](https://github.com/pytorch/pytorch/pull/159094))  
 - Add API to query GPU core count ([\#160414](https://github.com/pytorch/pytorch/pull/160414))  
 - Update `avg_pool3d` kernel to use `opmath_t` ([\#161071](https://github.com/pytorch/pytorch/pull/161071))
-- Add slow version of `kthvalue` ([\#161817](https://github.com/pytorch/pytorch/pull/161817))
+- Add `kthvalue` ([\#161817](https://github.com/pytorch/pytorch/pull/161817))
 - Type-promote tensor-iterator common dtype ([\#160334](https://github.com/pytorch/pytorch/pull/160334))
 - Implement logcumsumexp metal kernel ([\#156858](https://github.com/pytorch/pytorch/pull/156858))
 - Enable dlpack integration ([\#158888](https://github.com/pytorch/pytorch/pull/158888))
