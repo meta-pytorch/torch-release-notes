@@ -41,7 +41,6 @@ The categories below are as follows:
 - Extend addmm to integral types ([\#160270](https://github.com/pytorch/pytorch/pull/160270))  
 - Add support for unsigned types ([\#159094](https://github.com/pytorch/pytorch/pull/159094))  
 - Add API to query GPU core count ([\#160414](https://github.com/pytorch/pytorch/pull/160414))  
-- Update `avg_pool3d` kernel to use `opmath_t` ([\#161071](https://github.com/pytorch/pytorch/pull/161071))
 - Add `kthvalue` ([\#161817](https://github.com/pytorch/pytorch/pull/161817))
 - Type-promote tensor-iterator common dtype ([\#160334](https://github.com/pytorch/pytorch/pull/160334))
 - Implement logcumsumexp metal kernel ([\#156858](https://github.com/pytorch/pytorch/pull/156858))
@@ -68,6 +67,7 @@ The categories below are as follows:
 - Fix invalid formatting ([\#158436](https://github.com/pytorch/pytorch/pull/158436))  
 - Fix empty input in posneg functions ([\#161824](https://github.com/pytorch/pytorch/pull/161824))
 - Migrate round unary op to Metal ([\#161712](https://github.com/pytorch/pytorch/pull/161712))
+- Type-promote tensor-iterator common dtype ([\#160334](https://github.com/pytorch/pytorch/pull/160334))
 
 ### performance
 
@@ -107,6 +107,7 @@ The categories below are as follows:
 - Combine all pre-MacOS14 xfail lists ([\#160228](https://github.com/pytorch/pytorch/pull/160228))
 - Add `simd_[arg][max|min]` ([\#158990](https://github.com/pytorch/pytorch/pull/158990))
 - Add fused\_rms and sdpa\_mps fallback ops for AOTInductor ([\#156844](https://github.com/pytorch/pytorch/pull/156844))
+- Update `avg_pool3d` kernel to use `opmath_t` ([\#161071](https://github.com/pytorch/pytorch/pull/161071))
 
 ### security
 
