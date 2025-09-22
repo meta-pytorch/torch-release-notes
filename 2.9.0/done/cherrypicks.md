@@ -2,29 +2,31 @@
 ## bc breaking
 ## deprecation
 ## new features
+- NVSHMEM support for Triton 3.5 ([#163152](https://github.com/pytorch/pytorch/pull/163152))
 ## improvements
+### export
+- Support vmap + custom autograd function/improve DTensor constructor inefficiency ([#162240](https://github.com/pytorch/pytorch/pull/162240))
+
 ### inductor
-- [Graph Partition] improve custom op output alias ([#163380](https://github.com/pytorch/pytorch/pull/163380))
+- Share default device context when all graph partitions and cudagraph-unsafe ops are on the same device([#162873](https://github.com/pytorch/pytorch/pull/162873))
 
 ## bug fixes
 ### cuda
-- [cuDNN][SDPA][submodule] Roll-back cuDNN frontend upgrade, update Meta registration ([#163265](https://github.com/pytorch/pytorch/pull/163265))
+- Roll-back cuDNN frontend upgrade and update Meta registration due to compile issues ([#163104](https://github.com/pytorch/pytorch/pull/163104))
 
-### cpu (aarch64)
-- Fix the regression issue caused by non-arrch64 platforms not hitting the MKLDNN path ([#162778](https://github.com/pytorch/pytorch/pull/162778))
+### CPU
+- Add check so non-aarch64 platforms can hit `MKLDNN` path ([#162168](https://github.com/pytorch/pytorch/pull/162168))
 
 ### inductor
-- [Cherry Pick][Graph Partition] allow sharing default device context ([#163097](https://github.com/pytorch/pytorch/pull/163097))
+- Fix `FallbackKernel` alias function to avoid incorrect aliasing for custom ops ([#163227](https://github.com/pytorch/pytorch/pull/163227))
 
-### inductor (aoti)
-- Revert "Make distributed modules importable even when backend not built ([#163024](https://github.com/pytorch/pytorch/pull/163024))
-
-### export
-- Add decomp rule to assert_tensor_metadata for BatchedTensors ([#163361](https://github.com/pytorch/pytorch/pull/163361))
 
 ## performance
 
 ## docs
+### ONNX
+- Update export docstring and set `fallback=False` by default ([#162622](https://github.com/pytorch/pytorch/pull/162622), [#162726](https://github.com/pytorch/pytorch/pull/162726))
+- Fix typo in error message: summit -> submit ([#162587](https://github.com/pytorch/pytorch/pull/162587))
 
 ## devs
 
@@ -33,16 +35,14 @@
 ## security
 
 ## not user facing
-- [Release 2.9] Release only changes ([#162493](https://github.com/pytorch/pytorch/pull/162493))
-- CUDA 13.0 Windows Nvidia Driver update to 580.88 ([#162501](https://github.com/pytorch/pytorch/pull/162501))
-- [CD] Aarch64 Fix packaging libarm_compute.so and other libraries to the aarch64 CUDA wheels ([#162596](https://github.com/pytorch/pytorch/pull/162596))
-- fix typo: summit -> submit ([#162597](https://github.com/pytorch/pytorch/pull/162597))
-- [ONNX] Update export docstring & Set fallback=False by default ([#162637](https://github.com/pytorch/pytorch/pull/162637))
-- Support vmap + custom autograd function/improve DTensor constructor inefficiency ([#162738](https://github.com/pytorch/pytorch/pull/162738))
-- [Release 2.9] Update torch-xpu-ops commit pin ([#162935](https://github.com/pytorch/pytorch/pull/162935))
-- fix deterministic scatter_add path for multi-d tensors ([#162977](https://github.com/pytorch/pytorch/pull/162977))
-- [ez][CI] Fix docs push in nightly workflow ([#163085](https://github.com/pytorch/pytorch/pull/163085))
-- [SymmMem] Fix NVSHMEM plugin + Triton 3.5 ([#163262](https://github.com/pytorch/pytorch/pull/163262))
-- Skip test_ind_worker_queue on Windows and macOS (flaky) ([#163363](https://github.com/pytorch/pytorch/pull/163363))
+- Release only changes ([#162493](https://github.com/pytorch/pytorch/pull/162493))
+- CUDA 13.0 Windows Nvidia Driver update to 580.88 ([#162425](https://github.com/pytorch/pytorch/pull/162425))
+- Fix aarch64 linux packaging ([#162566](https://github.com/pytorch/pytorch/pull/162566))
+- Update `torch-xpu-ops` commit pin ([#162935](https://github.com/pytorch/pytorch/pull/162935))
+- Fix deterministic `scatter_add` path for multi-d tensors ([#162866](https://github.com/pytorch/pytorch/pull/162866))
+- Fix docs push in nightly workflow ([#162657](https://github.com/pytorch/pytorch/pull/162657))
+- Skip `test_ind_worker_queue` on Windows and macOS (flaky) ([#162555](https://github.com/pytorch/pytorch/pull/162555))
+- Add decomp rule to `assert_tensor_metadata` for BatchedTensors ([#163008](https://github.com/pytorch/pytorch/pull/163008))
+
 
 ## Added to final.md directly
