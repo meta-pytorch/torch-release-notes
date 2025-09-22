@@ -29,18 +29,9 @@ The categories below are as follows:
 ### new features
 ### improvements
 ### bug fixes
-- Fix DTensor handling of conjugate bit. ([#158030](https://github.com/pytorch/pytorch/pull/158030))
-- Fix OpSchema equality check ([#161231](https://github.com/pytorch/pytorch/pull/161231))
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- [DTensor][FSDP2] necessary changes to FSDP and TP to unblock EP ([#157216](https://github.com/pytorch/pytorch/pull/157216))
-- [dtensor] add support for fused optimizer with parameters across multiple meshes ([#157682](https://github.com/pytorch/pytorch/pull/157682))
-- [DTensor][FSDP2] necessary changes to FSDP and TP to unblock EP ([#157216](https://github.com/pytorch/pytorch/pull/157216))
-- [DTensor] select strategy with no redistribute when redistribute cost is 0 ([#161882](https://github.com/pytorch/pytorch/pull/161882))
-- [DTensor] forbid view ops to redistribute when local split is impossible ([#161950](https://github.com/pytorch/pytorch/pull/161950))
-- port distributed tensor parallel test files for Intel GPU ([#161261](https://github.com/pytorch/pytorch/pull/161261))
-- port distributed tensor test files for Intel GPU ([#161604](https://github.com/pytorch/pytorch/pull/161604))
 ### security

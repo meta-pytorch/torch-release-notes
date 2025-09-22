@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (symm_mem)
+# Release Notes worksheet DeviceMesh
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,7 +23,7 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## distributed (symm_mem)
+## DeviceMesh
 ### bc breaking
 ### deprecation
 ### new features
@@ -33,12 +33,5 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- [SymmMem] Avoid library mismatch in CMake search ([#157836](https://github.com/pytorch/pytorch/pull/157836))
 ### not user facing
-- [c10d] Move the include of header file of TraceUtils.h into NCCLUtil.cpp instead of keeping in hpp ([#156909](https://github.com/pytorch/pytorch/pull/156909))
-- [BE] Rename libnvshmem_extension to libtorch_nvshmem ([#158234](https://github.com/pytorch/pytorch/pull/158234))
-- [BE] Replace lib with TORCH_INSTALL_LIB_DIR ([#158235](https://github.com/pytorch/pytorch/pull/158235))
-- [a2av] Test dispatch-then-combine ([#157026](https://github.com/pytorch/pytorch/pull/157026))
-- [a2av] Make test input more random ([#157029](https://github.com/pytorch/pytorch/pull/157029))
-- [SymmMem] Use _get_default_group() instead of group.WORLD for group_name access ([#158718](https://github.com/pytorch/pytorch/pull/158718))
 ### security

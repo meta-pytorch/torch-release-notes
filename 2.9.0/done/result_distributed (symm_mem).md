@@ -1,5 +1,5 @@
 
-# Release Notes worksheet DeviceMesh
+# Release Notes worksheet distributed (symm_mem)
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,17 +23,14 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## DeviceMesh
+## distributed (symm_mem)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
-- Do not incorrectly chain each of the strings as iterables ([#160709](https://github.com/pytorch/pytorch/pull/160709))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-### not user facing
-- [DeviceMesh][ez] Make the logic within flatten simpler ([#158999](https://github.com/pytorch/pytorch/pull/158999))
 ### security

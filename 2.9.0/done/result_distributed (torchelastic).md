@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (fsdp2)
+# Release Notes worksheet distributed (torchelastic)
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,7 +23,7 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## distributed (fsdp2)
+## distributed (torchelastic)
 ### bc breaking
 ### deprecation
 ### new features
@@ -34,6 +34,4 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 ### not user facing
-- [reland][DTensor][FSDP2] necessary changes to FSDP and TP to unblock EP ([#158204](https://github.com/pytorch/pytorch/pull/158204))
-- [1/N] Port 5 _composable/fsdp distributed test cases to Intel GPU ([#159118](https://github.com/pytorch/pytorch/pull/159118))
 ### security
