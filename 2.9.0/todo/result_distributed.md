@@ -132,6 +132,7 @@ The categories below are as follows:
   - Added profiling to schedule execution ([#160753](https://github.com/pytorch/pytorch/pull/160753))
 ### Untopiced
 ### not user facing
+- Fix clang builds by adding headers ([#160252](https://github.com/pytorch/pytorch/pull/160252))
 - [c10d] Lessen density of barrier warning ([#162015](https://github.com/pytorch/pytorch/pull/162015))
 - port 3 distributed test to Intel GPU and unified some common functions ([#158533](https://github.com/pytorch/pytorch/pull/158533))
 - Edit a test case to detect potential bugs in all-gathering noncontiguous inputs in the Gloo backend ([#159542](https://github.com/pytorch/pytorch/pull/159542))
@@ -312,6 +313,9 @@ The categories below are as follows:
 - Use more fine-grained locks in sym mem kernels ([#158523](https://github.com/pytorch/pytorch/pull/158523))
 - [1/N][SymmMem] Add offset to handle, cache on base address ([#161470](https://github.com/pytorch/pytorch/pull/161470))
 - use host+device_id to make sure devices are unique in rendezvous request ([#161756](https://github.com/pytorch/pytorch/pull/161756))
+- [cutlass upgrade] Ignore unused-but-set-variable for AsyncMM.cu ([#159578](https://github.com/pytorch/pytorch/pull/159578))
+- fix compilation on cuda < 12.3 ([#159657](https://github.com/pytorch/pytorch/pull/159657))
+- guard cuMulticastUnbind call ([#160499](https://github.com/pytorch/pytorch/pull/160499))
 - [c10d][nvshmem] add nvshmem build rules and dependency for libtorch_cuda ([#159562](https://github.com/pytorch/pytorch/pull/159562))
 - [nccl symm mem] don't use arg for mempool, correctly use symmetric registration in hooks ([#161238](https://github.com/pytorch/pytorch/pull/161238))
 - [a2av] Split in_out_splits into in_splits and out_splits_offsets ([#156743](https://github.com/pytorch/pytorch/pull/156743))
