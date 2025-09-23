@@ -50,6 +50,8 @@ Handle any commits that actually do belong to your domain and remove them from t
 - Add new function consolidate_safetensors_files_on_every_rank for HF consolidation ([#159393](https://github.com/pytorch/pytorch/pull/159393))
 - Write full tensors out at once in HF consolidation script ([#159394](https://github.com/pytorch/pytorch/pull/159394))
 - fix forced loglevel in pytorch oss code ([#158820](https://github.com/pytorch/pytorch/pull/158820))
+- Fixed unsafe collective reorder past wait in inductor ([#157489](https://github.com/pytorch/pytorch/pull/157489))
+- [c10d] support dynamic shapes for all_to_all_single_autograd ([#157521](https://github.com/pytorch/pytorch/pull/157521))
 - Add pg argument to consolidate_safetensors_files_on_every_rank ([#161421](https://github.com/pytorch/pytorch/pull/161421))
 Serialization:
 - Improve error message for weight-only load errors ([#159935](https://github.com/pytorch/pytorch/pull/159935))

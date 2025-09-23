@@ -131,22 +131,6 @@ The categories below are as follows:
 - Pipeline Parallelism (PP)
   - Added profiling to schedule execution ([#160753](https://github.com/pytorch/pytorch/pull/160753))
 ### Untopiced
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### not user facing
 - [c10d] Lessen density of barrier warning ([#162015](https://github.com/pytorch/pytorch/pull/162015))
 - port 3 distributed test to Intel GPU and unified some common functions ([#158533](https://github.com/pytorch/pytorch/pull/158533))
