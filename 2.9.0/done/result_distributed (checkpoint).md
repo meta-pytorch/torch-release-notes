@@ -72,8 +72,6 @@ The categories below are as follows:
 - Write full tensors out at once in HF consolidation script ([#159394](https://github.com/pytorch/pytorch/pull/159394))
 - [DCP][OSS] Rank local checkpointing in DCP without collectives ([#147758](https://github.com/pytorch/pytorch/pull/147758))
 - Add pg argument to consolidate_safetensors_files_on_every_rank ([#161421](https://github.com/pytorch/pytorch/pull/161421))
-- # Miscategorized commits
-
-Welcome to the Pool of Miscategorized commits.
-Add any commits that were miscategorized for your domain below.
-Handle any commits that actually do belong to your domain and remove them from this list.
+- [DCP][Quantization] Fix for FP8 multiplication during dequantization ([#162202](https://github.com/pytorch/pytorch/pull/162202))
+- [DCP][Quantization] Fix the issue when scale vector is in a different SafeTensors file ([#162214](https://github.com/pytorch/pytorch/pull/162214))
+### security
