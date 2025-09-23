@@ -5,24 +5,7 @@ Add any commits that were miscategorized for your domain below.
 Handle any commits that actually do belong to your domain and remove them from this list.
 
 ## Untopiced
-- [ROCm] Add FP8 rowwise support to _scaled_grouped_mm + Submodule update ([#159075](https://github.com/pytorch/pytorch/pull/159075))
-- [CPU] Support GQA for flash attention ([#157893](https://github.com/pytorch/pytorch/pull/157893))
-- Improve error message for torch.binomial enforcing float inputs ([#157658](https://github.com/pytorch/pytorch/pull/157658))
-- Detach tensor before clone in SGD optimiser and other code ([#159204](https://github.com/pytorch/pytorch/pull/159204))
-- Feature: Implement support for `cudnn_batch_norm_out` kernel to replace the autogen approach. ([#123020](https://github.com/pytorch/pytorch/pull/123020))
-- [AOTI] Explicitly delete wait_tensor returned tensor ([#159502](https://github.com/pytorch/pytorch/pull/159502))
-- [AOTI] Fix memory leak from all_reduce ([#159818](https://github.com/pytorch/pytorch/pull/159818))
-- [cuda][cupy] Improve cupy device placement when device is provided with explicit index ([#158529](https://github.com/pytorch/pytorch/pull/158529))
-- fix-unpin-memory-tensor-param ([#160992](https://github.com/pytorch/pytorch/pull/160992))
-- bug fix for losing shape on wrapper tensor for DTensor ([#156774](https://github.com/pytorch/pytorch/pull/156774))
-- add device generalization support for distributed tests ([#156796](https://github.com/pytorch/pytorch/pull/156796))
-- Making batching rule for F.embedding DTensor-aware ([#162117](https://github.com/pytorch/pytorch/pull/162117))
-- fix forced loglevel in pytorch oss code ([#158820](https://github.com/pytorch/pytorch/pull/158820))
-- Fixed unsafe collective reorder past wait in inductor ([#157489](https://github.com/pytorch/pytorch/pull/157489))
-- [c10d] support dynamic shapes for all_to_all_single_autograd ([#157521](https://github.com/pytorch/pytorch/pull/157521))
 
-Serialization:
-- Improve error message for weight-only load errors ([#159935](https://github.com/pytorch/pytorch/pull/159935))
 
 StableABI:
 - Add pad and narrow to torch/csrc/stable/ops.h ([#159328](https://github.com/pytorch/pytorch/pull/159328))
@@ -35,32 +18,5 @@ StableABI:
 - Enable generating generic c_shim that doesn't bypass dispatcher ([#158974](https://github.com/pytorch/pytorch/pull/158974))
 - Cut a version of TORCH_ERROR_CODE_CHECK in headeronly from AOTI ([#159604](https://github.com/pytorch/pytorch/pull/159604))
 
-CUDA:
-- [CUDA] Fix missing `__syncthreads` in MultiMarginLoss backward ([#158994](https://github.com/pytorch/pytorch/pull/158994))
-
-MPS:
-- [MPS] Add boilerplate sparse code support ([#157238](https://github.com/pytorch/pytorch/pull/157238))
-- Add `avg_pool3d` for MPS ([#158877](https://github.com/pytorch/pytorch/pull/158877))
-- [MPS] Add max_unpool1d/2d/3d ([#159789](https://github.com/pytorch/pytorch/pull/159789))
-- Add `max_pool3d` for MPS ([#156467](https://github.com/pytorch/pytorch/pull/156467))
-- Add `max_pool3d` backward pass for MPS ([#157498](https://github.com/pytorch/pytorch/pull/157498))
-- Add `avg_pool3d` backward pass for MPS ([#159089](https://github.com/pytorch/pytorch/pull/159089))
-- Enable _int_mm on Intel GPU ([#157769](https://github.com/pytorch/pytorch/pull/157769))
-
-Python Frontend:
-- Add basic torch.hash_tensor op ([#154149](https://github.com/pytorch/pytorch/pull/154149))
 
 ## not user facing
-- Fix Pandas version mismatch upon reinstalling numpy ([#158584](https://github.com/pytorch/pytorch/pull/158584))
-- [CUDA-13] Implement workaround for cudaErrorNotSupported ([#162412](https://github.com/pytorch/pytorch/pull/162412))
-- [FP8] FP8 for SwishLayerNorm ([#157574](https://github.com/pytorch/pytorch/pull/157574))
-- Add aot_export_joint_with_descriptors and aot_compile_joint_with_descriptors ([#158715](https://github.com/pytorch/pytorch/pull/158715))
-- _aot_export_function: allow keeping input mutations in the graph ([#157730](https://github.com/pytorch/pytorch/pull/157730))
-- Extract out prepare_aot_module_simplified for use in next PR ([#158319](https://github.com/pytorch/pytorch/pull/158319))
-- Rename modules in AOTAutograd ([#158449](https://github.com/pytorch/pytorch/pull/158449))
-- Track descriptors for all inputs/outputs of AOTAutograd traced graph ([#158624](https://github.com/pytorch/pytorch/pull/158624))
-- Improve graph output alias with subclass error message ([#159619](https://github.com/pytorch/pytorch/pull/159619))
-- Pass fw/bw compilers to aot_export_joint_with_descriptors ([#159814](https://github.com/pytorch/pytorch/pull/159814))
-- Add support for param mutation under inference mode ([#159661](https://github.com/pytorch/pytorch/pull/159661))
-- [PT2]: Add Static Dispatch Kernel for fmod.Scalar ([#160654](https://github.com/pytorch/pytorch/pull/160654))
-- [PT2]: Add Static Dispatch Kernel for scale_gradient ([#160454](https://github.com/pytorch/pytorch/pull/160454))

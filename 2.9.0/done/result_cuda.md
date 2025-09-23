@@ -29,6 +29,7 @@ The categories below are as follows:
 ### new features
 - MXFP8 grouped GEMM support for torch._scaled_grouped_mm + submodule bump ([#162209](https://github.com/pytorch/pytorch/pull/162209))
 - [CUDAGraph] Add getter for cuda graph exec to allow mutation of captured kernel params ([#161294](https://github.com/pytorch/pytorch/pull/161294))
+- Implement support for `cudnn_batch_norm_out` kernel to replace the autogen approach ([#123020](https://github.com/pytorch/pytorch/pull/123020))
 ### improvements
 - Make cublaslt/hipblaslt workspaces persistent ([#156495](https://github.com/pytorch/pytorch/pull/156495))
 - Remove unnecessary warnings during the ATen compilation process. ([#157703](https://github.com/pytorch/pytorch/pull/157703))
@@ -40,10 +41,14 @@ The categories below are as follows:
 - [ATen][CUDA][CUB] Implement changes to CCCL (CUB/Thrust/LibCUDACXX) usage in ATen ([#153373](https://github.com/pytorch/pytorch/pull/153373))
 - [Refactor] Add maybe unused flag to remove warning ([#157655](https://github.com/pytorch/pytorch/pull/157655))
 - [ATen][CUDA] Use new CCCL API in v2.8 ([#160554](https://github.com/pytorch/pytorch/pull/160554))
+- Improve cupy device placement when device is provided with explicit index ([#158529](https://github.com/pytorch/pytorch/pull/158529))
 ### bug fixes
 - [FlexAttention][TF32] Handle uninitialized `torch.backends.cuda.matmul.fp32_precision` ([#161102](https://github.com/pytorch/pytorch/pull/161102))
 - [CUDA] fix nansum in non-JIT build ([#158633](https://github.com/pytorch/pytorch/pull/158633))
 - [CUDA] Decrease launch bounds of CTCLoss backward for blackwell to avoid crash ([#159522](https://github.com/pytorch/pytorch/pull/159522))
+- Implement workaround for `cudaErrorNotSupported` ([#162412](https://github.com/pytorch/pytorch/pull/162412))
+- Fix missing `__syncthreads` in MultiMarginLoss backward ([#158994](https://github.com/pytorch/pytorch/pull/158994))
+
 ### performance
 - Use a nonblocking copy to avoid stream synchronization for GPU tensor indexing with CPU mask ([#156384](https://github.com/pytorch/pytorch/pull/156384))
 - Disable cudagraph GCs by default to improve capture performance ([#158649](https://github.com/pytorch/pytorch/pull/158649))

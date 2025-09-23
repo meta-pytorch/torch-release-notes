@@ -40,16 +40,19 @@ If you code was catching these error, you can update to catch the new error type
 ### new features
 - Add utility to get the kernel currently registered on the dispatcher ([#158393](https://github.com/pytorch/pytorch/pull/158393))
 - Extend `__torch_function__` handler to be triggered by elements within a list ([#160256](https://github.com/pytorch/pytorch/pull/160256))
+- Add `torch.hash_tensor` reduction function ([#154149](https://github.com/pytorch/pytorch/pull/154149))
 
 ### improvements
 - Speed up torch.load under FakeTensorMode by reducing random reads ([#157931](https://github.com/pytorch/pytorch/pull/157931))
 - Make torch.utils.benchmark.utils.timer accelerator agnostic ([#157131](https://github.com/pytorch/pytorch/pull/157131))
+- Improve error message for weight-only load errors ([#159935](https://github.com/pytorch/pytorch/pull/159935))
 
 
 ### bug fixes
 - Add option in `torch.utils.cpp_extension.load_inline` to override gencode ([#156850](https://github.com/pytorch/pytorch/pull/156850))
 - Fix max_width computation in Tensor printing ([#126859](https://github.com/pytorch/pytorch/pull/126859))
 - Improve pin_memory error message on CPU-only systems ([#159994](https://github.com/pytorch/pytorch/pull/159994))
+- Making batching rule for F.embedding DTensor-aware ([#162117](https://github.com/pytorch/pytorch/pull/162117))
 
 ### performance
 ### docs

@@ -38,6 +38,7 @@ The categories below are as follows:
 - Fix layout for local buf in outer loop fusion ([#160857](https://github.com/pytorch/pytorch/pull/160857))
 - Fix slice scatter `dtype` consistency ([#160851](https://github.com/pytorch/pytorch/pull/160851))
 - Fix 3d tiled online softmax ([#162341](https://github.com/pytorch/pytorch/pull/162341))
+- Fixed unsafe collective reorder past wait in inductor ([#157489](https://github.com/pytorch/pytorch/pull/157489))
 ### performance
 - Improve performance of A16W4 and A16W8 `GEMM` template ([#159127](https://github.com/pytorch/pytorch/pull/159127)) ([#161148](https://github.com/pytorch/pytorch/pull/161148))
 - More aggressive persistent reduction ([#161055](https://github.com/pytorch/pytorch/pull/161055))

@@ -30,6 +30,14 @@ The categories below are as follows:
 - Add AOTDispatcher config to set backward autocast behavior ([#156356](https://github.com/pytorch/pytorch/pull/156356))
 ### improvements
 - Skip logging in fp8 activation quantization if there are no nodes to be quantized ([#158129](https://github.com/pytorch/pytorch/pull/158129))
+- Add aot_export_joint_with_descriptors and aot_compile_joint_with_descriptors ([#158715](https://github.com/pytorch/pytorch/pull/158715))
+- Allow keeping input mutations in the graph for `_aot_export_function` ([#157730](https://github.com/pytorch/pytorch/pull/157730))
+- Extract out prepare_aot_module_simplified for use in next PR ([#158319](https://github.com/pytorch/pytorch/pull/158319))
+- Rename modules in AOTAutograd ([#158449](https://github.com/pytorch/pytorch/pull/158449))
+- Track descriptors for all inputs/outputs of AOTAutograd traced graph ([#158624](https://github.com/pytorch/pytorch/pull/158624))
+- Improve graph output alias with subclass error message ([#159619](https://github.com/pytorch/pytorch/pull/159619))
+- Pass fw/bw compilers to aot_export_joint_with_descriptors ([#159814](https://github.com/pytorch/pytorch/pull/159814))
+
 ### bug fixes
 ### performance
 ### docs

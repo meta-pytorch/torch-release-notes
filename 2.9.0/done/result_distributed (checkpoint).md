@@ -72,6 +72,10 @@ The categories below are as follows:
 - Write full tensors out at once in HF consolidation script ([#159394](https://github.com/pytorch/pytorch/pull/159394))
 - [DCP][OSS] Rank local checkpointing in DCP without collectives ([#147758](https://github.com/pytorch/pytorch/pull/147758))
 - Add pg argument to consolidate_safetensors_files_on_every_rank ([#161421](https://github.com/pytorch/pytorch/pull/161421))
-- [DCP][Quantization] Fix for FP8 multiplication during dequantization ([#162202](https://github.com/pytorch/pytorch/pull/162202))
-- [DCP][Quantization] Fix the issue when scale vector is in a different SafeTensors file ([#162214](https://github.com/pytorch/pytorch/pull/162214))
+- Fix for FP8 multiplication during dequantization ([#162202](https://github.com/pytorch/pytorch/pull/162202))
+- Fix the issue when scale vector is in a different SafeTensors file ([#162214](https://github.com/pytorch/pytorch/pull/162214))
+- Bug fix for losing shape on wrapper tensor for DTensor ([#156774](https://github.com/pytorch/pytorch/pull/156774))
+- Add device generalization support for distributed tests ([#156796](https://github.com/pytorch/pytorch/pull/156796))
+- Call `pin_memory_utils.unpin_memory` with `data_ptr` instead of tensor ([#160992](https://github.com/pytorch/pytorch/pull/160992))
+- Fix forced loglevel in checkpointing code ([#158820](https://github.com/pytorch/pytorch/pull/158820))
 ### security

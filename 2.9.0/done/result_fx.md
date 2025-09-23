@@ -34,6 +34,7 @@ The categories below are as follows:
 - Support converting a float32 tensor to a scalar in FX trace. ([#158216](https://github.com/pytorch/pytorch/pull/158216))
 - Correctly copy self.module_stack in ModuleStackTracer ([#159956](https://github.com/pytorch/pytorch/pull/159956))
 - Add tool to track events in graph split ([#159795](https://github.com/pytorch/pytorch/pull/159795))
+- Add node_name_match to subgraph rewriter ([#157574](https://github.com/pytorch/pytorch/pull/157574))
 ### bug fixes
 - Fix split_module with symint ([#160093](https://github.com/pytorch/pytorch/pull/160093))
 - Fix `getattr_recursive` with ModuleList ([#161204](https://github.com/pytorch/pytorch/pull/161204))

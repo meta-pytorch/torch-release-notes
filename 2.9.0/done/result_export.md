@@ -32,6 +32,7 @@ Additionally, `exported_program.module()` will generate a call to a `_guards_fn`
 ### deprecation
 - Deprecation for `export_for_training` API, in favor of equivalent `export` API ([#158203](https://github.com/pytorch/pytorch/pull/158203))
 ### new features
+- Add support for param mutation under inference mode ([#159661](https://github.com/pytorch/pytorch/pull/159661))
 ### improvements
 - Add `_compile_and_package` method for ExportPackage ([#156638](https://github.com/pytorch/pytorch/pull/156638))
 - Handle None & ellipsis slicing/select in non-strict ([#157821](https://github.com/pytorch/pytorch/pull/157821))
@@ -57,6 +58,7 @@ Additionally, `exported_program.module()` will generate a call to a `_guards_fn`
 - Fix deserialization issue for storage offset ([#162172](https://github.com/pytorch/pytorch/pull/162172))
 ### performance
 - Caching optimizations for placeholder naming pass ([#158594](https://github.com/pytorch/pytorch/pull/158594))
+- Add Static Dispatch Kernel for `fmod.Scalar` and `scale_gradient` ([#160654](https://github.com/pytorch/pytorch/pull/160654), [#160454](https://github.com/pytorch/pytorch/pull/160454))
 ### docs
 - Update docs around draft export, dynamism, and PT2 Archive ([#157750](https://github.com/pytorch/pytorch/pull/157750))
 ### devs

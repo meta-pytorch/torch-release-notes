@@ -31,6 +31,7 @@ The categories below are as follows:
 - Generalized `AllocatorConfig` to be device-agnostic via new `AcceleratorAllocatorConfig` ([#149601](https://github.com/pytorch/pytorch/pull/149601), [#150312](https://github.com/pytorch/pytorch/pull/150312))
 - Added `Scalar::isUnsigned()` method ([#159877](https://github.com/pytorch/pytorch/pull/159877))
 - Exposed `ModelRunner` from nativert as public ([#159989](https://github.com/pytorch/pytorch/pull/159989))
+- Improve error message for torch.binomial enforcing float inputs ([#157658](https://github.com/pytorch/pytorch/pull/157658))
 ### bug fixes
 - Fixed `torch.utils.cpp_extension` parser for clang version 20.1.7+libcxx ([#157666](https://github.com/pytorch/pytorch/pull/157666))
 - Fixed `MakeTensor::computeStorageSize()` calculation ([#158690](https://github.com/pytorch/pytorch/pull/158690))

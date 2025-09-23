@@ -31,6 +31,7 @@ With the [deprecation of multipy](https://github.com/meta-pytorch/multipy), we a
 ### new features
 ### improvements
 ### bug fixes
+- Fix Pandas version mismatch upon reinstalling numpy ([#158584](https://github.com/pytorch/pytorch/pull/158584))
 ### performance
 ### docs
 ### devs

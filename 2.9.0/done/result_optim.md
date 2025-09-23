@@ -49,5 +49,6 @@ The categories below are as follows:
 - [Pyrefly][Refactor] Replace dict() calls with literal dict syntax for improved readability ([#157735](https://github.com/pytorch/pytorch/pull/157735))
 - Split out C++ code from fused adagrad PR ([#159008](https://github.com/pytorch/pytorch/pull/159008))
 - Unify TypeAlias definitions in optimizer.py ([#161493](https://github.com/pytorch/pytorch/pull/161493))
+- Detach tensor before clone in SGD optimizer and other code ([#159204](https://github.com/pytorch/pytorch/pull/159204))
 
 ### security

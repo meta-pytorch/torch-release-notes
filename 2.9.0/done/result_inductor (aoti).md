@@ -27,6 +27,7 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
+
 ### improvements
 - Enable AOTI for CPU on Windows ([#158915](https://github.com/pytorch/pytorch/pull/158915))
 - re-enable TMA templates w/ AOTI ([#157819](https://github.com/pytorch/pytorch/pull/157819))
@@ -35,11 +36,15 @@ The categories below are as follows:
 - Add AOTI C shim functions for collective ops ([#154492](https://github.com/pytorch/pytorch/pull/154492))
 - Add missing ops to set of C-shim ops which can have nullptr returns ([#158073](https://github.com/pytorch/pytorch/pull/158073))
 
+
 ### bug fixes
 - Fix a bug from load_constants ([#161887](https://github.com/pytorch/pytorch/pull/161887))
 - Fix wrong propagation of fallback_ops_dict in gen_aoti_c_shim ([#159904](https://github.com/pytorch/pytorch/pull/159904))
 - Fix unbacked symint and memory leak in inductor memory planning ([#159839](https://github.com/pytorch/pytorch/pull/159839))
 - Fix memory leak in AOTI when calling `aoti_torch_as_strided` ([#162118](https://github.com/pytorch/pytorch/pull/162118))
+- Explicitly delete `wait_tensor` returned tensor ([#159502](https://github.com/pytorch/pytorch/pull/159502))
+- Fix memory leak from `all_reduce` ([#159818](https://github.com/pytorch/pytorch/pull/159818))
+
 
 ### performance
 ### docs
