@@ -1,5 +1,6 @@
 # cherry picks
 ## bc breaking
+- Update Python min version to 3.10 ([#162310](https://github.com/pytorch/pytorch/pull/162310))
 ## deprecation
 ## new features
 - NVSHMEM support for Triton 3.5 ([#163152](https://github.com/pytorch/pytorch/pull/163152))
@@ -53,5 +54,13 @@
 - Update 3.5 pin for triton ([#163382](https://github.com/pytorch/pytorch/pull/163382))
 - CUDA 13.0 Warning update for supported architectures ([#163585](https://github.com/pytorch/pytorch/pull/163585))
 - Update `pytorch_sphinx_theme2` to latest hash ([#163269](https://github.com/pytorch/pytorch/pull/163269))
+- Add analytics ID to cpp docs ([#163370](https://github.com/pytorch/pytorch/pull/163370))
+- Update pytorch.org links in `docs/conf.py`([#163703](https://github.com/pytorch/pytorch/pull/163703))
+- CUDA 13 specific followup changes on CI ([#162455](https://github.com/pytorch/pytorch/pull/162455))
+- CUDA 13.0 fix preload logic to include nvidia/cu13/lib/ ([#163661](https://github.com/pytorch/pytorch/pull/163661))
+- Use CUDA `nvrtc` so file based on CUDA version used by torch ([#163642](https://github.com/pytorch/pytorch/pull/163642))
+- Simplify NVIDIA driver installation step ([#163349](https://github.com/pytorch/pytorch/pull/163349))
+- Move ROCM trunk wheel builds to 3.10 ([#163339](https://github.com/pytorch/pytorch/pull/163339))
+- Replace `%CONDA_PARENT_DIR%/Miniconda3` with `%CONDA_ROOT_DIR%` ([#163341](https://github.com/pytorch/pytorch/pull/163341))
 
 ## Added to final.md directly
