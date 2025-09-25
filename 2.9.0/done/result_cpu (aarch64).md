@@ -1,5 +1,5 @@
 
-# Release Notes worksheet cpu (x86)
+# Release Notes worksheet cpu (aarch64)
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,16 +23,18 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## cpu (x86)
+## cpu (aarch64)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
-- [BE] Standardize CPU capabilities name ([#157809](https://github.com/pytorch/pytorch/pull/157809))
+- [Build] Make PyTorch compilable with gcc-14 on ARM ([#157867](https://github.com/pytorch/pytorch/pull/157867))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
+- Fix Arm64 OSS pytorch build with FBGEMM ([#161527](https://github.com/pytorch/pytorch/pull/161527))
+- efficient zero_mask implementation for vec128_*_neon ([#155766](https://github.com/pytorch/pytorch/pull/155766))
 ### security
