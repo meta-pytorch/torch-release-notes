@@ -28,7 +28,7 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
-- [Build] Make PyTorch compilable with gcc-14 on ARM ([#157867](https://github.com/pytorch/pytorch/pull/157867))
+- Made PyTorch compilable with gcc-14 on ARM ([#157867](https://github.com/pytorch/pytorch/pull/157867))
 ### bug fixes
 ### performance
 ### docs
