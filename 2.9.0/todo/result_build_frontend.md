@@ -40,21 +40,5 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- Check F2C BLAS for OpenBLAS and other vendors ([#143846](https://github.com/pytorch/pytorch/pull/143846))
-- Add an ovrsource target for torch/headeronly ([#157912](https://github.com/pytorch/pytorch/pull/157912))
-- Migrate c10/macros/cmake_macros.h.in to torch/headeronly ([#158035](https://github.com/pytorch/pytorch/pull/158035))
-- Move c10/macros/Macros.h to headeronly ([#158365](https://github.com/pytorch/pytorch/pull/158365))
-- Add STD_TORCH_CHECK to headeronly ([#158377](https://github.com/pytorch/pytorch/pull/158377))
-- Migrate easy q(u)int/bits stuff to torch/headeronly ([#159302](https://github.com/pytorch/pytorch/pull/159302))
-- Move Float4 to headeronly ([#159414](https://github.com/pytorch/pytorch/pull/159414))
-- Move BFloat16.h to headeronly ([#159412](https://github.com/pytorch/pytorch/pull/159412))
-- Move Float8 variations to headeronly ([#159415](https://github.com/pytorch/pytorch/pull/159415))
-- Move complex to headeronly ([#159411](https://github.com/pytorch/pytorch/pull/159411))
-- [Reland] Migrate ScalarType to headeronly ([#159911](https://github.com/pytorch/pytorch/pull/159911))
-- Add stable Tensor get_device_index, use more stable DeviceIndex ([#160143](https://github.com/pytorch/pytorch/pull/160143))
-- Add `is_cpu` method to stable tensor type ([#160212](https://github.com/pytorch/pytorch/pull/160212))
 ### not user facing
-- [build] remove cmake cache and reconfigure again if it is invalid ([#156958](https://github.com/pytorch/pytorch/pull/156958))
-- [build] remove `wheel` from build requirements ([#158027](https://github.com/pytorch/pytorch/pull/158027))
-- Error when TORCH_STABLE_ONLY is defined in TensorBase.h ([#161658](https://github.com/pytorch/pytorch/pull/161658))
 ### security
