@@ -204,7 +204,6 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Support GQA for flash attention ([#157893](https://github.com/pytorch/pytorch/pull/157893))
 
 ## CUDA
-- MXFP8 grouped GEMM support for `torch._scaled_grouped_mm` + submodule bump ([#162209](https://github.com/pytorch/pytorch/pull/162209))
 - Add getter for CUDA graph exec to allow mutation of captured kernel params ([#161294](https://github.com/pytorch/pytorch/pull/161294))
 - Implement support for `cudnn_batch_norm_out` kernel to replace the autogen approach ([#123020](https://github.com/pytorch/pytorch/pull/123020))
 
@@ -214,7 +213,6 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 
 ## Dynamo
 - Experimental API for ahead-of-time compiling models in fullgraph mode ([#161383](https://github.com/pytorch/pytorch/pull/161383))
-- Toggle erroring/resume on graph break with `torch._dynamo.error_on_graph_break` ([#161739](https://github.com/pytorch/pytorch/pull/161739), [#161747](https://github.com/pytorch/pytorch/pull/161747))
 - Add a hook for recompilations ([#157961](https://github.com/pytorch/pytorch/pull/157961))
 
 ## Export
@@ -264,18 +262,14 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 
 ## ROCm
 - OCP Micro-scaling Format (mx-fp8/mx-fp4) Support ([#151360](https://github.com/pytorch/pytorch/pull/151360))
-- Support experimental CU carveout `torch._C._set_sm_carveout_experimental()` ([#149466](https://github.com/pytorch/pytorch/pull/149466))
-- Add FP8 rowwise support to `_scaled_grouped_mm` ([#159075](https://github.com/pytorch/pytorch/pull/159075))
 
 ## XPU
 - Enable `FlexAttention` on Intel GPU ([#143553](https://github.com/pytorch/pytorch/pull/143553))
-- Enable `_int_mm` on Intel GPU ([#157769](https://github.com/pytorch/pytorch/pull/157769))
 
 # Improvements
 ## AOTDispatcher
 - Skip logging in fp8 activation quantization if there are no nodes to be quantized ([#158129](https://github.com/pytorch/pytorch/pull/158129))
 - Add `aot_export_joint_with_descriptors` and `aot_compile_joint_with_descriptors` ([#158715](https://github.com/pytorch/pytorch/pull/158715))
-- Allow keeping input mutations in the graph for `_aot_export_function` ([#157730](https://github.com/pytorch/pytorch/pull/157730))
 - Extract out `prepare_aot_module_simplified` for use in next PR ([#158319](https://github.com/pytorch/pytorch/pull/158319))
 - Rename modules in AOTAutograd ([#158449](https://github.com/pytorch/pytorch/pull/158449))
 - Track descriptors for all inputs/outputs of AOTAutograd traced graph ([#158624](https://github.com/pytorch/pytorch/pull/158624))
@@ -291,14 +285,11 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Build `libtorch` without NVSHMEM ([#160910](https://github.com/pytorch/pytorch/pull/160910))
 
 ## Composability
-- Set `enable_gqa` for `aten._scaled_dot_product_attention_math decomp`([#158604](https://github.com/pytorch/pytorch/pull/158604))
-- Meta implementation for `aten._scaled_dot_product_attention_math_for_mps` ([#159695](https://github.com/pytorch/pytorch/pull/159695))
 - Meta implementation for `aten.add.Scalar` ([#161332](https://github.com/pytorch/pytorch/pull/161332))
 - `aten.expand_copy` decomp ([#161688](https://github.com/pytorch/pytorch/pull/161688))
 - Fix result dtype cast in decomp for `aten.linalg_vector_norm` ([#155111](https://github.com/pytorch/pytorch/pull/155111))
 - Add dtype checks in meta implementation for several ordering ops ([#159556](https://github.com/pytorch/pytorch/pull/159556))
 - Fix meta function for `aten.complex` ([#160894](https://github.com/pytorch/pytorch/pull/160894))
-- Improve shape checks for `aten._grouped_mm` ([#159666](https://github.com/pytorch/pytorch/pull/159666))
 - Improve unbacked symint (dynamic shape) support for several decompositions ([#148815](https://github.com/pytorch/pytorch/pull/148815), [#156902](https://github.com/pytorch/pytorch/pull/156902), [#157008](https://github.com/pytorch/pytorch/pull/157008), [#158894](https://github.com/pytorch/pytorch/pull/158894), [#159184](https://github.com/pytorch/pytorch/pull/159184), [#160683](https://github.com/pytorch/pytorch/pull/160683), [#160253](https://github.com/pytorch/pytorch/pull/160253), [#162084](https://github.com/pytorch/pytorch/pull/162084), [#162099](https://github.com/pytorch/pytorch/pull/162099), [#162109](https://github.com/pytorch/pytorch/pull/162109), [#160462](https://github.com/pytorch/pytorch/pull/160462))
 
 ## C++ Frontend
@@ -385,7 +376,6 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Add option for `TorchDispatchMode` to ignore `torch.compile` internals ([#161648](https://github.com/pytorch/pytorch/pull/161648))
 
 ## Export
-- Add `_compile_and_package` method for ExportPackage ([#156638](https://github.com/pytorch/pytorch/pull/156638))
 - Handle `None` & ellipsis slicing/select in non-strict ([#157821](https://github.com/pytorch/pytorch/pull/157821))
 - Extend FP8 types in serialization ([#158430](https://github.com/pytorch/pytorch/pull/158430))
 - Improve error messages for deserialization ([#159881](https://github.com/pytorch/pytorch/pull/159881))
@@ -552,7 +542,6 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Fix deserialization for unbacked symbol ranges ([#158681](https://github.com/pytorch/pytorch/pull/158681))
 - Fix runtime assert handling in deserialization ([#159060](https://github.com/pytorch/pytorch/pull/159060))
 - Fix for FQN handling in unflattener ([#159418](https://github.com/pytorch/pytorch/pull/159418))
-- Add `_ccode` method for `PythonMod` ([#158851](https://github.com/pytorch/pytorch/pull/158851))
 - Fix `nn_module_stack` for `assert_tensor_metadata` nodes ([#159625](https://github.com/pytorch/pytorch/pull/159625))
 - Fix usage for `move_to_device_pass` ([#159992](https://github.com/pytorch/pytorch/pull/159992), [#160528](https://github.com/pytorch/pytorch/pull/160528), [#162301](https://github.com/pytorch/pytorch/pull/162301))
 - Avoid name overwrites for aliased exported module parameters ([#160600](https://github.com/pytorch/pytorch/pull/160600))
