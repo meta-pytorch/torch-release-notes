@@ -24,32 +24,23 @@ Below are the full release notes for this release.
 
 The minimum version of Python required for PyTorch 2.9.0 is 3.10.
 
-## Build Frontend
-
-### Remove `/d2implyavx512upperregs` flag that slows build ([#159431](https://github.com/pytorch/pytorch/pull/159431))
-
-### Add `ScalarType` to shim conversion and `stable::Tensor.scalar_type` ([#160557](https://github.com/pytorch/pytorch/pull/160557))
-
-Before, user extensions could only in abstract pass around obfuscated dtypes appearing as `int32_ts`. Now, users can confidently use `torch::headeronly::ScalarType` in their extensions for major scalar types. This PR enables ABI stability by adding a translation layer through the shim, so that even if the `ScalarType` enum values change in the future, user extensions need not fear.
-
-This is narrowly BC breaking for unpopular dtypes: `quint*`s, `qint*`s, `Bits*`, `dummy_uint*`s, `dummy_int*`s, `Float8_e8m0fnu`, and `Float4_e2m1fn_x2` in the use case where an extension retrieves a Tensor dtype of the above and passes it into `aoti_torch_call_dispatcher`.
-
-## Export
-### Switch off runtime asserts by default in favor of a shape guards function ([#160111](https://github.com/pytorch/pytorch/pull/160111), [#161178](https://github.com/pytorch/pytorch/pull/161178), [#161794](https://github.com/pytorch/pytorch/pull/161794))
-
-
-To enable runtime asserts, use `export(..., prefer_deferred_runtime_asserts_over_guards=True)`. Also kills the `allow_complex_guards_as_runtime_asserts` flag, merging it into the former option.
-
-
-Additionally, `exported_program.module()` will generate a call to a `_guards_fn` submodule that will run additional checks on inputs. Users who do not want this behavior can either remove this call in the graph, or do `exported_program.module(check_guards=False)` to avoid the generation.
-
-## MPS
-### Build metal kernels of MacOS-14+ and remove all pre-MacOS-14 specific logic, requires MacOS-14+ going forward ([\#159733](https://github.com/pytorch/pytorch/pull/159733), [\#159912](https://github.com/pytorch/pytorch/pull/159912))
+## Build metal kernels of MacOS-14+ and remove all pre-MacOS-14 specific logic, requires MacOS-14+ going forward ([\#159733](https://github.com/pytorch/pytorch/pull/159733), [\#159912](https://github.com/pytorch/pytorch/pull/159912))
 
 PyTorch MPS is only supported on MacOS-14 or later. If you need to use MPS on MacOS Ventura, please avoid updating to Python-3.9 or above
 
-## ONNX
-### Default to `dynamo=True` for ONNX exporter ([#159646](https://github.com/pytorch/pytorch/pull/159646), [#162726](https://github.com/pytorch/pytorch/pull/162726))
+## Upgrade to DLPack 1.0 ([#145000](https://github.com/pytorch/pytorch/pull/145000))
+
+This upgrade is doing the same BC-breaking changes as the DLPack release.
+Objects in `torch.utils.dlpack` have been updated to reflect these changes, such as `DLDeviceType`.
+See the PR for details on the exact changes and how to update your code.
+
+## Raise appropriate errors in `torch.cat` ([#158249](https://github.com/pytorch/pytorch/pull/158249))
+
+Raising `ValueError`, `IndexError` or `TypeError` where appropriate instead of the generic `RuntimeError`.
+If you code was catching these error, you can update to catch the new error type.
+
+
+## Default to `dynamo=True` for ONNX exporter ([#159646](https://github.com/pytorch/pytorch/pull/159646), [#162726](https://github.com/pytorch/pytorch/pull/162726))
 
 Previously `torch.onnx.export(...)` used the legacy TorchScript exporter if no arguments were provied. The ONNX exporter now uses the newer `torch.export.export` pipeline by default (`dynamo=True`). This change improves graph fidelity and future-proofs exports, but may surface graph capture errors that were previously masked or handled differently.
 
@@ -73,7 +64,15 @@ torch.onnx.export(...)
 Recommendation: first try the new default; only fall back if you hit blocking issues and report them upstream.
 Long term solution: fix the root cause instead of relying on fallback or TorchScript exporter.
 
-### Set default opset to 20 ([#158802](https://github.com/pytorch/pytorch/pull/158802))
+## Switch off runtime asserts by default in favor of a shape guards function ([#160111](https://github.com/pytorch/pytorch/pull/160111), [#161178](https://github.com/pytorch/pytorch/pull/161178), [#161794](https://github.com/pytorch/pytorch/pull/161794))
+
+
+To enable runtime asserts, use `export(..., prefer_deferred_runtime_asserts_over_guards=True)`. Also kills the `allow_complex_guards_as_runtime_asserts` flag, merging it into the former option.
+
+
+Additionally, `exported_program.module()` will generate a call to a `_guards_fn` submodule that will run additional checks on inputs. Users who do not want this behavior can either remove this call in the graph, or do `exported_program.module(check_guards=False)` to avoid the generation.
+
+## Set default opset to 20 ([#158802](https://github.com/pytorch/pytorch/pull/158802))
 
 Opset 20 enables newer operator definitions. If your tooling or downstream runtime only supports opset 18, pin it explicitly. For the latest ONNX operators, you can experiment with opset 23.
 
@@ -97,7 +96,7 @@ torch.onnx.export(...)
 torch.onnx.export(..., opset_version=23)
 ```
 
-### Drop `draft_export` in exporter API ([#161454](https://github.com/pytorch/pytorch/pull/161454), [#162225](https://github.com/pytorch/pytorch/pull/162225))
+## Drop `draft_export` in exporter API ([#161454](https://github.com/pytorch/pytorch/pull/161454), [#162225](https://github.com/pytorch/pytorch/pull/162225))
 
 Remove implicit draft tracing from the default exporter path, achieving clearer behaviour and faster failures.
 The expensive `torch.export.draft_export` diagnostic path is no longer auto-invoked (which could take hours on large models). You can still opt in for deep diagnostics:
@@ -125,45 +124,41 @@ Now in torch 2.9.0:
 TORCH_ONNX_ENABLE_DRAFT_EXPORT=True python export_to_onnx.py
 ```
 
-### Remove `torch.onnx.dynamo_export` and the `onnxrt` torch compile backend ([#158130](https://github.com/pytorch/pytorch/pull/158130), [#158258](https://github.com/pytorch/pytorch/pull/158258))
+## Remove `torch.onnx.dynamo_export` and the `onnxrt` torch compile backend ([#158130](https://github.com/pytorch/pytorch/pull/158130), [#158258](https://github.com/pytorch/pytorch/pull/158258))
 
 `torch.onnx.dynamo_export` is removed. Please use `torch.onnx.export` instead.
 The experimental ONNX Runtime compile backend (`torch.compile(backend="onnxrt")`) is no longer supported.
 
-### Remove `torch.onnx.enable_fake_mode` ([#161222](https://github.com/pytorch/pytorch/pull/161222))
+## Remove `torch.onnx.enable_fake_mode` ([#161222](https://github.com/pytorch/pytorch/pull/161222))
 
 The `dynamo=True` mode uses `FakeTensor`s by default which is memory efficient.
 
-### Some public facing utility APIs for the TorchScript based exporter are now private ([#161323](https://github.com/pytorch/pytorch/pull/161323))
-### Remove `torch.onnx.symbolic_caffe2` ([#157102](https://github.com/pytorch/pytorch/pull/157102))
+## Some public facing utility APIs for the TorchScript based exporter are now private ([#161323](https://github.com/pytorch/pytorch/pull/161323))
 
-## Python Frontend
-### Upgrade to DLPack 1.0. ([#145000](https://github.com/pytorch/pytorch/pull/145000))
+Deprecated members in `torch.onnx.verification` are removed. Previously private `torch.onnx.symbolic_opsets*` functions will no longer be accessible. Consider making a copy of the source code if you need to access any private functions for compatibility with the TorchScript based exporter.
 
-This upgrade is doing the same BC-breaking changes as the DLPack release.
-Objects in `torch.utils.dlpack` have been updated to reflect these changes, such as `DLDeviceType`.
-See the PR for details on the exact changes and how to update your code.
+## Remove `torch.onnx.symbolic_caffe2` ([#157102](https://github.com/pytorch/pytorch/pull/157102))
 
-### Raise appropriate errors in `torch.cat` ([#158249](https://github.com/pytorch/pytorch/pull/158249))
+Support for `caffe2` in the ONNX exporter has ended and is removed.
 
-Raising `ValueError`, `IndexError` or `TypeError` where appropriate instead of the generic `RuntimeError`.
-If you code was catching these error, you can update to catch the new error type.
+## Remove `/d2implyavx512upperregs` flag that slows build ([#159431](https://github.com/pytorch/pytorch/pull/159431))
+
+Re-introduced AVX512 optimizations for Windows VS2022 builds, may cause issues with specific versions of VS2022, see [#145702](https://github.com/pytorch/pytorch/issues/145702)
+
+## Add `ScalarType` to shim conversion and `stable::Tensor.scalar_type` ([#160557](https://github.com/pytorch/pytorch/pull/160557))
+
+Before, user extensions could only in abstract pass around obfuscated dtypes appearing as `int32_ts`. Now, users can confidently use `torch::headeronly::ScalarType` in their extensions for major scalar types. This PR enables ABI stability by adding a translation layer through the shim, so that even if the `ScalarType` enum values change in the future, user extensions need not fear.
+
+This change adds ScalarType support for user extensions and is only narrowly BC breaking for unpopular dtypes: `quint*`s, `qint*`s, `Bits*`, `dummy_uint*`s, `dummy_int*`s, `Float8_e8m0fnu`, and `Float4_e2m1fn_x2` in the use case where an extension retrieves a Tensor dtype of the above and passes it into `aoti_torch_call_dispatcher`.
 
 # Deprecations
-## Dataloader Frontend
-### Deprecate `pin_memory_device` param in `torch.utils.data.DataLoader` ([#158323](https://github.com/pytorch/pytorch/pull/158323))
+## Deprecate `pin_memory_device` param in `torch.utils.data.DataLoader` ([#158323](https://github.com/pytorch/pytorch/pull/158323))
 
 We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required for `StatefulDataloader` which leveraged `BaseDataLoaderIter` direclty rather than the `Dataloader` class init
 
-## Export
-### Deprecation for `export_for_training` API, in favor of equivalent `export` API ([#158203](https://github.com/pytorch/pytorch/pull/158203))
+## Deprecate `torch.export.export_for_training` API in favor of equivalent `torch.export.export` API ([#158203](https://github.com/pytorch/pytorch/pull/158203))
 
-`export_for_training` exists because we couldn't migrate internal usages of export to the final IR. Now that we have completed the migration, we deprecated and deleted this API.
-
-## Release Engineering
-### Remove Python 3.9 support in CD builds. Move CI to Python 3.10.([#161427](https://github.com/pytorch/pytorch/pull/161427)) ([#162265](https://github.com/pytorch/pytorch/pull/162265)) ([#162297](https://github.com/pytorch/pytorch/pull/162297)) ([#160852](https://github.com/pytorch/pytorch/pull/160852))
-
-### Remove CUDA 12.9 support in CD builds ([#161916](https://github.com/pytorch/pytorch/pull/161916))
+`torch.export.export_for_training` exists because we couldn't migrate internal usages of export to the final IR. Now that we have completed the migration, we deprecated and deleted this API.
 
 # New Features
 ## AOTDispatcher
@@ -174,29 +169,12 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Add `zero_()` and `empty_like(t)` to `torch/csrc/stable/ops.h` ([#158866](https://github.com/pytorch/pytorch/pull/158866))
 
 ## C++ Extensions
-- Add pad and narrow to `torch/csrc/stable/ops.h` ([#159328](https://github.com/pytorch/pytorch/pull/159328))
-- Add `getCurrentDeviceIndex` to `torch::stable::accelerator` ([#160453](https://github.com/pytorch/pytorch/pull/160453))
-- Add `new_zeros` dtype variant to the shim and as a stable op ([#161597](https://github.com/pytorch/pytorch/pull/161597))
-- Update `torch::stable::Tensor()` default constructor ([#159507](https://github.com/pytorch/pytorch/pull/159507))
-- Add beginnings of `torch::stable::accelerator` ([#159679](https://github.com/pytorch/pytorch/pull/159679))
-- Port `amax` to stable ABI ([#160214](https://github.com/pytorch/pytorch/pull/160214))
-- Add `new_empty` (with dtype argument only) to `torch::stable` ([#159508](https://github.com/pytorch/pytorch/pull/159508))
-- Enable generating generic `c_shim` that doesn't bypass dispatcher ([#158974](https://github.com/pytorch/pytorch/pull/158974))
-- Cut a version of `TORCH_ERROR_CODE_CHECK` in `headeronly` from AOTI ([#159604](https://github.com/pytorch/pytorch/pull/159604))
-- Check F2C BLAS for OpenBLAS and other vendors ([#143846](https://github.com/pytorch/pytorch/pull/143846))
-- Add an ovrsource target for `torch/headeronly` ([#157912](https://github.com/pytorch/pytorch/pull/157912))
-- Migrate `c10/macros/cmake_macros.h.in` to `torch/headeronly` ([#158035](https://github.com/pytorch/pytorch/pull/158035))
-- Move `c10/macros/Macros.h` to `headeronly` ([#158365](https://github.com/pytorch/pytorch/pull/158365))
-- Add `STD_TORCH_CHECK` to `headeronly` ([#158377](https://github.com/pytorch/pytorch/pull/158377))
-- Migrate easy q(u)int/bits stuff to `torch/headeronly` ([#159302](https://github.com/pytorch/pytorch/pull/159302))
-- Move `Float4` to `headeronly` ([#159414](https://github.com/pytorch/pytorch/pull/159414))
-- Move `BFloat16.h` to `headeronly` ([#159412](https://github.com/pytorch/pytorch/pull/159412))
-- Move `Float8` variations to `headeronly` ([#159415](https://github.com/pytorch/pytorch/pull/159415))
-- Move complex to `headeronly` ([#159411](https://github.com/pytorch/pytorch/pull/159411))
-- Migrate `ScalarType` to `headeronly` ([#159911](https://github.com/pytorch/pytorch/pull/159911))
-- Add stable Tensor `get_device_index`, use more stable `DeviceIndex` ([#160143](https://github.com/pytorch/pytorch/pull/160143))
-- Add `is_cpu` method to stable tensor type ([#160212](https://github.com/pytorch/pytorch/pull/160212))
+- Build out a stable set of ATen ops in `torch/csrc/stable/ops.h`:  `amax`, `narrow`, `new_empty` + `new_zeros` dtype variant, `pad`, ([#159328](https://github.com/pytorch/pytorch/pull/159328), [#158974](https://github.com/pytorch/pytorch/pull/158974), [#159508](https://github.com/pytorch/pytorch/pull/159508), [#161597](https://github.com/pytorch/pytorch/pull/161597), [#160214](https://github.com/pytorch/pytorch/pull/160214), )
+- Add `torch::stable::Tensor()` default constructor,  `is_cpu`, and `get_device_index`([#159507](https://github.com/pytorch/pytorch/pull/159507), [#160212](https://github.com/pytorch/pytorch/pull/160212), [#160143](https://github.com/pytorch/pytorch/pull/160143))
+- Add beginnings of `torch::stable::accelerator` with support for DeviceGuard and Stream ([#159679](https://github.com/pytorch/pytorch/pull/159679), [#160453](https://github.com/pytorch/pytorch/pull/160453))
+- Start building out `torch/headeronly`: c10 Macros, STD_TORCH_CHECK, ScalarTypes (like BFloat16 and Half) ([#158035](https://github.com/pytorch/pytorch/pull/158035), [#158365](https://github.com/pytorch/pytorch/pull/158365), [#157912](https://github.com/pytorch/pytorch/pull/157912), [#158377](https://github.com/pytorch/pytorch/pull/158377), [#159302](https://github.com/pytorch/pytorch/pull/159302), [#159414](https://github.com/pytorch/pytorch/pull/159414), [#159412](https://github.com/pytorch/pytorch/pull/159412), [#159415](https://github.com/pytorch/pytorch/pull/159415), [#159411](https://github.com/pytorch/pytorch/pull/159411), [#159911](https://github.com/pytorch/pytorch/pull/159911))
 - Remove cmake cache and reconfigure again if it is invalid ([#156958](https://github.com/pytorch/pytorch/pull/156958))
+- Cut a version of `TORCH_ERROR_CODE_CHECK` in `headeronly` from AOTI ([#159604](https://github.com/pytorch/pytorch/pull/159604))
 - Remove `wheel` from build requirements ([#158027](https://github.com/pytorch/pytorch/pull/158027))
 - Error when `TORCH_STABLE_ONLY` is defined in `TensorBase.h` ([#161658](https://github.com/pytorch/pytorch/pull/161658))
 
@@ -206,10 +184,6 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 ## CUDA
 - Add getter for CUDA graph exec to allow mutation of captured kernel params ([#161294](https://github.com/pytorch/pytorch/pull/161294))
 - Implement support for `cudnn_batch_norm_out` kernel to replace the autogen approach ([#123020](https://github.com/pytorch/pytorch/pull/123020))
-
-## Distributed
-### Symmetric Memory
-- NVSHMEM support for Triton 3.5 ([#163152](https://github.com/pytorch/pytorch/pull/163152))
 
 ## Dynamo
 - Experimental API for ahead-of-time compiling models in fullgraph mode ([#161383](https://github.com/pytorch/pytorch/pull/161383))
@@ -248,8 +222,7 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Add `torch.hash_tensor` reduction function ([#154149](https://github.com/pytorch/pytorch/pull/154149))
 
 ## Quantization
-- Enable cpu fp8 qlinear ([#155678](https://github.com/pytorch/pytorch/pull/155678))
-- Enable cpu fp8 qconv ([#157076](https://github.com/pytorch/pytorch/pull/157076))
+- Enable cpu fp8 qlinear and cpu fp8 qconv ([#155678](https://github.com/pytorch/pytorch/pull/155678), [#157076](https://github.com/pytorch/pytorch/pull/157076))
 
 ## Release Engineering
 - Add support for CUDA 13.0 in CI/CD builds. Enable CUDA compression mode for binary size reduction for CUDA 13.0 builds ([#160956](https://github.com/pytorch/pytorch/pull/160956)) ([#161073](https://github.com/pytorch/pytorch/pull/161073)) ([#161257](https://github.com/pytorch/pytorch/pull/161257)) ([#161663](https://github.com/pytorch/pytorch/pull/161663)) ([#161316](https://github.com/pytorch/pytorch/pull/161316)) ([#160201](https://github.com/pytorch/pytorch/pull/160201)) ([#160770](https://github.com/pytorch/pytorch/pull/160770)) ([#161013](https://github.com/pytorch/pytorch/pull/161013)) ([#161916](https://github.com/pytorch/pytorch/pull/161916)) ([#162268](https://github.com/pytorch/pytorch/pull/162268)) ([#162322](https://github.com/pytorch/pytorch/pull/162322)) ([#162383](https://github.com/pytorch/pytorch/pull/162383)) ([#161833](https://github.com/pytorch/pytorch/pull/161833))
@@ -283,6 +256,8 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Fix dev warning in `Dependencies.cmake` ([#159702](https://github.com/pytorch/pytorch/pull/159702))
 - Fix building system gloo with CUDA/HIP ([#146637](https://github.com/pytorch/pytorch/pull/146637))
 - Build `libtorch` without NVSHMEM ([#160910](https://github.com/pytorch/pytorch/pull/160910))
+- Improve BLAS feature detection ([#143846](https://github.com/pytorch/pytorch/pull/143846))
+
 
 ## Composability
 - Meta implementation for `aten.add.Scalar` ([#161332](https://github.com/pytorch/pytorch/pull/161332))
@@ -483,6 +458,9 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Fix `torch.autograd.graph.GradientEdge` for `torch.autograd.Function` ([#160098](https://github.com/pytorch/pytorch/pull/160098))
 - Match 0-dim gradients device type regardless of subclass-ness ([#160165](https://github.com/pytorch/pytorch/pull/160165))
 
+## Build Frontend
+- Turn on `BUILD_BUNDLEPTXAS=1` to allow compile on newer GPUs([#163988](https://github.com/pytorch/pytorch/pull/163988))
+
 ## C++ Frontend
 - Fix `torch.utils.cpp_extension` parser for clang version 20.1.7+libcxx ([#157666](https://github.com/pytorch/pytorch/pull/157666))
 - Fix `MakeTensor::computeStorageSize()` calculation ([#158690](https://github.com/pytorch/pytorch/pull/158690))
@@ -498,6 +476,7 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Implement workaround for `cudaErrorNotSupported` ([#162412](https://github.com/pytorch/pytorch/pull/162412))
 - Fix missing `__syncthreads` in MultiMarginLoss backward ([#158994](https://github.com/pytorch/pytorch/pull/158994))
 - Roll-back cuDNN frontend upgrade and update Meta registration due to compile issues ([#163104](https://github.com/pytorch/pytorch/pull/163104))
+- Disable cuDNN for 3D convolutions with `kernel size != 1` for cuDNN 9.8+ ([#163581](https://github.com/pytorch/pytorch/pull/163581))
 
 ## Distributed
 ### c10d
@@ -505,6 +484,8 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
   - Fix `setGroupName` and `setGroupDesc` in `group_split` and `merge_remote_group` ([#159429](https://github.com/pytorch/pytorch/pull/159429))
   - Fix a bug of distributed 'gather' with noncontiguous tensors on the Gloo backend ([#158903](https://github.com/pytorch/pytorch/pull/158903))
   - Fix a bug of distributed 'gather' with noncontiguous tensors on the NCCL backend ([#159549](https://github.com/pytorch/pytorch/pull/159549))
+  - Fix data inconsistencies when using `batch_isend_irecv` with 2D tensor views by making P2P tensors dense ([#163719](https://github.com/pytorch/pytorch/pull/163719))
+  - Handle discontiguous `allgather`/`reducescatter` inputs ([#163712](https://github.com/pytorch/pytorch/pull/163712))
 ### Device Mesh
   - Fix the not incorrectly chained each of the strings as iterables ([#160709](https://github.com/pytorch/pytorch/pull/160709))
 ### DistributedDataParallel (DDP)
@@ -524,8 +505,6 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 ### Pipeline Parallelism (PP)
   - Fix eval step under `no_grad()` ([#159293](https://github.com/pytorch/pytorch/pull/159293))
   - Fix zero bubble schedules for `eval()` ([#159475](https://github.com/pytorch/pytorch/pull/159475))
-### Symmetric Memory (SymmMem)
-- Fix `put_signal` + `wait_until` hang ([#163194](https://github.com/pytorch/pytorch/pull/163194))
 ### TorchElastic
   - Fix wrong log file name in the docs of `torch.distributed.elastic.multiprocessing.start_processes()` ([#160396](https://github.com/pytorch/pytorch/pull/160396))
 ### TensorPipe
@@ -629,7 +608,6 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Fix finding ROCm/HIP version on Windows ([#156486](https://github.com/pytorch/pytorch/pull/156486))
 - Fix LoadHIP handling of environment variable paths on Windows ([#159080](https://github.com/pytorch/pytorch/pull/159080))
 - Add hipcc compatibility flags to `cpp_extension.py` on Windows ([#159790](https://github.com/pytorch/pytorch/pull/159790))
-- Symmetric memory set handle type for ROCm ([#161741](https://github.com/pytorch/pytorch/pull/161741))
 - In SDPA via AOTriton, `logsumexp` needs scaling back to natural base ([#156903](https://github.com/pytorch/pytorch/pull/156903))
 - Check stream graph capture status in `memcpy_and_sync` inline function ([#158165](https://github.com/pytorch/pytorch/pull/158165))
 
@@ -681,7 +659,6 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Remove extra transposes in NHWC convolutions on MIOpen ([#160435](https://github.com/pytorch/pytorch/pull/160435))
 - Remove extra sync in `tensor.item()` ([#158486](https://github.com/pytorch/pytorch/pull/158486))
 - Elementwise and reduction kernel perf improvements ([#159430](https://github.com/pytorch/pytorch/pull/159430), [#159652](https://github.com/pytorch/pytorch/pull/159652), [#160444](https://github.com/pytorch/pytorch/pull/160444), [#160466](https://github.com/pytorch/pytorch/pull/160466), [#161054](https://github.com/pytorch/pytorch/pull/161054), [#161180](https://github.com/pytorch/pytorch/pull/161180), [#161181](https://github.com/pytorch/pytorch/pull/161181))
-- Symmetric Memory Performance improvements for two-shot allreduce ([#156746](https://github.com/pytorch/pytorch/pull/156746))
 - Enable build of `fbgemm_gpu genai` sources for grouped GEMM support ([#160676](https://github.com/pytorch/pytorch/pull/160676))
 
 ## XPU

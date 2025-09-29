@@ -332,3 +332,7 @@ The categories below are as follows:
 - Work: block_current_stream API ([#156883](https://github.com/pytorch/pytorch/pull/156883))
 - [c10d] block_current_stream: correctness fixes ([#158757](https://github.com/pytorch/pytorch/pull/158757))
 - Add pg transport and tests ([#154653](https://github.com/pytorch/pytorch/pull/154653))
+- Symmetric memory set handle type for ROCm ([#161741](https://github.com/pytorch/pytorch/pull/161741))
+- Symmetric Memory Performance improvements for two-shot allreduce ([#156746](https://github.com/pytorch/pytorch/pull/156746))
+- NVSHMEM support for Triton 3.5 ([#163152](https://github.com/pytorch/pytorch/pull/163152))
+- Fix `put_signal` + `wait_until` hang ([#163194](https://github.com/pytorch/pytorch/pull/163194))
