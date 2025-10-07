@@ -36,7 +36,7 @@ See the PR for details on the exact changes and how to update your code.
 
 ## Raise appropriate errors in `torch.cat` ([#158249](https://github.com/pytorch/pytorch/pull/158249))
 
-`torch.cat` now raises `ValueError`, `IndexError` or `TypeError` where appropriate instead of the generic `RuntimeError`. If you code was catching these error, you can update to catch the new error type.
+`torch.cat` now raises `ValueError`, `IndexError` or `TypeError` where appropriate instead of the generic `RuntimeError`. If you code was catching these errors, you can update to catch the new error type.
 
 
 ## Default to `dynamo=True` for ONNX exporter ([#159646](https://github.com/pytorch/pytorch/pull/159646), [#162726](https://github.com/pytorch/pytorch/pull/162726))
@@ -63,7 +63,7 @@ torch.onnx.export(...)
 Recommendation: first try the new default; only fall back if you hit blocking issues and report them upstream.
 Long term solution: fix the root cause instead of relying on fallback or TorchScript exporter.
 
-## Switch off runtime asserts by default in favor of a shape guards function ([#160111](https://github.com/pytorch/pytorch/pull/160111), [#161178](https://github.com/pytorch/pytorch/pull/161178), [#161794](https://github.com/pytorch/pytorch/pull/161794))
+## In Export, switch off runtime asserts by default in favor of a shape guards function ([#160111](https://github.com/pytorch/pytorch/pull/160111), [#161178](https://github.com/pytorch/pytorch/pull/161178), [#161794](https://github.com/pytorch/pytorch/pull/161794))
 
 
 To enable runtime asserts, use `export(..., prefer_deferred_runtime_asserts_over_guards=True)`. Also kills the `allow_complex_guards_as_runtime_asserts` flag, merging it into the former option.
@@ -71,7 +71,7 @@ To enable runtime asserts, use `export(..., prefer_deferred_runtime_asserts_over
 
 Additionally, `exported_program.module()` will generate a call to a `_guards_fn` submodule that will run additional checks on inputs. Users who do not want this behavior can either remove this call in the graph, or do `exported_program.module(check_guards=False)` to avoid the generation.
 
-## Set default opset to 20 ([#158802](https://github.com/pytorch/pytorch/pull/158802))
+## Set default opset to 20 in ONNX ([#158802](https://github.com/pytorch/pytorch/pull/158802))
 
 Opset 20 enables newer operator definitions. If your tooling or downstream runtime only supports opset 18, pin it explicitly. For the latest ONNX operators, you can experiment with opset 23.
 
@@ -132,7 +132,7 @@ The experimental ONNX Runtime compile backend (`torch.compile(backend="onnxrt")`
 
 The `dynamo=True` mode uses `FakeTensor`s by default which is memory efficient.
 
-## Some public facing utility APIs for the TorchScript based exporter are now private ([#161323](https://github.com/pytorch/pytorch/pull/161323))
+## In ONNX, some public facing utility APIs for the TorchScript based exporter are now private ([#161323](https://github.com/pytorch/pytorch/pull/161323))
 
 Deprecated members in `torch.onnx.verification` are removed. Previously private `torch.onnx.symbolic_opsets*` functions will no longer be accessible. Consider making a copy of the source code if you need to access any private functions for compatibility with the TorchScript based exporter.
 
@@ -172,6 +172,21 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 ## Dynamo
 - Experimental API for ahead-of-time compiling models in fullgraph mode ([#161383](https://github.com/pytorch/pytorch/pull/161383))
 - Add a hook for recompilations ([#157961](https://github.com/pytorch/pytorch/pull/157961))
+- DynamicInts prototype ([#162194](https://github.com/pytorch/pytorch/pull/162194))
+
+Introduces an API for annotating dynamic integer inputs & attributes for `torch.compile`, by wrapping plain ints with `DynamicInt()`.
+DynamicInt objects also work in eager mode, acting as their underlying values when passed as scalar inputs.
+
+```python
+a = DynamicInt(4)
+y = a + 2  # DynamicInt(6)
+z = torch.ones(a)  # torch.ones(4)
+
+fn = torch.compile(torch.ones)
+fn(a)  # compiled fn takes a dynamic integer input
+fn(2)  # returns torch.ones(2) without recompiling
+```
+
 
 ## Optimizer
 - Introduce Muon optimizer to PyTorch ([#160213](https://github.com/pytorch/pytorch/pull/160213))
@@ -507,6 +522,11 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Fix segfault due to interaction between Dynamo backends and `torch.compiler.reset()` ([#156527](https://github.com/pytorch/pytorch/pull/156527))
 - Fix crash due to bad interaction with recompilations and with blocks in Python 3.11+ ([#162318](https://github.com/pytorch/pytorch/pull/162318))
 
+## torch.nn
+- Fix silent correctness w/ backpropping grads for `FlexAttention` ([#163677](https://github.com/pytorch/pytorch/pull/163677))
+- Fix `return_lse` warning message in `FlexAttention` ([#163578](https://github.com/pytorch/pytorch/pull/163578))
+- Fix `FlexAttention` head broadcast ([#163426](https://github.com/pytorch/pytorch/pull/163426))
+
 ## Inductor
 - Fix wrong meta function for `constant_pad_nd` ([#159878](https://github.com/pytorch/pytorch/pull/159878))
 - Fix learnable bias assertion error in Inductor ([#161170](https://github.com/pytorch/pytorch/pull/161170))
@@ -525,6 +545,9 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Fix memory leak in AOTI when calling `aoti_torch_as_strided` ([#162118](https://github.com/pytorch/pytorch/pull/162118))
 - Explicitly delete `wait_tensor` returned tensor ([#159502](https://github.com/pytorch/pytorch/pull/159502))
 - Fix memory leak from `all_reduce` ([#159818](https://github.com/pytorch/pytorch/pull/159818))
+
+## Composability
+- Make functionalization ViewMeta serializable with pickle ([#163769](https://github.com/pytorch/pytorch/pull/163769))
 
 ## Export
 - Fix bug in constants lifting pass ([#157719](https://github.com/pytorch/pytorch/pull/157719))
@@ -553,6 +576,9 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Fix export behavior when model has `None` as output ([#160200](https://github.com/pytorch/pytorch/pull/160200))
 - Fix lower opset version support in `dynamo=True` ([#161056](https://github.com/pytorch/pytorch/pull/161056))
 - Fix `index_put_` usage ([#161263](https://github.com/pytorch/pytorch/pull/161263))
+
+## C++ Extensions
+- Fix CPP extension distributed warning for `TORCH_CUDA_ARCH_LIST` to only log when running on non-distributed or on rank 0 ([#162764](https://github.com/pytorch/pytorch/pull/162764))
 
 ## C++ Frontend
 - Fix `torch.utils.cpp_extension` parser for clang version 20.1.7+libcxx ([#157666](https://github.com/pytorch/pytorch/pull/157666))
@@ -591,6 +617,9 @@ We move enabling `pin_memory` back inside `BaseDataLoaderIter`. This is required
 - Fix empty input in posneg functions ([#161824](https://github.com/pytorch/pytorch/pull/161824))
 - Migrate round unary op to Metal ([#161712](https://github.com/pytorch/pytorch/pull/161712))
 - Type-promote tensor-iterator common dtype ([#160334](https://github.com/pytorch/pytorch/pull/160334))
+- Fix regression in 2.8.0 for `scaled_dot_product_attention` using MPS ([#163598](https://github.com/pytorch/pytorch/pull/163598))
+- Chunk `fillBuffer` into 4Gb slices to avoid regression on MacOS 26 ([#164108](https://github.com/pytorch/pytorch/pull/164108))
+- Fix latent bug that can result in segfault in CPP extensions ([#164093](https://github.com/pytorch/pytorch/pull/164093))
 
 ## ROCm
 - Fix Inductor with cudagraph trees `hip:0` device error ([#161221](https://github.com/pytorch/pytorch/pull/161221))
