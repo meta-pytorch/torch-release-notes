@@ -24,6 +24,88 @@ Below are the full release notes for this release.
 
 The minimum version of Python required for PyTorch 2.9.0 is 3.10. We also have 3.14 and 3.14t available as preview with this release.
 
+## Undefined behavior when an output of a custom operator shares storage with an input
+
+This is a reminder that outputs of PyTorch custom operators (that are registered
+using the `torch.library` or `TORCH_LIBRARY` APIs) are not allowed to return Tensors
+that share storage with input tensors.
+The violation of this condition leads
+to undefined behavior: sometimes the result will be correct, sometimes it
+will be garbage.
+
+After [#163227](https://github.com/pytorch/pytorch/pull/163227), custom operators
+that violated this condition that previously returned correct results under
+`torch.compile` may now return silently incorrect results under `torch.compile`.
+Because this is changing the behavior of undefined behavior, we do not
+consider this to be a bug, but we are still documenting it in this section
+as a "potentially unexpected behavior change".
+
+This is one of the conditions checked for by [`torch.library.opcheck`](https://docs.pytorch.org/docs/stable/library.html#testing-custom-ops) and
+is mentioned in [The Custom Operators Manual](https://docs.google.com/document/d/1_W62p8WJOQQUzPsJYa7s701JXt0qf2OfLub2sbkHOaU/edit?tab=t.0#bookmark=id.4c0um7xkba6e)
+
+### More details
+
+Outputs of PyTorch custom operators are not allowed to return Tensors
+that share storage with input tensors
+
+For example, the following two custom operators are not valid custom operators:
+
+```py
+@torch.library.custom_op("mylib::foo", mutates_args=())
+def foo(x: torch.Tensor) -> torch.Tensor:
+    # the result of `foo` must not directly be an input to foo.
+    return x
+
+@torch.library.custom_op("mylib::bar", mutates_args=())
+def bar(x: torch.Tensor) -> torch.Tensor:
+    # the result of bar must not be a view of an input of bar
+    return x.view(-1)
+```
+The easiest workaround is to add an extra `.clone()` to the outputs:
+```py
+@torch.library.custom_op("mylib::foo", mutates_args=())
+def foo(x: torch.Tensor) -> torch.Tensor:
+    return x.clone()
+
+@torch.library.custom_op("mylib::bar", mutates_args=())
+def bar(x: torch.Tensor) -> torch.Tensor:
+    return x.view(-1).clone()
+```
+
+A common way to get into this situation is for a user to want to
+create a custom operator that sometimes mutates the input in-place
+and sometimes returns a new Tensor, like in the following example.
+
+```py
+@torch.library.custom_op("mylib::baz", mutates_args=["x"])
+def baz(x: torch.Tensor) -> torch.Tensor:
+    if inplace:
+        x.sin_()
+        return x
+    else:
+        return x.sin()
+```
+This dynamism is not supported and leads to undefined behavior.
+The workaround is to split the custom operator
+into two custom operators, one that always mutates the input in-place,
+and another that always returns a new Tensor.
+```py
+@torch.library.custom_op("mylib::baz_outplace", mutates_args=())
+def baz_outplace(x: torch.Tensor) -> torch.Tensor:
+    return x.sin()
+
+@torch.library.custom_op("mylib::baz_inplace", mutates_args=["x"])
+def baz_inplace(x: torch.Tensor) -> torch.Tensor:
+    x.sin_()
+
+def baz(x):
+    if inplace:
+        baz_inplace(x)
+        return x
+    else:
+        return baz_outplace(x)
+```
+
 ## Build metal kernels of MacOS-14+ and remove all pre-MacOS-14 specific logic, requires MacOS-14+ going forward (#159733, #159912)
 
 PyTorch MPS is only supported on MacOS-14 or later. If you need to use MPS on MacOS Ventura, please avoid updating to Python-3.9 or above
