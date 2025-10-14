@@ -12,10 +12,38 @@
 
 
 # Highlights
-TODO
 
-For more details about these highlighted features, you can look at the release blogpost.
-Below are the full release notes for this release.
+<table>
+  <tr>
+   <td><strong>Unstable (API-Unstable)</strong></td>
+  </tr>
+  <tr>
+   <td>Updates to the stable libtorch ABI for third-party C++/CUDA extensions</td>
+  </tr>
+  <tr>
+   <td>Symmetric memory that enables easy programming of multi-GPU kernels</td>
+  </tr>
+  <tr>
+   <td>The ability to arbitrarily toggle error or resume on graph breaks in torch.compile</td>
+  </tr>
+  <tr>
+   <td>Expanded wheel variant support  to include ROCm,  XPU and CUDA 13</td>
+  </tr>
+  <tr>
+   <td>FlexAttention enablement on Intel GPUs</td>
+  </tr>
+  <tr>
+   <td>Flash decoding optimization based on FlexAttention on X86 CPU</td>
+  </tr>
+  <tr>
+   <td>ARM Platform improvements and optimizations</td>
+  </tr>
+  <tr>
+    <td>Enablement of Linux aarch64 binary wheel builds across all supported CUDA versions</td>
+  </tr>
+</table>
+
+For more details about these highlighted features, you can look at the [release blogpost](https://pytorch.org/blog/pytorch2-9/). Below are the full release notes for this release.
 
 
 # Backwards Incompatible Changes
@@ -26,27 +54,15 @@ The minimum version of Python required for PyTorch 2.9.0 is 3.10. We also have 3
 
 ## Undefined behavior when an output of a custom operator shares storage with an input
 
-This is a reminder that outputs of PyTorch custom operators (that are registered
-using the `torch.library` or `TORCH_LIBRARY` APIs) are not allowed to return Tensors
-that share storage with input tensors.
-The violation of this condition leads
-to undefined behavior: sometimes the result will be correct, sometimes it
-will be garbage.
+This is a reminder that outputs of PyTorch custom operators (that are registered using the `torch.library` or `TORCH_LIBRARY` APIs) are not allowed to return Tensors that share storage with input tensors. The violation of this condition leads to undefined behavior: sometimes the result will be correct, sometimes it will be garbage.
 
-After [#163227](https://github.com/pytorch/pytorch/pull/163227), custom operators
-that violated this condition that previously returned correct results under
-`torch.compile` may now return silently incorrect results under `torch.compile`.
-Because this is changing the behavior of undefined behavior, we do not
-consider this to be a bug, but we are still documenting it in this section
-as a "potentially unexpected behavior change".
+After [#163227](https://github.com/pytorch/pytorch/pull/163227), custom operators that violated this condition that previously returned correct results under `torch.compile` may now return silently incorrect results under `torch.compile`. Because this is changing the behavior of undefined behavior, we do not consider this to be a bug, but we are still documenting it in this section as a "potentially unexpected behavior change".
 
-This is one of the conditions checked for by [`torch.library.opcheck`](https://docs.pytorch.org/docs/stable/library.html#testing-custom-ops) and
-is mentioned in [The Custom Operators Manual](https://docs.google.com/document/d/1_W62p8WJOQQUzPsJYa7s701JXt0qf2OfLub2sbkHOaU/edit?tab=t.0#bookmark=id.4c0um7xkba6e)
+This is one of the conditions checked for by [`torch.library.opcheck`](https://docs.pytorch.org/docs/stable/library.html#testing-custom-ops) and is mentioned in [The Custom Operators Manual](https://docs.google.com/document/d/1_W62p8WJOQQUzPsJYa7s701JXt0qf2OfLub2sbkHOaU/edit?tab=t.0#bookmark=id.4c0um7xkba6e)
 
 ### More details
 
-Outputs of PyTorch custom operators are not allowed to return Tensors
-that share storage with input tensors
+Outputs of PyTorch custom operators are not allowed to return Tensors that share storage with input tensors
 
 For example, the following two custom operators are not valid custom operators:
 
@@ -72,9 +88,7 @@ def bar(x: torch.Tensor) -> torch.Tensor:
     return x.view(-1).clone()
 ```
 
-A common way to get into this situation is for a user to want to
-create a custom operator that sometimes mutates the input in-place
-and sometimes returns a new Tensor, like in the following example.
+A common way to get into this situation is for a user to want to create a custom operator that sometimes mutates the input in-place and sometimes returns a new Tensor, like in the following example.
 
 ```py
 @torch.library.custom_op("mylib::baz", mutates_args=["x"])
@@ -85,10 +99,7 @@ def baz(x: torch.Tensor) -> torch.Tensor:
     else:
         return x.sin()
 ```
-This dynamism is not supported and leads to undefined behavior.
-The workaround is to split the custom operator
-into two custom operators, one that always mutates the input in-place,
-and another that always returns a new Tensor.
+This dynamism is not supported and leads to undefined behavior. The workaround is to split the custom operator into two custom operators, one that always mutates the input in-place, and another that always returns a new Tensor.
 ```py
 @torch.library.custom_op("mylib::baz_outplace", mutates_args=())
 def baz_outplace(x: torch.Tensor) -> torch.Tensor:
@@ -112,8 +123,8 @@ PyTorch MPS is only supported on MacOS-14 or later. If you need to use MPS on Ma
 
 ## Upgrade to DLPack 1.0 (#145000)
 
-This upgrade is doing the same BC-breaking changes as the DLPack release.
-Objects in `torch.utils.dlpack` have been updated to reflect these changes, such as `DLDeviceType`.
+This upgrade is doing the same BC-breaking changes as the DLPack release. Objects in `torch.utils.dlpack` have been updated to reflect these changes, such as `DLDeviceType`.
+
 See the PR for details on the exact changes and how to update your code.
 
 ## Raise appropriate errors in `torch.cat` (#158249)
@@ -164,7 +175,7 @@ Previously in torch 2.8.0:
 torch.onnx.export(...)
 ```
 
-Now in torch 2.8.0:
+Now in torch 2.9.0:
 
 ```python
 # To preserve the original behavior
