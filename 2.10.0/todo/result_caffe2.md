@@ -1,0 +1,48 @@
+
+# Release Notes worksheet caffe2
+
+The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
+
+* **Please clean up and format commit titles to be readable by the general PyTorch user.** Make sure you're [following the guidance here](https://docs.google.com/document/d/14OmgGBr1w6gl1VO47GGGdwrIaUNr92DFhQbY_NEk8mQ/edit)! Your resulting notes must be consistent and easy to read.
+* Please sort commits into the following categories (you should not rename the categories!), I tried to pre-sort these to ease your work, feel free to move commits around if the current categorization is not good.
+* Anything that is not public facing needs to be removed.
+* If anything is miscategorized/belongs to another domain, move it to `miscategorized.md`.
+* Please scan through `miscategorized.md` and handle any commits that belong within your domain according to these instructions.
+* We place a lot of emphasis on the “BC-breaking” and “deprecation” sections. Those should be where the most effort goes in. The “improvements” and “bug fixes” for Python API should be nice as well.
+* Once you are finished, move this very file from `todo/` to `done/` and submit a pull request.
+
+The categories below are as follows:
+
+* BC breaking: All commits that are BC-breaking. These are the most important commits. If any pre-sorted commit is actually BC-breaking, do move it to this section. Each commit should contain a paragraph explaining the rational behind the change as well as an example for how to update user code [BC-Guidelines](https://docs.google.com/document/d/14OmgGBr1w6gl1VO47GGGdwrIaUNr92DFhQbY_NEk8mQ/edit#heading=h.a9htwgvvec1m).
+* Deprecations: All commits introducing deprecation. Each commit should include a small example explaining what should be done to update user code.
+* new_features: All commits introducing a new feature (new functions, new submodule, new supported platform etc)
+* improvements: All commits providing improvements to existing feature should be here (new backend for a function, new argument, better numerical stability)
+* bug fixes: All commits that fix bugs and behaviors that do not match the documentation
+* performance: All commits that are added mainly for performance (we separate this from improvements above to make it easier for users to look for it)
+* documentation: All commits that add/update documentation
+* Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
+* not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
+
+## caffe2
+### bc breaking
+### deprecation
+### new features
+### improvements
+### bug fixes
+### performance
+### docs
+### devs
+### Untopiced
+- [AI Codemod][DevmatePerfOptimizationVectorReallocation] fbcode/caffe2/torch/csrc/jit/serialization/unpickler.cpp ([#163240](https://github.com/pytorch/pytorch/pull/163240))
+- [caffe2] tweak Unpickler::readInstruction handling TUPLE ([#164764](https://github.com/pytorch/pytorch/pull/164764))
+- [caffe2] Ignore -Wswitch-enum warnings ([#166760](https://github.com/pytorch/pytorch/pull/166760))
+- [unified v2][apple] Clean up `APPLETVOS` from caffe2 ([#166953](https://github.com/pytorch/pytorch/pull/166953))
+- [torch] Update caffe2/torch/csrc to build under CUDA 13 ([#167401](https://github.com/pytorch/pytorch/pull/167401))
+- [caffe2] Address -Wswitch-default warnings in headers ([#167563](https://github.com/pytorch/pytorch/pull/167563))
+- [torch] Update caffe2/c10/cuda to build under CUDA 13 ([#167534](https://github.com/pytorch/pytorch/pull/167534))
+### not user facing
+- [xplat][caffe2] Fix -Wswitch-default issues ([#169022](https://github.com/pytorch/pytorch/pull/169022))
+- Remove platform_srcs from xplat/caffe2/third_party/xnnpack.buck.bzl (#169293) ([#169644](https://github.com/pytorch/pytorch/pull/169644))
+- [caffe2] add kineto header dep ([#169674](https://github.com/pytorch/pytorch/pull/169674))
+- Fix caffe2 genrules to be root based ([#169957](https://github.com/pytorch/pytorch/pull/169957))
+### security
