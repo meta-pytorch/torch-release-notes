@@ -28,22 +28,10 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
-- [DTensor] Extend conv ops to 3D ([#165241](https://github.com/pytorch/pytorch/pull/165241))
 ### bug fixes
-- [DTensor] Fix Conv behavior for replicate stategy ([#167402](https://github.com/pytorch/pytorch/pull/167402))
-- Revert #168264 + Python-side LRU cache when native op schema is not supported ([#168269](https://github.com/pytorch/pytorch/pull/168269))
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- [DTensor] fix copy_ strategy to support linearity ([#162460](https://github.com/pytorch/pytorch/pull/162460))
-- [DTensor] add op support for aten.unbind.int ([#162560](https://github.com/pytorch/pytorch/pull/162560))
-- Port OpSchema.__post_init__ and OpSchema._recompute_comparison_key to C++ ([#161695](https://github.com/pytorch/pytorch/pull/161695))
-- [DTensor] fix uneven _StridedShard ([#163843](https://github.com/pytorch/pytorch/pull/163843))
-- [dynamo][DebugMode] mask python keys in dispatch_key_set guard checks ([#164992](https://github.com/pytorch/pytorch/pull/164992))
-- [DTensor] add __repr__ for CommDebugMode(get_total_count()=) ([#165006](https://github.com/pytorch/pytorch/pull/165006))
-- [DTensor] Fix torch.all() using incorrect reduction operator ([#165924](https://github.com/pytorch/pytorch/pull/165924))
-- [DTensor] support Replicate -> Partial("avg") + support distribute_tensor with Partial placements ([#168133](https://github.com/pytorch/pytorch/pull/168133))
-- [DTensor] allow .to_empty to pass Partial through ([#169815](https://github.com/pytorch/pytorch/pull/169815))
 ### security

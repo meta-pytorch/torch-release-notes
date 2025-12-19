@@ -33,6 +33,15 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
+- [DCP] Avoid multiple storage writer resets in async save ([#159448](https://github.com/pytorch/pytorch/pull/159448))
+- [DCP] Add timeout for checkpoint background process join ([#162828](https://github.com/pytorch/pytorch/pull/162828))
+- [DCP] DTensor slice dequantization with proper block alignment ([#163532](https://github.com/pytorch/pytorch/pull/163532))
+- [dcp] remove psutil dependency in asyncprocessexecutor for oss ([#169985](https://github.com/pytorch/pytorch/pull/169985))
+- [DCP] Add logging for individual state_dict calls ([#169511](https://github.com/pytorch/pytorch/pull/169511))
+- Add huggingface storage reader for MXFP4 quantized GPT-OSS checkpoint ([#167672](https://github.com/pytorch/pytorch/pull/167672))
+- [dcp][state_dict] Make `_flatten_optim_state_dict` and `_unflatten_optim_state_dict` handle arbitrary-level of nested optim dictionaries by recursion ([#165071](https://github.com/pytorch/pytorch/pull/165071))
+- [DCP] Add option to use PrefixStore to create checkpoint background process ([#166560](https://github.com/pytorch/pytorch/pull/166560))
+
 ### not user facing
 - Port 4 dynamo test files for the intel XPU ([#160953](https://github.com/pytorch/pytorch/pull/160953))
 - UT/Examples for resharding checkpoint save/loads for distributed tensors with uneven shards. ([#160533](https://github.com/pytorch/pytorch/pull/160533))

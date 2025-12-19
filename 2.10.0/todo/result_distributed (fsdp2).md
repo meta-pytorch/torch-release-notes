@@ -34,7 +34,4 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 ### not user facing
-- [1/N] Port 5 _composable/fsdp distributed test cases to Intel GPU ([#159118](https://github.com/pytorch/pytorch/pull/159118))
-- [2/N] Port 5 _composable distributed test to Intel GPU ([#159241](https://github.com/pytorch/pytorch/pull/159241))
-- FSDPMemTracker fix with multihander hooks. ([#165662](https://github.com/pytorch/pytorch/pull/165662))
 ### security

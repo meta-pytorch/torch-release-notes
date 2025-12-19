@@ -34,7 +34,4 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 ### not user facing
-- [BE] Delete all pre py-3.10 checks ([#163653](https://github.com/pytorch/pytorch/pull/163653))
-- [Code Clean] Remove deadcodes about Python3.9 [6/N] ([#163645](https://github.com/pytorch/pytorch/pull/163645))
-- [APF Logging][Error Trait] To fill the errorTraits for ChildFailedError with signal abort (re-attempt of #165476) ([#165688](https://github.com/pytorch/pytorch/pull/165688))
 ### security

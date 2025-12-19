@@ -29,11 +29,9 @@ The categories below are as follows:
 ### new features
 ### improvements
 ### bug fixes
-- [PP] Fix FSDP unshard/reshard ([#164775](https://github.com/pytorch/pytorch/pull/164775))
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- [PP]: Optimize memory by early releasing stage inputs' gradients ([#164329](https://github.com/pytorch/pytorch/pull/164329))
 ### security

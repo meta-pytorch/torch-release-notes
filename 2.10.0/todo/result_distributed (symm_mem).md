@@ -33,6 +33,5 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- [MemPool] Add no-split option ([#169739](https://github.com/pytorch/pytorch/pull/169739))
 ### not user facing
 ### security
