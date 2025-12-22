@@ -26,231 +26,129 @@ The categories below are as follows:
 ## distributed
 ### bc breaking
 ### deprecation
+- DeviceMesh
+  - Added a warning for slicing flattened dim from root mesh and types for _get_slice_mesh_layout ([#164993](https://github.com/pytorch/pytorch/pull/164993))
+
 ### new features
+- LocalTensor:
+  - LocalTensor is a powerful debugging and simulation tool in PyTorch's distributed tensor ecosystem. It allows you to simulate distributed tensor computations across multiple SPMD (Single Program, Multiple Data) ranks on a single process. This is incredibly valuable for: 1) debugging distributed code without spinning up multiple processes; 2) understanding DTensor behavior by inspecting per-rank tensor states; 3) testing DTensor operations with uneven sharding across ranks; 4) rapid prototyping of distributed algorithms. Note that LocalTensor is designed for debugging purposes only. It has significant overhead and is not suitable for production distributed training.
+  - LocalTensor is a torch.Tensor subclass that internally holds a mapping from rank IDs to local tensor shards. When you perform a PyTorch operation on a LocalTensor, the operation is applied independently to each local shard, mimicking distributed computation (LocalTensor simulates collective operations locally without actual network communication.). LocalTensorMode is the context manager that enables LocalTensor dispatch. It intercepts PyTorch operations and routes them appropriately. The @maybe_run_for_local_tensor decorator is essential for handling rank-specific logic when implementing distributed code.
+  - To get started with LocalTensor, users import from torch.distributed._local_tensor, initialize a fake process group, and wrap their distributed code in a LocalTensorMode context. Within this context, DTensor operations automatically produce LocalTensors.
+  - PRs: ([#164537](https://github.com/pytorch/pytorch/pull/164537), [#166595](https://github.com/pytorch/pytorch/pull/166595), [#168110](https://github.com/pytorch/pytorch/pull/168110),[#168314](https://github.com/pytorch/pytorch/pull/168314),[#169088](https://github.com/pytorch/pytorch/pull/169088),[#169734](https://github.com/pytorch/pytorch/pull/169734))
 - c10d:
   - New shrink_group implementation to expose `ncclCommShrink` API ([#164518](https://github.com/pytorch/pytorch/pull/164518))
 ### improvements
-- DTensor:
-  - Extended conv ops to 3D ([#165241](https://github.com/pytorch/pytorch/pull/165241))
+- c10d
+  - Added handling of discontiguous allgather/reducescatter inputs ([#163712](https://github.com/pytorch/pytorch/pull/163712))
+  - Supported high stream for ProcessGroupXCCL ([#163049](https://github.com/pytorch/pytorch/pull/163049))
+- Context Parallel
+  - Introduced ContextParallal plan for `parallelize_module` ([#162542](https://github.com/pytorch/pytorch/pull/162542))
+  - Replaced context_parallel context manager with functional APIs ([#164500](https://github.com/pytorch/pytorch/pull/164500))
+  - Introduced `flex_cp_forward` custom op for FlexAttention CP ([#163185](https://github.com/pytorch/pytorch/pull/163185))
+  - Add `_templated_ring_attention` to the backward compatility stub ([#166991](https://github.com/pytorch/pytorch/pull/166991))
+  - Added `_LoadBalancer` classes, and load-balance interface to Context Parallel APIs with process-time based Round-Robin load-balance ([#161062](https://github.com/pytorch/pytorch/pull/161062), [#163617](https://github.com/pytorch/pytorch/pull/163617))
+  - Added python bindings for NCCL CTA policies ([#164309](https://github.com/pytorch/pytorch/pull/164309))
+- DeviceMesh
+  - Adopted CuTe layout for DeviceMesh internal bookkeepings with a shared 1D _rank_map tensor and related code cleanups ([#162413](https://github.com/pytorch/pytorch/pull/162413), [#162534](https://github.com/pytorch/pytorch/pull/162534), [#163212](https://github.com/pytorch/pytorch/pull/163212), [#163288](https://github.com/pytorch/pytorch/pull/163288), [#163928](https://github.com/pytorch/pytorch/pull/163928), [#163930](https://github.com/pytorch/pytorch/pull/163930), [#164750](https://github.com/pytorch/pytorch/pull/164750), [#164954](https://github.com/pytorch/pytorch/pull/164954), [#164510](https://github.com/pytorch/pytorch/pull/164510), [#166264](https://github.com/pytorch/pytorch/pull/166264), [#167581](https://github.com/pytorch/pytorch/pull/167581), [#162690](https://github.com/pytorch/pytorch/pull/162690), [#163367](https://github.com/pytorch/pytorch/pull/163367))
+  - Implemented `_unflatten` on top of CuTe layout bookkeeping ([#161224](https://github.com/pytorch/pytorch/pull/161224), [#165521](https://github.com/pytorch/pytorch/pull/165521))
+  - Added support of `_rank` for use with non-global PGs ([#162439](https://github.com/pytorch/pytorch/pull/162439))
+- FullyShardDataParallel (FSDP1 and FSDP2)
+  - Implemented idempotent `reset_sharded_param`: no-op if _local_tensor is already padded ([#163130](https://github.com/pytorch/pytorch/pull/163130))
+  - Added support of AC(FSDP) for torchtitan's MOE ([#164009](https://github.com/pytorch/pytorch/pull/164009))
+  - Provided public API to share cuda streams across roots ([#165024](https://github.com/pytorch/pytorch/pull/165024))
+- DTensor
+  - Extended conv ops to 3D ([#165241](https://github.com/pytorch/pytorch/pull/165241), [#167402](https://github.com/pytorch/pytorch/pull/167402))
+  - Added an explicit mode (ExplicitRedistributionContext) for DTensor redistribute ([#166593](https://github.com/pytorch/pytorch/pull/166593), [#167370](https://github.com/pytorch/pytorch/pull/167370), [#169452](https://github.com/pytorch/pytorch/pull/169452))
+  - Reduced DTensor CPU overhead by moving logic into c++ and more optimizations to sharding propagation and cache ([#162508](https://github.com/pytorch/pytorch/pull/162508), [#163820](https://github.com/pytorch/pytorch/pull/163820), [#162990](https://github.com/pytorch/pytorch/pull/162990), [#166750](https://github.com/pytorch/pytorch/pull/166750), [#166989](https://github.com/pytorch/pytorch/pull/166989), [#166990](https://github.com/pytorch/pytorch/pull/166990), [#167051](https://github.com/pytorch/pytorch/pull/167051), [#166372](https://github.com/pytorch/pytorch/pull/166372), [#166808](https://github.com/pytorch/pytorch/pull/166808), [#167475](https://github.com/pytorch/pytorch/pull/167475), [#167588](https://github.com/pytorch/pytorch/pull/167588), [#168264](https://github.com/pytorch/pytorch/pull/168264), [#169519](https://github.com/pytorch/pytorch/pull/169519), [#168051](https://github.com/pytorch/pytorch/pull/168051), [#168983](https://github.com/pytorch/pytorch/pull/168983), [#166132](https://github.com/pytorch/pytorch/pull/166132), [#167580](https://github.com/pytorch/pytorch/pull/167580), [#168269](https://github.com/pytorch/pytorch/pull/168269))
+  - Enable per-rank RNG state collect/set for XPU devices in DTensor ([#169410](https://github.com/pytorch/pytorch/pull/169410))
+  - Added `_foreach_pow`, `logsumexp` and `masked_fill_.Scalar` to sharding propagation list. ([#162895](https://github.com/pytorch/pytorch/pull/162895), [#163879](https://github.com/pytorch/pytorch/pull/163879), [#169668](https://github.com/pytorch/pytorch/pull/169668))
+- SymmetricMemory
+  - Added MemPool support to CUDA backend and get_mem_pool API ([#169740](https://github.com/pytorch/pytorch/pull/169740), [#170008](https://github.com/pytorch/pytorch/pull/170008), [#169739](https://github.com/pytorch/pytorch/pull/169739))
+  - Added op `multimem_one_shot_reduce_out` ([#164517](https://github.com/pytorch/pytorch/pull/164517))
+  - Added op `multi_root_tile_reduce` ([#162243](https://github.com/pytorch/pytorch/pull/162243), [#164757](https://github.com/pytorch/pytorch/pull/164757))
+  - Added op to get remote tensors ([#167779](https://github.com/pytorch/pytorch/pull/167779))
+  - Added `symm_mem_sync` Triton kernel to `torch.ops.symm_mem` ([#168917](https://github.com/pytorch/pytorch/pull/168917))
+  - Added a NVSHMEM based one side API ([#159837](https://github.com/pytorch/pytorch/pull/159837), [#163194](https://github.com/pytorch/pytorch/pull/163194))
+  - Skipped multicast initialization if it fails ([#163750](https://github.com/pytorch/pytorch/pull/163750))
+  - Supported copy engine based all-gather and all-to-all ([#170344](https://github.com/pytorch/pytorch/pull/170344), [#170265](https://github.com/pytorch/pytorch/pull/170265))
+  - Added `set_signal_pad_size` API for SymmetricMemory ([#169156](https://github.com/pytorch/pytorch/pull/169156))
+- pipeline parallelism
+  - Made runtime dbg log print custom actions ([#167113](https://github.com/pytorch/pytorch/pull/167113))
+  - Moved profiler record_function in schedule and improved visualizer ([#164976](https://github.com/pytorch/pytorch/pull/164976), [#160474](https://github.com/pytorch/pytorch/pull/160474))
+- torchelastic
+  - Added support to handle IGUSR1 and SIGUSR2 in multiprocessing ([#160690](https://github.com/pytorch/pytorch/pull/160690))
+  - Captured exit codes after sigterm/sigkill from torch elastic. ([#160908](https://github.com/pytorch/pytorch/pull/160908))
+  - Duplicate stdout and stderr and apply custom filter in torchrun ([#160712](https://github.com/pytorch/pytorch/pull/160712))
+  - Added flush option to `TailLog` ([#167169](https://github.com/pytorch/pytorch/pull/167169))
+- pipeline parallelism
+  - Enabled inspect of schedule IR with comms ([#162996](https://github.com/pytorch/pytorch/pull/162996))
+  - Use default export mode (non-strict) for pipeline parallelism ([#164045](https://github.com/pytorch/pytorch/pull/164045))
+  - Enabled PP split BlockMask into micro-BlockMask ([#164111](https://github.com/pytorch/pytorch/pull/164111))
+  - Migrate other schedules to use `PipelineScheduleRuntime` ([#164777](https://github.com/pytorch/pytorch/pull/164777))
+  - Improvement the composability with FSDP with FSDP reduce scatters moved to end of step and backward_counter updated to schedule class ([#165106](https://github.com/pytorch/pytorch/pull/165106), [#165513](https://github.com/pytorch/pytorch/pull/165513))
+  - Added optional argument to not save outputs ([#165822](https://github.com/pytorch/pytorch/pull/165822))
+  - Added PP Runtime Features for supporting Graph Based execution ([#167277](https://github.com/pytorch/pytorch/pull/167277))
+  - Used same dtype for receive and send tensor when initializing p2p communication. ([#165539](https://github.com/pytorch/pytorch/pull/165539))
+  - Support `OVERLAP_F_B` in schedule ([#161072](https://github.com/pytorch/pytorch/pull/161072))
+  - Support custom callback functions in schedule ([#162016](https://github.com/pytorch/pytorch/pull/162016))
+
 ### bug fixes
+- c10d
+  - Enforced P2P tensors to be dense ([#163719](https://github.com/pytorch/pytorch/pull/163719))
+  - Fixed `split_group` bug by having the parent pg option deep copied ([#167125](https://github.com/pytorch/pytorch/pull/167125))
+  - Fixed `ProcessGroupNCCL` coalseced profiling ([#160680](https://github.com/pytorch/pytorch/pull/160680))
+- Context Parallel
+  - Fixed cuDNN Context Parallel LSE dimension bug ([#163231](https://github.com/pytorch/pytorch/pull/163231))
+- DistributedDataParallel: (DDP)
+  - Fixed complex datatype handling in ddp ([#166863](https://github.com/pytorch/pytorch/pull/166863))
+- DistributedStateDict
+  - Fixed keyerror when loading parameter with unsaved optimizer state ([#165228](https://github.com/pytorch/pytorch/pull/165228))
+- DTensor
+  - Fixed `foreach_max` op ([#169667](https://github.com/pytorch/pytorch/pull/169667))
+- FullyShardDataParallel (FSDP1 and FSDP2)
+  - Added skipping `reduce_scatter` when world size is 1 (Collectives) ([#162021](https://github.com/pytorch/pytorch/pull/162021))
+  - Used grad div factor when fsdp_degree=1 ([#167178](https://github.com/pytorch/pytorch/pull/167178))
 - Pipeline Parallelism:
   - Fixed FSDP unshard/reshard ([#164775](https://github.com/pytorch/pytorch/pull/164775))
-- [SymmMem] Fix memory allocation hold-up ([#162680](https://github.com/pytorch/pytorch/pull/162680))
-- [c10d] P2P tensors must be dense ([#163719](https://github.com/pytorch/pytorch/pull/163719))
-- [c10d]Fake process group Direct construction error ([#163665](https://github.com/pytorch/pytorch/pull/163665))
-- [DTensor] Fix Conv behavior for replicate stategy ([#167402](https://github.com/pytorch/pytorch/pull/167402))
-- [DTensor] Revert #168264 + Python-side LRU cache when native op schema is not supported ([#168269](https://github.com/pytorch/pytorch/pull/168269))
+  - Fixed pipeline parallelism not correctly initializing backwards stages when evaluating before training. ([#162823](https://github.com/pytorch/pytorch/pull/162823))
+  - Fixed split_args_kwargs_into_chunks issues ([#165306](https://github.com/pytorch/pytorch/pull/165306))
+  - Fixed edge case with FSDP when stages_per_rank > 3 ([#165467](https://github.com/pytorch/pytorch/pull/165467))
+- SymmetricMemory
+  - Fixed memory allocation hold-up ([#162680](https://github.com/pytorch/pytorch/pull/162680))
 ### performance
 ### docs
-- [BE][c10d] document distributed apis ([#165194](https://github.com/pytorch/pytorch/pull/165194))
+- c10d
+  - Complete documentations for all distributed c10d apis ([#165194](https://github.com/pytorch/pytorch/pull/165194))
 ### devs
-- Remove python code older than 3.10 (distributed) ([#163613](https://github.com/pytorch/pytorch/pull/163613))
-- Add a few more missing move from return indices ([#163456](https://github.com/pytorch/pytorch/pull/163456))
-- Remove workarounds for Python 3.6 ([#163440](https://github.com/pytorch/pytorch/pull/163440))
-- Remove workarounds for older Python ([#167173](https://github.com/pytorch/pytorch/pull/167173))
+- c10d
+  - Added TCPStore based debug page and fr trace analysis with py-spy support ([#169095](https://github.com/pytorch/pytorch/pull/169095), [#169144](https://github.com/pytorch/pytorch/pull/169144), [#169147](https://github.com/pytorch/pytorch/pull/169147), [#167871](https://github.com/pytorch/pytorch/pull/167871))
+  - Modernized c10d code base with python code older than 3.10 removed ([#163613](https://github.com/pytorch/pytorch/pull/163613), [#163456](https://github.com/pytorch/pytorch/pull/163456), [#163440](https://github.com/pytorch/pytorch/pull/163440), [#167173](https://github.com/pytorch/pytorch/pull/167173))
+  - Enabled FlightRecorder for torchft with dynamic dumping path and a reset API ([#164752](https://github.com/pytorch/pytorch/pull/164752), [#164988](https://github.com/pytorch/pytorch/pull/164988), [#164591](https://github.com/pytorch/pytorch/pull/164591), [#165639](https://github.com/pytorch/pytorch/pull/165639), [#166970](https://github.com/pytorch/pytorch/pull/166970),[#166182](https://github.com/pytorch/pytorch/pull/166182))
+  - Improvement to FakeProcessGroup: direct construction error and error out if comms are invoked ([#162841](https://github.com/pytorch/pytorch/pull/162841), [#163665](https://github.com/pytorch/pytorch/pull/163665))
+- DTensor
+  - Added guide for what to do about mixed torch.Tensor and DTensor operations ([#162651](https://github.com/pytorch/pytorch/pull/162651))
+  - Raised an RuntimeError when checkpointing APIs are used with Partial placement ([#163941](https://github.com/pytorch/pytorch/pull/163941))
+- torchelastic
+  - Added missing `signals_to_handle` to launcher logging ([#166631](https://github.com/pytorch/pytorch/pull/166631))
+  - Added logging exit code for failures to ease debugging ([#160907](https://github.com/pytorch/pytorch/pull/160907))
 
 ### Untopiced
-### c10d
+### not user facing
+- Clarifying flatten use case ([#161311](https://github.com/pytorch/pytorch/pull/161311))
+- Update tensor ptr inside `nccl.cpp` ([#164276](https://github.com/pytorch/pytorch/pull/164276))
+- Move MaskPartial to placement_types to improve discoverability ([#164414](https://github.com/pytorch/pytorch/pull/164414))
+- Continue local tensor mode enablement for DTensor tests ([#165451](https://github.com/pytorch/pytorch/pull/165451))
+- check storage equal and consider data_ptr() == 0 ([#164595](https://github.com/pytorch/pytorch/pull/164595))
 - Fix override function modifier (nvshmem) ([#162515](https://github.com/pytorch/pytorch/pull/162515))
 - Fix inconsistent clock types in `ProcessGroupNCCL::runHookLoop` ([#162543](https://github.com/pytorch/pytorch/pull/162543))
 - Code clean for torch.distributed.init_process_group ([#163038](https://github.com/pytorch/pytorch/pull/163038))
-- Update tensor ptr inside nccl.cpp ([#164276](https://github.com/pytorch/pytorch/pull/164276))
-- Fix split_group bug by having the parent pg option deep copied ([#167125](https://github.com/pytorch/pytorch/pull/167125))
-- Add set_signal_pad_size API for SymmetricMemory ([#169156](https://github.com/pytorch/pytorch/pull/169156))
-- Fix PgNccl coalseced profiling ([#160680](https://github.com/pytorch/pytorch/pull/160680))
-- Add option to FakeProcessGroup to raise error if comms are invoked. ([#162841](https://github.com/pytorch/pytorch/pull/162841))
-
-
-### SymmMem
-- Don't include cuh header when USE_NVSHMEM is off ([#162635](https://github.com/pytorch/pytorch/pull/162635))
-- Fix NVSHMEM plugin + Triton 3.5 ([#163152](https://github.com/pytorch/pytorch/pull/163152))
-- Fix put_signal + wait_until hang ([#163194](https://github.com/pytorch/pytorch/pull/163194))
-- Barrier on team instead of world ([#163298](https://github.com/pytorch/pytorch/pull/163298))
-- Add a wait for signal and put signal for one side API ([#159837](https://github.com/pytorch/pytorch/pull/159837))
-- Add get_nbi the nonblocking version ([#163540](https://github.com/pytorch/pytorch/pull/163540))
-- Tiled reduce ([#162243](https://github.com/pytorch/pytorch/pull/162243))
-- Multi-root tile reduction ([#164757](https://github.com/pytorch/pytorch/pull/164757))
-- op to get remote tensors ([#167779](https://github.com/pytorch/pytorch/pull/167779))
-- Add MemPool support to CUDA backend ([#169740](https://github.com/pytorch/pytorch/pull/169740))
-- Add get_mem_pool wrapper ([#170008](https://github.com/pytorch/pytorch/pull/170008))
-- Add `symm_mem_sync` Triton kernel to `torch.ops.symm_mem` ([#168917](https://github.com/pytorch/pytorch/pull/168917))
-- Releases multicast object before releasing mapped buffers in CUDASymmetricMemory ([#163750](https://github.com/pytorch/pytorch/pull/163750))
-- Promote `@requires_nvshmem` instead of `enable_triton` ([#163549](https://github.com/pytorch/pytorch/pull/163549))
-
-### DeviceMesh
-- DeviceMesh: support _rank for use with non-global PGs ([#162439](https://github.com/pytorch/pytorch/pull/162439))
-- Clarifying flatten use case ([#161311](https://github.com/pytorch/pytorch/pull/161311))
-- Copy code from pycute for device mesh bookkeeping ([#162413](https://github.com/pytorch/pytorch/pull/162413))
-- Add type for CuTe layout via claude ([#162534](https://github.com/pytorch/pytorch/pull/162534))
-- Introduce CuTe layout into devicemesh code base for internal bookkeeping ([#163212](https://github.com/pytorch/pytorch/pull/163212))
-- Add extra check in flatten result cache lookup ([#163288](https://github.com/pytorch/pytorch/pull/163288))
-- Add a type alias for backend config ([#163928](https://github.com/pytorch/pytorch/pull/163928))
-- Extract the pg creation as a util function ([#163930](https://github.com/pytorch/pytorch/pull/163930))
-- Remove private _set_mesh_dim_group_options API ([#164750](https://github.com/pytorch/pytorch/pull/164750))
-- Make all members of DeviceMesh private and add public access API ([#164954](https://github.com/pytorch/pytorch/pull/164954))
-- Add a warning for slicing flattened dim from root mesh and types for _get_slice_mesh_layout ([#164993](https://github.com/pytorch/pytorch/pull/164993))
-- Move global state into class method ([#164510](https://github.com/pytorch/pytorch/pull/164510))
-- Implement  `_unflatten` on top of CuTe layout bookkeeping ([#161224](https://github.com/pytorch/pytorch/pull/161224))
-- Make _flatten_mapping an object attribute instead of a class attribute ([#165521](https://github.com/pytorch/pytorch/pull/165521))
-- Use _flatten_rank_map to replace _flatten_mesh_list so that we don't need to compare root mesh (#166003) ([#166264](https://github.com/pytorch/pytorch/pull/166264))
-- Use concatenate for 2D (FSDP+TP) instead of getting from root mesh ([#165492](https://github.com/pytorch/pytorch/pull/165492))
-- Remove slicing submesh warning messages and clean up in fsdp params ([#166466](https://github.com/pytorch/pytorch/pull/166466))
-- Clean up unused parameters and duplicate codes ([#167581](https://github.com/pytorch/pytorch/pull/167581))
-- Change the logic of pycute manipulation ops like coalesce, complement from co-lex to lex ([#162690](https://github.com/pytorch/pytorch/pull/162690))
-- Add layout overlap checking util function in _MeshLayout ([#163367](https://github.com/pytorch/pytorch/pull/163367))
-
-### DTensor
-- Add _foreach_pow to sharding propagation list. ([#162895](https://github.com/pytorch/pytorch/pull/162895))
-- Add guide for what to do about mixed torch.Tensor and DTensor operations ([#162651](https://github.com/pytorch/pytorch/pull/162651))
-- Fully native DTensor.__new__ ([#162508](https://github.com/pytorch/pytorch/pull/162508))
-- implement logsumexp ([#163879](https://github.com/pytorch/pytorch/pull/163879))
-- Raise an RuntimeError when checkpointing APIs are used with Partial placement ([#163941](https://github.com/pytorch/pytorch/pull/163941))
-- avoid shape recompilations on DTensorSpec ([#163820](https://github.com/pytorch/pytorch/pull/163820))
-- Continue local tensor mode enablement for DTensor tests ([#165451](https://github.com/pytorch/pytorch/pull/165451))
-- C++ compute_global_tensor_info ([#162990](https://github.com/pytorch/pytorch/pull/162990))
-- include DTensor metadata when pretty-printing fx.Graphs ([#166750](https://github.com/pytorch/pytorch/pull/166750))
-- add explicit mode (ExplicitRedistributionContext) ([#166593](https://github.com/pytorch/pytorch/pull/166593))
-- ignore fresh unbacked symbols in shard prop ([#166989](https://github.com/pytorch/pytorch/pull/166989))
-- Make ExplicitRedistributeContext strict/non-strict mode ([#167370](https://github.com/pytorch/pytorch/pull/167370))
-- statically_known_true for slice strategy ([#166990](https://github.com/pytorch/pytorch/pull/166990))
-- Add C++ fast path for `DTensor.__torch_dispatch__` ([#167051](https://github.com/pytorch/pytorch/pull/167051))
-- Avoid creating Python OpSchema in the DTensor dispatch fast path ([#166372](https://github.com/pytorch/pytorch/pull/166372))
-- extend C++ DTensor fast path to local operator dispatch ([#166808](https://github.com/pytorch/pytorch/pull/166808))
-- DTensor fast path: port return_and_correct_aliasing and inplace/out checks ([#167475](https://github.com/pytorch/pytorch/pull/167475))
-- avoid unnecessary DTensorSpec creation in _ToTorchTensor.backward ([#167588](https://github.com/pytorch/pytorch/pull/167588))
-- Revert C++ fastpath dispatch path for DTensor ([#168264](https://github.com/pytorch/pytorch/pull/168264))
-- ExplicitRedistributionContext warning mode ([#169452](https://github.com/pytorch/pytorch/pull/169452))
-- Fix slow sharding prop for stack ([#169519](https://github.com/pytorch/pytorch/pull/169519))
-- unbacked matmuls for no-redistribute case ([#168051](https://github.com/pytorch/pytorch/pull/168051))
-- Efficient argmax and argmin (masked and unmasked) ([#168983](https://github.com/pytorch/pytorch/pull/168983))
-- Add sharding prop for masked_fill_.Scalar ([#169668](https://github.com/pytorch/pytorch/pull/169668))
-- Fix foreach_max ([#169667](https://github.com/pytorch/pytorch/pull/169667))
-
-### PP (Pipeline Parallelism)
-- Add spacing to visualizer ([#160474](https://github.com/pytorch/pytorch/pull/160474))
-- Inspect schedule IR comms ([#162996](https://github.com/pytorch/pytorch/pull/162996))
-- Use default export mode (non-strict) ([#164045](https://github.com/pytorch/pytorch/pull/164045))
-- Let PP split BlockMask into micro-BlockMask ([#164111](https://github.com/pytorch/pytorch/pull/164111))
-- Migrate other schedules to use PipelineScheduleRuntime ([#164777](https://github.com/pytorch/pytorch/pull/164777))
-- Move profiler record_function in schedule ([#164976](https://github.com/pytorch/pytorch/pull/164976))
-- move FSDP reduce scatters to end of step ([#165106](https://github.com/pytorch/pytorch/pull/165106))
-- Fix split_args_kwargs_into_chunks issues ([#165306](https://github.com/pytorch/pytorch/pull/165306))
-- Fix edge case with FSDP when stages_per_rank > 3 ([#165467](https://github.com/pytorch/pytorch/pull/165467))
-- Update backward_counter and fsdp util to schedule class ([#165513](https://github.com/pytorch/pytorch/pull/165513))
-- Add optional argument to not save outputs ([#165822](https://github.com/pytorch/pytorch/pull/165822))
-- make runtime dbg log print custom actions ([#167113](https://github.com/pytorch/pytorch/pull/167113))
-- PP Runtime Features for supporting Graph Based execution  ([#167277](https://github.com/pytorch/pytorch/pull/167277))
-- Fix pipeline parallelism not correctly initializing backwards stages when evaluating before training. ([#162823](https://github.com/pytorch/pytorch/pull/162823))
-- In pipeline parallelism: Use same dtype for receive and send tensor when initializing p2p communication. ([#165539](https://github.com/pytorch/pytorch/pull/165539))
-- Support OVERLAP_F_B in schedule ([#161072](https://github.com/pytorch/pytorch/pull/161072))
-- Support custom callback functions in schedule ([#162016](https://github.com/pytorch/pytorch/pull/162016))
-
-
-### CP (Context Parallel)
-- Fix cuDNN CP LSE dimension bug ([#163231](https://github.com/pytorch/pytorch/pull/163231))
-- Introduce ContextParallal plan for parallelize_module() ([#162542](https://github.com/pytorch/pytorch/pull/162542))
-- Replace context_parallel context manager with functional APIs ([#164500](https://github.com/pytorch/pytorch/pull/164500))
-- Introduce flex_cp_forward custom op for FlexAttention CP ([#163185](https://github.com/pytorch/pytorch/pull/163185))
-- Add _templated_ring_attention to the backward compatility stub ([#166991](https://github.com/pytorch/pytorch/pull/166991))
-
-### ContextParallel
-- add `_LoadBalancer` classes, and load-balance interface to Context Parallel APIs ([#161062](https://github.com/pytorch/pytorch/pull/161062))
-- add process-time based Round-Robin load-balance to CP ([#163617](https://github.com/pytorch/pytorch/pull/163617))
-
-### FSDP
-- skipping reduce_scatter when world size is 1 (Collectives) ([#162021](https://github.com/pytorch/pytorch/pull/162021))
-- created ReplicateModule and changed replicate to use it instead of FSDPModule (Replicate) ([#163897](https://github.com/pytorch/pytorch/pull/163897))
-- got rid of reshard_after_forward and updated test cases (Replicate) ([#166469](https://github.com/pytorch/pytorch/pull/166469))
-
-### FSDP2
-- idempotent reset_sharded_param: no-op if _local_tensor is already padded ([#163130](https://github.com/pytorch/pytorch/pull/163130))
-- support AC(FSDP) for torchtitan's MOE ([#164009](https://github.com/pytorch/pytorch/pull/164009))
-- check storage equal and consider data_ptr() == 0 ([#164595](https://github.com/pytorch/pytorch/pull/164595))
-- provide public API to share cuda streams across roots ([#165024](https://github.com/pytorch/pytorch/pull/165024))
-
-### torchelastic
-- Add support to handle IGUSR1 and SIGUSR2 in multiprocessing ([#160690](https://github.com/pytorch/pytorch/pull/160690))
-- logging exit code for failures to ease debugging ([#160907](https://github.com/pytorch/pytorch/pull/160907))
-- capturing exit codes after sigterm/sigkill from torch elastic. ([#160908](https://github.com/pytorch/pytorch/pull/160908))
-- Duplicate stdout and stderr and apply custom filter in torchrun ([#160712](https://github.com/pytorch/pytorch/pull/160712))
-- Add flush option to TailLog ([#167169](https://github.com/pytorch/pytorch/pull/167169))
-
-### ROCm
-- Enable several distributed UTs ([#164390](https://github.com/pytorch/pytorch/pull/164390))
-- Enable and fix several FSDP + Inductor distributed unit tests ([#165011](https://github.com/pytorch/pytorch/pull/165011))
-- Update skip_if_lt_x_gpu to work with MultiProcContinuous class ([#167281](https://github.com/pytorch/pytorch/pull/167281))
-
-### Flight Recorder
-- Enable dynamic path write for FR dump when it comes to torchft ([#164752](https://github.com/pytorch/pytorch/pull/164752))
-- Enable reset the FR recording for fault tolerance ([#164988](https://github.com/pytorch/pytorch/pull/164988))
-- Add knobs in FR dump by watchdog (stacktrace and only active collectives) and trigger FR even on any exceptions ([#164591](https://github.com/pytorch/pytorch/pull/164591))
-- allow providing full fr trace path ([#165639](https://github.com/pytorch/pytorch/pull/165639))
-- fix fr reset api ([#166970](https://github.com/pytorch/pytorch/pull/166970))
-- Reverted to include stack traces for dump pipe triggered FR dump (03fd2b796e6)
 - flight_recorder: move to torch.distributed ([#167782](https://github.com/pytorch/pytorch/pull/167782))
-
-### xpu
-- Support high stream for ProcessGroupXCCL ([#163049](https://github.com/pytorch/pytorch/pull/163049))
-- Fix type annotation for ProcessGroupXCCL ([#166418](https://github.com/pytorch/pytorch/pull/166418))
-
-### DSD
-- fixes keyerror when loading parameter with unsaved optimizer state ([#165228](https://github.com/pytorch/pytorch/pull/165228))
-
-### MemTracker
-- Fix:  Remove monkey patching DTensor dispatch ([#167580](https://github.com/pytorch/pytorch/pull/167580))
-
-### MemPool
-- Move MemPool out of c10 and into ATen. ([#167506](https://github.com/pytorch/pytorch/pull/167506))
-- Add no-split option ([#169739](https://github.com/pytorch/pytorch/pull/169739))
-
-### simplefsdp
-- add manual bucketing pass ([#165487](https://github.com/pytorch/pytorch/pull/165487))
-
-### dist
-- handle discontiguous allgather/reducescatter inputs ([#163712](https://github.com/pytorch/pytorch/pull/163712))
+- Reverted to include stack traces for dump pipe triggered FR dump (03fd2b796e6)
 - add reduce_scatter_out ([#168260](https://github.com/pytorch/pytorch/pull/168260))
-
-### dist/debug
-- add TCPStore debug page ([#169095](https://github.com/pytorch/pytorch/pull/169095))
-- add fr trace analysis ([#169144](https://github.com/pytorch/pytorch/pull/169144))
-- support py-spy (native+subprocess) stacks ([#169147](https://github.com/pytorch/pytorch/pull/169147))
-
-### a2av
-- Separate in/out splits into two tensors ([#163837](https://github.com/pytorch/pytorch/pull/163837))
-
-### ptd
-- Fix test config in destroy_pg ([#166463](https://github.com/pytorch/pytorch/pull/166463))
-
-### Others
-- Add python bindings for NCCL CTA policies ([#164309](https://github.com/pytorch/pytorch/pull/164309))
-- Add torch compile check for ZeroBubble ([#162511](https://github.com/pytorch/pytorch/pull/162511))
-- LocalTensor ([#164537](https://github.com/pytorch/pytorch/pull/164537))
-- Native matmul ([#157743](https://github.com/pytorch/pytorch/pull/157743))
-- Fix periodic debug tests failing due to FakeProcessGroup things ([#165479](https://github.com/pytorch/pytorch/pull/165479))
-- Composite backend potential fix for is_backend_available ([#165061](https://github.com/pytorch/pytorch/pull/165061))
 - Make Backend::setGroupUid virtual ([#165957](https://github.com/pytorch/pytorch/pull/165957))
-- state dict staging fixes ([#166025](https://github.com/pytorch/pytorch/pull/166025))
-- Re-re-re-re-apply "C++-accessible Placements via pybind11 (#163030)" ([#166132](https://github.com/pytorch/pytorch/pull/166132))
-- Move MaskPartial to placement_types to improve discoverability ([#164414](https://github.com/pytorch/pytorch/pull/164414))
 - Replace NUMA inheritance approach ([#166026](https://github.com/pytorch/pytorch/pull/166026))
-- set pg name based on ranks ([#166182](https://github.com/pytorch/pytorch/pull/166182))
-- fix: Add missing signals_to_handle to launcher logging ([#166631](https://github.com/pytorch/pytorch/pull/166631))
-- Send / recv support in local tensor ([#166595](https://github.com/pytorch/pytorch/pull/166595))
-- Distributed Autotuning ([#163369](https://github.com/pytorch/pytorch/pull/163369))
-- fix: use grad div factor when fsdp_degree=1 ([#167178](https://github.com/pytorch/pytorch/pull/167178))
-- Introduce missing collectives and small fixes to support local tensor mode in AutoParallel ([#168110](https://github.com/pytorch/pytorch/pull/168110))
-- Replace string with char for output ([#168215](https://github.com/pytorch/pytorch/pull/168215))
-- control_plane: add handler for WaitCounters ([#167871](https://github.com/pytorch/pytorch/pull/167871))
-- Add allgather_base and reduce_scatter_base collective implementations to Local Tensor ([#168314](https://github.com/pytorch/pytorch/pull/168314))
-- Parity of rng offset compute and ranks subset support for Local Tensor ([#169088](https://github.com/pytorch/pytorch/pull/169088))
-- Fixes complex datatype handling in ddp ([#166863](https://github.com/pytorch/pytorch/pull/166863))
-- Add GroupName NewType ([#167552](https://github.com/pytorch/pytorch/pull/167552))
-- Removing unnecessary wait_tensor interception in LocalTensor ([#169734](https://github.com/pytorch/pytorch/pull/169734))
-- Call parent init method ([#169745](https://github.com/pytorch/pytorch/pull/169745))
-- Enable per-rank RNG state collect/set for XPU devices ([#169410](https://github.com/pytorch/pytorch/pull/169410))
-
-
-### not user facing
+- Composite backend potential fix for is_backend_available ([#165061](https://github.com/pytorch/pytorch/pull/165061))
+- Add torch compile check for ZeroBubble ([#162511](https://github.com/pytorch/pytorch/pull/162511))
 - Replace 164 assert statements in fsdp directory (distributed) ([#165235](https://github.com/pytorch/pytorch/pull/165235))
 - Fix unused loop variables in tests ([#167290](https://github.com/pytorch/pytorch/pull/167290))
 - Fix unused loop variables ([#166500](https://github.com/pytorch/pytorch/pull/166500))
@@ -487,4 +385,25 @@ The categories below are as follows:
 - [DebugMode] more selective silencing of profiler::record_function ([#169716](https://github.com/pytorch/pytorch/pull/169716))
 - [BE] Fix SyntaxWarning when a return statement in the finally block in Python3.14 ([#169819](https://github.com/pytorch/pytorch/pull/169819))
 - Isolate _StridedShard from Shard ([#167887](https://github.com/pytorch/pytorch/pull/167887))
+- Enable several distributed UTs ([#164390](https://github.com/pytorch/pytorch/pull/164390))
+- Enable and fix several FSDP + Inductor distributed unit tests ([#165011](https://github.com/pytorch/pytorch/pull/165011))
+- Update skip_if_lt_x_gpu to work with MultiProcContinuous class ([#167281](https://github.com/pytorch/pytorch/pull/167281))
+- Fix test config in destroy_pg ([#166463](https://github.com/pytorch/pytorch/pull/166463))
+- Fix periodic debug tests failing due to FakeProcessGroup things ([#165479](https://github.com/pytorch/pytorch/pull/165479))
+- Replace string with char for output ([#168215](https://github.com/pytorch/pytorch/pull/168215))
+- Call parent init method ([#169745](https://github.com/pytorch/pytorch/pull/169745))
+- Fix type annotation for ProcessGroupXCCL ([#166418](https://github.com/pytorch/pytorch/pull/166418))
+- Don't include cuh header when USE_NVSHMEM is off ([#162635](https://github.com/pytorch/pytorch/pull/162635))
+- Fix NVSHMEM plugin + Triton 3.5 ([#163152](https://github.com/pytorch/pytorch/pull/163152))
+- Barrier on team instead of world ([#163298](https://github.com/pytorch/pytorch/pull/163298))
+- Add get_nbi the nonblocking version ([#163540](https://github.com/pytorch/pytorch/pull/163540))
+- Promote `@requires_nvshmem` instead of `enable_triton` ([#163549](https://github.com/pytorch/pytorch/pull/163549))
+- Move MemPool out of c10 and into ATen. ([#167506](https://github.com/pytorch/pytorch/pull/167506))
 ### security
+### Removed because of not fully launched yet
+- Separate in/out splits into two tensors ([#163837](https://github.com/pytorch/pytorch/pull/163837))
+- add manual bucketing pass ([#165487](https://github.com/pytorch/pytorch/pull/165487))
+- Created `ReplicateModule` and changed `replicate` to use it instead of FSDPModule (Replicate) ([#163897](https://github.com/pytorch/pytorch/pull/163897))
+- Removed reshard_after_forward and updated test cases (Replicate) ([#166469](https://github.com/pytorch/pytorch/pull/166469))
+- Use concatenate for 2D (FSDP+TP) instead of getting from root mesh ([#165492](https://github.com/pytorch/pytorch/pull/165492))
+- Remove slicing submesh warning messages and clean up in fsdp params ([#166466](https://github.com/pytorch/pytorch/pull/166466))

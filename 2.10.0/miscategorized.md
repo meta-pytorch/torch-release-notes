@@ -20,3 +20,6 @@
 - FakeTensorMode shouldn't cache syms when tracing ([#164718](https://github.com/pytorch/pytorch/pull/164718))
 - Warn if AccumulateGrad stream does not match producer node stream ([#166136](https://github.com/pytorch/pytorch/pull/166136))
 - Replace c10::call_once with static initialization ([#166381](https://github.com/pytorch/pytorch/pull/166381))
+- Native matmul ([#157743](https://github.com/pytorch/pytorch/pull/157743))
+- Distributed Autotuning ([#163369](https://github.com/pytorch/pytorch/pull/163369))
+- Add GroupName NewType ([#167552](https://github.com/pytorch/pytorch/pull/167552))
