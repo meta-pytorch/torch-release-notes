@@ -28,14 +28,14 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
-- Add NestedTensor dispatch for _is_any_true/_is_all_true ([#162096](https://github.com/pytorch/pytorch/pull/162096))
-- Fix NestedTensor max/min operations for integer dtypes. ([#162273](https://github.com/pytorch/pytorch/pull/162273))
+- Added NJT support for `share_memory_` ([#162272](https://github.com/pytorch/pytorch/pull/162272))
 ### bug fixes
+- Fixed NJT min / max operations on integer dtypes ([#162273](https://github.com/pytorch/pytorch/pull/162273))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Add support for NestedTensor share_memory_ ([#162272](https://github.com/pytorch/pytorch/pull/162272))
-- [NJT] Fix schema validation error in jagged functions ([#165307](https://github.com/pytorch/pytorch/pull/165307))
 ### not user facing
+- Fix schema validation error in jagged functions ([#165307](https://github.com/pytorch/pytorch/pull/165307))
+- Added NJT support for `_is_any_true`/`_is_all_true` ([#162096](https://github.com/pytorch/pytorch/pull/162096))
 ### security
