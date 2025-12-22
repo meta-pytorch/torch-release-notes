@@ -41,6 +41,10 @@ The categories below are as follows:
 - Add huggingface storage reader for MXFP4 quantized GPT-OSS checkpoint ([#167672](https://github.com/pytorch/pytorch/pull/167672))
 - [dcp][state_dict] Make `_flatten_optim_state_dict` and `_unflatten_optim_state_dict` handle arbitrary-level of nested optim dictionaries by recursion ([#165071](https://github.com/pytorch/pytorch/pull/165071))
 - [DCP] Add option to use PrefixStore to create checkpoint background process ([#166560](https://github.com/pytorch/pytorch/pull/166560))
+- add device generalization support for distributed checkpoint tests ([#159242](https://github.com/pytorch/pytorch/pull/159242))
+- Replace assert statements in distributed checkpoint with explicit checks (distributed) ([#165256](https://github.com/pytorch/pytorch/pull/165256))
+- Disable GC in process based async checkpointing ([#169613](https://github.com/pytorch/pytorch/pull/169613))
+- Optimize global save-plan validation ([#166820](https://github.com/pytorch/pytorch/pull/166820))
 
 ### not user facing
 - Port 4 dynamo test files for the intel XPU ([#160953](https://github.com/pytorch/pytorch/pull/160953))
