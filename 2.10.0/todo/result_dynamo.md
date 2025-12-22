@@ -267,7 +267,6 @@ The categories below are as follows:
 - [dynamo] Add __iter__ for iterable VariableTrackers ([#166349](https://github.com/pytorch/pytorch/pull/166349))
 - [dynamo] Implement iter with a polyfill ([#162768](https://github.com/pytorch/pytorch/pull/162768))
 - [dynamo] Fix ListIterator tracking mutations to original list ([#166350](https://github.com/pytorch/pytorch/pull/166350))
-- [ROCm][CUDA] add unit test utility busy_wait_for_flag ([#166218](https://github.com/pytorch/pytorch/pull/166218))
 - [dynamo] support tracing new typing union syntax X | Y ([#166599](https://github.com/pytorch/pytorch/pull/166599))
 - [dynamo, nested graph breaks] codegen dead nested cells correctly ([#166476](https://github.com/pytorch/pytorch/pull/166476))
 - [dynamo, nested graph breaks] add disable_nested_graph_breaks decorator/context manager ([#166477](https://github.com/pytorch/pytorch/pull/166477))

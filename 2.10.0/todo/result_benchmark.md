@@ -37,5 +37,4 @@ The categories below are as follows:
 - Update the operator benchmarking, to benchmark using torch.compile ([#161394](https://github.com/pytorch/pytorch/pull/161394))
 ### not user facing
 - Update dynamic_inductor_timm_training.csv ([#167609](https://github.com/pytorch/pytorch/pull/167609))
-- [ROCm][CI] dynamo benchmark repvgg_a2 is flaky ([#167660](https://github.com/pytorch/pytorch/pull/167660))
 ### security

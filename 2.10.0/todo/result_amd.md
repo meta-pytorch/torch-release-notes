@@ -34,5 +34,4 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 ### not user facing
-- [ROCm] hipSPARSELt support - Update cuda_to_hip_mappings.py ([#167335](https://github.com/pytorch/pytorch/pull/167335))
 ### security

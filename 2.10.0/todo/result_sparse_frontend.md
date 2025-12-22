@@ -44,7 +44,6 @@ The categories below are as follows:
 - Don't return values in void functions ([#164809](https://github.com/pytorch/pytorch/pull/164809))
 - Fixed issue with GradTrackingTensor not properly propagating sparse layout ([#165765](https://github.com/pytorch/pytorch/pull/165765))
 - Remove the branch of IS_CUSPARSE11_AVAILABLE is False ([#166048](https://github.com/pytorch/pytorch/pull/166048))
-- Remove old ROCm version checks and branches ([#166111](https://github.com/pytorch/pytorch/pull/166111))
 - [Sparse] support for exp op ([#166801](https://github.com/pytorch/pytorch/pull/166801))
 - [5/N] Use Python 3.10 typing ([#167449](https://github.com/pytorch/pytorch/pull/167449))
 - [BE] C++20 template instantiation adjustments ([#168132](https://github.com/pytorch/pytorch/pull/168132))

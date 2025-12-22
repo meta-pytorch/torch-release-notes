@@ -35,7 +35,6 @@ The categories below are as follows:
 ### Untopiced
 - Fix missing moves in initJITBindings ([#162428](https://github.com/pytorch/pytorch/pull/162428))
 - [easy] Don't force copy result of getAllOperatorsFor in init.cpp ([#162218](https://github.com/pytorch/pytorch/pull/162218))
-- [ROCm] Define uint32 t when ROCM_VERSION >= 70000 ([#160587](https://github.com/pytorch/pytorch/pull/160587))
 - Fix excess refcounting in ObjLoaderFunc ([#161528](https://github.com/pytorch/pytorch/pull/161528))
 - Deprecate Lite Interpreter ([#163289](https://github.com/pytorch/pytorch/pull/163289))
 - [opaque obj] Initial OpaqueObject ([#162660](https://github.com/pytorch/pytorch/pull/162660))
@@ -43,7 +42,6 @@ The categories below are as follows:
 - Save Python refcount bump on each arg in maybe_handle_torch_function ([#164625](https://github.com/pytorch/pytorch/pull/164625))
 - [TorchScript] clearer debug for ConcreteModuleType::findSubmoduleConcreteType ([#166192](https://github.com/pytorch/pytorch/pull/166192))
 - add support for ir scalar literal parsing for inf/-inf/True/False  ([#163924](https://github.com/pytorch/pytorch/pull/163924))
-- [ROCm] Reduce duplication in bfloat16_support_literal definition ([#166147](https://github.com/pytorch/pytorch/pull/166147))
 - [3/N] Add return types of Python functions ([#167287](https://github.com/pytorch/pytorch/pull/167287))
 - [3.14, jit] skip jit tests on 3.14+, add jit deprecation warnings to user-facing API ([#167669](https://github.com/pytorch/pytorch/pull/167669))
 - Fix longstanding race condition around getAllOperatorsFor ([#167860](https://github.com/pytorch/pytorch/pull/167860))
@@ -53,7 +51,6 @@ The categories below are as follows:
 - [torch] DRY a couple of lines in unpickler ([#163447](https://github.com/pytorch/pytorch/pull/163447))
 - Better error handling in torch/csrc/jit/ir/* ([#163757](https://github.com/pytorch/pytorch/pull/163757))
 - Better error handling in torch/csrc/jit/codegen/* ([#163948](https://github.com/pytorch/pytorch/pull/163948))
-- [ROCm] Fix test_cuda_synchronize failure on ROCm ([#164735](https://github.com/pytorch/pytorch/pull/164735))
 - [opaque_obj] Add __eq__ and __deepcopy__ ([#163279](https://github.com/pytorch/pytorch/pull/163279))
 - Fix missing brackets ([#165138](https://github.com/pytorch/pytorch/pull/165138))
 - Better error handling in torch/csrc/jit/frontend/* ([#165213](https://github.com/pytorch/pytorch/pull/165213))

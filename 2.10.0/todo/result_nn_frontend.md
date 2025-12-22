@@ -49,7 +49,6 @@ The categories below are as follows:
 - [docs] Add usage examples to ConvTranspose1d docstring ([#165618](https://github.com/pytorch/pytorch/pull/165618))
 ### devs
 ### Untopiced
-- [ROCm] fix miopen batchnorm changing output format ([#162112](https://github.com/pytorch/pytorch/pull/162112))
 - enable sync batchnorm for HPU device ([#163047](https://github.com/pytorch/pytorch/pull/163047))
 - [Flex attention] Fix flex attention head broadcast ([#163426](https://github.com/pytorch/pytorch/pull/163426))
 - Fix warn message ([#163578](https://github.com/pytorch/pytorch/pull/163578))
@@ -71,7 +70,6 @@ The categories below are as follows:
 - Handling overflow for long int overflow for the product of kernel_hei… ([#155989](https://github.com/pytorch/pytorch/pull/155989))
 - Add explicit typing to nn.Module.__init__() parameters ([#157389](https://github.com/pytorch/pytorch/pull/157389))
 - [2/n] Support module.to("cuda:0") in FakeTensorMode on cuda-less machine ([#163433](https://github.com/pytorch/pytorch/pull/163433))
-- [ROCm] Transformer/SDPA unit test parity ([#163745](https://github.com/pytorch/pytorch/pull/163745))
 - better error handling for rrelu when lower or upper range is infinite ([#160965](https://github.com/pytorch/pytorch/pull/160965))
 - Fix the shape check inside gnll loss ([#147522](https://github.com/pytorch/pytorch/pull/147522))
 - Update disabling fast-path for strict-export inside MultiheadAttention ([#164544](https://github.com/pytorch/pytorch/pull/164544))
