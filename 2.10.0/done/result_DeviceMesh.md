@@ -33,7 +33,4 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- Fixes bug with tolist calls to GradTrackingTensors ([#165184](https://github.com/pytorch/pytorch/pull/165184))
-### not user facing
-- [DeviceMesh] Isolate pg creation logic in Device Mesh into a separate func `_init_one_process_group` ([#166614](https://github.com/pytorch/pytorch/pull/166614))
 ### security

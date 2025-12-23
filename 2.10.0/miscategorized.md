@@ -23,3 +23,4 @@
 - Native matmul ([#157743](https://github.com/pytorch/pytorch/pull/157743))
 - Distributed Autotuning ([#163369](https://github.com/pytorch/pytorch/pull/163369))
 - Add GroupName NewType ([#167552](https://github.com/pytorch/pytorch/pull/167552))
+- Fixes bug with tolist calls to GradTrackingTensors ([#165184](https://github.com/pytorch/pytorch/pull/165184))

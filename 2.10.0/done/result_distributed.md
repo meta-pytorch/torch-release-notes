@@ -29,6 +29,46 @@ The categories below are as follows:
 - DeviceMesh
   - Added a warning for slicing flattened dim from root mesh and types for _get_slice_mesh_layout ([#164993](https://github.com/pytorch/pytorch/pull/164993))
 
+We decided to deprecate an existing behavior which goes against the PyTorch design principle (explicit over implicit) for device mesh slicing of flattened dim.
+
+Version <2.9
+```python
+import torch
+from torch.distributed.device_mesh import
+
+device_type = (
+    acc.type
+    if (acc := torch.accelerator.current_accelerator(check_available=True))
+    else "cpu"
+)
+mesh_shape = (2, 2, 2)
+mesh_3d = init_device_mesh(
+    device_type, mesh_shape, mesh_dim_names=("dp", "cp", "tp")
+)
+
+mesh_3d["dp", "cp"]._flatten()
+mesh_3["dp_cp"]  # This comes with no warning
+```
+
+Version >=2.10
+```python
+import torch
+from torch.distributed.device_mesh import
+
+device_type = (
+    acc.type
+    if (acc := torch.accelerator.current_accelerator(check_available=True))
+    else "cpu"
+)
+mesh_shape = (2, 2, 2)
+mesh_3d = init_device_mesh(
+    device_type, mesh_shape, mesh_dim_names=("dp", "cp", "tp")
+)
+
+mesh_3d["dp", "cp"]._flatten()
+mesh_3["dp_cp"]  # This will come with a warning because it implicitly change the state of the original mesh. We will eventually remove this behavior in future release. User should do the bookkeeping of flattened mesh explicitly.
+```
+
 ### new features
 - LocalTensor:
   - LocalTensor is a powerful debugging and simulation tool in PyTorch's distributed tensor ecosystem. It allows you to simulate distributed tensor computations across multiple SPMD (Single Program, Multiple Data) ranks on a single process. This is incredibly valuable for: 1) debugging distributed code without spinning up multiple processes; 2) understanding DTensor behavior by inspecting per-rank tensor states; 3) testing DTensor operations with uneven sharding across ranks; 4) rapid prototyping of distributed algorithms. Note that LocalTensor is designed for debugging purposes only. It has significant overhead and is not suitable for production distributed training.
@@ -49,7 +89,7 @@ The categories below are as follows:
   - Added `_LoadBalancer` classes, and load-balance interface to Context Parallel APIs with process-time based Round-Robin load-balance ([#161062](https://github.com/pytorch/pytorch/pull/161062), [#163617](https://github.com/pytorch/pytorch/pull/163617))
   - Added python bindings for NCCL CTA policies ([#164309](https://github.com/pytorch/pytorch/pull/164309))
 - DeviceMesh
-  - Adopted CuTe layout for DeviceMesh internal bookkeepings with a shared 1D _rank_map tensor and related code cleanups ([#162413](https://github.com/pytorch/pytorch/pull/162413), [#162534](https://github.com/pytorch/pytorch/pull/162534), [#163212](https://github.com/pytorch/pytorch/pull/163212), [#163288](https://github.com/pytorch/pytorch/pull/163288), [#163928](https://github.com/pytorch/pytorch/pull/163928), [#163930](https://github.com/pytorch/pytorch/pull/163930), [#164750](https://github.com/pytorch/pytorch/pull/164750), [#164954](https://github.com/pytorch/pytorch/pull/164954), [#164510](https://github.com/pytorch/pytorch/pull/164510), [#166264](https://github.com/pytorch/pytorch/pull/166264), [#167581](https://github.com/pytorch/pytorch/pull/167581), [#162690](https://github.com/pytorch/pytorch/pull/162690), [#163367](https://github.com/pytorch/pytorch/pull/163367))
+  - Adopted CuTe layout for DeviceMesh internal bookkeepings with a shared 1D _rank_map tensor and related code cleanups ([#162413](https://github.com/pytorch/pytorch/pull/162413), [#162534](https://github.com/pytorch/pytorch/pull/162534), [#163212](https://github.com/pytorch/pytorch/pull/163212), [#163288](https://github.com/pytorch/pytorch/pull/163288), [#163928](https://github.com/pytorch/pytorch/pull/163928), [#163930](https://github.com/pytorch/pytorch/pull/163930), [#164750](https://github.com/pytorch/pytorch/pull/164750), [#164954](https://github.com/pytorch/pytorch/pull/164954), [#164510](https://github.com/pytorch/pytorch/pull/164510), [#166264](https://github.com/pytorch/pytorch/pull/166264), [#167581](https://github.com/pytorch/pytorch/pull/167581), [#162690](https://github.com/pytorch/pytorch/pull/162690), [#163367](https://github.com/pytorch/pytorch/pull/163367), [#166614](https://github.com/pytorch/pytorch/pull/166614))
   - Implemented `_unflatten` on top of CuTe layout bookkeeping ([#161224](https://github.com/pytorch/pytorch/pull/161224), [#165521](https://github.com/pytorch/pytorch/pull/165521))
   - Added support of `_rank` for use with non-global PGs ([#162439](https://github.com/pytorch/pytorch/pull/162439))
 - FullyShardDataParallel (FSDP1 and FSDP2)
