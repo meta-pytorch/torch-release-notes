@@ -47,6 +47,7 @@ The categories below are as follows:
 - Fix THP_PyObject_VirtualFree return type ([#163763](https://github.com/pytorch/pytorch/pull/163763))
 - Use inline instead of anon namespace for stableivalue from/to ([#164882](https://github.com/pytorch/pytorch/pull/164882))
 - [ROCm] Custom OpenBLAS library name ([#166333](https://github.com/pytorch/pytorch/pull/166333))
+- Fixed the cpp_builder error under riscv ([#167071](https://github.com/pytorch/pytorch/pull/167071))
 ### not user facing
 - [CMake] Remove LLVM link code ([#134940](https://github.com/pytorch/pytorch/pull/134940))
 - Make torch_nvshmem depends on  libtorch_cpu ([#169905](https://github.com/pytorch/pytorch/pull/169905))
