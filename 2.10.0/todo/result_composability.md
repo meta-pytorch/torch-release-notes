@@ -27,7 +27,12 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
+* Support autograd in torch.cond ([#165908](https://github.com/pytorch/pytorch/pull/165908))
 ### improvements
+- Removed guard_size_oblivious
+    - Do not suggest torch._check_is_size() ([#164664](https://github.com/pytorch/pytorch/pull/164664))
+    - Remove size-like based size-oblivious special max simplifications ([#164665](https://github.com/pytorch/pytorch/pull/164665))
+
 ### bug fixes
 ### performance
 ### docs
@@ -78,4 +83,16 @@ The categories below are as follows:
 - [hoo] Fix unlift of effects with invoke_subgraph ([#167363](https://github.com/pytorch/pytorch/pull/167363))
 - Fix-index-select-contiguous-compile ([#168922](https://github.com/pytorch/pytorch/pull/168922))
 - [16/N]Use Python 3.10 typing ([#169917](https://github.com/pytorch/pytorch/pull/169917))
+- Add paths to exclude shape guards ([#162684](https://github.com/pytorch/pytorch/pull/162684))
+- Fix phantom symbol for derived dims ([#162416](https://github.com/pytorch/pytorch/pull/162416))
+- Fix float type handling in rebind_unbacked ([#162788](https://github.com/pytorch/pytorch/pull/162788))
+- Adjust mark_unbacked logs. ([#164131](https://github.com/pytorch/pytorch/pull/164131))
+- ProxyTorchDispatchMode: Decomposing missing sympy.SymExpr should handle constant literals ([#167585](https://github.com/pytorch/pytorch/pull/167585))
+- Always track _local_scalar_dense output in tensorify_python_scalars.  ([#166573](https://github.com/pytorch/pytorch/pull/166573))
+- [symbolic shapes] remove maybe_guard_rel warning ([#166553](https://github.com/pytorch/pytorch/pull/166553))
+- Make unbacked_sym[int/float]_counter integers ([#163920](https://github.com/pytorch/pytorch/pull/163920))
+- remove allocation of new unbacked symbols during mod eval ([#167123](https://github.com/pytorch/pytorch/pull/167123))
+- Teach ProxyTorchDispatchMode how to decompose sympy.Expr into known inputs ([#164717](https://github.com/pytorch/pytorch/pull/164717))
+- Add support for hint_override in mark_unbacked ([#162652](https://github.com/pytorch/pytorch/pull/162652))
+- fix PythonMod bound_sympy ([#169612](https://github.com/pytorch/pytorch/pull/169612))
 ### security

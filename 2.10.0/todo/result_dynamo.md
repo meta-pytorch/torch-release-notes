@@ -395,4 +395,9 @@ The categories below are as follows:
 - [opaque obj] Add value-type opaque obj ([#167768](https://github.com/pytorch/pytorch/pull/167768))
 - [Bugfix] Check known tensor attributes in TensorVariable.call_obj_hasattr ([#167651](https://github.com/pytorch/pytorch/pull/167651))
 - [dynamo] Fix TORCH_COMPILE_CPROFILE for python >= 3.12 ([#170013](https://github.com/pytorch/pytorch/pull/170013))
+- Make functionalization `ViewMeta` serializable with pickle ([#163769](https://github.com/pytorch/pytorch/pull/163769))
+- Set fake_mode of base tensor in fx graph pickler ([#163738](https://github.com/pytorch/pytorch/pull/163738))
+- Support for pickling einops for aot_autograd serialization in vLLM ([#165359](https://github.com/pytorch/pytorch/pull/165359))
+- Implement an AOT precompile mode for standalone_compile ([#165843](https://github.com/pytorch/pytorch/pull/165843))
+- [dynamo, 3.14] fix misc. bugs to get most dynamo unittests passing locally in 3.14 ([#164631](https://github.com/pytorch/pytorch/pull/164631))
 ### security

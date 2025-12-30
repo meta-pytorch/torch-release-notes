@@ -28,11 +28,13 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+- Improve fake tensor leakage detection in export ([#163516](https://github.com/pytorch/pytorch/pull/163516))
 ### bug fixes
 ### performance
 ### docs
 - [Docs] Add warning that `torch.export.load` uses `pickle` ([#167557](https://github.com/pytorch/pytorch/pull/167557))
 ### devs
+- Enable new tracer by default ([#165332](https://github.com/pytorch/pytorch/pull/165332))
 ### Untopiced
 - [triton][export] serialization in internal path + unit tests ([#162200](https://github.com/pytorch/pytorch/pull/162200))
 - [serialization] Add pte file to archive ([#162520](https://github.com/pytorch/pytorch/pull/162520))

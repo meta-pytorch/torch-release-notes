@@ -30,6 +30,14 @@ The categories below are as follows:
 ### improvements
 - [Triton] [Inductor] Pruned failed compilations from Autotuning candidates ([#162673](https://github.com/pytorch/pytorch/pull/162673))
 - Extend triton_mm auto-tune options for HIM shapes ([#163273](https://github.com/pytorch/pytorch/pull/163273))
+- Various fixes for AOTI-FX backend
+    - Solve for undefined symbols in dynamic input shapes ([#163044](https://github.com/pytorch/pytorch/pull/163044))
+    - Support symbol and dynamic scalar graph inputs and outputs ([#163596](https://github.com/pytorch/pytorch/pull/163596))
+    - Support unbacked symbol definitions ([#163729](https://github.com/pytorch/pytorch/pull/163729))
+    - Generalize FloorDiv conversion to handle more complex launch grids. ([#163828](https://github.com/pytorch/pytorch/pull/163828))
+    - Don't flatten constant args ([#166144](https://github.com/pytorch/pytorch/pull/166144))
+    - Support SymInt placeholder([#167757](https://github.com/pytorch/pytorch/pull/167757))
+    - Support torch.cond ([#163234](https://github.com/pytorch/pytorch/pull/163234))
 ### bug fixes
 - Fix some edge cases ([#162295](https://github.com/pytorch/pytorch/pull/162295))
 - Fix TMA transpose logic to handle 1D shapes + string differences ([#163966](https://github.com/pytorch/pytorch/pull/163966))
