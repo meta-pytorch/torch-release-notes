@@ -26,6 +26,8 @@ The categories below are as follows:
 ## jit
 ### bc breaking
 ### deprecation
+- `torch.jit` is not guaranteed to work in Python 3.14. Deprecation warnings have been added to user-facing `torch.jit` API ([#167669](https://github.com/pytorch/pytorch/pull/167669)).
+  `torch.jit` should be replaced with `torch.compile` or `torch.export`.
 ### new features
 ### improvements
 ### bug fixes
@@ -45,7 +47,6 @@ The categories below are as follows:
 - add support for ir scalar literal parsing for inf/-inf/True/False  ([#163924](https://github.com/pytorch/pytorch/pull/163924))
 - [ROCm] Reduce duplication in bfloat16_support_literal definition ([#166147](https://github.com/pytorch/pytorch/pull/166147))
 - [3/N] Add return types of Python functions ([#167287](https://github.com/pytorch/pytorch/pull/167287))
-- [3.14, jit] skip jit tests on 3.14+, add jit deprecation warnings to user-facing API ([#167669](https://github.com/pytorch/pytorch/pull/167669))
 - Fix longstanding race condition around getAllOperatorsFor ([#167860](https://github.com/pytorch/pytorch/pull/167860))
 - Fix missing ConstantPooling header in passes.cpp ([#169420](https://github.com/pytorch/pytorch/pull/169420))
 - Revert getAllOperatorsFor changes (#167860, #162218) ([#169281](https://github.com/pytorch/pytorch/pull/169281))
