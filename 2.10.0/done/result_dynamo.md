@@ -34,7 +34,7 @@ The categories below are as follows:
 ### improvements
 - Turn on `capture_scalar_outputs` and `capture_dynamic_output_shape_ops` when `fullgraph=True` ([#163121](https://github.com/pytorch/pytorch/pull/163121), [#163123](https://github.com/pytorch/pytorch/pull/163123))
 - Improved tracing for `dict` key hashing ([#169204](https://github.com/pytorch/pytorch/pull/169204))
-- Tracing support for `torch.cuda.stream` ([PRs](https://github.com/pytorch/pytorch/pulls?q=is%3Apr+author%3Amlazos+is%3Aclosed+%5Buser-streams%5D))
+- Tracing support for `torch.cuda.stream` ([#166472](https://github.com/pytorch/pytorch/pull/166472))
 - Improved tracing of `torch.autograd.Function`s ([#166788](https://github.com/pytorch/pytorch/pull/166788))
 - Miscellaneous smaller tracing support additions:
   - Extend `collections.defaultdict` support with `*args`, `**kwargs` and custom `default_factory` ([#166793](https://github.com/pytorch/pytorch/pull/166793))
