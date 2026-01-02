@@ -40,12 +40,16 @@ The categories below are as follows:
   - Extend `collections.defaultdict` support with `*args`, `**kwargs` and custom `default_factory` ([#166793](https://github.com/pytorch/pytorch/pull/166793))
   - Support for bitwise xor ([#166065](https://github.com/pytorch/pytorch/pull/166065))
   - Support `repr` on user-defined objects ([#167372](https://github.com/pytorch/pytorch/pull/167372))
+  - Support new typing union syntax `X | Y` ([#166599](https://github.com/pytorch/pytorch/pull/166599))
 ### bug fixes
 - Fixed `cProfile` usage with `torch.compile` in Python 3.12+ ([#170013](https://github.com/pytorch/pytorch/pull/170013))
+- Fix memory leak in tensor subclass metadata guard ([#167352](https://github.com/pytorch/pytorch/pull/167352))
 ### performance
 - Faster tracing of some pytree functions ([#168342](https://github.com/pytorch/pytorch/pull/168342))
 ### docs
-- Updated documentation for `tlparse` ([#171339](https://github.com/pytorch/pytorch/pull/171339))
+- Updated documentation for `tlparse` ([#171339](https://github.com/pytorch/pytorch/pull/171339)).
+  `tlparse` is a compilation report tool that processes `TORCH_TRACE` logs to generate interactive HTML reports showing how your model was compiled.
+  When reporting bugs to PyTorch developers, we encourage you to attach the trace log or `tlparse` output to provide critical debugging information to help us bisect the issue.
 ### devs
 ### Untopiced
 ### not user facing

@@ -29,6 +29,7 @@ The categories below are as follows:
 ### new features
 ### improvements
 - Improve fake tensor leakage detection in export ([#163516](https://github.com/pytorch/pytorch/pull/163516))
+- Support calling `torch.compile` inside non-strict export ([#164171](https://github.com/pytorch/pytorch/pull/164171))
 ### bug fixes
 ### performance
 ### docs
