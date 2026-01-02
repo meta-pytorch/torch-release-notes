@@ -30,7 +30,7 @@ The categories below are as follows:
 ### improvements
 - Make `Adam`, `AdamW` work with nonzero-dim Tensor betas ([#149939](https://github.com/pytorch/pytorch/pull/149939))
 ### bug fixes
-- Fix SWALR.state_dict and load_state_dict to serialize properly with weights_only=True ([#163122](https://github.com/pytorch/pytorch/pull/163122))
+- Fix `SWALR.state_dict` and `load_state_dict` to serialize properly with `weights_only=True` ([#163122](https://github.com/pytorch/pytorch/pull/163122))
 - Prevent problematic tensor aliasing in LRScheduler ([#163098](https://github.com/pytorch/pytorch/pull/163098), [#163120](https://github.com/pytorch/pytorch/pull/163120))
 - Fix `LBFGS` wolfe max iteration ([#161488](https://github.com/pytorch/pytorch/pull/161488))
 
