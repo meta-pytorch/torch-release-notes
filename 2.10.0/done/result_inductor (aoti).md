@@ -29,31 +29,23 @@ The categories below are as follows:
 - Move from/to to torch::stable::detail ([#164956](https://github.com/pytorch/pytorch/pull/164956))
 ### new features
 - Integrate AOTI as a backend. ([#167338](https://github.com/pytorch/pytorch/pull/167338))
-- Register the `scaled_mm` and `scaled_mm_v2` for xpu ([#166056](https://github.com/pytorch/pytorch/pull/166056))
 ### improvements
-- Add grid and input information for Triton Kernels for profiling in Kineto. ([#160131](https://github.com/pytorch/pytorch/pull/160131)) ([#160380](https://github.com/pytorch/pytorch/pull/160380))
-- Add AOTI mingw cross compilation ([#163188](https://github.com/pytorch/pytorch/pull/163188))
-- Switch to pyrefly as only type checker ([#166197](https://github.com/pytorch/pytorch/pull/166197))
 ### bug fixes
 - Bugfix for doing negative padding ([#161639](https://github.com/pytorch/pytorch/pull/161639))
 - Fix unbounded number of substitutions when equality checks contain Max expr ([#163685](https://github.com/pytorch/pytorch/pull/163685))
 - Use atomic API when trying to apply size hints to input tensor strides. ([#163660](https://github.com/pytorch/pytorch/pull/163660))
 - Fix a mixed-device bug for scatter_add ([#167341](https://github.com/pytorch/pytorch/pull/167341))
 - Fix a small buffer mutation issue ([#169347](https://github.com/pytorch/pytorch/pull/169347))
-- Support python slicing with tensor inputs. ([#165074](https://github.com/pytorch/pytorch/pull/165074))
 ### performance
 ### docs
 - [AOTI] Update AOTInductor tutorial ([#163808](https://github.com/pytorch/pytorch/pull/163808))
 ### devs
 ### Untopiced
 ### not user facing
-- Add XPU kernel for _weight_int8pack_mm ([#160938](https://github.com/pytorch/pytorch/pull/160938))
-- Use filesystem in inductor ([#163465](https://github.com/pytorch/pytorch/pull/163465))
-- Use std::filesystem in inductor ([#163632](https://github.com/pytorch/pytorch/pull/163632))
+- Use filesystem in inductor ([#163465](https://github.com/pytorch/pytorch/pull/163465)) ([#163632](https://github.com/pytorch/pytorch/pull/163632))
 - Load metadata w/o loading package ([#163779](https://github.com/pytorch/pytorch/pull/163779))
 - Replace std::runtime_error with TORCH_CHECK ([#164130](https://github.com/pytorch/pytorch/pull/164130))
 - AOTI Enablement - Fix GR model AOTI inplace update by skipping empty named (#165970) ([#166037](https://github.com/pytorch/pytorch/pull/166037))
-- Add fp8 scaled_mm implementation for XPU ([#165978](https://github.com/pytorch/pytorch/pull/165978))
 - Compress aoti stack ([#169291](https://github.com/pytorch/pytorch/pull/169291))
 - Add full to stable ops (supported via generate c shim rather than torch_call_dispatcher) ([#169872](https://github.com/pytorch/pytorch/pull/169872))
 - Add squeeze, unsqueeze, matmul, select, subtract to stable ops ([#169880](https://github.com/pytorch/pytorch/pull/169880))
@@ -69,9 +61,8 @@ The categories below are as follows:
 - Fix incorrect function signature in template ([#165567](https://github.com/pytorch/pytorch/pull/165567))
 - Fix pyrefly ignore syntax in _inductor ([#166247](https://github.com/pytorch/pytorch/pull/166247))
 - Remove c10 as linked library ([#165489](https://github.com/pytorch/pytorch/pull/165489))
-- ([#165696](https://github.com/pytorch/pytorch/pull/165696))
+- Split CPU and GPU code paths in AOTI hipify utilities ([#165696](https://github.com/pytorch/pytorch/pull/165696))
 - Add python stack trace to AOTI generated code ([#160539](https://github.com/pytorch/pytorch/pull/160539))
-- Apply ruff UP035 rule ([#166225](https://github.com/pytorch/pytorch/pull/166225))
 - Fix unknown constant type for device-moved constants ([#168138](https://github.com/pytorch/pytorch/pull/168138))
 - Set device info for subgraphs ([#169001](https://github.com/pytorch/pytorch/pull/169001))
 - Add check_lowerbound config for AOTI lowering ([#169430](https://github.com/pytorch/pytorch/pull/169430))
@@ -88,5 +79,4 @@ The categories below are as follows:
 - Revise stableivalue from/to deprecation ([#168155](https://github.com/pytorch/pytorch/pull/168155))
 - Use Python 3.10 typing ([#167790](https://github.com/pytorch/pytorch/pull/167790))
 - Add sum support for qlinear_binary templated implementation ([#163249](https://github.com/pytorch/pytorch/pull/163249))
-- Enable SDPA XPU FlashAttention backend with SYCL-TLA implementation ([#167057](https://github.com/pytorch/pytorch/pull/167057))
 ### security
