@@ -274,7 +274,6 @@ The categories below are as follows:
 - Revert "Patch the flex_attention._get_mod_type to not use inspect.signature when computing num_positional_args (an alternative fix for flex attention graph break on create_block_mask) (a2f34bdd7ce)
 - add and fix OpInfo tests for the default partitioner ([#165372](https://github.com/pytorch/pytorch/pull/165372))
 - Revert "[export] Handle kwargs better in aot_export_joint_with_descriptors (7778a58e7c3)
-- varlen api ([#164502](https://github.com/pytorch/pytorch/pull/164502))
 - Revert "varlen api (3044e1a460a)
 - Fix double dispatch to Python for detach ([#163671](https://github.com/pytorch/pytorch/pull/163671))
 - Revert "add and fix OpInfo tests for the default partitioner (b509fb9b5d8)
