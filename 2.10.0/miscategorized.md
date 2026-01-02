@@ -35,7 +35,6 @@
 - [inductor] Add FLOAT_IS_NAN and COMPLEX_IS_NAN guards ([#162537](https://github.com/pytorch/pytorch/pull/162537))
 - [aoti] Save compute information ([#163792](https://github.com/pytorch/pytorch/pull/163792))
 - Use Python 3.10 typing ([#148418](https://github.com/pytorch/pytorch/pull/148418))
-- Fix take_along_dim negative index handling (#146211) ([#152161](https://github.com/pytorch/pytorch/pull/152161))
 - Fix aot_compile typing. ([#168320](https://github.com/pytorch/pytorch/pull/168320))
 - Fix: ShapeEnv not propagated properly to inductor SizeVars ([#162927](https://github.com/pytorch/pytorch/pull/- 162927))
 - [inductor] Fix bugs in emulate_precision_casts ([#163520](https://github.com/pytorch/pytorch/pull/163520))
