@@ -60,3 +60,4 @@
 - Add grid and input information for Triton Kernels for profiling in Kineto. ([#160131](https://github.com/pytorch/pytorch/pull/160131)) ([#160380](https://github.com/pytorch/pytorch/pull/160380))
 - Add AOTI mingw cross compilation ([#163188](https://github.com/pytorch/pytorch/pull/163188))
 - Switch to pyrefly as only type checker ([#166197](https://github.com/pytorch/pytorch/pull/166197))
+- Add SVE128 ISA ([#158932](https://github.com/pytorch/pytorch/pull/158932))

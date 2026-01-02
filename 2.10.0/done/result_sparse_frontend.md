@@ -28,28 +28,24 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
-- Add SVE128 ISA ([#158932](https://github.com/pytorch/pytorch/pull/158932))
-- [MPS] sparse_mask_projection ([#166260](https://github.com/pytorch/pytorch/pull/166260))
-- [MPS] Sparse mps backward sum ([#169240](https://github.com/pytorch/pytorch/pull/169240))
+- Add MPS support sparse_mask backward and sparse sum backward ([#166260](https://github.com/pytorch/pytorch/pull/166260), [#169240](https://github.com/pytorch/pytorch/pull/169240))
+- Add exp support for COO on CPU, CUDA and MPS ([#166801](https://github.com/pytorch/pytorch/pull/166801))
+- Remove old CUDA 11 sparse code ([#166048](https://github.com/pytorch/pytorch/pull/166048), [#164531](https://github.com/pytorch/pytorch/pull/164531), [#164199](https://github.com/pytorch/pytorch/pull/164199))
 ### bug fixes
-- [MPS] Sparse mul enable tests and fix on MPS ([#166164](https://github.com/pytorch/pytorch/pull/166164))
+- Fix mul(COO, COO) on MPS for hybrid COO variants ([#166164](https://github.com/pytorch/pytorch/pull/166164))
+- Update torch.sparse_coo_tensor error message to include more information about input tensor properties ([#161900](https://github.com/pytorch/pytorch/pull/161900))
+- Fix GradTrackingTensor sparse layout propagation ([#165765](https://github.com/pytorch/pytorch/pull/165765))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Update misleading torch.sparse_coo_tensor error check ([#161900](https://github.com/pytorch/pytorch/pull/161900))
-- [Caffe2] Add float batch box cox SVE128 implementation ([#159778](https://github.com/pytorch/pytorch/pull/159778))
-- Remove old CUDA version checks ([#164199](https://github.com/pytorch/pytorch/pull/164199))
-- Remove CUDA 11 branches for sparse code ([#164531](https://github.com/pytorch/pytorch/pull/164531))
-- Don't return values in void functions ([#164809](https://github.com/pytorch/pytorch/pull/164809))
-- Fixed issue with GradTrackingTensor not properly propagating sparse layout ([#165765](https://github.com/pytorch/pytorch/pull/165765))
-- Remove the branch of IS_CUSPARSE11_AVAILABLE is False ([#166048](https://github.com/pytorch/pytorch/pull/166048))
-- Remove old ROCm version checks and branches ([#166111](https://github.com/pytorch/pytorch/pull/166111))
-- [Sparse] support for exp op ([#166801](https://github.com/pytorch/pytorch/pull/166801))
-- [5/N] Use Python 3.10 typing ([#167449](https://github.com/pytorch/pytorch/pull/167449))
-- [BE] C++20 template instantiation adjustments ([#168132](https://github.com/pytorch/pytorch/pull/168132))
-- Remove unused thrust inclusion ([#169051](https://github.com/pytorch/pytorch/pull/169051))
 ### not user facing
+- Remove unused thrust inclusion ([#169051](https://github.com/pytorch/pytorch/pull/169051))
+- [BE] C++20 template instantiation adjustments ([#168132](https://github.com/pytorch/pytorch/pull/168132))
+- [5/N] Use Python 3.10 typing ([#167449](https://github.com/pytorch/pytorch/pull/167449))
+- Remove old ROCm version checks and branches ([#166111](https://github.com/pytorch/pytorch/pull/166111))
+- Don't return values in void functions ([#164809](https://github.com/pytorch/pytorch/pull/164809))
+- [Caffe2] Add float batch box cox SVE128 implementation ([#159778](https://github.com/pytorch/pytorch/pull/159778))
 - Use computed buffer sizes of torch for cusparseLt metadata ([#163125](https://github.com/pytorch/pytorch/pull/163125))
 - [NFC] fixed mistake in comment ([#163697](https://github.com/pytorch/pytorch/pull/163697))
 - [NFC] fixed typo in sparse semi structured filename ([#163904](https://github.com/pytorch/pytorch/pull/163904))
