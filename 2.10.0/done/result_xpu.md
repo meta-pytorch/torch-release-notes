@@ -27,30 +27,34 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
+- Support aten op `scaled_mm` and `scaled_mm_v2` for Intel GPU ([#166056](https://github.com/pytorch/pytorch/pull/166056))
+- Support aten op `_weight_int8pack_mm` for Intel GPU ([#160938](https://github.com/pytorch/pytorch/pull/160938))
+- Support 3rd party SYCL kernels with CPP Extension API on Windows for Intel GPU ([#162579](https://github.com/pytorch/pytorch/pull/162579))
+- Add API `torch.xpu.get_per_process_memory_fraction` for Intel GPU ([#165511](https://github.com/pytorch/pytorch/pull/165511))
+- Add API `torch.xpu.set_per_process_memory_fraction` for Intel GPU ([#165510](https://github.com/pytorch/pytorch/pull/165510))
+- Add API `torch.xpu.is_tf32_supported` for Intel GPU ([#163141](https://github.com/pytorch/pytorch/pull/163141))
+- Add API `torch.xpu.can_device_access_peer` for Intel GPU ([#162705](https://github.com/pytorch/pytorch/pull/162705))
+- Add API `torch.accelerator.get_memory_info` for Intel GPU ([#162564](https://github.com/pytorch/pytorch/pull/162564))
 ### improvements
+- Support `--nproc-per-node` torchrun option for Intel GPU ([#159474](https://github.com/pytorch/pytorch/pull/159474))
+- Support matmul with complex dtype for Intel GPU ([#160867](https://github.com/pytorch/pytorch/pull/160867))
+- Add SYCL-TLA implementation for aten flash attention ([#169101](https://github.com/pytorch/pytorch/pull/169101))
+
 ### bug fixes
+- Fix OneDNN deconvolution with `output_padding` on Intel GPU ([#169176](https://github.com/pytorch/pytorch/pull/169176))
+- Fix conv1d precision error on Intel GPU ([#162944](https://github.com/pytorch/pytorch/pull/162944))
+- Fix incorrect FLOPs counting of `convolution_overrideable` on Intel GPU([#166839](https://github.com/pytorch/pytorch/pull/166839))
+- Fix performance drop in AOTI on Intel GPU ([#163315](https://github.com/pytorch/pytorch/pull/163315))
+
 ### performance
+- Enable TransformerEncoderLayer fast path on Intel GPU ([#168234](https://github.com/pytorch/pytorch/pull/168234))
+
 ### docs
+- Add new supported client GPU Panther Lake in "Get Started with XPU" page ([#170517](https://github.com/pytorch/pytorch/pull/170517))
+
 ### devs
+- Upgrade Intel GPU software stack package to intel-deep-learning-essentials-2025.3 ([#166829](https://github.com/pytorch/pytorch/pull/166829))
+
 ### Untopiced
-- Add a new API torch.xpu.can_device_access_peer for Intel GPU ([#162705](https://github.com/pytorch/pytorch/pull/162705))
-- [1/N]Enable some tests in test_ops.TestCommon on Intel GPU ([#159944](https://github.com/pytorch/pytorch/pull/159944))
-- Add a new API torch.xpu.is_tf32_supported for Intel GPU ([#163141](https://github.com/pytorch/pytorch/pull/163141))
-- Give a friendly message for older Intel GPU ([#165622](https://github.com/pytorch/pytorch/pull/165622))
-- Remove unused parameter when query extension attribute ([#165623](https://github.com/pytorch/pytorch/pull/165623))
-- [xpu][feature] Introduce ExpandableSegment for XPU ([#166299](https://github.com/pytorch/pytorch/pull/166299))
-- [xpu][feature] Support expandable segment feature for XPU ([#166292](https://github.com/pytorch/pytorch/pull/166292))
-- [xpu][feature] Introduce PeerToPeerAccess API for XPU ([#166424](https://github.com/pytorch/pytorch/pull/166424))
-- [xpu][fix] Fix XPU oneDNN memory query bug: pointer to array ([#166830](https://github.com/pytorch/pytorch/pull/166830))
-- [xpu][fix] Fix conv1d precision error ([#162944](https://github.com/pytorch/pytorch/pull/162944))
-- [xpu][test] Migrated two test files to XPU ([#166684](https://github.com/pytorch/pytorch/pull/166684))
-- [xpu][fix] Fix empty cache on mempool ([#168074](https://github.com/pytorch/pytorch/pull/168074))
-- [xpu][fix] Refine memory pool logic when expandable segement enabled ([#168956](https://github.com/pytorch/pytorch/pull/168956))
-- [xpu][feature] enable Sycl CPP extension on Windows ([#162579](https://github.com/pytorch/pytorch/pull/162579))
-- [xpu][fix] Support xpu custom raw_alloc/delete in caching allocator ([#168957](https://github.com/pytorch/pytorch/pull/168957))
-- [xpu][feature] [1/2] Introduce XPUPluggableAllocator in cpp part ([#168966](https://github.com/pytorch/pytorch/pull/168966))
-- [xpu][feature] [2/2] Introduce XPUPluggableAllocator in frontend part ([#169043](https://github.com/pytorch/pytorch/pull/169043))
 ### not user facing
-- [XPU] Enhance XPUGeneratorImpl functionality to support XPUGraph ([#163332](https://github.com/pytorch/pytorch/pull/163332))
-- [1/3][XPU][feature] The implementation of memory private pool in XPU device allocator ([#166831](https://github.com/pytorch/pytorch/pull/166831))
 ### security
