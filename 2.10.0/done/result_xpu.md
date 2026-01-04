@@ -27,9 +27,9 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
-- Support aten op `scaled_mm` and `scaled_mm_v2` for Intel GPU ([#166056](https://github.com/pytorch/pytorch/pull/166056))
-- Support aten op `_weight_int8pack_mm` for Intel GPU ([#160938](https://github.com/pytorch/pytorch/pull/160938))
-- Support 3rd party SYCL kernels with CPP Extension API on Windows for Intel GPU ([#162579](https://github.com/pytorch/pytorch/pull/162579))
+- Support ATen operators `scaled_mm` and `scaled_mm_v2` for Intel GPU ([#166056](https://github.com/pytorch/pytorch/pull/166056))
+- Support ATen operator `_weight_int8pack_mm` for Intel GPU ([#160938](https://github.com/pytorch/pytorch/pull/160938))
+- Extend SYCL support in PyTorch CPP Extension API to allow users to implement new custom operators on Windows ([#162579](https://github.com/pytorch/pytorch/pull/162579))
 - Add API `torch.xpu.get_per_process_memory_fraction` for Intel GPU ([#165511](https://github.com/pytorch/pytorch/pull/165511))
 - Add API `torch.xpu.set_per_process_memory_fraction` for Intel GPU ([#165510](https://github.com/pytorch/pytorch/pull/165510))
 - Add API `torch.xpu.is_tf32_supported` for Intel GPU ([#163141](https://github.com/pytorch/pytorch/pull/163141))
@@ -37,7 +37,7 @@ The categories below are as follows:
 - Add API `torch.accelerator.get_memory_info` for Intel GPU ([#162564](https://github.com/pytorch/pytorch/pull/162564))
 ### improvements
 - Support `--nproc-per-node` torchrun option for Intel GPU ([#159474](https://github.com/pytorch/pytorch/pull/159474))
-- Support matmul with complex dtype for Intel GPU ([#160867](https://github.com/pytorch/pytorch/pull/160867))
+- Support complex dtype of Aten operator Matmul for Intel GPU ([#160867](https://github.com/pytorch/pytorch/pull/160867))
 - Add SYCL-TLA implementation for aten flash attention ([#169101](https://github.com/pytorch/pytorch/pull/169101))
 
 ### bug fixes
