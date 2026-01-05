@@ -25,27 +25,16 @@ The categories below are as follows:
 
 ## dataloader_frontend
 ### bc breaking
-- Remove data_source argument from Sampler ([#163134](https://github.com/pytorch/pytorch/pull/163134))
+- Removed unused `data_source` argument from Sampler ([#163134](https://github.com/pytorch/pytorch/pull/163134)). This is a no-op, unless you have a custom sampler that uses this argument. Please update your custom sampler accordingly.
+- Removed deprecated imports for torch.utils.data.datapipes.iter.grouping ([#163438](https://github.com/pytorch/pytorch/pull/163438)). `from torch.utils.data.datapipes.iter.grouping import SHARDING_PRIORITIES, ShardingFilterIterDataPipe` is no longer supported. Please import from `torch.utils.data.datapipes.iter.sharding` instead.
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
+- Fix pin memory return type when input is a tuple ([#169690](https://github.com/pytorch/pytorch/pull/169690))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [1/N] Remove 'type: ignore' suppressions  ([#163468](https://github.com/pytorch/pytorch/pull/163468))
-- [BC breaking] Remove deprecated imports for torch.utils.data.datapipes.iter.grouping ([#163438](https://github.com/pytorch/pytorch/pull/163438))
-- [2/N] Add return types of Python functions ([#167203](https://github.com/pytorch/pytorch/pull/167203))
-- [2/N] Use Python 3.10 typing ([#167167](https://github.com/pytorch/pytorch/pull/167167))
-- [13/N] Use Python 3.10 typing  ([#169647](https://github.com/pytorch/pytorch/pull/169647))
-- Fix pin memory return type when input is a tuple ([#169690](https://github.com/pytorch/pytorch/pull/169690))
 ### not user facing
-- Skip test_ind_worker_queue on Windows and macOS (flaky) ([#162555](https://github.com/pytorch/pytorch/pull/162555))
-- Update RandomSampler docstring. data_source must be Sized not Dataset ([#158857](https://github.com/pytorch/pytorch/pull/158857))
-- remove allow-untyped-defs from ./torch/utils/data/datapipes/iter/fileopener.py ([#163469](https://github.com/pytorch/pytorch/pull/163469))
-- [torch/utils][Code Clean] Clean asserts in `benchmark/` and `data/` in `torch/utils/` ([#165299](https://github.com/pytorch/pytorch/pull/165299))
-- [3.14, dataloader] handle forkserver default mp start method in 3.14 ([#167387](https://github.com/pytorch/pytorch/pull/167387))
-- [3.14, dataloader] handle forkserver default mp start method in 3.14 ([#167387](https://github.com/pytorch/pytorch/pull/167387))
-- Fix dataloader tests failing on python 3.14 ([#167429](https://github.com/pytorch/pytorch/pull/167429))
 ### security
