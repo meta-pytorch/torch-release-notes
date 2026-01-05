@@ -47,8 +47,6 @@ The categories below are as follows:
 - Fix performance drop in AOTI on Intel GPU ([#163315](https://github.com/pytorch/pytorch/pull/163315))
 
 ### performance
-- Enable TransformerEncoderLayer fast path on Intel GPU ([#168234](https://github.com/pytorch/pytorch/pull/168234))
-
 ### docs
 - Add new supported client GPU Panther Lake in "Get Started with XPU" page ([#170517](https://github.com/pytorch/pytorch/pull/170517))
 
