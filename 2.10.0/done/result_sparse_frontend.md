@@ -1,5 +1,5 @@
 
-# Release Notes worksheet python_frontend
+# Release Notes worksheet sparse_frontend
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,53 +23,34 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## python_frontend
+## sparse_frontend
 ### bc breaking
-#### Fix python argument parsing for functions that take either tuple or vararg of ints ([#163081](https://github.com/pytorch/pytorch/pull/163081))
-
-A bug was leading to some arguments being ignored. They will no longer be ignored!
-
-Version <2.9
-```python
-import torch
-
-my_tensor = torch.tensor([[0, 1, 2], [3, 4, 5]])
-
-my_tensor.reshape((3, 2), torch.float32)
-# tensor([[0, 1],
-#         [2, 3],
-#         [4, 5]])
-# Note that the Tensor is NOT a float32
-# and reshape doesn't expect a dtype argument!
-```
-
-Version >=2.10
-```python
-import torch
-
-my_tensor = torch.tensor([[0, 1, 2], [3, 4, 5]])
-
-my_tensor.reshape((3, 2), torch.float32)
-# TypeError: reshape() takes 1 positional argument but 2 were given
-# We get the expected error
-```
-
-
 ### deprecation
 ### new features
 ### improvements
-In the python frontend, the main improvements are:
-- Improved `torch.library` and custom ops to support view functions ([#164520](https://github.com/pytorch/pytorch/pull/164520))
-- Rework PyObject preservation to make it thread safe, significantly simpler and better handle some edge cases ([#167564](https://github.com/pytorch/pytorch/pull/167564))
-- Remove reference cycle in torch.save to improve memory usage ([#165204](https://github.com/pytorch/pytorch/pull/165204))
-- Add `generator` arg to `rand*_like` APIs ([#166160](https://github.com/pytorch/pytorch/pull/166160))
-- support negative index arguments to torch.take_along_dim negative ([#152161](https://github.com/pytorch/pytorch/pull/152161))
-
-
+- Add MPS support sparse_mask backward and sparse sum backward ([#166260](https://github.com/pytorch/pytorch/pull/166260), [#169240](https://github.com/pytorch/pytorch/pull/169240))
+- Add exp support for COO on CPU, CUDA and MPS ([#166801](https://github.com/pytorch/pytorch/pull/166801))
+- Remove old CUDA 11 sparse code ([#166048](https://github.com/pytorch/pytorch/pull/166048), [#164531](https://github.com/pytorch/pytorch/pull/164531), [#164199](https://github.com/pytorch/pytorch/pull/164199))
 ### bug fixes
+- Fix mul(COO, COO) on MPS for hybrid COO variants ([#166164](https://github.com/pytorch/pytorch/pull/166164))
+- Update torch.sparse_coo_tensor error message to include more information about input tensor properties ([#161900](https://github.com/pytorch/pytorch/pull/161900))
+- Fix GradTrackingTensor sparse layout propagation ([#165765](https://github.com/pytorch/pytorch/pull/165765))
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
+- Remove unused thrust inclusion ([#169051](https://github.com/pytorch/pytorch/pull/169051))
+- [BE] C++20 template instantiation adjustments ([#168132](https://github.com/pytorch/pytorch/pull/168132))
+- [5/N] Use Python 3.10 typing ([#167449](https://github.com/pytorch/pytorch/pull/167449))
+- Remove old ROCm version checks and branches ([#166111](https://github.com/pytorch/pytorch/pull/166111))
+- Don't return values in void functions ([#164809](https://github.com/pytorch/pytorch/pull/164809))
+- [Caffe2] Add float batch box cox SVE128 implementation ([#159778](https://github.com/pytorch/pytorch/pull/159778))
+- Use computed buffer sizes of torch for cusparseLt metadata ([#163125](https://github.com/pytorch/pytorch/pull/163125))
+- [NFC] fixed mistake in comment ([#163697](https://github.com/pytorch/pytorch/pull/163697))
+- [NFC] fixed typo in sparse semi structured filename ([#163904](https://github.com/pytorch/pytorch/pull/163904))
+- [BE] Remove unused 'rows' parameter from spmm_bmm_coo_rows_grouped ([#166041](https://github.com/pytorch/pytorch/pull/166041))
+- include `thrust/distance.h` explicitly in cuda sparse softmax ([#167436](https://github.com/pytorch/pytorch/pull/167436))
+- Fix missing thrust includes ([#167450](https://github.com/pytorch/pytorch/pull/167450))
+- Remove unnecessary uses of thrust::pair ([#168941](https://github.com/pytorch/pytorch/pull/168941))
 ### security

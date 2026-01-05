@@ -1,5 +1,5 @@
 
-# Release Notes worksheet sparse_frontend
+# Release Notes worksheet nn_frontend
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,38 +23,32 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## sparse_frontend
+## nn_frontend
 ### bc breaking
+- Remove Nested Jagged Tensor support from `nn.attention.flex_attention` ([#161734](https://github.com/pytorch/pytorch/pull/161734))
+
+This commit removes `nn.attention.flex_attention.create_nested_block_mask`.
+
 ### deprecation
 ### new features
+- Add `nn.functional.scaled_mm` ([#164142](https://github.com/pytorch/pytorch/pull/164142))
+- Add `nn.attention.varlen_attn` ([#164502](https://github.com/pytorch/pytorch/pull/164502), [#164504](https://github.com/pytorch/pytorch/pull/164504))
+- Add `nn.functional.grouped_mm` ([#168298](https://github.com/pytorch/pytorch/pull/168298))
+
 ### improvements
-- Add SVE128 ISA ([#158932](https://github.com/pytorch/pytorch/pull/158932))
-- [MPS] sparse_mask_projection ([#166260](https://github.com/pytorch/pytorch/pull/166260))
-- [MPS] Sparse mps backward sum ([#169240](https://github.com/pytorch/pytorch/pull/169240))
+- Support batch size 0 for flash attention in `scaled_dot_product_attention` ([#166318](https://github.com/pytorch/pytorch/pull/166318))
+- Raise an error when using a sliced `BlockMask` in `nn.functional.flex_attention` ([#164702](https://github.com/pytorch/pytorch/pull/164702))
+
 ### bug fixes
-- [MPS] Sparse mul enable tests and fix on MPS ([#166164](https://github.com/pytorch/pytorch/pull/166164))
+- Fix silent correctness when backpropagating to `score_mod` in `nn.functional.flex_attention` ([#163677](https://github.com/pytorch/pytorch/pull/163677))
+- Fix bug in `nn.Module.load_state_dict` for singleton tensor ([#166335](https://github.com/pytorch/pytorch/pull/166335))
+
 ### performance
 ### docs
+- Update CTCLoss docs float32 input required for CuDNN ([#162042](https://github.com/pytorch/pytorch/pull/162042))
+- Update LPPool docs to clarify ceil_mode padding semantics when ceil_mode=True ([#163186](https://github.com/pytorch/pytorch/pull/163186))
+
 ### devs
 ### Untopiced
-- Update misleading torch.sparse_coo_tensor error check ([#161900](https://github.com/pytorch/pytorch/pull/161900))
-- [Caffe2] Add float batch box cox SVE128 implementation ([#159778](https://github.com/pytorch/pytorch/pull/159778))
-- Remove old CUDA version checks ([#164199](https://github.com/pytorch/pytorch/pull/164199))
-- Remove CUDA 11 branches for sparse code ([#164531](https://github.com/pytorch/pytorch/pull/164531))
-- Don't return values in void functions ([#164809](https://github.com/pytorch/pytorch/pull/164809))
-- Fixed issue with GradTrackingTensor not properly propagating sparse layout ([#165765](https://github.com/pytorch/pytorch/pull/165765))
-- Remove the branch of IS_CUSPARSE11_AVAILABLE is False ([#166048](https://github.com/pytorch/pytorch/pull/166048))
-- Remove old ROCm version checks and branches ([#166111](https://github.com/pytorch/pytorch/pull/166111))
-- [Sparse] support for exp op ([#166801](https://github.com/pytorch/pytorch/pull/166801))
-- [5/N] Use Python 3.10 typing ([#167449](https://github.com/pytorch/pytorch/pull/167449))
-- [BE] C++20 template instantiation adjustments ([#168132](https://github.com/pytorch/pytorch/pull/168132))
-- Remove unused thrust inclusion ([#169051](https://github.com/pytorch/pytorch/pull/169051))
 ### not user facing
-- Use computed buffer sizes of torch for cusparseLt metadata ([#163125](https://github.com/pytorch/pytorch/pull/163125))
-- [NFC] fixed mistake in comment ([#163697](https://github.com/pytorch/pytorch/pull/163697))
-- [NFC] fixed typo in sparse semi structured filename ([#163904](https://github.com/pytorch/pytorch/pull/163904))
-- [BE] Remove unused 'rows' parameter from spmm_bmm_coo_rows_grouped ([#166041](https://github.com/pytorch/pytorch/pull/166041))
-- include `thrust/distance.h` explicitly in cuda sparse softmax ([#167436](https://github.com/pytorch/pytorch/pull/167436))
-- Fix missing thrust includes ([#167450](https://github.com/pytorch/pytorch/pull/167450))
-- Remove unnecessary uses of thrust::pair ([#168941](https://github.com/pytorch/pytorch/pull/168941))
 ### security

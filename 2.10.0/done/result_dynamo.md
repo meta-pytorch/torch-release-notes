@@ -1,5 +1,5 @@
 
-# Release Notes worksheet python_frontend
+# Release Notes worksheet dynamo
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,52 +23,33 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## python_frontend
+## dynamo
 ### bc breaking
-#### Fix python argument parsing for functions that take either tuple or vararg of ints ([#163081](https://github.com/pytorch/pytorch/pull/163081))
-
-A bug was leading to some arguments being ignored. They will no longer be ignored!
-
-Version <2.9
-```python
-import torch
-
-my_tensor = torch.tensor([[0, 1, 2], [3, 4, 5]])
-
-my_tensor.reshape((3, 2), torch.float32)
-# tensor([[0, 1],
-#         [2, 3],
-#         [4, 5]])
-# Note that the Tensor is NOT a float32
-# and reshape doesn't expect a dtype argument!
-```
-
-Version >=2.10
-```python
-import torch
-
-my_tensor = torch.tensor([[0, 1, 2], [3, 4, 5]])
-
-my_tensor.reshape((3, 2), torch.float32)
-# TypeError: reshape() takes 1 positional argument but 2 were given
-# We get the expected error
-```
-
-
 ### deprecation
 ### new features
+- `torch.compile` now fully works in Python 3.14 ([#167384](https://github.com/pytorch/pytorch/pull/167384))
+- Add option to error or disable applying side effects ([#167239](https://github.com/pytorch/pytorch/pull/167239))
+- Config flag (`skip_fwd_side_effects_in_bwd_under_checkpoint`) to allow eager and compile activation-checkpointing divergence for side-effects ([#165775](https://github.com/pytorch/pytorch/pull/165775))
+- `torch._higher_order_ops.print` for enabling printing without graph breaks or reordering ([#167571](https://github.com/pytorch/pytorch/pull/167571))
 ### improvements
-In the python frontend, the main improvements are:
-- Improved `torch.library` and custom ops to support view functions ([#164520](https://github.com/pytorch/pytorch/pull/164520))
-- Rework PyObject preservation to make it thread safe, significantly simpler and better handle some edge cases ([#167564](https://github.com/pytorch/pytorch/pull/167564))
-- Remove reference cycle in torch.save to improve memory usage ([#165204](https://github.com/pytorch/pytorch/pull/165204))
-- Add `generator` arg to `rand*_like` APIs ([#166160](https://github.com/pytorch/pytorch/pull/166160))
-- support negative index arguments to torch.take_along_dim negative ([#152161](https://github.com/pytorch/pytorch/pull/152161))
-
-
+- Turn on `capture_scalar_outputs` and `capture_dynamic_output_shape_ops` when `fullgraph=True` ([#163121](https://github.com/pytorch/pytorch/pull/163121), [#163123](https://github.com/pytorch/pytorch/pull/163123))
+- Improved tracing for `dict` key hashing ([#169204](https://github.com/pytorch/pytorch/pull/169204))
+- Tracing support for `torch.cuda.stream` ([#166472](https://github.com/pytorch/pytorch/pull/166472))
+- Improved tracing of `torch.autograd.Function`s ([#166788](https://github.com/pytorch/pytorch/pull/166788))
+- Miscellaneous smaller tracing support additions:
+  - Extend `collections.defaultdict` support with `*args`, `**kwargs` and custom `default_factory` ([#166793](https://github.com/pytorch/pytorch/pull/166793))
+  - Support for bitwise xor ([#166065](https://github.com/pytorch/pytorch/pull/166065))
+  - Support `repr` on user-defined objects ([#167372](https://github.com/pytorch/pytorch/pull/167372))
+  - Support new typing union syntax `X | Y` ([#166599](https://github.com/pytorch/pytorch/pull/166599))
 ### bug fixes
+- Fixed `cProfile` usage with `torch.compile` in Python 3.12+ ([#170013](https://github.com/pytorch/pytorch/pull/170013))
+- Fix memory leak in tensor subclass metadata guard ([#167352](https://github.com/pytorch/pytorch/pull/167352))
 ### performance
+- Faster tracing of some pytree functions ([#168342](https://github.com/pytorch/pytorch/pull/168342))
 ### docs
+- Updated documentation for `tlparse` ([#171339](https://github.com/pytorch/pytorch/pull/171339)).
+  `tlparse` is a compilation report tool that processes `TORCH_TRACE` logs to generate interactive HTML reports showing how your model was compiled.
+  When reporting bugs to PyTorch developers, we encourage you to attach the trace log or `tlparse` output to provide critical debugging information to help us bisect the issue.
 ### devs
 ### Untopiced
 ### not user facing
