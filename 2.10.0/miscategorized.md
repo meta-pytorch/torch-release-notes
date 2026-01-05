@@ -70,3 +70,4 @@
 
 ## ROCM
 - [ROCm] fix miopen batchnorm changing output format ([#162112](https://github.com/pytorch/pytorch/pull/162112))
+- Add SVE128 ISA ([#158932](https://github.com/pytorch/pytorch/pull/158932))

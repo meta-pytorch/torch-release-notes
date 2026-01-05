@@ -1,5 +1,5 @@
 
-# Release Notes worksheet sparse_frontend
+# Release Notes worksheet optim
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,38 +23,23 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## sparse_frontend
+## optim
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
-- Add SVE128 ISA ([#158932](https://github.com/pytorch/pytorch/pull/158932))
-- [MPS] sparse_mask_projection ([#166260](https://github.com/pytorch/pytorch/pull/166260))
-- [MPS] Sparse mps backward sum ([#169240](https://github.com/pytorch/pytorch/pull/169240))
+- Make `Adam`, `AdamW` work with nonzero-dim Tensor betas ([#149939](https://github.com/pytorch/pytorch/pull/149939))
 ### bug fixes
-- [MPS] Sparse mul enable tests and fix on MPS ([#166164](https://github.com/pytorch/pytorch/pull/166164))
+- Fix `SWALR.state_dict` and `load_state_dict` to serialize properly with `weights_only=True` ([#163122](https://github.com/pytorch/pytorch/pull/163122))
+- Prevent problematic tensor aliasing in LRScheduler ([#163098](https://github.com/pytorch/pytorch/pull/163098), [#163120](https://github.com/pytorch/pytorch/pull/163120))
+- Fix `LBFGS` wolfe max iteration ([#161488](https://github.com/pytorch/pytorch/pull/161488))
+
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Update misleading torch.sparse_coo_tensor error check ([#161900](https://github.com/pytorch/pytorch/pull/161900))
-- [Caffe2] Add float batch box cox SVE128 implementation ([#159778](https://github.com/pytorch/pytorch/pull/159778))
-- Remove old CUDA version checks ([#164199](https://github.com/pytorch/pytorch/pull/164199))
-- Remove CUDA 11 branches for sparse code ([#164531](https://github.com/pytorch/pytorch/pull/164531))
-- Don't return values in void functions ([#164809](https://github.com/pytorch/pytorch/pull/164809))
-- Fixed issue with GradTrackingTensor not properly propagating sparse layout ([#165765](https://github.com/pytorch/pytorch/pull/165765))
-- Remove the branch of IS_CUSPARSE11_AVAILABLE is False ([#166048](https://github.com/pytorch/pytorch/pull/166048))
-- Remove old ROCm version checks and branches ([#166111](https://github.com/pytorch/pytorch/pull/166111))
-- [Sparse] support for exp op ([#166801](https://github.com/pytorch/pytorch/pull/166801))
-- [5/N] Use Python 3.10 typing ([#167449](https://github.com/pytorch/pytorch/pull/167449))
-- [BE] C++20 template instantiation adjustments ([#168132](https://github.com/pytorch/pytorch/pull/168132))
-- Remove unused thrust inclusion ([#169051](https://github.com/pytorch/pytorch/pull/169051))
+
 ### not user facing
-- Use computed buffer sizes of torch for cusparseLt metadata ([#163125](https://github.com/pytorch/pytorch/pull/163125))
-- [NFC] fixed mistake in comment ([#163697](https://github.com/pytorch/pytorch/pull/163697))
-- [NFC] fixed typo in sparse semi structured filename ([#163904](https://github.com/pytorch/pytorch/pull/163904))
-- [BE] Remove unused 'rows' parameter from spmm_bmm_coo_rows_grouped ([#166041](https://github.com/pytorch/pytorch/pull/166041))
-- include `thrust/distance.h` explicitly in cuda sparse softmax ([#167436](https://github.com/pytorch/pytorch/pull/167436))
-- Fix missing thrust includes ([#167450](https://github.com/pytorch/pytorch/pull/167450))
-- Remove unnecessary uses of thrust::pair ([#168941](https://github.com/pytorch/pytorch/pull/168941))
+- [Code Clean] Clean asserts in torch/optim. ([#165629](https://github.com/pytorch/pytorch/pull/165629))
+- [11/N] Use Python 3.10 typing ([#169335](https://github.com/pytorch/pytorch/pull/169335))
 ### security
