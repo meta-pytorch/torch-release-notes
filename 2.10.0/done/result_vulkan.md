@@ -33,7 +33,5 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- [1/N][Fix] Fix typo in aten folder ([#166126](https://github.com/pytorch/pytorch/pull/166126))
 ### not user facing
-- Add algorithm in header ([#164295](https://github.com/pytorch/pytorch/pull/164295))
 ### security
