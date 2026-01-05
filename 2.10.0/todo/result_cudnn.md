@@ -27,15 +27,15 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
+- BFloat16 support added to cuDNN RNN ([#164411](https://github.com/pytorch/pytorch/pull/164411))
 ### improvements
 ### bug fixes
-- [cuDNN][Convolution] Disable cuDNN for 3D convolutions with kernel size != 1 for cuDNN 9.8+ ([#163581](https://github.com/pytorch/pytorch/pull/163581))
-- [cuDNN][conv][64-bit] Reenable cuDNN for 64-bit depthwise convs ([#168364](https://github.com/pytorch/pytorch/pull/168364))
+- Disable cuDNN for 3D convolutions with kernel size != 1 for cuDNN 9.8+ due to a numerical isssue ([#163581](https://github.com/pytorch/pytorch/pull/163581))
 ### performance
+- Reenable cuDNN for 64-bit depthwise convolutions ([#168364](https://github.com/pytorch/pytorch/pull/168364))
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- [cuDNN][RNN] cuDNN RNN supports BFloat16 inputs since 9.13 ([#164411](https://github.com/pytorch/pytorch/pull/164411))
-- [cuDNN] Leak `BenchmarkCache` to avoid teardown segfault, correct compile-time cuDNN version to 9.10.2 in CI ([#169153](https://github.com/pytorch/pytorch/pull/169153))
+- Leak `BenchmarkCache` to avoid teardown segfault, correct compile-time cuDNN version to 9.10.2 in CI ([#169153](https://github.com/pytorch/pytorch/pull/169153))
 ### security
