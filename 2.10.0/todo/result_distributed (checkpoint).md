@@ -45,7 +45,7 @@ The categories below are as follows:
 - Replace assert statements in distributed checkpoint with explicit checks (distributed) ([#165256](https://github.com/pytorch/pytorch/pull/165256))
 - Disable GC in process based async checkpointing ([#169613](https://github.com/pytorch/pytorch/pull/169613))
 - Optimize global save-plan validation ([#166820](https://github.com/pytorch/pytorch/pull/166820))
-
+- state dict staging fixes ([#166025](https://github.com/pytorch/pytorch/pull/166025))
 ### not user facing
 - Port 4 dynamo test files for the intel XPU ([#160953](https://github.com/pytorch/pytorch/pull/160953))
 - UT/Examples for resharding checkpoint save/loads for distributed tensors with uneven shards. ([#160533](https://github.com/pytorch/pytorch/pull/160533))

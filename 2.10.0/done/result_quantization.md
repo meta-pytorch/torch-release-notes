@@ -1,5 +1,5 @@
 
-# Release Notes worksheet DeviceMesh
+# Release Notes worksheet quantization
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,17 +23,35 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## DeviceMesh
+## quantization
 ### bc breaking
 ### deprecation
 ### new features
+- Add `_scaled_mm_v2` API ([#164141](https://github.com/pytorch/pytorch/pull/164141))
+- Add `scaled_grouped_mm_v2` and python API ([#165154](https://github.com/pytorch/pytorch/pull/165154))
+- Add `embedding_bag_byte_prepack_with_rowwise_min_max` and `embedding_bag_{2/4}bit_prepack_with_rowwise_min_max` ([#162924](https://github.com/pytorch/pytorch/pull/162924))
+- Add `MXFP4` support for `_scaled_grouped_mm_v2` via. FBGEMM kernels ([#166530](https://github.com/pytorch/pytorch/pull/166530))
+
 ### improvements
+- `half` and `bf16` support for `fused_moving_avg_obs_fake_quant` ([#162620](https://github.com/pytorch/pytorch/pull/162620), [#164175](https://github.com/pytorch/pytorch/pull/164175))
+- `bf16` support for `fake_quantize_learnable_per_channel_affine` ([#165098](https://github.com/pytorch/pytorch/pull/165098))
+- `bf16` support for backward of `torch._fake_quantize_learnable_per_tensor_affine` ([#165362](https://github.com/pytorch/pytorch/pull/165362))
+- Add `NVFP4` two-level scaling to `scaled_mm` ([#165774](https://github.com/pytorch/pytorch/pull/165774))
+- Add support for `fp8_input`/`fp8_weight`/`bf16_bias` and `bf16_output` for fp8 qconv in CPU ([#167611](https://github.com/pytorch/pytorch/pull/167611))
+- Make the `torch.float4_e2m1fn_x2` dtype support equality comparisons ([#169575](https://github.com/pytorch/pytorch/pull/169575))
+- add `copy_` support for `torch.float4_e2m1fn_x2` dtype ([#169595](https://github.com/pytorch/pytorch/pull/169595))
+
 ### bug fixes
 ### performance
+- Make prepare and convert faster by caching ([#162550](https://github.com/pytorch/pytorch/pull/162550))
+- Add onednn context cache for CPU qlinear to improve performance ([#168150](https://github.com/pytorch/pytorch/pull/168150))
+
 ### docs
+- Document some quantization public apis ([#165160](https://github.com/pytorch/pytorch/pull/165160))
+- Add missing method docstrings for pytorch quantization classes ([#165199](https://github.com/pytorch/pytorch/pull/165199))
+
 ### devs
 ### Untopiced
-- Fixes bug with tolist calls to GradTrackingTensors ([#165184](https://github.com/pytorch/pytorch/pull/165184))
+
 ### not user facing
-- [DeviceMesh] Isolate pg creation logic in Device Mesh into a separate func `_init_one_process_group` ([#166614](https://github.com/pytorch/pytorch/pull/166614))
 ### security

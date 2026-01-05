@@ -1,5 +1,5 @@
 
-# Release Notes worksheet vulkan
+# Release Notes worksheet nn_frontend
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,17 +23,32 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## vulkan
+## nn_frontend
 ### bc breaking
+- Remove Nested Jagged Tensor support from `nn.attention.flex_attention` ([#161734](https://github.com/pytorch/pytorch/pull/161734))
+
+This commit removes `nn.attention.flex_attention.create_nested_block_mask`.
+
 ### deprecation
 ### new features
+- Add `nn.functional.scaled_mm` ([#164142](https://github.com/pytorch/pytorch/pull/164142))
+- Add `nn.attention.varlen_attn` ([#164502](https://github.com/pytorch/pytorch/pull/164502), [#164504](https://github.com/pytorch/pytorch/pull/164504))
+- Add `nn.functional.grouped_mm` ([#168298](https://github.com/pytorch/pytorch/pull/168298))
+
 ### improvements
+- Support batch size 0 for flash attention in `scaled_dot_product_attention` ([#166318](https://github.com/pytorch/pytorch/pull/166318))
+- Raise an error when using a sliced `BlockMask` in `nn.functional.flex_attention` ([#164702](https://github.com/pytorch/pytorch/pull/164702))
+
 ### bug fixes
+- Fix silent correctness when backpropagating to `score_mod` in `nn.functional.flex_attention` ([#163677](https://github.com/pytorch/pytorch/pull/163677))
+- Fix bug in `nn.Module.load_state_dict` for singleton tensor ([#166335](https://github.com/pytorch/pytorch/pull/166335))
+
 ### performance
 ### docs
+- Update CTCLoss docs float32 input required for CuDNN ([#162042](https://github.com/pytorch/pytorch/pull/162042))
+- Update LPPool docs to clarify ceil_mode padding semantics when ceil_mode=True ([#163186](https://github.com/pytorch/pytorch/pull/163186))
+
 ### devs
 ### Untopiced
-- [1/N][Fix] Fix typo in aten folder ([#166126](https://github.com/pytorch/pytorch/pull/166126))
 ### not user facing
-- Add algorithm in header ([#164295](https://github.com/pytorch/pytorch/pull/164295))
 ### security

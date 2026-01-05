@@ -1,5 +1,5 @@
 
-# Release Notes worksheet nested tensor_frontend
+# Release Notes worksheet export
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,19 +23,17 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## nested tensor_frontend
+## export
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
-- Add NestedTensor dispatch for _is_any_true/_is_all_true ([#162096](https://github.com/pytorch/pytorch/pull/162096))
-- Fix NestedTensor max/min operations for integer dtypes. ([#162273](https://github.com/pytorch/pytorch/pull/162273))
+- Improved fake tensor leakage detection in export ([#163516](https://github.com/pytorch/pytorch/pull/163516))
+- Improved support for tensor subclasses ([#163770](https://github.com/pytorch/pytorch/pull/163770))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Add support for NestedTensor share_memory_ ([#162272](https://github.com/pytorch/pytorch/pull/162272))
-- [NJT] Fix schema validation error in jagged functions ([#165307](https://github.com/pytorch/pytorch/pull/165307))
 ### not user facing
 ### security

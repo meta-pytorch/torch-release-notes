@@ -1,5 +1,5 @@
 
-# Release Notes worksheet xpu
+# Release Notes worksheet nested tensor_frontend
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,34 +23,19 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## xpu
+## nested tensor_frontend
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+- Added NJT support for `share_memory_` ([#162272](https://github.com/pytorch/pytorch/pull/162272))
 ### bug fixes
+- Fixed NJT min / max operations on integer dtypes ([#162273](https://github.com/pytorch/pytorch/pull/162273))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Add a new API torch.xpu.can_device_access_peer for Intel GPU ([#162705](https://github.com/pytorch/pytorch/pull/162705))
-- [1/N]Enable some tests in test_ops.TestCommon on Intel GPU ([#159944](https://github.com/pytorch/pytorch/pull/159944))
-- Add a new API torch.xpu.is_tf32_supported for Intel GPU ([#163141](https://github.com/pytorch/pytorch/pull/163141))
-- Give a friendly message for older Intel GPU ([#165622](https://github.com/pytorch/pytorch/pull/165622))
-- Remove unused parameter when query extension attribute ([#165623](https://github.com/pytorch/pytorch/pull/165623))
-- [xpu][feature] Introduce ExpandableSegment for XPU ([#166299](https://github.com/pytorch/pytorch/pull/166299))
-- [xpu][feature] Support expandable segment feature for XPU ([#166292](https://github.com/pytorch/pytorch/pull/166292))
-- [xpu][feature] Introduce PeerToPeerAccess API for XPU ([#166424](https://github.com/pytorch/pytorch/pull/166424))
-- [xpu][fix] Fix XPU oneDNN memory query bug: pointer to array ([#166830](https://github.com/pytorch/pytorch/pull/166830))
-- [xpu][fix] Fix conv1d precision error ([#162944](https://github.com/pytorch/pytorch/pull/162944))
-- [xpu][test] Migrated two test files to XPU ([#166684](https://github.com/pytorch/pytorch/pull/166684))
-- [xpu][fix] Fix empty cache on mempool ([#168074](https://github.com/pytorch/pytorch/pull/168074))
-- [xpu][fix] Refine memory pool logic when expandable segement enabled ([#168956](https://github.com/pytorch/pytorch/pull/168956))
-- [xpu][feature] enable Sycl CPP extension on Windows ([#162579](https://github.com/pytorch/pytorch/pull/162579))
-- [xpu][fix] Support xpu custom raw_alloc/delete in caching allocator ([#168957](https://github.com/pytorch/pytorch/pull/168957))
-- [xpu][feature] [1/2] Introduce XPUPluggableAllocator in cpp part ([#168966](https://github.com/pytorch/pytorch/pull/168966))
-- [xpu][feature] [2/2] Introduce XPUPluggableAllocator in frontend part ([#169043](https://github.com/pytorch/pytorch/pull/169043))
 ### not user facing
-- [XPU] Enhance XPUGeneratorImpl functionality to support XPUGraph ([#163332](https://github.com/pytorch/pytorch/pull/163332))
-- [1/3][XPU][feature] The implementation of memory private pool in XPU device allocator ([#166831](https://github.com/pytorch/pytorch/pull/166831))
+- Fix schema validation error in jagged functions ([#165307](https://github.com/pytorch/pytorch/pull/165307))
+- Added NJT support for `_is_any_true`/`_is_all_true` ([#162096](https://github.com/pytorch/pytorch/pull/162096))
 ### security

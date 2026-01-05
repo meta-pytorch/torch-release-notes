@@ -1,5 +1,5 @@
 
-# Release Notes worksheet jit
+# Release Notes worksheet sparse_frontend
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,40 +23,34 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## jit
+## sparse_frontend
 ### bc breaking
 ### deprecation
-- `torch.jit` is not guaranteed to work in Python 3.14. Deprecation warnings have been added to user-facing `torch.jit` API ([#167669](https://github.com/pytorch/pytorch/pull/167669)).
-  `torch.jit` should be replaced with `torch.compile` or `torch.export`.
 ### new features
 ### improvements
+- Add MPS support sparse_mask backward and sparse sum backward ([#166260](https://github.com/pytorch/pytorch/pull/166260), [#169240](https://github.com/pytorch/pytorch/pull/169240))
+- Add exp support for COO on CPU, CUDA and MPS ([#166801](https://github.com/pytorch/pytorch/pull/166801))
+- Remove old CUDA 11 sparse code ([#166048](https://github.com/pytorch/pytorch/pull/166048), [#164531](https://github.com/pytorch/pytorch/pull/164531), [#164199](https://github.com/pytorch/pytorch/pull/164199))
 ### bug fixes
+- Fix mul(COO, COO) on MPS for hybrid COO variants ([#166164](https://github.com/pytorch/pytorch/pull/166164))
+- Update torch.sparse_coo_tensor error message to include more information about input tensor properties ([#161900](https://github.com/pytorch/pytorch/pull/161900))
+- Fix GradTrackingTensor sparse layout propagation ([#165765](https://github.com/pytorch/pytorch/pull/165765))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Fix missing moves in initJITBindings ([#162428](https://github.com/pytorch/pytorch/pull/162428))
-- [easy] Don't force copy result of getAllOperatorsFor in init.cpp ([#162218](https://github.com/pytorch/pytorch/pull/162218))
-- Fix excess refcounting in ObjLoaderFunc ([#161528](https://github.com/pytorch/pytorch/pull/161528))
-- Deprecate Lite Interpreter ([#163289](https://github.com/pytorch/pytorch/pull/163289))
-- [opaque obj] Initial OpaqueObject ([#162660](https://github.com/pytorch/pytorch/pull/162660))
-- [PyTorch][aarch64] Cast to signed char to fix aarch64 build ([#165021](https://github.com/pytorch/pytorch/pull/165021))
-- Save Python refcount bump on each arg in maybe_handle_torch_function ([#164625](https://github.com/pytorch/pytorch/pull/164625))
-- [TorchScript] clearer debug for ConcreteModuleType::findSubmoduleConcreteType ([#166192](https://github.com/pytorch/pytorch/pull/166192))
-- add support for ir scalar literal parsing for inf/-inf/True/False  ([#163924](https://github.com/pytorch/pytorch/pull/163924))
-- [3/N] Add return types of Python functions ([#167287](https://github.com/pytorch/pytorch/pull/167287))
-- Fix longstanding race condition around getAllOperatorsFor ([#167860](https://github.com/pytorch/pytorch/pull/167860))
-- Fix missing ConstantPooling header in passes.cpp ([#169420](https://github.com/pytorch/pytorch/pull/169420))
-- Revert getAllOperatorsFor changes (#167860, #162218) ([#169281](https://github.com/pytorch/pytorch/pull/169281))
 ### not user facing
-- [torch] DRY a couple of lines in unpickler ([#163447](https://github.com/pytorch/pytorch/pull/163447))
-- Better error handling in torch/csrc/jit/ir/* ([#163757](https://github.com/pytorch/pytorch/pull/163757))
-- Better error handling in torch/csrc/jit/codegen/* ([#163948](https://github.com/pytorch/pytorch/pull/163948))
-- [opaque_obj] Add __eq__ and __deepcopy__ ([#163279](https://github.com/pytorch/pytorch/pull/163279))
-- Fix missing brackets ([#165138](https://github.com/pytorch/pytorch/pull/165138))
-- Better error handling in torch/csrc/jit/frontend/* ([#165213](https://github.com/pytorch/pytorch/pull/165213))
-- Better error handling in torch/csrc/jit/runtime/*  ([#165118](https://github.com/pytorch/pytorch/pull/165118))
-- [Fix] Add generator and tensor variant signatures for `rand*_like()` functions ([#167824](https://github.com/pytorch/pytorch/pull/167824))
-- [opaque_obj] Remove free registration ([#167739](https://github.com/pytorch/pytorch/pull/167739))
-- [opaque_obj] Remove inital opaque obj ([#167740](https://github.com/pytorch/pytorch/pull/167740))
+- Remove unused thrust inclusion ([#169051](https://github.com/pytorch/pytorch/pull/169051))
+- [BE] C++20 template instantiation adjustments ([#168132](https://github.com/pytorch/pytorch/pull/168132))
+- [5/N] Use Python 3.10 typing ([#167449](https://github.com/pytorch/pytorch/pull/167449))
+- Remove old ROCm version checks and branches ([#166111](https://github.com/pytorch/pytorch/pull/166111))
+- Don't return values in void functions ([#164809](https://github.com/pytorch/pytorch/pull/164809))
+- [Caffe2] Add float batch box cox SVE128 implementation ([#159778](https://github.com/pytorch/pytorch/pull/159778))
+- Use computed buffer sizes of torch for cusparseLt metadata ([#163125](https://github.com/pytorch/pytorch/pull/163125))
+- [NFC] fixed mistake in comment ([#163697](https://github.com/pytorch/pytorch/pull/163697))
+- [NFC] fixed typo in sparse semi structured filename ([#163904](https://github.com/pytorch/pytorch/pull/163904))
+- [BE] Remove unused 'rows' parameter from spmm_bmm_coo_rows_grouped ([#166041](https://github.com/pytorch/pytorch/pull/166041))
+- include `thrust/distance.h` explicitly in cuda sparse softmax ([#167436](https://github.com/pytorch/pytorch/pull/167436))
+- Fix missing thrust includes ([#167450](https://github.com/pytorch/pytorch/pull/167450))
+- Remove unnecessary uses of thrust::pair ([#168941](https://github.com/pytorch/pytorch/pull/168941))
 ### security

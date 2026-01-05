@@ -63,6 +63,7 @@ In the python frontend, the main improvements are:
 - Rework PyObject preservation to make it thread safe, significantly simpler and better handle some edge cases ([#167564](https://github.com/pytorch/pytorch/pull/167564))
 - Remove reference cycle in torch.save to improve memory usage ([#165204](https://github.com/pytorch/pytorch/pull/165204))
 - Add `generator` arg to `rand*_like` APIs ([#166160](https://github.com/pytorch/pytorch/pull/166160))
+- support negative index arguments to torch.take_along_dim negative ([#152161](https://github.com/pytorch/pytorch/pull/152161))
 
 
 ### bug fixes

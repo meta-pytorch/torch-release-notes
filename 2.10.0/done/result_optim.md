@@ -28,17 +28,18 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
+- Make `Adam`, `AdamW` work with nonzero-dim Tensor betas ([#149939](https://github.com/pytorch/pytorch/pull/149939))
 ### bug fixes
-- [optim] override SWALR.state_dict and load_state_dict ([#163122](https://github.com/pytorch/pytorch/pull/163122))
+- Fix `SWALR.state_dict` and `load_state_dict` to serialize properly with `weights_only=True` ([#163122](https://github.com/pytorch/pytorch/pull/163122))
+- Prevent problematic tensor aliasing in LRScheduler ([#163098](https://github.com/pytorch/pytorch/pull/163098), [#163120](https://github.com/pytorch/pytorch/pull/163120))
+- Fix `LBFGS` wolfe max iteration ([#161488](https://github.com/pytorch/pytorch/pull/161488))
+
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Fix `LBFGS` wolfe max iteration ([#161488](https://github.com/pytorch/pytorch/pull/161488))
-- [optim] prevent problematic tensor aliasing in lr_scheduler ([#163098](https://github.com/pytorch/pytorch/pull/163098))
-- [optim] prevent unintended aliasing in lr_scheduler; update type annotations/docs ([#163120](https://github.com/pytorch/pytorch/pull/163120))
-- Make `Adam`, `AdamW` work with nonzero-dim Tensor betas ([#149939](https://github.com/pytorch/pytorch/pull/149939))
+
+### not user facing
 - [Code Clean] Clean asserts in torch/optim. ([#165629](https://github.com/pytorch/pytorch/pull/165629))
 - [11/N] Use Python 3.10 typing ([#169335](https://github.com/pytorch/pytorch/pull/169335))
-### not user facing
 ### security
