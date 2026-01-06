@@ -1,5 +1,5 @@
 
-# Release Notes worksheet cpu (x86)
+# Release Notes worksheet cpu (aarch64)
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,17 +23,21 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## cpu (x86)
+## cpu (aarch64)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+
 ### bug fixes
-- add shape check for avg_pool2d ([#161952](https://github.com/pytorch/pytorch/pull/161952))
+165904))
 ### performance
+- Improved aarch64 performance with optimizations for type conversions (bfloat16, FP16, bool), erf function, and autovectorization enhancements ([#166049](https://github.com/pytorch/pytorch/pull/166049), [#166262](https://github.com/pytorch/pytorch/pull/166262), [#166306](https://github.com/pytorch/pytorch/pull/166306), [#166330](https://github.com/pytorch/pytorch/pull/166330), [#166594](https://github.com/pytorch/pytorch/pull/166594), [#166641](https://github.com/pytorch/pytorch/pull/166641), [#166739](https://github.com/pytorch/pytorch/pull/166739), [#166880](https://github.com/pytorch/pytorch/pull/166880), [#166958](https://github.com/pytorch/pytorch/pull/166958))
 ### docs
 ### devs
 ### Untopiced
-- huber_loss numerical issue ([#166952](https://github.com/pytorch/pytorch/pull/166952))
 ### not user facing
+- [Pytorch] Add NEON Vectorized<double>  translation layers ([#166092](https://github.com/pytorch/pytorch/pull/166092))
+- [cpu][fix] Update ACL version to fix crashes with tensor sizes > 2^31-1 ([#165904](https://github.com/pytorch/pytorch/pull/)
+- Relax fences for intrusive ptr's refcnt ([#162072](https://github.com/pytorch/pytorch/pull/162072))
 ### security

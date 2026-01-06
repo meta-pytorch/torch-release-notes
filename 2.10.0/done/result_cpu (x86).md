@@ -1,5 +1,5 @@
 
-# Release Notes worksheet cpu (aarch64)
+# Release Notes worksheet cpu (x86)
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,27 +23,17 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## cpu (aarch64)
+## cpu (x86)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
-- [Pytorch] Add NEON Vectorized<double>  translation layers ([#166092](https://github.com/pytorch/pytorch/pull/166092))
 ### bug fixes
-- [cpu][fix] Update ACL version to fix crashes with tensor sizes > 2^31-1 ([#165904](https://github.com/pytorch/pytorch/pull/165904))
 ### performance
-- Relax fences for intrusive ptr's refcnt ([#162072](https://github.com/pytorch/pytorch/pull/162072))
 ### docs
 ### devs
 ### Untopiced
-- [Pytorch] Use exp_u20 for aarch64's erf ([#166594](https://github.com/pytorch/pytorch/pull/166594))
-- [PyTorch] Improve aarch64 performance of bfloat16 ops - retry (#166028) ([#166641](https://github.com/pytorch/pytorch/pull/166641))
-- [Pytorch] Enable aarch64 convert autovec only on clang ([#166739](https://github.com/pytorch/pytorch/pull/166739))
-- [Pytorch] Improve conversion from bf16 on aarch64/NEON ([#166880](https://github.com/pytorch/pytorch/pull/166880))
-- [Pytorch] Improve conversion to bfloat16 on aarch64/NEON ([#166958](https://github.com/pytorch/pytorch/pull/166958))
 ### not user facing
-- [Pytorch] Enable autovec on aarch64 for type conversion ([#166049](https://github.com/pytorch/pytorch/pull/166049))
-- [Pytorch] Improve float32 erf() on aarch64 ([#166262](https://github.com/pytorch/pytorch/pull/166262))
-- [PyTorch] Improve conversion from/to FP16 on aarch64+sve ([#166306](https://github.com/pytorch/pytorch/pull/166306))
-- [PyTorch] Improve conversion from/to bool on aarch64+sve ([#166330](https://github.com/pytorch/pytorch/pull/166330))
+- add shape check for avg_pool2d ([#161952](https://github.com/pytorch/pytorch/pull/161952))
+- huber_loss numerical issue ([#166952](https://github.com/pytorch/pytorch/pull/166952))
 ### security
