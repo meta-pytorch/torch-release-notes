@@ -25,38 +25,44 @@ The categories below are as follows:
 
 ## onnx
 ### bc breaking
+- `fallback=False` is now the default in `torch.onnx.export` ([#162726](https://github.com/pytorch/pytorch/pull/162726))
+    - The exporter now uses the `dynamo=True` option without fallback. This is the recommended way to use the ONNX exporter. To preserve 2.9 behavior, manually set `fallback=True` in the `torch.onnx.export` call.
 ### deprecation
+
+- The `dynamic_axes` option in `torch.onnx.export` is deprecated ([#165769](https://github.com/pytorch/pytorch/pull/165769))
+    - Users should supply the `dynamic_shapes` argument instead. See https://docs.pytorch.org/docs/stable/export.html#expressing-dynamism for more documentation.
+
 ### new features
-- [ONNX] Expose the testing module ([#162495](https://github.com/pytorch/pytorch/pull/162495))
+
+- A new testing module `torch.onnx.testing` with a testing utility `assert_onnx_program` ([#162495](https://github.com/pytorch/pytorch/pull/162495))
+
 ### improvements
-- Fix typo in ONNX export error message ([#162819](https://github.com/pytorch/pytorch/pull/162819))
-- fix f-string in errors.py ([#163074](https://github.com/pytorch/pytorch/pull/163074))
-- Set prefer_deferred_runtime_asserts_over_guards to True ([#165820](https://github.com/pytorch/pytorch/pull/165820))
-- [ONNX] Warn when it's training ([#166412](https://github.com/pytorch/pytorch/pull/166412))
-- [ONNX] Change stacklevel in warning message for export ([#166558](https://github.com/pytorch/pytorch/pull/166558))
-- Update weight tensor initialization in RMSNormalization ([#166550](https://github.com/pytorch/pytorch/pull/166550))
-- Revise deprecation warning for ONNX exporter ([#166692](https://github.com/pytorch/pytorch/pull/166692))
+
+- Improved graph capture logic to preserve dynamic shapes improve conversion success rate
+    - Cover all FX passes into backed size oblivious ([#166151](https://github.com/pytorch/pytorch/pull/166151))
+    - Set prefer_deferred_runtime_asserts_over_guards to True ([#165820](https://github.com/pytorch/pytorch/pull/165820))
+- Various warning and error messages improvements ([#162819](https://github.com/pytorch/pytorch/pull/162819), [#163074](https://github.com/pytorch/pytorch/pull/163074), [#166412](https://github.com/pytorch/pytorch/pull/166412), [#166558](https://github.com/pytorch/pytorch/pull/166558), [#166692](https://github.com/pytorch/pytorch/pull/166692))
+- Improved operator translation logic
+    - Update weight tensor initialization in RMSNormalization ([#166550](https://github.com/pytorch/pytorch/pull/166550))
+    - Support enable_gqa when dropout is non-zero ([#162771](https://github.com/pytorch/pytorch/pull/162771))
+- Implement `tofile()` in ONNX IR tensors for more efficient ONNX model serialization ([#165195](https://github.com/pytorch/pytorch/pull/165195))
+
 ### bug fixes
-- [ONNX] Set fallback=False by default ([#162726](https://github.com/pytorch/pytorch/pull/162726))
-- [ONNX] Fix rotary_embedding_23 implementation ([#162865](https://github.com/pytorch/pytorch/pull/162865))
-- [ONNX] Cover all FX passes into backed size oblivious ([#166151](https://github.com/pytorch/pytorch/pull/166151))
-- [ONNX] Create fake implementations for onnx ops; fix boolean mask in attention ([#165780](https://github.com/pytorch/pytorch/pull/165780))
+
+- Native ONNX ops (`torch.onnx.ops`)
+    - Fix rotary_embedding_23 implementation ([#162865](https://github.com/pytorch/pytorch/pull/162865))
+    - Create fake implementations for onnx ops; fix boolean mask in attention ([#165780](https://github.com/pytorch/pytorch/pull/165780))
+- Fix onnx export on big endian machines ([#167816](https://github.com/pytorch/pytorch/pull/167816))
 ### performance
 ### docs
-- [ONNX] Update export docstring ([#162622](https://github.com/pytorch/pytorch/pull/162622))
+- Update export docstring ([#162622](https://github.com/pytorch/pytorch/pull/162622))
+- Fix incorrect attention example in ONNX exporter docstring ([#167646](https://github.com/pytorch/pytorch/pull/167646))
 ### devs
 ### Untopiced
-- [ONNX] Support enable_gqa when dropout is non-zero ([#162771](https://github.com/pytorch/pytorch/pull/162771))
-- [mypy] add some import ignores to onnx ([#163133](https://github.com/pytorch/pytorch/pull/163133))
-- [ONNX] TorchTensor supports tofile() ([#165195](https://github.com/pytorch/pytorch/pull/165195))
-- [ONNX] Support renaming in dynamic axes to shapes conversion ([#165769](https://github.com/pytorch/pytorch/pull/165769))
-- [ONNX] Ignore pyrefly errors in torchlib ([#166588](https://github.com/pytorch/pytorch/pull/166588))
-- Fix incorrect attention example in ONNX exporter docstring ([#167646](https://github.com/pytorch/pytorch/pull/167646))
-- [torch.onnx.export] Fix onnx export on big endian machines ([#167816](https://github.com/pytorch/pytorch/pull/167816))
-- [8/N] Use Python 3.10 typing  ([#168334](https://github.com/pytorch/pytorch/pull/168334))
 ### not user facing
 - fix typo: summit -> submit ([#162587](https://github.com/pytorch/pytorch/pull/162587))
 - remove allow-untyped-defs from ./torch/onnx/_internal/torchscript_exporter/_globals.py ([#163472](https://github.com/pytorch/pytorch/pull/163472))
-- [ONNX] Add a test to backed_size_oblivious patch in onnx ([#166196](https://github.com/pytorch/pytorch/pull/166196))
-- Compiler User Guide Landing Pages ([#165635](https://github.com/pytorch/pytorch/pull/165635))
+- Add a test to backed_size_oblivious patch in onnx ([#166196](https://github.com/pytorch/pytorch/pull/166196))
+- Add some import ignores to onnx ([#163133](https://github.com/pytorch/pytorch/pull/163133))
+- Ignore pyrefly errors in torchlib ([#166588](https://github.com/pytorch/pytorch/pull/166588))
 ### security
