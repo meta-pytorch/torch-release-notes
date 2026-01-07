@@ -26,21 +26,19 @@ The categories below are as follows:
 ## profiler
 ### bc breaking
 ### deprecation
-- [BE] Remove bottleneck ([#163210](https://github.com/pytorch/pytorch/pull/163210))
-- [Profiler] Deprecate export_memory_timeline method ([#168036](https://github.com/pytorch/pytorch/pull/168036))
+- Deprecate `export_memory_timeline` method ([#168036](https://github.com/pytorch/pytorch/pull/168036))
 ### new features
+- Add scope for `RecordFunctionFast` ([#162661](https://github.com/pytorch/pytorch/pull/162661))
 ### improvements
+- Expose Kineto event metadata in PyTorch Profiler events ([#161624](https://github.com/pytorch/pytorch/pull/161624))
+- Add `user_metadata` display to memory visualizer ([#165939](https://github.com/pytorch/pytorch/pull/165939))
+- Add warning for clearing profiler events at the end of each cycle ([#168066](https://github.com/pytorch/pytorch/pull/168066))
 ### bug fixes
+- Fix `ProfilerState` typo ('Disable' → 'Disabled') and expose `PRIVATEUSE1` in `ActiveProfilerType` ([#169166](https://github.com/pytorch/pytorch/pull/169166))
 ### performance
 ### docs
-- [Profiler] Add Documentation for FunctionEvent ([#167688](https://github.com/pytorch/pytorch/pull/167688))
+- Add documentation for `FunctionEvent` ([#167688](https://github.com/pytorch/pytorch/pull/167688))
 ### devs
 ### Untopiced
-- [RecordFunction] Add Scope for Record Function Fast ([#162661](https://github.com/pytorch/pytorch/pull/162661))
-- Expose Kineto event metadata in PyTorch Profiler events ([#161624](https://github.com/pytorch/pytorch/pull/161624))
-- [PyTorch] Add user_metadata display to memory visualizer ([#165939](https://github.com/pytorch/pytorch/pull/165939))
-- Add warning for clearing profiler events at the end of each cycle ([#168066](https://github.com/pytorch/pytorch/pull/168066))
-- [Profiler][PrivateUse1] Fix ProfilerState typo ('Disable'→'Disabled') and expose PRIVATEUSE1 in ActiveProfilerType ([#169166](https://github.com/pytorch/pytorch/pull/169166))
 ### not user facing
-- Remove old NVTX interface ([#167637](https://github.com/pytorch/pytorch/pull/167637))
 ### security
