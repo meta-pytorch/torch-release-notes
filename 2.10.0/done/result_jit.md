@@ -35,6 +35,17 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
+### not user facing
+- [torch] DRY a couple of lines in unpickler ([#163447](https://github.com/pytorch/pytorch/pull/163447))
+- Better error handling in torch/csrc/jit/ir/* ([#163757](https://github.com/pytorch/pytorch/pull/163757))
+- Better error handling in torch/csrc/jit/codegen/* ([#163948](https://github.com/pytorch/pytorch/pull/163948))
+- [opaque_obj] Add __eq__ and __deepcopy__ ([#163279](https://github.com/pytorch/pytorch/pull/163279))
+- Fix missing brackets ([#165138](https://github.com/pytorch/pytorch/pull/165138))
+- Better error handling in torch/csrc/jit/frontend/* ([#165213](https://github.com/pytorch/pytorch/pull/165213))
+- Better error handling in torch/csrc/jit/runtime/*  ([#165118](https://github.com/pytorch/pytorch/pull/165118))
+- [Fix] Add generator and tensor variant signatures for `rand*_like()` functions ([#167824](https://github.com/pytorch/pytorch/pull/167824))
+- [opaque_obj] Remove free registration ([#167739](https://github.com/pytorch/pytorch/pull/167739))
+- [opaque_obj] Remove inital opaque obj ([#167740](https://github.com/pytorch/pytorch/pull/167740))
 - Fix missing moves in initJITBindings ([#162428](https://github.com/pytorch/pytorch/pull/162428))
 - [easy] Don't force copy result of getAllOperatorsFor in init.cpp ([#162218](https://github.com/pytorch/pytorch/pull/162218))
 - Fix excess refcounting in ObjLoaderFunc ([#161528](https://github.com/pytorch/pytorch/pull/161528))
@@ -48,15 +59,4 @@ The categories below are as follows:
 - Fix longstanding race condition around getAllOperatorsFor ([#167860](https://github.com/pytorch/pytorch/pull/167860))
 - Fix missing ConstantPooling header in passes.cpp ([#169420](https://github.com/pytorch/pytorch/pull/169420))
 - Revert getAllOperatorsFor changes (#167860, #162218) ([#169281](https://github.com/pytorch/pytorch/pull/169281))
-### not user facing
-- [torch] DRY a couple of lines in unpickler ([#163447](https://github.com/pytorch/pytorch/pull/163447))
-- Better error handling in torch/csrc/jit/ir/* ([#163757](https://github.com/pytorch/pytorch/pull/163757))
-- Better error handling in torch/csrc/jit/codegen/* ([#163948](https://github.com/pytorch/pytorch/pull/163948))
-- [opaque_obj] Add __eq__ and __deepcopy__ ([#163279](https://github.com/pytorch/pytorch/pull/163279))
-- Fix missing brackets ([#165138](https://github.com/pytorch/pytorch/pull/165138))
-- Better error handling in torch/csrc/jit/frontend/* ([#165213](https://github.com/pytorch/pytorch/pull/165213))
-- Better error handling in torch/csrc/jit/runtime/*  ([#165118](https://github.com/pytorch/pytorch/pull/165118))
-- [Fix] Add generator and tensor variant signatures for `rand*_like()` functions ([#167824](https://github.com/pytorch/pytorch/pull/167824))
-- [opaque_obj] Remove free registration ([#167739](https://github.com/pytorch/pytorch/pull/167739))
-- [opaque_obj] Remove inital opaque obj ([#167740](https://github.com/pytorch/pytorch/pull/167740))
 ### security
