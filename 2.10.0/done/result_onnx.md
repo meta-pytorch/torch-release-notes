@@ -25,6 +25,7 @@ The categories below are as follows:
 
 ## onnx
 ### bc breaking
+
 - `fallback=False` is now the default in `torch.onnx.export` ([#162726](https://github.com/pytorch/pytorch/pull/162726))
     - The exporter now uses the `dynamo=True` option without fallback. This is the recommended way to use the ONNX exporter. To preserve 2.9 behavior, manually set `fallback=True` in the `torch.onnx.export` call.
 ### deprecation
@@ -38,7 +39,7 @@ The categories below are as follows:
 
 ### improvements
 
-- Improved graph capture logic to preserve dynamic shapes improve conversion success rate
+- Improved graph capture logic to preserve dynamic shapes and improve conversion success rate
     - Cover all FX passes into backed size oblivious ([#166151](https://github.com/pytorch/pytorch/pull/166151))
     - Set prefer_deferred_runtime_asserts_over_guards to True ([#165820](https://github.com/pytorch/pytorch/pull/165820))
 - Various warning and error messages improvements ([#162819](https://github.com/pytorch/pytorch/pull/162819), [#163074](https://github.com/pytorch/pytorch/pull/163074), [#166412](https://github.com/pytorch/pytorch/pull/166412), [#166558](https://github.com/pytorch/pytorch/pull/166558), [#166692](https://github.com/pytorch/pytorch/pull/166692))
