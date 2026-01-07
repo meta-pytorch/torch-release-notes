@@ -29,27 +29,27 @@ The categories below are as follows:
 ### new features
 ### improvements
 ### bug fixes
+- Avoid multiple storage writer resets in async save ([#159448](https://github.com/pytorch/pytorch/pull/159448))
+- DTensor slice dequantization with proper block alignment ([#163532](https://github.com/pytorch/pytorch/pull/163532))
+- Add option to use PrefixStore to create checkpoint background process ([#166560](https://github.com/pytorch/pytorch/pull/166560))
 ### performance
-### docs
-### devs
-### Untopiced
-- [DCP] Avoid multiple storage writer resets in async save ([#159448](https://github.com/pytorch/pytorch/pull/159448))
-- [DCP] Add timeout for checkpoint background process join ([#162828](https://github.com/pytorch/pytorch/pull/162828))
-- [DCP] DTensor slice dequantization with proper block alignment ([#163532](https://github.com/pytorch/pytorch/pull/163532))
-- [dcp] remove psutil dependency in asyncprocessexecutor for oss ([#169985](https://github.com/pytorch/pytorch/pull/169985))
-- [DCP] Add logging for individual state_dict calls ([#169511](https://github.com/pytorch/pytorch/pull/169511))
-- Add huggingface storage reader for MXFP4 quantized GPT-OSS checkpoint ([#167672](https://github.com/pytorch/pytorch/pull/167672))
-- [dcp][state_dict] Make `_flatten_optim_state_dict` and `_unflatten_optim_state_dict` handle arbitrary-level of nested optim dictionaries by recursion ([#165071](https://github.com/pytorch/pytorch/pull/165071))
-- [DCP] Add option to use PrefixStore to create checkpoint background process ([#166560](https://github.com/pytorch/pytorch/pull/166560))
-- add device generalization support for distributed checkpoint tests ([#159242](https://github.com/pytorch/pytorch/pull/159242))
-- Replace assert statements in distributed checkpoint with explicit checks (distributed) ([#165256](https://github.com/pytorch/pytorch/pull/165256))
+- Add timeout for checkpoint background process join ([#162828](https://github.com/pytorch/pytorch/pull/162828))
 - Disable GC in process based async checkpointing ([#169613](https://github.com/pytorch/pytorch/pull/169613))
 - Optimize global save-plan validation ([#166820](https://github.com/pytorch/pytorch/pull/166820))
 - state dict staging fixes ([#166025](https://github.com/pytorch/pytorch/pull/166025))
+### docs
+### devs
+### Untopiced
 ### not user facing
 - Port 4 dynamo test files for the intel XPU ([#160953](https://github.com/pytorch/pytorch/pull/160953))
 - UT/Examples for resharding checkpoint save/loads for distributed tensors with uneven shards. ([#160533](https://github.com/pytorch/pytorch/pull/160533))
 - [CI][CUDA] Add periodic b200 distributed job ([#159323](https://github.com/pytorch/pytorch/pull/159323))
 - [2/N] Correctly use test parameters  ([#166783](https://github.com/pytorch/pytorch/pull/166783))
 - Add missing super().setUp() ([#167163](https://github.com/pytorch/pytorch/pull/167163))
+- remove psutil dependency in asyncprocessexecutor for oss ([#169985](https://github.com/pytorch/pytorch/pull/169985))
+- Add logging for individual state_dict calls ([#169511](https://github.com/pytorch/pytorch/pull/169511))
+- Add huggingface storage reader for MXFP4 quantized GPT-OSS checkpoint ([#167672](https://github.com/pytorch/pytorch/pull/167672))
+- Make `_flatten_optim_state_dict` and `_unflatten_optim_state_dict` handle arbitrary-level of nested optim dictionaries by recursion ([#165071](https://github.com/pytorch/pytorch/pull/165071))
+- Add option to use PrefixStore to create checkpoint background process ([#166560](https://github.com/pytorch/pytorch/pull/166560))
+- Replace assert statements in distributed checkpoint with explicit checks (distributed) ([#165256](https://github.com/pytorch/pytorch/pull/165256))
 ### security
