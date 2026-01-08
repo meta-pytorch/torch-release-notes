@@ -39,21 +39,7 @@ The categories below are as follows:
 - Fix dlpack exports/imports of sliced tensors ([#169272](https://github.com/pytorch/pytorch/pull/169272))
 - Fix large tensors silent correctness for `fill` and `cat` operation ([#164108](https://github.com/pytorch/pytorch/pull/164108), [#165373](https://github.com/pytorch/pytorch/pull/165373), [#166556](https://github.com/pytorch/pytorch/pull/166556), [#164416](https://github.com/pytorch/pytorch/pull/164416))
 - `torch.compile` bugfixes ([#169648](https://github.com/pytorch/pytorch/pull/169648), [#163021](https://github.com/pytorch/pytorch/pull/163021), [#162776](https://github.com/pytorch/pytorch/pull/162776), [#163452](https://github.com/pytorch/pytorch/pull/163452))
-
-
-- Fix invalid indices bug for max_unpool2d/3d on MPS ([#163036](https://github.com/pytorch/pytorch/pull/163036))
-- [MPS] Fix nan behavior in `grid_sampler_3d` ([#163881](https://github.com/pytorch/pytorch/pull/163881))
-- [MPS] Fix internal assertion in torch.linalg.solve for singular matrices ([#165254](https://github.com/pytorch/pytorch/pull/165254))
-- [MPS] Fix SDPA fp16 overflow ([#165961](https://github.com/pytorch/pytorch/pull/165961))
-- [EZ][MPS] Improve distribution error checking ([#166425](https://github.com/pytorch/pytorch/pull/166425))
-- [MPS] Fix random in-place ops on non-contiguous tensors ([#165267](https://github.com/pytorch/pytorch/pull/165267))
-- MPS: Fix clamp scalar cache key to store floats in hex representation ([#167777](https://github.com/pytorch/pytorch/pull/167777))
-- Fix clamp broadcasting on MPS (Fixes #160734) ([#165058](https://github.com/pytorch/pytorch/pull/165058))
-- [MPS] Fix repeat_interleave with slices ([#167961](https://github.com/pytorch/pytorch/pull/167961))
-- [MPS] Add input/indices shape validation for MaxUnpool{1,2,3}d ([#169261](https://github.com/pytorch/pytorch/pull/169261))
-- [BUG] MaxUnpool2d/3d should check output dim before accessing its elements ([#163507](https://github.com/pytorch/pytorch/pull/163507))
-- [MPS] Fix parity between CPU and MPS on singular matrices in linalg.lu_factor ([#165871](https://github.com/pytorch/pytorch/pull/165871))
-- [MPS][BugFix] Fix MaxPool2d/MaxPool3d output size validation (Issue #168246) ([#168332](https://github.com/pytorch/pytorch/pull/168332))
+- Silent correctness/input validation fixes ([#163036](https://github.com/pytorch/pytorch/pull/163036), ([#165254](https://github.com/pytorch/pytorch/pull/165254), ([#165267](https://github.com/pytorch/pytorch/pull/165267), ([#167777](https://github.com/pytorch/pytorch/pull/167777), ([#165058](https://github.com/pytorch/pytorch/pull/165058), ([#167961](https://github.com/pytorch/pytorch/pull/167961), ([#169261](https://github.com/pytorch/pytorch/pull/169261), ([#165871](https://github.com/pytorch/pytorch/pull/165871), ([#163507](https://github.com/pytorch/pytorch/pull/163507), ([#168332](https://github.com/pytorch/pytorch/pull/168332))
 ### performance
 ### docs
 ### devs
