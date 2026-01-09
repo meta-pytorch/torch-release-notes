@@ -28,28 +28,17 @@ The categories below are as follows:
 ### deprecation
 ### new features
 ### improvements
-- [CMake] Remove forcing of `-O2` from `torch_compile_options` ([#164894](https://github.com/pytorch/pytorch/pull/164894))
-- If USE_CUDA=1 is set, do not fallback to no CUDA ([#166982](https://github.com/pytorch/pytorch/pull/166982))
-- Add support to enable the oneDNN backend for RISC-V ([#166602](https://github.com/pytorch/pytorch/pull/166602))
+- Abort explicitly requested CUDA build if toolkit could not be found ([#166982](https://github.com/pytorch/pytorch/pull/166982))
+- RISC-V build improvements ([#166602](https://github.com/pytorch/pytorch/pull/166602), [#167071](https://github.com/pytorch/pytorch/pull/167071), [#165717](https://github.com/pytorch/pytorch/pull/165717))
+- Allow building with arbitrary BLAS library ([#166333](https://github.com/pytorch/pytorch/pull/166333))
+- Allow building with LeakSanitizer ([#158686](https://github.com/pytorch/pytorch/pull/158686))
 ### bug fixes
-- [BE] Fix `'_WIN32' is not defined` warning ([#162516](https://github.com/pytorch/pytorch/pull/162516))
-- Don't use declarations in global namespace in stable headers ([#163352](https://github.com/pytorch/pytorch/pull/163352))
-- [CMake] Fix `USE_FBGEMM_GENAI` option ([#164165](https://github.com/pytorch/pytorch/pull/164165))
-- fix #166057: add tmp ptr to avoid gcc internal compiler error ([#165717](https://github.com/pytorch/pytorch/pull/165717))
-- [CI] Workaround `relocation truncated to fit: R_AARCH64_CALL26` linker error ([#169723](https://github.com/pytorch/pytorch/pull/169723))
-- [CI] Workaround `relocation truncated to fit: R_AARCH64_CALL26` linker error ([#169723](https://github.com/pytorch/pytorch/pull/169723))
+- Fix build targets order [#169905](https://github.com/pytorch/pytorch/pull/169905),[#169994](https://github.com/pytorch/pytorch/pull/169994), [#164165](https://github.com/pytorch/pytorch/pull/164165))
+- Do not restrict optimization flags ([#164894](https://github.com/pytorch/pytorch/pull/164894))
+- Fix linking issue for Linux-aarch64 target ([#169723](https://github.com/pytorch/pytorch/pull/169723))
 ### performance
 ### docs
-- [Windows] Update libuv version from 1.39 to 1.51 ([#160318](https://github.com/pytorch/pytorch/pull/160318))
 ### devs
 ### Untopiced
-- [build] Add LeakSanitizer option to CMake ([#158686](https://github.com/pytorch/pytorch/pull/158686))
-- Fix THP_PyObject_VirtualFree return type ([#163763](https://github.com/pytorch/pytorch/pull/163763))
-- Use inline instead of anon namespace for stableivalue from/to ([#164882](https://github.com/pytorch/pytorch/pull/164882))
-- [ROCm] Custom OpenBLAS library name ([#166333](https://github.com/pytorch/pytorch/pull/166333))
-- Fixed the cpp_builder error under riscv ([#167071](https://github.com/pytorch/pytorch/pull/167071))
 ### not user facing
-- [CMake] Remove LLVM link code ([#134940](https://github.com/pytorch/pytorch/pull/134940))
-- Make torch_nvshmem depends on  libtorch_cpu ([#169905](https://github.com/pytorch/pytorch/pull/169905))
-- Fix fbgemm_genai build race condition by adding torch_cpu dependency ([#169994](https://github.com/pytorch/pytorch/pull/169994))
 ### security
