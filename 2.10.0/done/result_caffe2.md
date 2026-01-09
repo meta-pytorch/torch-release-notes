@@ -33,16 +33,8 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- [AI Codemod][DevmatePerfOptimizationVectorReallocation] fbcode/caffe2/torch/csrc/jit/serialization/unpickler.cpp ([#163240](https://github.com/pytorch/pytorch/pull/163240))
 - [caffe2] tweak Unpickler::readInstruction handling TUPLE ([#164764](https://github.com/pytorch/pytorch/pull/164764))
-- [caffe2] Ignore -Wswitch-enum warnings ([#166760](https://github.com/pytorch/pytorch/pull/166760))
-- [unified v2][apple] Clean up `APPLETVOS` from caffe2 ([#166953](https://github.com/pytorch/pytorch/pull/166953))
 - [torch] Update caffe2/torch/csrc to build under CUDA 13 ([#167401](https://github.com/pytorch/pytorch/pull/167401))
-- [caffe2] Address -Wswitch-default warnings in headers ([#167563](https://github.com/pytorch/pytorch/pull/167563))
 - [torch] Update caffe2/c10/cuda to build under CUDA 13 ([#167534](https://github.com/pytorch/pytorch/pull/167534))
 ### not user facing
-- [xplat][caffe2] Fix -Wswitch-default issues ([#169022](https://github.com/pytorch/pytorch/pull/169022))
-- Remove platform_srcs from xplat/caffe2/third_party/xnnpack.buck.bzl (#169293) ([#169644](https://github.com/pytorch/pytorch/pull/169644))
-- [caffe2] add kineto header dep ([#169674](https://github.com/pytorch/pytorch/pull/169674))
-- Fix caffe2 genrules to be root based ([#169957](https://github.com/pytorch/pytorch/pull/169957))
 ### security
