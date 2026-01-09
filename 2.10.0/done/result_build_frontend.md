@@ -33,7 +33,7 @@ The categories below are as follows:
 - Allow building with arbitrary BLAS library ([#166333](https://github.com/pytorch/pytorch/pull/166333))
 - Allow building with LeakSanitizer ([#158686](https://github.com/pytorch/pytorch/pull/158686))
 ### bug fixes
-- Fix build targets order [#169905](https://github.com/pytorch/pytorch/pull/169905),[#169994](https://github.com/pytorch/pytorch/pull/169994), [#164165](https://github.com/pytorch/pytorch/pull/164165))
+- Fix build targets order ([#169905](https://github.com/pytorch/pytorch/pull/169905),[#169994](https://github.com/pytorch/pytorch/pull/169994), [#164165](https://github.com/pytorch/pytorch/pull/164165))
 - Do not restrict optimization flags ([#164894](https://github.com/pytorch/pytorch/pull/164894))
 - Fix linking issue for Linux-aarch64 target ([#169723](https://github.com/pytorch/pytorch/pull/169723))
 ### performance
