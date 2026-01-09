@@ -1,5 +1,5 @@
 
-# Release Notes worksheet devx
+# Release Notes worksheet indexing
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,7 +23,7 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## devx
+## indexing
 ### bc breaking
 ### deprecation
 ### new features
@@ -32,8 +32,8 @@ The categories below are as follows:
 ### performance
 ### docs
 ### devs
-- Add basic spin config and linting commands ([#167226](https://github.com/pytorch/pytorch/pull/167226))
 ### Untopiced
-- Add workflow regeneration to spin ([#167551](https://github.com/pytorch/pytorch/pull/167551))
 ### not user facing
+- [BE] Rewrite IndexKernel using Dispatch_v2 ([#169673](https://github.com/pytorch/pytorch/pull/169673))
+- [BE] Rewrite IndexKernel using Dispatch_v2 ([#169673](https://github.com/pytorch/pytorch/pull/169673))
 ### security

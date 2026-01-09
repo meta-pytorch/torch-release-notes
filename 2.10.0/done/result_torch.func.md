@@ -30,9 +30,9 @@ The categories below are as follows:
 ### improvements
 ### bug fixes
 ### performance
+- 20x less memory use and 37.25% speedup in min_cut_rematerialization_partition when using the new dp knapsack solver, compared to existing default one (dp) ([#160914](https://github.com/pytorch/pytorch/pull/160914))
 ### docs
 ### devs
 ### Untopiced
-- 20x less memory use and 37.25% speedup in min_cut_rematerialization_partition when using the new dp knapsack solver, compared to existing default one (dp) ([#160914](https://github.com/pytorch/pytorch/pull/160914))
 ### not user facing
 ### security

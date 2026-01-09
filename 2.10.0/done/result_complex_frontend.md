@@ -1,5 +1,5 @@
 
-# Release Notes worksheet mobile
+# Release Notes worksheet complex_frontend
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,18 +23,17 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## mobile
+## complex_frontend
 ### bc breaking
 ### deprecation
 ### new features
+- Add `ComplexTensor` subclass ([#167621](https://github.com/pytorch/pytorch/pull/167621))
 ### improvements
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [flatbuffer] Fix compile error due to discarded result ([#162767](https://github.com/pytorch/pytorch/pull/162767))
-- Fix common typos and misspellings ([#164413](https://github.com/pytorch/pytorch/pull/164413))
 ### not user facing
-- [BE][4/5] fix typos in aten/ (aten/src/ATen/native/) ([#157553](https://github.com/pytorch/pytorch/pull/157553))
+- [CUDA][Complex] Bump tolerances for `TestFFTCUDA.test_reference_nd__refs_fft_irfftn_cuda_complex64` ([#168016](https://github.com/pytorch/pytorch/pull/168016))
 ### security

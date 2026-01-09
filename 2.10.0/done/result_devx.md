@@ -1,5 +1,5 @@
 
-# Release Notes worksheet benchmark
+# Release Notes worksheet devx
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,18 +23,17 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## benchmark
+## devx
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
 ### performance
-- Add attention benchmarking numbers to pytorch operator microbenchmarks ([#164155](https://github.com/pytorch/pytorch/pull/164155))
 ### docs
 ### devs
 ### Untopiced
-- Update the operator benchmarking, to benchmark using torch.compile ([#161394](https://github.com/pytorch/pytorch/pull/161394))
 ### not user facing
-- Update dynamic_inductor_timm_training.csv ([#167609](https://github.com/pytorch/pytorch/pull/167609))
+- Add basic spin config and linting commands ([#167226](https://github.com/pytorch/pytorch/pull/167226))
+- Add workflow regeneration to spin ([#167551](https://github.com/pytorch/pytorch/pull/167551))
 ### security

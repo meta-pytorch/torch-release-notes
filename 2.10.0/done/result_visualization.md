@@ -1,5 +1,5 @@
 
-# Release Notes worksheet complex_frontend
+# Release Notes worksheet visualization
 
 The main goal of this process is to rephrase all the commit messages below to make them **clear and easy to read** by the end user. You should follow the following instructions to do so:
 
@@ -23,7 +23,7 @@ The categories below are as follows:
 * Developers: All commits that are not end-user facing but still impact people that compile from source, develop into pytorch, extend pytorch, etc
 * not user facing: All commits that are not public end-user facing and hence should be dropped from the release notes
 
-## complex_frontend
+## visualization
 ### bc breaking
 ### deprecation
 ### new features
@@ -33,7 +33,6 @@ The categories below are as follows:
 ### docs
 ### devs
 ### Untopiced
-- `ComplexTensor` subclass ([#167621](https://github.com/pytorch/pytorch/pull/167621))
 ### not user facing
-- [CUDA][Complex] Bump tolerances for `TestFFTCUDA.test_reference_nd__refs_fft_irfftn_cuda_complex64` ([#168016](https://github.com/pytorch/pytorch/pull/168016))
+- filter out alloc-free pairs from trace plot ([#165752](https://github.com/pytorch/pytorch/pull/165752))
 ### security
