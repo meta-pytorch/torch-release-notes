@@ -34,6 +34,9 @@ The categories below are as follows:
 - Enable custom op autotune decompositions and parameter tuning. ([#164212](https://github.com/pytorch/pytorch/pull/164212))  ([#167193](https://github.com/pytorch/pytorch/pull/167193))
 - Expose `torch.compiler.config.force_disable_caches` as a public API. ([#166699](https://github.com/pytorch/pytorch/pull/166699))
 - Add HOP for additional control dependencies to enforce explicit scheduling. ([#164568](https://github.com/pytorch/pytorch/pull/164568))
+- Add Inductor Lite Mode ([#167115](https://github.com/pytorch/pytorch/pull/167115))
+- Add distributed autotuning support ([#163369](https://github.com/pytorch/pytorch/pull/163369))
+- Add Native matmul support to inductor ([#157743](https://github.com/pytorch/pytorch/pull/157743))
 
 ### improvements
 - Pruned failed compilations from Autotuning candidates ([#162673](https://github.com/pytorch/pytorch/pull/162673))
@@ -83,6 +86,7 @@ The categories below are as follows:
 - Wire up mask_mod and blockmask to FlexFlash implementation. ([#166359](https://github.com/pytorch/pytorch/pull/166359))
 - More aggressive mix order reduction for better fusion. ([#166382](https://github.com/pytorch/pytorch/pull/166382))
 - Mix order reduction heuristics and tuning. ([#166585](https://github.com/pytorch/pytorch/pull/166585))
+- CuteDSL flat indexer needs to be colexigraphic in coordinate space ([#166657](https://github.com/pytorch/pytorch/pull/166657))
 
 ### bug fixes
 - Fix some edge cases ([#162295](https://github.com/pytorch/pytorch/pull/162295))
@@ -133,6 +137,8 @@ The categories below are as follows:
 - Fix stride rounding on Blockwise128x128 to accommodate for small shapes. ([#164953](https://github.com/pytorch/pytorch/pull/164953))
 - Fix loop pipelining for 2D/2D case of Triton grouped MM. ([#165265](https://github.com/pytorch/pytorch/pull/165265))
 - Fix persistent rblock statically_known_leq error cases. ([#165657](https://github.com/pytorch/pytorch/pull/165657))
+- Fix bugs in emulate_precision_casts ([#163520](https://github.com/pytorch/pytorch/pull/163520))
+- Support python slicing with tensor inputs. ([#165074](https://github.com/pytorch/pytorch/pull/165074))
 
 ### performance
 - Naive foreach autotune support ([#162053](https://github.com/pytorch/pytorch/pull/162053))
@@ -147,6 +153,7 @@ The categories below are as follows:
 - Improve A16W8 performance for CPU GEMM template. ([#162479](https://github.com/pytorch/pytorch/pull/162479))
 - Make mix-order-reduction split size not depends on split-reduction heuristics ([#166461](https://github.com/pytorch/pytorch/pull/166461))
 - Less aggressive persistent reduction when it could induce large masking with dynamic shapes. ([#163365](https://github.com/pytorch/pytorch/pull/163365))
+- Improve FlexAttention backward configs for B200  ([#163318](https://github.com/pytorch/pytorch/pull/163318))
 
 ### docs
 - Updated documentation for `tlparse` ([#171339](https://github.com/pytorch/pytorch/pull/171339))  ([#162975](https://github.com/pytorch/pytorch/pull/162975)). `tlparse` is a compilation report tool that processes `TORCH_TRACE` logs to generate interactive HTML reports showing how your model was compiled. When reporting bugs to PyTorch developers, we encourage you to  attach the trace log or `tlparse` output to provide critical debugging information to help us bisect the issue.
@@ -160,6 +167,7 @@ The categories below are as follows:
 - Add pre-grad graph bisecting support. ([#166344](https://github.com/pytorch/pytorch/pull/166344))
 - Decouple flags for optimization and debug symbols. ([#167385](https://github.com/pytorch/pytorch/pull/167385)) ([#167575](https://github.com/pytorch/pytorch/pull/167575))
 - Introduce HOP for inductor compiled regions to allow torch dispatch. ([#167844](https://github.com/pytorch/pytorch/pull/167844))
+- Record triton kernels, run-to-run determinism checks ([#167028](https://github.com/pytorch/pytorch/pull/167028))
 
 ### Untopiced
 ### not user facing
@@ -173,5 +181,7 @@ The categories below are as follows:
 - Only generate compile-time auto-tuning block in the main graph ([#167131](https://github.com/pytorch/pytorch/pull/167131))
 - Allow add_persistent_r_block to scale up rblock up to a limit ([#162296](https://github.com/pytorch/pytorch/pull/162296))
 - Use reduction hint for aggressive rblock ([#163371](https://github.com/pytorch/pytorch/pull/163371))
+- Lower fallback nodes annotated with "should_fallback" ([#166339](https://github.com/pytorch/pytorch/pull/166339))
+- Add batch dropout pattern ([#162443](https://github.com/pytorch/pytorch/pull/162443))
 
 ### security

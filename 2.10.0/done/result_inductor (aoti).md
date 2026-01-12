@@ -29,13 +29,16 @@ The categories below are as follows:
 - Move from/to to torch::stable::detail ([#164956](https://github.com/pytorch/pytorch/pull/164956))
 ### new features
 - Integrate AOTI as a backend. ([#167338](https://github.com/pytorch/pytorch/pull/167338))
+- Add AOTI mingw cross compilation for Windows. ([#163188](https://github.com/pytorch/pytorch/pull/163188))
 ### improvements
+
 ### bug fixes
 - Bugfix for doing negative padding ([#161639](https://github.com/pytorch/pytorch/pull/161639))
 - Fix unbounded number of substitutions when equality checks contain Max expr ([#163685](https://github.com/pytorch/pytorch/pull/163685))
 - Use atomic API when trying to apply size hints to input tensor strides. ([#163660](https://github.com/pytorch/pytorch/pull/163660))
 - Fix a mixed-device bug for scatter_add ([#167341](https://github.com/pytorch/pytorch/pull/167341))
 - Fix a small buffer mutation issue ([#169347](https://github.com/pytorch/pytorch/pull/169347))
+- Fix `aot_compile` typing. ([#168320](https://github.com/pytorch/pytorch/pull/168320))
 ### performance
 ### docs
 - [AOTI] Update AOTInductor tutorial ([#163808](https://github.com/pytorch/pytorch/pull/163808))
@@ -79,4 +82,7 @@ The categories below are as follows:
 - Revise stableivalue from/to deprecation ([#168155](https://github.com/pytorch/pytorch/pull/168155))
 - Use Python 3.10 typing ([#167790](https://github.com/pytorch/pytorch/pull/167790))
 - Add sum support for qlinear_binary templated implementation ([#163249](https://github.com/pytorch/pytorch/pull/163249))
+- Save compute information metadata (device, platform, ISA, compute capability). ([#163792](https://github.com/pytorch/pytorch/pull/163792))
+- Allow GraphPickler to pickle graph modules containing AOTCompiled subgraphs. ([#165844](https://github.com/pytorch/pytorch/pull/165844))
+- Pass comments from metadata to the autotune block for debugging. ([#163600](https://github.com/pytorch/pytorch/pull/163600))
 ### security

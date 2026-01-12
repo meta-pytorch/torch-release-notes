@@ -27,6 +27,9 @@ The categories below are as follows:
 ### bc breaking
 ### deprecation
 ### new features
+- Allow setting grad_dtype on leaf tensors ([#164751](https://github.com/pytorch/pytorch/pull/164751))
+- Add Default Autograd Fallback for PrivateUse1 in PyTorch ([#165315](https://github.com/pytorch/pytorch/pull/165315))
+- Add API to annotate disjoint backward for use with `torch.utils.checkpoint.checkpoint` ([#166536](https://github.com/pytorch/pytorch/pull/166536))
 ### improvements
 ### bug fixes
 - Fix custom autograd Function memory leak when saving mutated view ([#164407](https://github.com/pytorch/pytorch/pull/164407))
@@ -40,13 +43,10 @@ The categories below are as follows:
 ### Untopiced
 ### not user facing
 - [scan][autograd] clone outputs that's aliasing with inputs or outputs in bw ([#161808](https://github.com/pytorch/pytorch/pull/161808))
-- [Autograd] Add Default Autograd Fallback for PrivateUse1 in PyTorch ([#165315](https://github.com/pytorch/pytorch/pull/165315))
 - Fix Tril Triu SymInt ([#166627](https://github.com/pytorch/pytorch/pull/166627))
 - Fix Tensor use_count check in VariableType.cpp ([#168060](https://github.com/pytorch/pytorch/pull/168060))
-- [reland] Allow setting grad_dtype on leaf tensors ([#164751](https://github.com/pytorch/pytorch/pull/164751))
 - More ruff SIM fixes ([#164695](https://github.com/pytorch/pytorch/pull/164695))
 - [9/N] Apply ruff UP035 rule ([#165515](https://github.com/pytorch/pytorch/pull/165515))
 - Expand type checking to mypy strict files ([#165697](https://github.com/pytorch/pytorch/pull/165697))
 - Fix pyrefly ignore syntax in  /tools/... ([#166240](https://github.com/pytorch/pytorch/pull/166240))
-- Add API to annotate disjoint backward and handle in AC ([#166536](https://github.com/pytorch/pytorch/pull/166536))
 ### security
