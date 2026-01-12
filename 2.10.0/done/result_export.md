@@ -36,4 +36,5 @@ The categories below are as follows:
 ### devs
 ### Untopiced
 ### not user facing
+- Replace export_for_training with export ([#162396](https://github.com/pytorch/pytorch/pull/162396))
 ### security
