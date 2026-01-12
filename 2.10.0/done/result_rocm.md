@@ -89,4 +89,6 @@ The categories below are as follows:
 - Fix skip condition for PLATFORM_SUPPORTS_SYMM_MEM ([#163205](https://github.com/pytorch/pytorch/pull/163205))
 - Skip AsyncTP test class as AsyncTP is not supported on ROCm ([#166316](https://github.com/pytorch/pytorch/pull/166316))
 - Enable ZerO Optimizer UTs ([#169077](https://github.com/pytorch/pytorch/pull/169077))
+- [ROCm][Inductor][CK backend] Install rocm-composable-kernel python package on ROCm Linux CI docker images ([#162288]- (https://github.com/pytorch/pytorch/pull/162288))
+
 ### security

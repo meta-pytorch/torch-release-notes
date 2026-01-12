@@ -55,4 +55,6 @@ The categories below are as follows:
 
 ### Untopiced
 ### not user facing
+- Add XPU kernel for _weight_int8pack_mm ([#160938](https://github.com/pytorch/pytorch/pull/160938))
+- Register the `scaled_mm` and `scaled_mm_v2` for xpu ([#166056](https://github.com/pytorch/pytorch/pull/166056))
 ### security
