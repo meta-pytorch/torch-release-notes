@@ -24,6 +24,46 @@ This test previously passed in 2.9 and 2.9.1, but fails in 2.10.0. The issue is 
 - DeviceMesh
 - Added a warning for slicing flattened dim from root mesh and types for _get_slice_mesh_layout ([#164993](https://github.com/pytorch/pytorch/pull/164993))
 
+We decided to deprecate an existing behavior which goes against the PyTorch design principle (explicit over implicit) for device mesh slicing of flattened dim.
+
+Version <2.9
+```python
+import torch
+from torch.distributed.device_mesh import
+
+device_type = (
+    acc.type
+    if (acc := torch.accelerator.current_accelerator(check_available=True))
+    else "cpu"
+)
+mesh_shape = (2, 2, 2)
+mesh_3d = init_device_mesh(
+    device_type, mesh_shape, mesh_dim_names=("dp", "cp", "tp")
+)
+
+mesh_3d["dp", "cp"]._flatten()
+mesh_3["dp_cp"]  # This comes with no warning
+```
+
+Version >=2.10
+```python
+import torch
+from torch.distributed.device_mesh import
+
+device_type = (
+    acc.type
+    if (acc := torch.accelerator.current_accelerator(check_available=True))
+    else "cpu"
+)
+mesh_shape = (2, 2, 2)
+mesh_3d = init_device_mesh(
+    device_type, mesh_shape, mesh_dim_names=("dp", "cp", "tp")
+)
+
+mesh_3d["dp", "cp"]._flatten()
+mesh_3["dp_cp"]  # This will come with a warning because it implicitly change the state of the original mesh. We will eventually remove this behavior in future release. User should do the bookkeeping of flattened mesh explicitly.
+```
+
 ## Ahead-Of-Time Inductor (AOTI)
 - Move from/to to torch::stable::detail ([#164956](https://github.com/pytorch/pytorch/pull/164956))
 
@@ -37,6 +77,8 @@ This test previously passed in 2.9 and 2.9.1, but fails in 2.10.0. The issue is 
 
 ## Profiler
 - Deprecate `export_memory_timeline` method ([#168036](https://github.com/pytorch/pytorch/pull/168036))
+
+The `export_memory_timeline` method in `torch.profiler` is being deprecated in favor of the newer memory snapshot API (`torch.cuda.memory._record_memory_history` and `torch.cuda.memory._export_memory_snapshot`). This change adds the deprecated decorator from `typing_extensions` and updates the docstring to guide users to the recommended alternative.
 
 # New Features
 ## Autograd
