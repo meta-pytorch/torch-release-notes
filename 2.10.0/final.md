@@ -1,3 +1,8 @@
+# Tracked Regressions
+## `T5Gemma2ModelTest::test_generation_compilation_all_outputs` in `transformers` fails
+
+This test previously passed in 2.9 and 2.9.1, but fails in 2.10.0. The issue is being tracked in #172483. #172483 is eexpected to fix the issue, and is available in nightly builds, and will be included in the 2.11 release.
+
 # Backwards Incompatible Changes
 ## Dataloader Frontend
 - Removed unused `data_source` argument from Sampler ([#163134](https://github.com/pytorch/pytorch/pull/163134)). This is a no-op, unless you have a custom sampler that uses this argument. Please update your custom sampler accordingly.
