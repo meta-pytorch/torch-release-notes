@@ -1,7 +1,7 @@
 # Tracked Regressions
 ## `T5Gemma2ModelTest::test_generation_compilation_all_outputs` in `transformers` fails
 
-This test previously passed in 2.9 and 2.9.1, but fails in 2.10.0. The issue is being tracked in #172483. #172483 is eexpected to fix the issue, and is available in nightly builds, and will be included in the 2.11 release.
+This test previously passed in 2.9 and 2.9.1, but fails in 2.10.0. The issue is being tracked in ([#172442](https://github.com/pytorch/pytorch/pull/172442)). ([#172483](https://github.com/pytorch/pytorch/pull/172483)) is expected to fix the issue. This fix is available in nightly builds, and will be included in the 2.11 release.
 
 # Backwards Incompatible Changes
 ## Dataloader Frontend
