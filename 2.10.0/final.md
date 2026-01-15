@@ -15,7 +15,7 @@
 
 <table>
   <tr>
-    <td> Example highlight #1 </td>
+    <td> Python 3.14 support for `torch.compile` (Python 3.14t (freethreaded build) is experimentally supported)  </td>
   <tr>
   <tr>
     <td> Example highlight #2 </td>
