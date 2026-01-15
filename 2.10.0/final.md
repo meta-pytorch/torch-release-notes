@@ -1,3 +1,16 @@
+# PyTorch 2.10.0 Release Notes
+
+- [Highlights](#highlights)
+- [Backwards Incompatible Changes](#backwards-incompatible-changes)
+- [Deprecations](#deprecations)
+- [New Features](#new-features)
+- [Improvements](#improvements)
+- [Bug fixes](#bug-fixes)
+- [Performance](#performance)
+- [Documentation](#documentation)
+- [Developers](#developers)
+- [Security](#security)
+
 # Highlights
 
 <table>
