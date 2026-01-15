@@ -1,3 +1,16 @@
+# Highlights
+
+<table>
+  <tr>
+    <td> Example highlight #1 </td>
+  <tr>
+  <tr>
+    <td> Example highlight #2 </td>
+  <tr>
+</table>
+
+For more details about these highlighted features, you can look at the [release blogpost](https://pytorch.org/blog/pytorch2-10/). Below are the full release notes for this release.
+
 # Tracked Regressions
 ## `T5Gemma2ModelTest::test_generation_compilation_all_outputs` in `transformers` fails
 
