@@ -22,11 +22,11 @@ This test previously passed in 2.9 and 2.9.1, but fails in 2.10.0. The issue is 
 # Deprecations
 ## Distributed
 - DeviceMesh
-- Added a warning for slicing flattened dim from root mesh and types for _get_slice_mesh_layout ([#164993](https://github.com/pytorch/pytorch/pull/164993))
+  - Added a warning for slicing flattened dim from root mesh and types for _get_slice_mesh_layout ([#164993](https://github.com/pytorch/pytorch/pull/164993))
 
 We decided to deprecate an existing behavior which goes against the PyTorch design principle (explicit over implicit) for device mesh slicing of flattened dim.
 
-Version <2.9
+### Version <2.9
 ```python
 import torch
 from torch.distributed.device_mesh import
@@ -45,7 +45,7 @@ mesh_3d["dp", "cp"]._flatten()
 mesh_3["dp_cp"]  # This comes with no warning
 ```
 
-Version >=2.10
+### Version >=2.10
 ```python
 import torch
 from torch.distributed.device_mesh import
@@ -65,7 +65,7 @@ mesh_3["dp_cp"]  # This will come with a warning because it implicitly change th
 ```
 
 ## Ahead-Of-Time Inductor (AOTI)
-- Move from/to to torch::stable::detail ([#164956](https://github.com/pytorch/pytorch/pull/164956))
+- Move `from`/`to` to `torch::stable::detail` ([#164956](https://github.com/pytorch/pytorch/pull/164956))
 
 ## JIT
 - `torch.jit` is not guaranteed to work in Python 3.14. Deprecation warnings have been added to user-facing `torch.jit` API ([#167669](https://github.com/pytorch/pytorch/pull/167669)).
