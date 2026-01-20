@@ -15,25 +15,27 @@
 
 <table>
   <tr>
-    <td> Python 3.14 support for `torch.compile()`. Python 3.14t (freethreaded build) is experimentally supported as well. </td>
+    <td>
+      <strong>Python 3.14</strong> support for <code>torch.compile()</code>. Python 3.14t (freethreaded build) is experimentally supported as well.
+    </td>
   <tr>
   <tr>
-    <td> Reduced kernel launch overhead with combo-kernels horizontal fusion in torchinductor </td>
+    <td> Reduced kernel launch overhead with <strong>combo-kernels</strong> horizontal fusion in torchinductor </td>
   <tr>
   <tr>
-    <td> A new `varlen_attn()` op providing support for ragged and packed sequences </td>
+    <td> A new <strong>varlen_attn()</strong> op providing support for ragged and packed sequences </td>
   <tr>
   <tr>
-    <td> Efficient eigenvalue decompositions with `DnXgeev` </td>
+    <td> Efficient eigenvalue decompositions with <strong>DnXgeev</strong> </td>
   <tr>
   <tr>
-    <td> `torch.compile()` now respects `use_deterministic_mode` </td>
+    <td> <code>torch.compile()</code> now respects <strong>use_deterministic_mode</strong> </td>
   <tr>
   <tr>
-    <td> `DebugMode` for tracking dispatched calls and debugging numerical divergence - This makes it simpler to track down subtle numerical bugs. </td>
+    <td> <strong>DebugMode</strong> for tracking dispatched calls and debugging numerical divergence - This makes it simpler to track down subtle numerical bugs. </td>
   <tr>
   <tr>
-    <td> `tlparse` & `TORCH_TRACE` improvements to make it easier to diagnose and collaborate on compilation issues </td>
+    <td> <strong>tlparse & TORCH_TRACE</strong> improvements to make it easier to diagnose and collaborate on compilation issues </td>
   <tr>
 </table>
 
