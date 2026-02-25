@@ -23,66 +23,14 @@ Where `<area>` is the functional area name (e.g., `aotdispatcher`, `dynamo`, `in
 2. Find the latest release directory (highest version number in the repo root, e.g., `2.11.0/`). Be careful with version comparison — compare numerically, not lexicographically (e.g., `2.11.0` > `2.9.0`).
 3. Confirm the worksheet file exists at `<version>/todo/result_<area>.md`. If it's already in `done/`, tell the user it's already completed and ask if they want to re-process it.
 
-### Step 1: Read the worksheet and gather PRs
+### Step 1: Read the worksheet
 
-1. **Read the worksheet** at `<version>/todo/result_<area>.md`. The worksheet contains:
-   - An instructional preamble (everything before `## <area>`)
-   - Category headings (`### bc breaking`, `### new features`, etc.) with some pre-sorted PRs
-   - A `### Untopiced` section with PRs that haven't been categorized yet — this is typically where the bulk of the work is
+**Read the worksheet** at `<version>/todo/result_<area>.md`. The worksheet contains:
+- An instructional preamble (everything before `## <area>`)
+- Category headings (`### bc breaking`, `### new features`, etc.) with some pre-sorted PRs
+- A `### Untopiced` section with PRs that haven't been categorized yet — this is typically where the bulk of the work is
 
-2. **Determine the release window**: Find the previous release tag. The current version directory name (e.g., `2.11.0`) tells you what release you're writing notes for. Find the `.0` release immediately before it (not a patch release):
-   ```bash
-   gh api repos/pytorch/pytorch/releases --jq '[.[] | select(.prerelease == false)] | .[] | "\(.tag_name) \(.published_at)"' | head -10
-   ```
-   Pick the `.0` release whose major.minor version is immediately prior to the current one (e.g., for 2.11.0, use v2.10.0 — not v2.10.1 or any other patch release, since the `.0` release marks the branch cut).
-
-   Also determine the **branch cut date** for the current release. Check if the release branch exists:
-   ```bash
-   gh api repos/pytorch/pytorch/branches/release/<major.minor> --jq '.commit.sha' 2>/dev/null
-   ```
-   If the branch exists, find when it was created by looking at the earliest commit on the branch that diverges from main. Use this as the end date for the search window instead of today's date, to avoid including PRs that landed on main after the branch cut.
-
-3. **Search GitHub for any missing PRs** that closed after the previous release. First, verify the exact label name by checking one of the PRs already listed in the worksheet (the label is typically `release notes: <area>`). Then search:
-   ```bash
-   gh pr list --repo pytorch/pytorch --label "release notes: <area>" --state all --search "closed:YYYY-MM-DD..YYYY-MM-DD" --limit 500 --json number,title,closedAt,labels
-   ```
-   Use the previous release date as the start and the branch cut date as the end. Use `--limit 500` to ensure all results are returned.
-
-   **Filtering merged vs. abandoned PRs**: Only include PRs that actually landed:
-   - PRs with state MERGED are confirmed landed.
-   - ghstack PRs show as CLOSED (not MERGED) on GitHub. Check for the `Merged` label in the labels array to confirm they actually landed.
-   - Exclude CLOSED PRs that lack both a merge commit and the `Merged` label — these were abandoned or closed without merging.
-
-   **Multi-area PRs**: A PR may have labels for multiple functional areas (e.g., both `release notes: dynamo` and `release notes: inductor`). If a PR is labeled for this area, include it. It may appear in other areas' release notes too — that's expected.
-
-4. **Verify PRs are on the release branch**: A PR being closed/merged in the time window does NOT guarantee it made the branch cut. Verify that **all** PRs — both from the GitHub search AND pre-existing in the worksheet — are actually on the release branch. The pytorch/pytorch release branch is named `release/<major.minor>` (e.g., `release/2.11`).
-
-   To get the commit SHA, prefer the merge commit when available (non-ghstack PRs), falling back to the last PR commit for ghstack PRs:
-   ```bash
-   # Try merge commit first
-   gh pr view <NUMBER> --repo pytorch/pytorch --json mergeCommit --jq '.mergeCommit.oid'
-   # If empty (ghstack PR), use the last commit in the PR
-   gh pr view <NUMBER> --repo pytorch/pytorch --json commits --jq '.commits[-1].oid'
-   ```
-
-   Then check if the commit is an ancestor of the release branch. Note: the `/` in `release/2.11` must be URL-encoded as `%2F`:
-   ```bash
-   gh api repos/pytorch/pytorch/compare/<COMMIT_SHA>...release%2F<major.minor> --jq '.status'
-   ```
-   - `"behind"` or `"identical"` → commit is on the release branch (include it)
-   - `"diverged"` or `"ahead"` → commit is NOT on the release branch (exclude it)
-
-   Remove any PRs that are not on the release branch, whether they came from the GitHub search or were already in the worksheet.
-
-5. **Check for reverted PRs**: Search for revert PRs in the same release window:
-   ```bash
-   gh pr list --repo pytorch/pytorch --state all --search "closed:YYYY-MM-DD..YYYY-MM-DD revert in:title" --label "release notes: <area>" --limit 100 --json number,title,labels
-   ```
-   If a PR was merged and then reverted (and the revert is also on the release branch), exclude both the original PR and the revert from the release notes — the net effect is zero.
-
-6. **Exclude cherry-picks**: If `<previous_version>/cherrypicks.md` exists (e.g., `2.10.0/cherrypicks.md`), read it. Any PR numbers listed there were already included in the previous release via cherry-pick and should be removed from the current worksheet if present, even though these commits are also on the current release branch — the goal is to avoid double-counting across releases. Note that PR number formats in the cherry-picks file are inconsistent — you may see `(#170723)`, `(170124)` (no `#`), or `(triton#8248)` (cross-repo). Extract all numeric PR IDs for pytorch/pytorch when scanning. Skip this step if the file doesn't exist.
-
-7. **Cross-reference**: Compare the verified GitHub results with what's in the worksheet (both pre-sorted and Untopiced). Note any PRs that are missing from the worksheet.
+Trust the worksheet contents — do not search GitHub for missing PRs or verify that PRs are on the release branch. The worksheet was generated from the actual release branch and is the source of truth.
 
 ### Step 2: Understand each PR
 
@@ -188,7 +136,6 @@ mv <version>/todo/result_<area>.md <version>/done/result_<area>.md
 Tell the user:
 - How many PRs were processed
 - Summary of what's in each non-empty category
-- Whether any PRs were found on GitHub but missing from the worksheet
 - Whether anything in miscategorized.md belongs to this area
 - Remind them to review the result and open a PR when ready
 
