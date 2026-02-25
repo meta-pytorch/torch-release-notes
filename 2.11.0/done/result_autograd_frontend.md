@@ -47,19 +47,20 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Add option to clear Function saved_tensors on access ([#173833](https://github.com/pytorch/pytorch/pull/173833))
+- Add `Function.clear_saved_tensors_on_access` class attribute to clear Function saved_tensors on access ([#173833](https://github.com/pytorch/pytorch/pull/173833))
 ### improvements
 ### bug fixes
-- Fixes absolute tolerance scaling for complex backpropagation in fast gradcheck ([#166386](https://github.com/pytorch/pytorch/pull/166386))
+- Fixes absolute tolerance scaling for complex backpropagation in `torch.autograd.gradcheck` when `fast_mode=True` ([#166386](https://github.com/pytorch/pytorch/pull/166386))
 ### performance
 ### docs
-- Improve set_multithreading_enabled docs ([#170204](https://github.com/pytorch/pytorch/pull/170204))
+- Improve `torch.autograd.set_multithreading_enabled` docs ([#170204](https://github.com/pytorch/pytorch/pull/170204))
 ### devs
+- Fix grad_outputs type hints and parameter descriptions for a few autograd APIs ([#164838](https://github.com/pytorch/pytorch/pull/164838))
 ### Untopiced
-- Upgrade pyrefly version ([#169633](https://github.com/pytorch/pytorch/pull/169633))
-- Avoid differing results in `linalg.(tensor_)solve` ([#154983](https://github.com/pytorch/pytorch/pull/154983))
-- Fix grad_outputs type hints and parameter descriptions ([#164838](https://github.com/pytorch/pytorch/pull/164838))
+
 ### not user facing
 - [TEST][CUDA][autograd] use `set_warn_always_context` context manager in `TestAutogradStreamSynchronization` ([#169981](https://github.com/pytorch/pytorch/pull/169981))
+- Upgrade pyrefly version ([#169633](https://github.com/pytorch/pytorch/pull/169633))
+
 - remove assert in torchgen/model.py and gen_variable_type ([#173813](https://github.com/pytorch/pytorch/pull/173813))
 ### security
