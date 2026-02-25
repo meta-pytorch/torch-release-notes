@@ -42,12 +42,54 @@ Read `<version>/miscategorized.md` if it exists. If it's empty or doesn't exist,
 
 Edit the worksheet file in place, preserving the instructional preamble (everything before `## <area>`). Only modify the content under `## <area>`.
 
-**Process PRs in batches of 5–10** rather than attempting all at once. For each batch:
-1. Fetch any needed details for the batch using multiple `gh` calls in a single tool-calling round.
-2. Categorize each PR and edit the worksheet, writing entries into the correct sections.
+#### Step 3a: Triage — batch-fetch labels and separate miscategorized PRs
+
+Before doing any detailed categorization, do a fast triage pass to identify which PRs belong in this worksheet vs. other areas. Extract all PR numbers from the worksheet and batch-fetch their `release notes:` labels using GraphQL:
+
+```bash
+# Batch-fetch labels for up to 100 PRs at once using GraphQL aliases.
+# Build a query with one alias per PR, e.g.:
+gh api graphql -f query='
+{
+  pr170057: repository(owner: "pytorch", name: "pytorch") {
+    pullRequest(number: 170057) {
+      number
+      labels(first: 10) { nodes { name } }
+    }
+  }
+  pr169979: repository(owner: "pytorch", name: "pytorch") {
+    pullRequest(number: 169979) {
+      number
+      labels(first: 10) { nodes { name } }
+    }
+  }
+}'
+```
+
+Generate the full query programmatically for all PR numbers in the worksheet. GraphQL supports ~100 aliases per query, so split into multiple queries if needed. This replaces individual `gh pr view` calls and is dramatically faster.
+
+Using the labels, split PRs into two groups:
+1. **Stays here**: PRs labeled for this area (or with no `release notes:` label, or labeled for a sub-area that has no separate worksheet).
+2. **Miscategorized**: PRs labeled for a different area that has its own worksheet.
+
+Immediately edit the worksheet to remove miscategorized PRs, and append them to `<version>/miscategorized.md`. This reduces the working set for detailed categorization.
+
+Also at this stage:
+- Remove duplicate entries (same PR listed more than once).
+- Remove PRs that were never merged (check for `Reverted` label or `state: CLOSED` if suspicious).
+- Look up bare commit hashes to find their PR numbers:
+  ```bash
+  gh api repos/pytorch/pytorch/commits/<HASH>/pulls --jq '.[0].number'
+  ```
+
+#### Step 3b: Categorize remaining PRs in batches
+
+Now process the remaining PRs (the ones staying in this worksheet) **in batches of 20**. For each batch:
+1. Fetch any needed details for the batch using multiple `gh` calls in a single tool-calling round (see "When to fetch PR details" below).
+2. Categorize each PR and **immediately edit the worksheet**, writing entries into the correct category sections.
 3. Move to the next batch.
 
-This keeps each round of work small and makes progress incrementally.
+**Edit the worksheet after every batch** — do NOT accumulate all categorizations in memory and write once at the end. Incremental edits are faster, reduce risk of errors, and make progress visible.
 
 **Important:** Also review PRs pre-sorted into `### not user facing` — some may actually be user-facing (bug fixes, improvements, performance) and should be moved to the correct category.
 
@@ -63,18 +105,11 @@ gh pr view <NUMBER> --repo pytorch/pytorch --json title,body,labels
 gh pr diff <NUMBER> --repo pytorch/pytorch  # only when needed
 ```
 
-Some worksheet entries may reference bare commit hashes (e.g., `d2305bd68fe`) instead of PR links. Look up the corresponding PR number so all entries have a consistent `[#NNNNN](...)` link format:
-```bash
-gh api repos/pytorch/pytorch/commits/<HASH>/pulls --jq '.[0].number'
-```
-
 #### What to determine for each PR
 
 - Is it user-facing or internal-only?
 - Is it a BC-breaking change, deprecation, new feature, improvement, bug fix, performance change, docs, developer-facing, or security-related?
 - Does it belong to this area or should it be moved to `miscategorized.md`? Check the PR's `release notes:` labels — if a PR is labeled for a different area (e.g., `release notes: fx` on a PR in the distributed worksheet), it belongs in miscategorized.md.
-
-Remove any duplicate entries in the worksheet (same PR listed more than once).
 
 Move all PRs from `### Untopiced` into the correct category, leaving it empty. Any PRs that belong to a different area should be added to `<version>/miscategorized.md` with a note about which area they came from and which area they belong to.
 
