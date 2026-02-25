@@ -49,14 +49,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fixed `_foreach_copy_` producing incorrect outputs when the destination tensor list contains mixed dtypes. Previously, the fast-path kernel was selected based on the type of the first tensor only. ([#173531](https://github.com/pytorch/pytorch/pull/173531))
+- Fixed `_foreach_max` returning incorrect results when all tensor values are negative, by initializing the output with `lowest()` instead of zeros. ([#173241](https://github.com/pytorch/pytorch/pull/173241))
+- `_foreach_norm` with `ord=inf` now raises an error when any input tensor is empty, since the infinity norm of an empty tensor is undefined. ([#173238](https://github.com/pytorch/pytorch/pull/173238))
+- Fixed `_foreach_norm` to work correctly with symbolic tensors during tracing with dynamic shapes. ([#174026](https://github.com/pytorch/pytorch/pull/174026))
 ### performance
+- Enabled fast multi-tensor kernel path for `_foreach_addcmul` and `_foreach_addcdiv` when `tensor1` is a list of 0D (scalar) tensors, which is common in optimizers. Previously these fell back to slower per-tensor operations. ([#172731](https://github.com/pytorch/pytorch/pull/172731))
 ### docs
 ### devs
 ### Untopiced
-- Enable fast path for foreach_addcmul/addcdiv with 0D tensor1 ([#172731](https://github.com/pytorch/pytorch/pull/172731))
-- Fix _foreach_copy_ with mixed destination dtypes ([#173531](https://github.com/pytorch/pytorch/pull/173531))
-- Initialize output_per_tensor with lowest() instead of zeros ([#173241](https://github.com/pytorch/pytorch/pull/173241))
-- Added check for infinity norm when one of the tensors is empty. ([#173238](https://github.com/pytorch/pytorch/pull/173238))
-- Fix _foreach_norm to support symbolic tensors with dynamic shapes ([#174026](https://github.com/pytorch/pytorch/pull/174026))
 ### not user facing
 ### security
