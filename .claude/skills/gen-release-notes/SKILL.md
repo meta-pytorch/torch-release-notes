@@ -32,6 +32,8 @@ Where `<area>` is the functional area name (e.g., `aotdispatcher`, `dynamo`, `in
 
 Trust the worksheet contents — do not search GitHub for missing PRs or verify that PRs are on the release branch. The worksheet was generated from the actual release branch and is the source of truth.
 
+The worksheet also contains its own instructions in the preamble. Follow the instructions in **this skill document**, which supersede the worksheet's instructions where they differ.
+
 ### Step 2: Check miscategorized.md
 
 Read `<version>/miscategorized.md` if it exists. If it's empty or doesn't exist, skip this step. Otherwise, check if any entries there belong to this functional area. If so, incorporate them into the worksheet and remove them from miscategorized.md.
@@ -40,12 +42,14 @@ Read `<version>/miscategorized.md` if it exists. If it's empty or doesn't exist,
 
 Edit the worksheet file in place, preserving the instructional preamble (everything before `## <area>`). Only modify the content under `## <area>`.
 
-**Process PRs in batches of 5–10.** For each batch:
-1. Fetch details for the batch in parallel (title is often enough; see below for when to fetch more).
-2. Categorize each PR and write it into the correct section of the worksheet.
+**Process PRs in batches of 5–10** rather than attempting all at once. For each batch:
+1. Fetch any needed details for the batch using multiple `gh` calls in a single tool-calling round.
+2. Categorize each PR and edit the worksheet, writing entries into the correct sections.
 3. Move to the next batch.
 
-This keeps each round of work small and parallelizes the GitHub API calls.
+This keeps each round of work small and makes progress incrementally.
+
+**Important:** Also review PRs pre-sorted into `### not user facing` — some may actually be user-facing (bug fixes, improvements, performance) and should be moved to the correct category.
 
 #### When to fetch PR details
 
@@ -69,8 +73,6 @@ gh api repos/pytorch/pytorch/commits/<HASH>/pulls --jq '.[0].number'
 - Is it user-facing or internal-only?
 - Is it a BC-breaking change, deprecation, new feature, improvement, bug fix, performance change, docs, developer-facing, or security-related?
 - Does it belong to this area or should it be moved to `miscategorized.md`? Check the PR's `release notes:` labels — if a PR is labeled for a different area (e.g., `release notes: fx` on a PR in the distributed worksheet), it belongs in miscategorized.md.
-
-**Important:** Also review PRs pre-sorted into `### not user facing` — some may actually be user-facing (bug fixes, improvements, performance) and should be moved to the correct category.
 
 Remove any duplicate entries in the worksheet (same PR listed more than once).
 
@@ -108,13 +110,13 @@ All category headings must be present even if empty.
     This change was made because [rationale]. Previously, `torch.foo(...)` would
     return Y. Users relying on the old behavior can [workaround].
 
-    Version 2.10.0:
+    Version <previous_version>:
     ```python
     >>> torch.foo(bar)
     old_result
     ```
 
-    Version 2.11.0:
+    Version <current_version>:
     ```python
     >>> torch.foo(bar)
     new_result
@@ -138,14 +140,22 @@ Format each entry as:
 
 For bc breaking, deprecation, and new features, each entry MUST be polished and clear for end users. For the other sections, you do NOT need to polish every entry — summarize and group related changes where it makes sense.
 
-### Step 4: Move to done
+### Step 4: Verify
+
+Re-read the completed worksheet and verify:
+- `### Untopiced` is empty (all PRs categorized)
+- No PR appears in more than one category
+- All category headings are present
+- BC-breaking and deprecation entries have before/after code examples
+
+### Step 5: Move to done
 
 Move the completed file from `todo/` to `done/`:
 ```bash
 mv <version>/todo/result_<area>.md <version>/done/result_<area>.md
 ```
 
-### Step 5: Report
+### Step 6: Report
 
 Tell the user:
 - How many PRs were processed
