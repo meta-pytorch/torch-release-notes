@@ -49,10 +49,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fixed effect token handling when a graph contains subgraphs without tokens ([#173226](https://github.com/pytorch/pytorch/pull/173226))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- fix effect token handling when graph contains subgraphs without tokens ([#173226](https://github.com/pytorch/pytorch/pull/173226))
 ### not user facing
 ### security
