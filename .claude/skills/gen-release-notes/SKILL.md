@@ -32,9 +32,24 @@ Where `<area>` is the functional area name (e.g., `aotdispatcher`, `dynamo`, `in
 
 Trust the worksheet contents — do not search GitHub for missing PRs or verify that PRs are on the release branch. The worksheet was generated from the actual release branch and is the source of truth.
 
-### Step 2: Understand each PR
+### Step 2: Check miscategorized.md
 
-For PRs in the worksheet, the title is usually sufficient to categorize. Only fetch additional detail when needed:
+Read `<version>/miscategorized.md` if it exists. If it's empty or doesn't exist, skip this step. Otherwise, check if any entries there belong to this functional area. If so, incorporate them into the worksheet and remove them from miscategorized.md.
+
+### Step 3: Categorize and write up
+
+Edit the worksheet file in place, preserving the instructional preamble (everything before `## <area>`). Only modify the content under `## <area>`.
+
+**Process PRs in batches of 5–10.** For each batch:
+1. Fetch details for the batch in parallel (title is often enough; see below for when to fetch more).
+2. Categorize each PR and write it into the correct section of the worksheet.
+3. Move to the next batch.
+
+This keeps each round of work small and parallelizes the GitHub API calls.
+
+#### When to fetch PR details
+
+For most PRs, the title is sufficient to categorize. Only fetch additional detail when needed:
 - For potential BC-breaking changes or deprecations, always read the full PR body and diff to write a proper migration guide.
 - For new features, read the PR body to write a clear description.
 - For ambiguous titles, fetch the PR body to determine the correct category.
@@ -49,7 +64,8 @@ Some worksheet entries may reference bare commit hashes (e.g., `d2305bd68fe`) in
 gh api repos/pytorch/pytorch/commits/<HASH>/pulls --jq '.[0].number'
 ```
 
-Determine for each PR:
+#### What to determine for each PR
+
 - Is it user-facing or internal-only?
 - Is it a BC-breaking change, deprecation, new feature, improvement, bug fix, performance change, docs, developer-facing, or security-related?
 - Does it belong to this area or should it be moved to `miscategorized.md`? Check the PR's `release notes:` labels — if a PR is labeled for a different area (e.g., `release notes: fx` on a PR in the distributed worksheet), it belongs in miscategorized.md.
@@ -57,14 +73,6 @@ Determine for each PR:
 **Important:** Also review PRs pre-sorted into `### not user facing` — some may actually be user-facing (bug fixes, improvements, performance) and should be moved to the correct category.
 
 Remove any duplicate entries in the worksheet (same PR listed more than once).
-
-### Step 3: Check miscategorized.md
-
-Read `<version>/miscategorized.md` if it exists. If it's empty or doesn't exist, skip this step. Otherwise, check if any entries there belong to this functional area. If so, incorporate them into the worksheet and remove them from miscategorized.md.
-
-### Step 4: Categorize and write up
-
-Edit the worksheet file in place, preserving the instructional preamble (everything before `## <area>`). Only modify the content under `## <area>`.
 
 Move all PRs from `### Untopiced` into the correct category, leaving it empty. Any PRs that belong to a different area should be added to `<version>/miscategorized.md` with a note about which area they came from and which area they belong to.
 
@@ -130,14 +138,14 @@ Format each entry as:
 
 For bc breaking, deprecation, and new features, each entry MUST be polished and clear for end users. For the other sections, you do NOT need to polish every entry — summarize and group related changes where it makes sense.
 
-### Step 5: Move to done
+### Step 4: Move to done
 
 Move the completed file from `todo/` to `done/`:
 ```bash
 mv <version>/todo/result_<area>.md <version>/done/result_<area>.md
 ```
 
-### Step 6: Report
+### Step 5: Report
 
 Tell the user:
 - How many PRs were processed
