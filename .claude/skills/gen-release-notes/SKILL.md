@@ -52,17 +52,23 @@ gh api repos/pytorch/pytorch/commits/<HASH>/pulls --jq '.[0].number'
 Determine for each PR:
 - Is it user-facing or internal-only?
 - Is it a BC-breaking change, deprecation, new feature, improvement, bug fix, performance change, docs, developer-facing, or security-related?
-- Does it belong to this area or should it be moved to `miscategorized.md`?
+- Does it belong to this area or should it be moved to `miscategorized.md`? Check the PR's `release notes:` labels — if a PR is labeled for a different area (e.g., `release notes: fx` on a PR in the distributed worksheet), it belongs in miscategorized.md.
+
+**Important:** Also review PRs pre-sorted into `### not user facing` — some may actually be user-facing (bug fixes, improvements, performance) and should be moved to the correct category.
+
+Remove any duplicate entries in the worksheet (same PR listed more than once).
 
 ### Step 3: Check miscategorized.md
 
-Read `<version>/miscategorized.md` if it exists. If it's empty or doesn't exist, skip this step. Otherwise, check if any entries there belong to this functional area. If so, incorporate them into the worksheet. Note which entries you're claiming so the user can remove them from miscategorized.md (don't edit miscategorized.md directly, since other areas may be editing it concurrently).
+Read `<version>/miscategorized.md` if it exists. If it's empty or doesn't exist, skip this step. Otherwise, check if any entries there belong to this functional area. If so, incorporate them into the worksheet and remove them from miscategorized.md.
 
 ### Step 4: Categorize and write up
 
 Edit the worksheet file in place, preserving the instructional preamble (everything before `## <area>`). Only modify the content under `## <area>`.
 
-Move all PRs from `### Untopiced` into the correct category, leaving it empty. The category headings under `## <area>` should be:
+Move all PRs from `### Untopiced` into the correct category, leaving it empty. Any PRs that belong to a different area should be added to `<version>/miscategorized.md` with a note about which area they came from and which area they belong to.
+
+The category headings under `## <area>` should be:
 
 ```markdown
 ### bc breaking
