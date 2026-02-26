@@ -1,5 +1,5 @@
 
-# Release Notes worksheet export
+# Release Notes worksheet fx
 
 You should:
 
@@ -43,36 +43,25 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## export
+## fx
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+- `torch.fx.symbolic_trace` now supports tracing `HigherOrderOperator`s that do not take callable arguments ([#173839](https://github.com/pytorch/pytorch/pull/173839))
 ### bug fixes
+- Fix `torch.fx.symbolic_trace` `to_folder` with `torch.nn.Sequential` modules ([#169279](https://github.com/pytorch/pytorch/pull/169279))
+- Fix `Node.type` pickling in `torch.fx` ([#169172](https://github.com/pytorch/pytorch/pull/169172))
 ### performance
+- Improve node index lookup performance in FX graphs by using an index lookup map ([#173385](https://github.com/pytorch/pytorch/pull/173385))
 ### docs
+- Add documentation for previously undocumented functions ([#170581](https://github.com/pytorch/pytorch/pull/170581))
 ### devs
-### Untopiced
-- [export] Deepcopy graph signature when unlifting ([#170461](https://github.com/pytorch/pytorch/pull/170461))
-- [reland][export] Make RNNs exportable on GPUs ([#169710](https://github.com/pytorch/pytorch/pull/169710))
-- Serialize from_node info in torch export serializer ([#171726](https://github.com/pytorch/pytorch/pull/171726))
-- Ensure tensor name consistency before and after torch.export.save ([#171954](https://github.com/pytorch/pytorch/pull/171954))
-- [nativert] Add MtiaTritonKernelManager for MTIA Triton kernel execution ([#171492](https://github.com/pytorch/pytorch/pull/171492))
-- [nativert] Refactor LaunchParams to use target-specific subclasses ([#172084](https://github.com/pytorch/pytorch/pull/172084))
-- Harden non strict leak detector some more ([#172597](https://github.com/pytorch/pytorch/pull/172597))
-- Fix the incomplete tensor (cuDNN packs) on torch.export ([#172805](https://github.com/pytorch/pytorch/pull/172805))
-- Fix import error in aoti load ([#173751](https://github.com/pytorch/pytorch/pull/173751))
-- support strobelight profiling export ([#174606](https://github.com/pytorch/pytorch/pull/174606))
-- add nested tensor serialization support ([#174720](https://github.com/pytorch/pytorch/pull/174720))
+- `GraphModule.print_readable()` improvements: new `additional_meta` argument for displaying additional node metadata ([#173734](https://github.com/pytorch/pytorch/pull/173734)), long annotations are now truncated for readability ([#173119](https://github.com/pytorch/pytorch/pull/173119)), and fix trailing whitespace with inner graphs ([#172644](https://github.com/pytorch/pytorch/pull/172644))
+- `GraphPickler` improvements: support for custom ignored metadata field keys ([#172587](https://github.com/pytorch/pytorch/pull/172587)), a `debug_dumps` method for debugging pickle failures ([#173675](https://github.com/pytorch/pytorch/pull/173675)), respecting `__getstate__` for `GraphModule` serialization ([#173810](https://github.com/pytorch/pytorch/pull/173810)), and automatic fallback to dill if available ([#173801](https://github.com/pytorch/pytorch/pull/173801))
+- Stack traces on `invoke_subgraph` nodes now point to the original model code for easier debugging ([#170927](https://github.com/pytorch/pytorch/pull/170927))
+- Add process group support to `fx_graph_runnable` ([#173932](https://github.com/pytorch/pytorch/pull/173932))
+- Strict type coverage in dispatch and partial subclass ([#171808](https://github.com/pytorch/pytorch/pull/171808))
 ### not user facing
-- Support shift operations in serialize/export ([#167913](https://github.com/pytorch/pytorch/pull/167913))
-- [export] check in state dict utils ([#171599](https://github.com/pytorch/pytorch/pull/171599))
-- Remove assert for export files ([#172124](https://github.com/pytorch/pytorch/pull/172124))
-- [export] Use bytecode to flatten graph inputs. (#171110) ([#172870](https://github.com/pytorch/pytorch/pull/172870))
-- [export] Use bytecode to flatten graph inputs. (#171110) ([#172870](https://github.com/pytorch/pytorch/pull/172870))
-- Opt in files typechecking ([#172969](https://github.com/pytorch/pytorch/pull/172969))
-- Simplify_ zipfile_ syntax ([#173378](https://github.com/pytorch/pytorch/pull/173378))
-- Start removing assert in torch/_export ([#172481](https://github.com/pytorch/pytorch/pull/172481))
-- More torch/_export migration ([#172487](https://github.com/pytorch/pytorch/pull/172487))
-- Finish functorch and export assert removal ([#174212](https://github.com/pytorch/pytorch/pull/174212))
 ### security
+### Untopiced

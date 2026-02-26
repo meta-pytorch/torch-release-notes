@@ -86,7 +86,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [ao] Enable ao with the default partitioner ([#172702](https://github.com/pytorch/pytorch/pull/172702))
 - [ao] Add additional offloading fields to checkpoint policy ([#172705](https://github.com/pytorch/pytorch/pull/172705))
 - [Dynamo] Update nn module hook handling to work with kwargs=True ([#172519](https://github.com/pytorch/pytorch/pull/172519))
-- [export] Add patch for dynamic lstm ([#168095](https://github.com/pytorch/pytorch/pull/168095))
 - use shape_id to inform inputs that must have matching sizes  in support in mark_unbacked.  ([#172716](https://github.com/pytorch/pytorch/pull/172716))
 - [dynamo] New `UserDefinedEnumVariable` and Support __contains__ method for Enum and constants ([#173223](https://github.com/pytorch/pytorch/pull/173223))
 - [dynamo][autogradable leaf module] adding initial support ([#170471](https://github.com/pytorch/pytorch/pull/170471))

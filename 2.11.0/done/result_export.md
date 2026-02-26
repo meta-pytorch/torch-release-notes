@@ -1,5 +1,5 @@
 
-# Release Notes worksheet xpu
+# Release Notes worksheet export
 
 You should:
 
@@ -43,34 +43,29 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## xpu
+## export
 ### bc breaking
+- `torch.export.export_for_training` has been removed ([#171714](https://github.com/pytorch/pytorch/pull/171714))
+
+  `export_for_training` was previously available as a separate API for exporting models while preserving training semantics. This function has been removed. Users should use `torch.export.export` instead, which returns same graph as the previous `export_for_training`.
+
 ### deprecation
 ### new features
+- Add nested tensor serialization support for `torch.export` ([#174720](https://github.com/pytorch/pytorch/pull/174720))
+- RNN modules (LSTM, GRU, etc.) can now be exported on GPUs ([#169710](https://github.com/pytorch/pytorch/pull/169710))
+- Add patch to enable tracing LSTM with dynamic shapes ([#168095](https://github.com/pytorch/pytorch/pull/168095))
 ### improvements
+- `from_node` provenance information is now preserved when serializing exported programs ([#171726](https://github.com/pytorch/pytorch/pull/171726))
+- Bitwise shift operations are now supported in the export serializer ([#167913](https://github.com/pytorch/pytorch/pull/167913))
+- Improve leak detection in non-strict export mode ([#172597](https://github.com/pytorch/pytorch/pull/172597))
 ### bug fixes
+- Fix graph signature mutation when unlifting exported programs ([#170461](https://github.com/pytorch/pytorch/pull/170461))
+- Fix tensor name inconsistency when round-tripping through `torch.export.save` and `torch.export.load` ([#171954](https://github.com/pytorch/pytorch/pull/171954))
+- Fix handling of incomplete tensors (cuDNN packed format) in `torch.export` ([#172805](https://github.com/pytorch/pytorch/pull/172805))
 ### performance
 ### docs
 ### devs
+- Add strobelight profiling support for the export process ([#174606](https://github.com/pytorch/pytorch/pull/174606))
 ### Untopiced
-- [xpu][feature] [1/6] Add trace support on XPU caching allocator ([#168262](https://github.com/pytorch/pytorch/pull/168262))
-- [xpu][feature] [2/6] Track stack context for xpu caching allocator ([#169280](https://github.com/pytorch/pytorch/pull/169280))
-- [xpu][feature] [3/6] Add snapshot support on XPU caching allocator ([#169203](https://github.com/pytorch/pytorch/pull/169203))
-- [xpu][feature] Introduce some additional metrics for memory stats of XPU caching allocator ([#169812](https://github.com/pytorch/pytorch/pull/169812))
-- Optimizes the performance of the int_mm which mat2 tensor is non-contiguous on Intel GPU ([#169555](https://github.com/pytorch/pytorch/pull/169555))
-- [xpu][feature]Fallbacks memory efficient attention to math attention on XPU ([#166936](https://github.com/pytorch/pytorch/pull/166936))
-- [xpu][feature] Add skip actions support to filter out memory trace ([#170760](https://github.com/pytorch/pytorch/pull/170760))
-- Support torch.accelerator.get_device_capability on XPU ([#170747](https://github.com/pytorch/pytorch/pull/170747))
-- [xpu][fix] Use small pool for 1MB allocation ([#171453](https://github.com/pytorch/pytorch/pull/171453))
-- [xpu][feature] [4/6] Introduce record memory history for XPU in cpp part ([#169296](https://github.com/pytorch/pytorch/pull/169296))
-- [xpu][feature] [5/6] Introduce memory snapshot for XPU in frontend part ([#169442](https://github.com/pytorch/pytorch/pull/169442))
-- [xpu][feature] [6/6] Introduce _record_memory_history for XPU in frontend part ([#169559](https://github.com/pytorch/pytorch/pull/169559))
-- [xpu][fix] Fix wrong signature on XPU memory docs ([#172933](https://github.com/pytorch/pytorch/pull/172933))
-- [xpu][utils] Add a helper function to XPU for code reuse ([#173333](https://github.com/pytorch/pytorch/pull/173333))
-- The frontend python APIs for XPUGraph capture/replay etc. ([#174046](https://github.com/pytorch/pytorch/pull/174046))
-- [xpu][feature] Add local_mem_size to XPU device property ([#172314](https://github.com/pytorch/pytorch/pull/172314))
-- [xpu][fix] Enlarge dynamo UT timeout for XPU duet to low CPU ferq of XPU CI machine. ([#170292](https://github.com/pytorch/pytorch/pull/170292))
 ### not user facing
-- [xpu][test][FlexAttention]Enable the test_GQA on Intel XPU ([#166376](https://github.com/pytorch/pytorch/pull/166376))
-- xpu: add a test to verify all torch xpu libraries are linked on Linux ([#169322](https://github.com/pytorch/pytorch/pull/169322))
 ### security

@@ -51,6 +51,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [MPS] Cholesky inverse ([#172186](https://github.com/pytorch/pytorch/pull/172186))
 - [MPS] Vibe-code torch.gcd ([#173406](https://github.com/pytorch/pytorch/pull/173406))
 ### bug fixes
+- Fix import error in aoti load ([#173751](https://github.com/pytorch/pytorch/pull/173751))
 ### performance
 ### docs
 ### devs

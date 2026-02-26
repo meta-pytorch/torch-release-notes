@@ -59,6 +59,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [ROCm] remove gfx940 gfx941 ([#172369](https://github.com/pytorch/pytorch/pull/172369))
 - [ROCm] support device-side assertions ([#172679](https://github.com/pytorch/pytorch/pull/172679))
 - [ROCm] Bump AOTriton to 0.11.2b ([#174105](https://github.com/pytorch/pytorch/pull/174105))
+- [ROCm] Add partitioned buffer approach for scatter add op ([#168073](https://github.com/pytorch/pytorch/pull/168073))
+- [ROCm] assert HIP events in profiler stack trace ([#174366](https://github.com/pytorch/pytorch/pull/174366))
+- [ROCm] Enabled and validated correct HIP events ([#171384](https://github.com/pytorch/pytorch/pull/171384))
 ### not user facing
 - [ROCm] Enable scaled group mm on gfx950  ([#173737](https://github.com/pytorch/pytorch/pull/173737))
 ### security

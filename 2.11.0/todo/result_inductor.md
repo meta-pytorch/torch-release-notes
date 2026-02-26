@@ -57,6 +57,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
+- [Flex] Dont materialize lse grad ([#173481](https://github.com/pytorch/pytorch/pull/173481))
+- [inductor][overlap] fix circular extra deps; handle artifactos of collapsing fused regions ([#172081](https://github.com/pytorch/pytorch/pull/172081))
 - [Inductor] Fix combo kernels missing store masks ([#168939](https://github.com/pytorch/pytorch/pull/168939))
 - [AOTI] Support mixed-device constants ([#169504](https://github.com/pytorch/pytorch/pull/169504))
 - [Inductor] Fix combo kernel heuristics for persistent_reduction ([#169509](https://github.com/pytorch/pytorch/pull/169509))
