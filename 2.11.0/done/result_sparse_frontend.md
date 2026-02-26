@@ -48,20 +48,20 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- `torch.view_as_real` and `torch.view_as_complex` now support sparse tensors ([#164964](https://github.com/pytorch/pytorch/pull/164964))
+- Sparse tensor invariants check warning is now raised only once when the check is disabled, instead of on every operation ([#171695](https://github.com/pytorch/pytorch/pull/171695))
 ### bug fixes
+- Fixed `torch.sparse.spdiags` crashing with zero-dimension shapes ([#174052](https://github.com/pytorch/pytorch/pull/174052))
 ### performance
 ### docs
+- Fixed incorrect gradient support documentation for `torch.sparse.mm` and `torch.sparse.addmm` ([#174039](https://github.com/pytorch/pytorch/pull/174039))
 ### devs
 ### Untopiced
-- Remove outdated AT_USE_HIPSPARSE_TRIANGULAR_SOLVE branches ([#166392](https://github.com/pytorch/pytorch/pull/166392))
-- Add view_as_real and view_as_complex for sparse tensors ([#164964](https://github.com/pytorch/pytorch/pull/164964))
-- Fix triton related pyrefly errors ([#171214](https://github.com/pytorch/pytorch/pull/171214))
-- Fix torch.sparse.spdiags crash with zero-dimension shapes ([#174052](https://github.com/pytorch/pytorch/pull/174052))
-- [docs] Fix incorrect gradient support documentation for torch.sparse.mm and sparse.addmm ([#174039](https://github.com/pytorch/pytorch/pull/174039))
-- Raise Warning Once when invariants check is disabled ([#171695](https://github.com/pytorch/pytorch/pull/171695))
 ### not user facing
+- Remove outdated `AT_USE_HIPSPARSE_TRIANGULAR_SOLVE` branches ([#166392](https://github.com/pytorch/pytorch/pull/166392))
+- Fix triton related pyrefly errors ([#171214](https://github.com/pytorch/pytorch/pull/171214))
 - Fix assert in top level files and utils ([#170226](https://github.com/pytorch/pytorch/pull/170226))
 - [BE][MPS] Don't pass `nnz` to `mark_segments` ([#170403](https://github.com/pytorch/pytorch/pull/170403))
-- Add missing thrust include. ([#171210](https://github.com/pytorch/pytorch/pull/171210))
+- Add missing thrust include ([#171210](https://github.com/pytorch/pytorch/pull/171210))
 - Fix pyrefly errors by using `pyrefly check --suppress-errors` ([#171188](https://github.com/pytorch/pytorch/pull/171188))
 ### security
