@@ -10,17 +10,17 @@ Generate and complete the release notes worksheet for a given functional area.
 ## Usage
 
 ```
-/gen-release-notes <area>
+/gen-release-notes <version> <area>
 ```
 
-Where `<area>` is the functional area name (e.g., `aotdispatcher`, `dynamo`, `inductor`).
+Where `<version>` is the PyTorch release version (e.g., `2.11.0`) and `<area>` is the functional area name (e.g., `aotdispatcher`, `dynamo`, `inductor`).
 
 ## Instructions
 
 ### Step 0: Validate inputs
 
-1. Check that the area argument was provided. If not, list the available areas from the `todo/` directory of the latest release and ask the user to pick one.
-2. Find the latest release directory (highest version number in the repo root, e.g., `2.11.0/`). Be careful with version comparison — compare numerically, not lexicographically (e.g., `2.11.0` > `2.9.0`).
+1. Check that both the version and area arguments were provided. If the version is missing, ask the user which version to use. If the area is missing, list the available areas from the `<version>/todo/` directory and ask the user to pick one.
+2. Confirm the version directory exists (e.g., `2.11.0/`). If not, tell the user the version was not found and list the available version directories.
 3. Confirm the worksheet file exists at `<version>/todo/result_<area>.md`. If it's already in `done/`, tell the user it's already completed and ask if they want to re-process it.
 
 ### Step 1: Read the worksheet
