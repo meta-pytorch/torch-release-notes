@@ -49,7 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- [Bugfix] fix issue #167836 ([#171317](https://github.com/pytorch/pytorch/pull/171317))
+- Fixed `GradTrackingTensor.tolist()` not working on MPS (macOS) device tensors when used inside `torch.func.grad` or other function transforms ([#171317](https://github.com/pytorch/pytorch/pull/171317))
 ### performance
 ### docs
 ### devs
