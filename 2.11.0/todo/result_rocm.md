@@ -62,6 +62,18 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [ROCm] Add partitioned buffer approach for scatter add op ([#168073](https://github.com/pytorch/pytorch/pull/168073))
 - [ROCm] assert HIP events in profiler stack trace ([#174366](https://github.com/pytorch/pytorch/pull/174366))
 - [ROCm] Enabled and validated correct HIP events ([#171384](https://github.com/pytorch/pytorch/pull/171384))
+- [ROCm] TopK Operator Optimizations on ROCm ([#170029](https://github.com/pytorch/pytorch/pull/170029))
+- [ROCm] enable fastSpecializedAtomicAdd for gfx950 ([#170330](https://github.com/pytorch/pytorch/pull/170330))
+- [ROCm] Optimize Radix Select by Caching Data on Shared Memory ([#172517](https://github.com/pytorch/pytorch/pull/172517))
+- [ROCm] Update reduction config ([#173576](https://github.com/pytorch/pytorch/pull/173576))
+- [ROCm] Update reduction config ([#173576](https://github.com/pytorch/pytorch/pull/173576))
+- [ROCm][CUDA] Fix unused-result warning in UniqueCub.cu ([#174203](https://github.com/pytorch/pytorch/pull/174203))
 ### not user facing
 - [ROCm] Enable scaled group mm on gfx950  ([#173737](https://github.com/pytorch/pytorch/pull/173737))
+- [ROCm] Use s_wait_loadcnt in cmtdStore for gfx1250 ([#172720](https://github.com/pytorch/pytorch/pull/172720))
+- [ROCm] Remove obsolete HasSameArgTypes test from cuda_vectorized_test ([#172799](https://github.com/pytorch/pytorch/pull/172799))
+- [ROCm] Enabled test cases for ROCm ([#171414](https://github.com/pytorch/pytorch/pull/171414))
+- [ROCm] Enable MIOpen backend for CTC Loss ([#170749](https://github.com/pytorch/pytorch/pull/170749))
+- [ROCm] forward fix #174087 ([#174300](https://github.com/pytorch/pytorch/pull/174300))
+- [ROCm] forward fix #174087, take 2 ([#174388](https://github.com/pytorch/pytorch/pull/174388))
 ### security
