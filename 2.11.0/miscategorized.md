@@ -1,2 +1,18 @@
 ## Linear algebra
 - Avoid differing results in `linalg.(tensor_)solve` when vmapped ([#154983](https://github.com/pytorch/pytorch/pull/154983))
+
+## not user facing
+- Rm platform args xplat/caffe2/aten/src/ATen/native/quantized/cpu/qnnpack/buckbuild.bzl ([#169130](https://github.com/pytorch/pytorch/pull/169130))
+- [reland][ROCm] remove caffe2 from hipify ([#172796](https://github.com/pytorch/pytorch/pull/172796))
+- [pytorch][PR] [reland][ROCm] remove caffe2 from hipify ([#173372](https://github.com/pytorch/pytorch/pull/173372))
+- [reland][ROCm] remove caffe2 from hipify ([#174087](https://github.com/pytorch/pytorch/pull/174087))
+- [pytorch] redirect `fbcode//caffe2/c10:c10` to the OSS/conda version ([#169004](https://github.com/pytorch/pytorch/pull/169004))
+- Rm platform compiler flags from xplat/caffe2/third_party/xnnpack.buck.bzl ([#169808](https://github.com/pytorch/pytorch/pull/169808))
+- [aarch64][caffe2] Fix FBGEMM detection on aarch64 ([#169379](https://github.com/pytorch/pytorch/pull/169379))
+- [codemod] Fix deprecated-literal-operator in caffe2/aten/src/ATen/native/cudnn/Conv_v7.cpp +4 ([#170329](https://github.com/pytorch/pytorch/pull/170329))
+- [folly][caffe2] Remove use of `folly:molly` target ([#171711](https://github.com/pytorch/pytorch/pull/171711))
+- Fix caffe2 genrules for root based genrules rollout ([#170574](https://github.com/pytorch/pytorch/pull/170574))
+- [caffe2] Skip subprocess test in fbcode for D91862702 ([#174117](https://github.com/pytorch/pytorch/pull/174117))
+- [caffe2] Fix signal handler deleting siginfo_t in resulting Coredump ([#174247](https://github.com/pytorch/pytorch/pull/174247))
+- [caffe2][cudnn] Fix incorrect TORCH_CHECK usage in MHA.cpp ([#174885](https://github.com/pytorch/pytorch/pull/174885))
+- [pytorch][caffe2] fix conditional-uninitialized warnings in Math.h ([#174904](https://github.com/pytorch/pytorch/pull/174904))
