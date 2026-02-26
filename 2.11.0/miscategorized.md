@@ -1,3 +1,6 @@
+## CPU / Linear algebra
+- Added support for FP16 half-precision GEMM via OpenBLAS on CPU, enabling faster FP16 inference ([#169042](https://github.com/pytorch/pytorch/pull/169042)) (from: optimizer_frontend, labeled `release notes: optimizer` but is a CPU/BLAS change)
+
 ## Linear algebra
 - Avoid differing results in `linalg.(tensor_)solve` when vmapped ([#154983](https://github.com/pytorch/pytorch/pull/154983))
 
