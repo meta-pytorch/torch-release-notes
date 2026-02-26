@@ -49,7 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- Fix: torch.view_as_complex() does not work on memory layout produced by torch.contiguous() after transpose ([#169780](https://github.com/pytorch/pytorch/pull/169780))
+- Fixed `torch.view_as_complex()` not working on the memory layout produced by `torch.contiguous()` after `transpose()` ([#169780](https://github.com/pytorch/pytorch/pull/169780))
 ### performance
 ### docs
 ### devs
