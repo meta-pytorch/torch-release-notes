@@ -56,6 +56,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
+- [ROCm] TopK Operator Optimizations on ROCm ([#170029](https://github.com/pytorch/pytorch/pull/170029))
+- [ROCm] enable fastSpecializedAtomicAdd for gfx950 ([#170330](https://github.com/pytorch/pytorch/pull/170330))
 - Make CachingHostAllocator work with memory pools. ([#167507](https://github.com/pytorch/pytorch/pull/167507))
 - Fix #169607 ([#170710](https://github.com/pytorch/pytorch/pull/170710))
 - Use accscalar_t for interpolation accumulators in CUDA UpSample kernel ([#170661](https://github.com/pytorch/pytorch/pull/170661))
@@ -66,11 +68,17 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - CUDA Stream Sanitizer fixes ([#172562](https://github.com/pytorch/pytorch/pull/172562))
 - Update launch bounds for ctc_loss_gpu_template on SM12+ ([#172447](https://github.com/pytorch/pytorch/pull/172447))
 - [NATIVE] [CUDA] Switch order of blocked reduce in reduction_template.cuh ([#173425](https://github.com/pytorch/pytorch/pull/173425))
+- [ROCm] Optimize Radix Select by Caching Data on Shared Memory ([#172517](https://github.com/pytorch/pytorch/pull/172517))
+- [ROCm] Update reduction config ([#173576](https://github.com/pytorch/pytorch/pull/173576))
 - Use opmath_t and not double compute in fused SGD and Adam ([#173227](https://github.com/pytorch/pytorch/pull/173227))
 - Fast memory snapshot ([#173949](https://github.com/pytorch/pytorch/pull/173949))
+- [ROCm] Update reduction config ([#173576](https://github.com/pytorch/pytorch/pull/173576))
+- [ROCm][CUDA] Fix unused-result warning in UniqueCub.cu ([#174203](https://github.com/pytorch/pytorch/pull/174203))
 - Move EventPool::Event to c10 ([#158220](https://github.com/pytorch/pytorch/pull/158220))
 - Reuse CUDAEventPool in CUDA caching host allocator ([#168345](https://github.com/pytorch/pytorch/pull/168345))
 ### not user facing
+- [ROCm] Use s_wait_loadcnt in cmtdStore for gfx1250 ([#172720](https://github.com/pytorch/pytorch/pull/172720))
+- [ROCm] Remove obsolete HasSameArgTypes test from cuda_vectorized_test ([#172799](https://github.com/pytorch/pytorch/pull/172799))
 - Move CUDAEvent to c10 ([#158219](https://github.com/pytorch/pytorch/pull/158219))
 - [ATen][NATIVE][CUDA] Allow all 10.x compute capabilities for using vec8 kernel ([#174362](https://github.com/pytorch/pytorch/pull/174362))
 ### security
