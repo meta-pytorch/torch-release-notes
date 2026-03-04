@@ -45,43 +45,73 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## onnx
 ### bc breaking
-- [ONNX] Remove the fallback option ([#173189](https://github.com/pytorch/pytorch/pull/173189))
-- [ONNX] Remove overload matching logic from dispatcher ([#165083](https://github.com/pytorch/pytorch/pull/165083))
+- **Remove the `fallback` option from `torch.onnx.export`** ([#173189](https://github.com/pytorch/pytorch/pull/173189))
+
+  The `fallback` parameter has been removed from `torch.onnx.export()`. Previously, when `fallback=True`, the exporter would automatically fall back to the legacy TorchScript-based exporter if the dynamo exporter failed. This fallback was removed because it was overly complicated, required different inputs, produced different models, and hid errors from the new exporter.
+
+  **Migration:** Remove `fallback=True` (or `fallback=False`) from your `torch.onnx.export()` calls. If you need fallback behavior, implement it explicitly in your own code by catching exceptions and calling the legacy exporter separately.
+
+  ```python
+  # Before
+  torch.onnx.export(model, args, "model.onnx", dynamo=True, fallback=True)
+
+  # After
+  torch.onnx.export(model, args, "model.onnx", dynamo=True)
+  ```
+
+- **Remove overload matching logic from the ONNX dispatcher** ([#165083](https://github.com/pytorch/pytorch/pull/165083))
+
+  The `custom_translation_table` parameter in `torch.onnx.export()` no longer accepts a list of functions for each torch op. Previously, users could pass a list of overloaded ONNX functions (e.g., one for float tensors, another for bool tensors), and the dispatcher would automatically select the correct overload based on input types. This complex type-matching logic has been removed because torchlib no longer uses overloads for the same opset version.
+
+  The type of `custom_translation_table` changed from `dict[Callable, Callable | Sequence[Callable]]` to `dict[Callable, Callable]`. Passing a `Sequence` as a value now raises a `TypeError`.
+
+  **Migration:** Provide a single function per operator instead of a list of overloads. If you need type-dependent behavior, handle it inside the single function.
+
+  ```python
+  # Before
+  custom_translation_table = {
+      torch.ops.aten.logical_and.default: [custom_impl_float, custom_impl_bool],
+  }
+
+  # After
+  custom_translation_table = {
+      torch.ops.aten.logical_and.default: custom_impl,
+  }
+  ```
 ### deprecation
 ### new features
-- [ONNX] Exportable module ([#170810](https://github.com/pytorch/pytorch/pull/170810))
-- [ONNX] InputObserver to guess the dynamic shapes for export ([#172838](https://github.com/pytorch/pytorch/pull/172838))
-- [ONNX] Add a parameter to force the first dimension to be dynamic in InputObserver.infer_dynamic_shapes ([#173533](https://github.com/pytorch/pytorch/pull/173533))
-- [ONNX] Implement while_loop ([#162645](https://github.com/pytorch/pytorch/pull/162645))
-- [ONNX] Implement while_loop ([#162645](https://github.com/pytorch/pytorch/pull/162645))
-- [ONNX] Add invoke_subgraph HOP export support ([#174283](https://github.com/pytorch/pytorch/pull/174283))
+- Exportable module ([#170810](https://github.com/pytorch/pytorch/pull/170810))
+- InputObserver to guess the dynamic shapes for export ([#172838](https://github.com/pytorch/pytorch/pull/172838))
+- Add a parameter to force the first dimension to be dynamic in InputObserver.infer_dynamic_shapes ([#173533](https://github.com/pytorch/pytorch/pull/173533))
+- Implement while_loop ([#162645](https://github.com/pytorch/pytorch/pull/162645))
+- Implement while_loop ([#162645](https://github.com/pytorch/pytorch/pull/162645))
+- Add invoke_subgraph HOP export support ([#174283](https://github.com/pytorch/pytorch/pull/174283))
 - Fix InputObserver.infer_arguments with empty caches ([#174205](https://github.com/pytorch/pytorch/pull/174205))
-- [ONNX] Expose ONNXProgram.rename_axes for renaming dims ([#172032](https://github.com/pytorch/pytorch/pull/172032))
+- Expose ONNXProgram.rename_axes for renaming dims ([#172032](https://github.com/pytorch/pytorch/pull/172032))
 ### improvements
-- [ONNX] Implement torch.sym_sum and torch.sym_ite ([#170263](https://github.com/pytorch/pytorch/pull/170263))
-- [ONNX] Raise an error if there are duplicated input/output names ([#173077](https://github.com/pytorch/pytorch/pull/173077))
-- [ONNX] Refactor optimize and version conversion logic ([#173185](https://github.com/pytorch/pytorch/pull/173185))
+- Implement torch.sym_sum and torch.sym_ite ([#170263](https://github.com/pytorch/pytorch/pull/170263))
+- Raise an error if there are duplicated input/output names ([#173077](https://github.com/pytorch/pytorch/pull/173077))
+- Refactor optimize and version conversion logic ([#173185](https://github.com/pytorch/pytorch/pull/173185))
 ### bug fixes
-- [ONNX] Handle complex initializers ([#170231](https://github.com/pytorch/pytorch/pull/170231))
-- [ONNX] Fix export of torch.cdist with dynamic axes ([#172758](https://github.com/pytorch/pytorch/pull/172758))
+- Handle complex initializers ([#170231](https://github.com/pytorch/pytorch/pull/170231))
+- Fix export of torch.cdist with dynamic axes ([#172758](https://github.com/pytorch/pytorch/pull/172758))
 ### performance
 ### docs
-- [ONNX] Change warning to debug log for missing annotations ([#172247](https://github.com/pytorch/pytorch/pull/172247))
+- Change warning to debug log for missing annotations ([#172247](https://github.com/pytorch/pytorch/pull/172247))
 ### devs
 ### Untopiced
-- [Misc][BE] Type more of `torch/_subclasses` ([#171950](https://github.com/pytorch/pytorch/pull/171950))
 ### not user facing
-- [ONNX] Remove unused expecttest files ([#170824](https://github.com/pytorch/pytorch/pull/170824))
+- Remove unused expecttest files ([#170824](https://github.com/pytorch/pytorch/pull/170824))
 - Fix GELU docstring parameter type annotation in ONNX exporter ([#171055](https://github.com/pytorch/pytorch/pull/171055))
 - Fix missing closing bracket in ONNX attention docstring ([#171056](https://github.com/pytorch/pytorch/pull/171056))
 - Better error handling in torch/csrc/jit/passes by replacing std::runtime_error with TORCH_CHECK in passes [part 2] ([#165736](https://github.com/pytorch/pytorch/pull/165736))
 - Submodule upgrade flash-attn version to 2.8.3 ([#170703](https://github.com/pytorch/pytorch/pull/170703))
-- [ONNX] Remove outdated comment in ExportedProgram conversion ([#171740](https://github.com/pytorch/pytorch/pull/171740))
-- [ONNX][ez] Change import of onnxscript.ir to onnx_ir ([#172036](https://github.com/pytorch/pytorch/pull/172036))
-- [ONNX] Update onnx-ir version and imports ([#173078](https://github.com/pytorch/pytorch/pull/173078))
-- [ONNX] Update onnx-ir version and imports ([#173078](https://github.com/pytorch/pytorch/pull/173078))
-- [ONNX] Update onnx-ir version and imports ([#173078](https://github.com/pytorch/pytorch/pull/173078))
+- Remove outdated comment in ExportedProgram conversion ([#171740](https://github.com/pytorch/pytorch/pull/171740))
+- Change import of onnxscript.ir to onnx_ir ([#172036](https://github.com/pytorch/pytorch/pull/172036))
+- Update onnx-ir version and imports ([#173078](https://github.com/pytorch/pytorch/pull/173078))
+- Update onnx-ir version and imports ([#173078](https://github.com/pytorch/pytorch/pull/173078))
+- Update onnx-ir version and imports ([#173078](https://github.com/pytorch/pytorch/pull/173078))
 - Remove assert in functorch and start onnx ([#173928](https://github.com/pytorch/pytorch/pull/173928))
 - Finish onnx and start testing ([#173929](https://github.com/pytorch/pytorch/pull/173929))
-- [ONNX] Clean up type utils ([#174393](https://github.com/pytorch/pytorch/pull/174393))
+- Clean up type utils ([#174393](https://github.com/pytorch/pytorch/pull/174393))
 ### security
