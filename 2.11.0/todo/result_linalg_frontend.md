@@ -59,14 +59,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [MAGMA] svd: deprecate magma backend and dispatch to cusolver unconditionally ([#172824](https://github.com/pytorch/pytorch/pull/172824))
 - [MAGMA][CUDA] triangular_solve: deprecate MAGMA and dispatch to cuBLAS unconditionally ([#174109](https://github.com/pytorch/pytorch/pull/174109))
 - [MAGMA][CUDA] lstsq: deprecate MAGMA and dispatch to cuSolver/cuBLAS unconditionally ([#174779](https://github.com/pytorch/pytorch/pull/174779))
-- [ROCm] ADDMM behavior now takes into account preferred BLAS backend. ([#174350](https://github.com/pytorch/pytorch/pull/174350))
 ### not user facing
-- [ROCm][CI] skip tests for mi200 ([#170205](https://github.com/pytorch/pytorch/pull/170205))
 - Remove outdated CUDA and ROCm skip conditions ([#170868](https://github.com/pytorch/pytorch/pull/170868))
-- [ROCm][CI] skip test_addmm_relu_tunableop_rocm_cuda_float64 on MI350 ([#170920](https://github.com/pytorch/pytorch/pull/170920))
 - linalg: sort eigenvalues in eig/eigvals comparison tests ([#171717](https://github.com/pytorch/pytorch/pull/171717))
 - Allow for unaligned cpu inputs ([#173395](https://github.com/pytorch/pytorch/pull/173395))
 - More test file assert removal ([#174255](https://github.com/pytorch/pytorch/pull/174255))
-- [ROCm] Skip linalg tests when MAGMA is not available ([#173688](https://github.com/pytorch/pytorch/pull/173688))
 - test_linalg: Skip test__int4_mm and test_compile_int4_mm on <CDNA2 ([#173358](https://github.com/pytorch/pytorch/pull/173358))
 ### security

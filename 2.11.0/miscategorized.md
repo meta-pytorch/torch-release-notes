@@ -6,9 +6,6 @@
 
 ## not user facing
 - Rm platform args xplat/caffe2/aten/src/ATen/native/quantized/cpu/qnnpack/buckbuild.bzl ([#169130](https://github.com/pytorch/pytorch/pull/169130))
-- [reland][ROCm] remove caffe2 from hipify ([#172796](https://github.com/pytorch/pytorch/pull/172796))
-- [pytorch][PR] [reland][ROCm] remove caffe2 from hipify ([#173372](https://github.com/pytorch/pytorch/pull/173372))
-- [reland][ROCm] remove caffe2 from hipify ([#174087](https://github.com/pytorch/pytorch/pull/174087))
 - [pytorch] redirect `fbcode//caffe2/c10:c10` to the OSS/conda version ([#169004](https://github.com/pytorch/pytorch/pull/169004))
 - Rm platform compiler flags from xplat/caffe2/third_party/xnnpack.buck.bzl ([#169808](https://github.com/pytorch/pytorch/pull/169808))
 - [aarch64][caffe2] Fix FBGEMM detection on aarch64 ([#169379](https://github.com/pytorch/pytorch/pull/169379))
