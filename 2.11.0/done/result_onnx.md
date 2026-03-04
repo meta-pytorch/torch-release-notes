@@ -69,7 +69,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [ONNX] Change warning to debug log for missing annotations ([#172247](https://github.com/pytorch/pytorch/pull/172247))
 ### devs
 ### Untopiced
-- [Misc][BE] Type more of `torch/_subclasses` ([#171950](https://github.com/pytorch/pytorch/pull/171950))
 ### not user facing
 - [ONNX] Remove unused expecttest files ([#170824](https://github.com/pytorch/pytorch/pull/170824))
 - Fix GELU docstring parameter type annotation in ONNX exporter ([#171055](https://github.com/pytorch/pytorch/pull/171055))
