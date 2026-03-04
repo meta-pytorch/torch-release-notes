@@ -45,8 +45,39 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## onnx
 ### bc breaking
-- [ONNX] Remove the fallback option ([#173189](https://github.com/pytorch/pytorch/pull/173189))
-- [ONNX] Remove overload matching logic from dispatcher ([#165083](https://github.com/pytorch/pytorch/pull/165083))
+- **[ONNX] Remove the `fallback` option from `torch.onnx.export`** ([#173189](https://github.com/pytorch/pytorch/pull/173189))
+
+  The `fallback` parameter has been removed from `torch.onnx.export()`. Previously, when `fallback=True`, the exporter would automatically fall back to the legacy TorchScript-based exporter if the dynamo exporter failed. This fallback was removed because it was overly complicated, required different inputs, produced different models, and hid errors from the new exporter.
+
+  **Migration:** Remove `fallback=True` (or `fallback=False`) from your `torch.onnx.export()` calls. If you need fallback behavior, implement it explicitly in your own code by catching exceptions and calling the legacy exporter separately.
+
+  ```python
+  # Before
+  torch.onnx.export(model, args, "model.onnx", dynamo=True, fallback=True)
+
+  # After
+  torch.onnx.export(model, args, "model.onnx", dynamo=True)
+  ```
+
+- **[ONNX] Remove overload matching logic from the ONNX dispatcher** ([#165083](https://github.com/pytorch/pytorch/pull/165083))
+
+  The `custom_translation_table` parameter in `torch.onnx.export()` no longer accepts a list of functions for each torch op. Previously, users could pass a list of overloaded ONNX functions (e.g., one for float tensors, another for bool tensors), and the dispatcher would automatically select the correct overload based on input types. This complex type-matching logic has been removed because torchlib no longer uses overloads for the same opset version.
+
+  The type of `custom_translation_table` changed from `dict[Callable, Callable | Sequence[Callable]]` to `dict[Callable, Callable]`. Passing a `Sequence` as a value now raises a `TypeError`.
+
+  **Migration:** Provide a single function per operator instead of a list of overloads. If you need type-dependent behavior, handle it inside the single function.
+
+  ```python
+  # Before
+  custom_translation_table = {
+      torch.ops.aten.logical_and.default: [custom_impl_float, custom_impl_bool],
+  }
+
+  # After
+  custom_translation_table = {
+      torch.ops.aten.logical_and.default: custom_impl,
+  }
+  ```
 ### deprecation
 ### new features
 - [ONNX] Exportable module ([#170810](https://github.com/pytorch/pytorch/pull/170810))
