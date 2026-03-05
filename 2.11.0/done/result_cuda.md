@@ -47,30 +47,30 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Make (pinned) host memory allocations work with memory pools. ([#167507](https://github.com/pytorch/pytorch/pull/167507))
+- [Allocator] Make large segment size configurable for allocation performance tuning (esp. re:Expandable Segments). ([#172056](https://github.com/pytorch/pytorch/pull/172056))
 ### improvements
 - Remove _scaled_mm layout check on Blackwells ([#170693](https://github.com/pytorch/pytorch/pull/170693))
-- Speedup grouped_mm a bit ([#170802](https://github.com/pytorch/pytorch/pull/170802))
 - Add uint16, uint32, uint64 support to JIT CUDA kernels ([#174303](https://github.com/pytorch/pytorch/pull/174303))
+- Remove fallback paths for pinned memory allocation during CUDA graph capture ([#170710](https://github.com/pytorch/pytorch/pull/170710))
+- Improve numerics of UpSample kernel by using `accscalar_t` for interpolation accumulators ([#170661](https://github.com/pytorch/pytorch/pull/170661))
+- Reinstate error message details in CUDA_KERNEL_ASSERT_VERBOSE call in IndexKernelUtils.cu ([#170913](https://github.com/pytorch/pytorch/pull/170913))
+- [NATIVE] [CUDA] Switch order of blocked reduce in reduction_template.cuh ([#173425](https://github.com/pytorch/pytorch/pull/173425))
 ### bug fixes
+- Don't false-positive on record_stream and account for 0-element tensors in CUDA stream sanitizer ([#172562](https://github.com/pytorch/pytorch/pull/172562))
+- Fix failures due to launch bounds for `ctc_loss_gpu_template` on SM12+ ([#172447](https://github.com/pytorch/pytorch/pull/172447))
 ### performance
+- Use `opmath_t` and not double compute type in fused SGD and Adam ([#173227](https://github.com/pytorch/pytorch/pull/173227))
+- Speedup `grouped_mm` a bit ([#170802](https://github.com/pytorch/pytorch/pull/170802))
+- Add fast memory snapshot option which skips traces ([#173949](https://github.com/pytorch/pytorch/pull/173949))
+- [ATen][NATIVE][CUDA] Allow all 10.x compute capabilities to use vec8 kernel for higher realized memory bandwidth ([#174362](https://github.com/pytorch/pytorch/pull/174362))
 ### docs
 ### devs
-### Untopiced
-- Make CachingHostAllocator work with memory pools. ([#167507](https://github.com/pytorch/pytorch/pull/167507))
-- Fix #169607 ([#170710](https://github.com/pytorch/pytorch/pull/170710))
-- Use accscalar_t for interpolation accumulators in CUDA UpSample kernel ([#170661](https://github.com/pytorch/pytorch/pull/170661))
-- Fix computation of NVRTC library hash ([#169214](https://github.com/pytorch/pytorch/pull/169214))
-- Reinstate format-string args in CUDA_KERNEL_ASSERT_VERBOSE call in IndexKernelUtils.cu ([#170913](https://github.com/pytorch/pytorch/pull/170913))
-- Cleanup at::numeric_limits ([#171111](https://github.com/pytorch/pytorch/pull/171111))
-- [Allocator] Make large segment size configurable ([#172056](https://github.com/pytorch/pytorch/pull/172056))
-- CUDA Stream Sanitizer fixes ([#172562](https://github.com/pytorch/pytorch/pull/172562))
-- Update launch bounds for ctc_loss_gpu_template on SM12+ ([#172447](https://github.com/pytorch/pytorch/pull/172447))
-- [NATIVE] [CUDA] Switch order of blocked reduce in reduction_template.cuh ([#173425](https://github.com/pytorch/pytorch/pull/173425))
-- Use opmath_t and not double compute in fused SGD and Adam ([#173227](https://github.com/pytorch/pytorch/pull/173227))
-- Fast memory snapshot ([#173949](https://github.com/pytorch/pytorch/pull/173949))
+- Cleanup `at::numeric_limits` ([#171111](https://github.com/pytorch/pytorch/pull/171111))
 - Move EventPool::Event to c10 ([#158220](https://github.com/pytorch/pytorch/pull/158220))
 - Reuse CUDAEventPool in CUDA caching host allocator ([#168345](https://github.com/pytorch/pytorch/pull/168345))
-### not user facing
 - Move CUDAEvent to c10 ([#158219](https://github.com/pytorch/pytorch/pull/158219))
-- [ATen][NATIVE][CUDA] Allow all 10.x compute capabilities for using vec8 kernel ([#174362](https://github.com/pytorch/pytorch/pull/174362))
+### Untopiced
+### not user facing
+- Fix computation of NVRTC library hash ([#169214](https://github.com/pytorch/pytorch/pull/169214))
 ### security
