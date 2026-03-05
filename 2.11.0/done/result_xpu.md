@@ -1,3 +1,4 @@
+
 # Release Notes worksheet xpu
 
 You should:
@@ -17,7 +18,7 @@ The categories below are as follows:
 
 * BC breaking: All commits that are BC-breaking. These are the most important commits. If any pre-sorted commit is actually BC-breaking, do move it to this section. Each commit should contain a paragraph explaining the rational behind the change as well as an example for how to update user code [BC-Guidelines](https://docs.google.com/document/d/14OmgGBr1w6gl1VO47GGGdwrIaUNr92DFhQbY_NEk8mQ/edit#heading=h.a9htwgvvec1m).
 * Deprecations: All commits introducing deprecation. Each commit should include a small example explaining what should be done to update user code.
-* new features: All commits introducing a new feature (new functions, new submodule, new supported platform etc)
+* new_features: All commits introducing a new feature (new functions, new submodule, new supported platform etc)
 * improvements: All commits providing improvements to existing feature should be here (new backend for a function, new argument, better numerical stability)
 * bug fixes: All commits that fix bugs and behaviors that do not match the documentation
 * performance: All commits that are added mainly for performance (we separate this from improvements above to make it easier for users to look for it)
@@ -46,7 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Introduce XPUGraph a runtime optimization feature designed to reduce kernels host overhead on XPU devices ([Design](https://github.com/pytorch/pytorch/issues/162143]), [Usage](https://docs.pytorch.org/docs/2.11/xpu.html#graphs)). ([#166285](https://github.com/pytorch/pytorch/pull/166285), [#174041](https://github.com/pytorch/pytorch/pull/174041), [#174351](https://github.com/pytorch/pytorch/pull/174351), [#174059](https://github.com/pytorch/pytorch/pull/174059), [#174046](https://github.com/pytorch/pytorch/pull/174046), [#166843](https://github.com/pytorch/pytorch/pull/166843))
+- Introduce XPUGraph a runtime optimization feature designed to reduce kernels host overhead on XPU devices, detail in: [design](https://github.com/pytorch/pytorch/issues/162143]) and [usage](https://docs.pytorch.org/docs/2.11/xpu.html#graphs). ([#166285](https://github.com/pytorch/pytorch/pull/166285), [#174041](https://github.com/pytorch/pytorch/pull/174041), [#174351](https://github.com/pytorch/pytorch/pull/174351), [#174059](https://github.com/pytorch/pytorch/pull/174059), [#174046](https://github.com/pytorch/pytorch/pull/174046), [#166843](https://github.com/pytorch/pytorch/pull/166843))
 
 ### improvements
 - Add `torch.xpu._dump_snapshot` API ([#170186](https://github.com/pytorch/pytorch/pull/170186))
