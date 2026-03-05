@@ -48,16 +48,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Upgrade cuDNN to 9.15.1 for CUDA 13 builds ([#169412](https://github.com/pytorch/pytorch/pull/169412))
+- Upgrade CUDA 13.0 wheels to cuDNN 9.17.1 ([#173216](https://github.com/pytorch/pytorch/pull/173216))
+- Enhance cuDNN tensor shape checks in sdp_utils.cpp to support Blackwell GPUs ([#172621](https://github.com/pytorch/pytorch/pull/172621))
 ### bug fixes
-- [cuDNN][Convolution] Disable a cuDNN Convolution engine preemptively ([#171747](https://github.com/pytorch/pytorch/pull/171747))
+- Disable a cuDNN Convolution engine preemptively ([#171747](https://github.com/pytorch/pytorch/pull/171747))
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- [CUDA] Upgrade cuDNN to 9.15.1 for CUDA 13 builds ([#169412](https://github.com/pytorch/pytorch/pull/169412))
-- [CUDA] Upgrade cuDNN to 9.15.1 for CUDA 13 builds ([#169412](https://github.com/pytorch/pytorch/pull/169412))
-- [CUDA] Upgrade cuDNN to 9.15.1 for CUDA 13 builds ([#169412](https://github.com/pytorch/pytorch/pull/169412))
-- Enhance cuDNN tensor shape checks in sdp_utils.cpp to support Blackwell GPUs ([#172621](https://github.com/pytorch/pytorch/pull/172621))
-- [CUDA][cuDNN] Upgrade CUDA 13.0 wheels to 9.17.1 ([#173216](https://github.com/pytorch/pytorch/pull/173216))
 ### security
