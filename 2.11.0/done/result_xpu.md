@@ -47,30 +47,37 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Introduce XPUGraph a runtime optimization feature designed to reduce kernels host overhead on XPU devices, detail in: [design](https://github.com/pytorch/pytorch/issues/162143]) and [usage](https://docs.pytorch.org/docs/2.11/xpu.html#graphs). ([#166285](https://github.com/pytorch/pytorch/pull/166285), [#174041](https://github.com/pytorch/pytorch/pull/174041), [#174351](https://github.com/pytorch/pytorch/pull/174351), [#174059](https://github.com/pytorch/pytorch/pull/174059), [#174046](https://github.com/pytorch/pytorch/pull/174046), [#166843](https://github.com/pytorch/pytorch/pull/166843))
+
 ### improvements
+- Add `torch.xpu._dump_snapshot` API ([#170186](https://github.com/pytorch/pytorch/pull/170186))
+- Add `torch.xpu._record_memory_history` API ([#169559](https://github.com/pytorch/pytorch/pull/169559))
+- Add `torch.xpu.memory_snapshot` ([#169442](https://github.com/pytorch/pytorch/pull/169442))
+- Add `local_mem_size` to XPU device properties ([#172314](https://github.com/pytorch/pytorch/pull/172314))
+- Support `torch.accelerator.get_device_capability` on XPU ([#170747](https://github.com/pytorch/pytorch/pull/170747))
+ Enable Triton online softmax kernels on XPU ([#163251](https://github.com/pytorch/pytorch/pull/163251))
+- Support woq_int8 Inductor pattern on Intel GPU ([#163615](https://github.com/pytorch/pytorch/pull/163615))
+- Add XPU ATen GEMM overloads with output dtype ([#170523](https://github.com/pytorch/pytorch/pull/170523))
+- Support `aot_inductor.emit_multi_arch_kernel` on XPU ([#171432](https://github.com/pytorch/pytorch/pull/171432))
+- Improve Inductor UT coverage for XPU ([#171280](https://github.com/pytorch/pytorch/pull/171280), [#166376](https://github.com/pytorch/pytorch/pull/166376), [#169181](https://github.com/pytorch/pytorch/pull/169181), [#166504](https://github.com/pytorch/pytorch/pull/166504))
+- Enable Triton mm template `decompose_k` choice for XPU ([#170541](https://github.com/pytorch/pytorch/pull/170541))
+- Support AOTInductor standalone compile API for XPU ([#171450](https://github.com/pytorch/pytorch/pull/171450))
+
 ### bug fixes
+- Fix T5 model SDPA pattern matcher on XPU ([#171774](https://github.com/pytorch/pytorch/pull/171774))
+- Fix `torch.xpu.memory_allocated` / `torch.xpu.memory_reserved` reporting incorrect memory sizes ([#171453](https://github.com/pytorch/pytorch/pull/171453))
+
 ### performance
+- Optimize `int_mm` performance on Intel GPU when `mat2` is non-contiguous ([#169555](https://github.com/pytorch/pytorch/pull/169555))
+- Enable static Triton kernel launcher for XPU backend to reduce model compilation time ([#169938](https://github.com/pytorch/pytorch/pull/169938))
+
 ### docs
+- Update XPU Get Started guide with new client GPU and formatting ([#169810](https://github.com/pytorch/pytorch/pull/169810))
+- Document previous version of Torch XPU installation ([#174453](https://github.com/pytorch/pytorch/pull/174453))
+
 ### devs
+- Switch Intel Triton compiled kernel format from `spv` to `zebin` ([#167972](https://github.com/pytorch/pytorch/pull/167972))
+
 ### Untopiced
-- [xpu][feature] [1/6] Add trace support on XPU caching allocator ([#168262](https://github.com/pytorch/pytorch/pull/168262))
-- [xpu][feature] [2/6] Track stack context for xpu caching allocator ([#169280](https://github.com/pytorch/pytorch/pull/169280))
-- [xpu][feature] [3/6] Add snapshot support on XPU caching allocator ([#169203](https://github.com/pytorch/pytorch/pull/169203))
-- [xpu][feature] Introduce some additional metrics for memory stats of XPU caching allocator ([#169812](https://github.com/pytorch/pytorch/pull/169812))
-- Optimizes the performance of the int_mm which mat2 tensor is non-contiguous on Intel GPU ([#169555](https://github.com/pytorch/pytorch/pull/169555))
-- [xpu][feature]Fallbacks memory efficient attention to math attention on XPU ([#166936](https://github.com/pytorch/pytorch/pull/166936))
-- [xpu][feature] Add skip actions support to filter out memory trace ([#170760](https://github.com/pytorch/pytorch/pull/170760))
-- Support torch.accelerator.get_device_capability on XPU ([#170747](https://github.com/pytorch/pytorch/pull/170747))
-- [xpu][fix] Use small pool for 1MB allocation ([#171453](https://github.com/pytorch/pytorch/pull/171453))
-- [xpu][feature] [4/6] Introduce record memory history for XPU in cpp part ([#169296](https://github.com/pytorch/pytorch/pull/169296))
-- [xpu][feature] [5/6] Introduce memory snapshot for XPU in frontend part ([#169442](https://github.com/pytorch/pytorch/pull/169442))
-- [xpu][feature] [6/6] Introduce _record_memory_history for XPU in frontend part ([#169559](https://github.com/pytorch/pytorch/pull/169559))
-- [xpu][fix] Fix wrong signature on XPU memory docs ([#172933](https://github.com/pytorch/pytorch/pull/172933))
-- [xpu][utils] Add a helper function to XPU for code reuse ([#173333](https://github.com/pytorch/pytorch/pull/173333))
-- The frontend python APIs for XPUGraph capture/replay etc. ([#174046](https://github.com/pytorch/pytorch/pull/174046))
-- [xpu][feature] Add local_mem_size to XPU device property ([#172314](https://github.com/pytorch/pytorch/pull/172314))
-- [xpu][fix] Enlarge dynamo UT timeout for XPU duet to low CPU ferq of XPU CI machine. ([#170292](https://github.com/pytorch/pytorch/pull/170292))
 ### not user facing
-- [xpu][test][FlexAttention]Enable the test_GQA on Intel XPU ([#166376](https://github.com/pytorch/pytorch/pull/166376))
-- xpu: add a test to verify all torch xpu libraries are linked on Linux ([#169322](https://github.com/pytorch/pytorch/pull/169322))
 ### security
