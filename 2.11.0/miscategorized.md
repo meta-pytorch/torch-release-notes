@@ -28,3 +28,37 @@
 - Better error handling in torch/csrc/jit/passes by replacing std::runtime_error with TORCH_CHECK in passes ([#165620](https://github.com/pytorch/pytorch/pull/165620))
 - Remove outdated jit files ([#173015](https://github.com/pytorch/pytorch/pull/173015))
 - Assert removal finish in testing and start jit ([#173959](https://github.com/pytorch/pytorch/pull/173959))
+
+## From dynamo worksheet
+
+### distributed (c10d)
+- Fix syntax for suppression comments. ([#167088](https://github.com/pytorch/pytorch/pull/167088)) (from: dynamo, labeled `release notes: distributed (c10d)`)
+
+### distributed (fsdp/checkpoint)
+- [18/N] Use Python 3.10 typing ([#170280](https://github.com/pytorch/pytorch/pull/170280)) (from: dynamo, labeled `release notes: distributed (fsdp)`, `release notes: distributed (checkpoint)`)
+- [19/N] Use Python 3.10 typing ([#170368](https://github.com/pytorch/pytorch/pull/170368)) (from: dynamo, labeled `release notes: distributed (c10d)`, `release notes: distributed (checkpoint)`)
+
+### fx
+- AOTAutograd: at runtime, specialcase saved-for-bw tensors whos version counters werent checked in eager ([#171353](https://github.com/pytorch/pytorch/pull/171353)) (from: dynamo, labeled `release notes: fx`)
+- Cleanup pyrefly ignores 3 ([#171640](https://github.com/pytorch/pytorch/pull/171640)) (from: dynamo, labeled `release notes: fx`)
+- hint_int -> size_hint, support size_hint in user code. ([#171944](https://github.com/pytorch/pytorch/pull/171944)) (from: dynamo, labeled `release notes: fx`)
+- [BE][Ez]: Modernize symbolic shape dataclasses ([#172115](https://github.com/pytorch/pytorch/pull/172115)) (from: dynamo, labeled `release notes: fx`)
+- [annotation][export] Add metadata hook for all nodes created in runtime_assert pass ([#173970](https://github.com/pytorch/pytorch/pull/173970)) (from: dynamo, labeled `release notes: fx`)
+
+### python_frontend
+- [BE][Ez]: Add slots to treespec dataclasses ([#172172](https://github.com/pytorch/pytorch/pull/172172)) (from: dynamo, labeled `release notes: python_frontend`)
+
+### inductor
+- [dynamo] Add per-graph inductor config override for debugging/bisecting ([#174228](https://github.com/pytorch/pytorch/pull/174228)) (from: dynamo, labeled `release notes: inductor`)
+
+### export
+- Support default kwargs in new export ([#173613](https://github.com/pytorch/pytorch/pull/173613)) (from: dynamo, appears to belong to export)
+
+### xpu
+- [xpu][test] Enable more Inductor UT for XPU ([#171773](https://github.com/pytorch/pytorch/pull/171773)) (from: dynamo, XPU/inductor test)
+
+### distributed
+- Fix for test/distributed/test_device_mesh.py::TestDeviceMeshGetItem::test_flatten_mesh_4d ([#172189](https://github.com/pytorch/pytorch/pull/172189)) (from: dynamo, distributed test)
+
+### cuda/rocm
+- Revert "[ROCm][CUDA] add unit test utility busy_wait_for_flag (#166218)" ([#170462](https://github.com/pytorch/pytorch/pull/170462)) (from: dynamo, CUDA/ROCm revert)
