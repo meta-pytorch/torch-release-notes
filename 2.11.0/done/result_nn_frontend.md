@@ -76,6 +76,7 @@ output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window
 - Add `scale` for softmax to varlen attn ([#171199](https://github.com/pytorch/pytorch/pull/171199))
 ### improvements
 - Add `remove_duplicate` parameter to `nn.Module.modules()` function ([#174383](https://github.com/pytorch/pytorch/pull/174383))
+- Add support for low precision K/V inputs to `nn.attention.flex_attention` ([#171744](https://github.com/pytorch/pytorch/pull/171744))
 ### bug fixes
 - Fix Illegal Memory Access in FlashAttention 2 by syncing with upstream ([#174114](https://github.com/pytorch/pytorch/pull/174114))
 - Propagate `max_q` and `max_k` for `varlen_attn` ([#173681](https://github.com/pytorch/pytorch/pull/173681))
