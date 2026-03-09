@@ -46,7 +46,20 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ## rocm
 ### bc breaking
 ### deprecation
-- "Masquerading" classes are deprecated. See Hipify v2 below.
+caffe2 support is fully removed from ROCm PyTorch's hipify preprocessing.  This is known as "hipify v2" behavior.  
+#### hipify v1 background
+When caffe2 and PyTorch were separate projects, the ROCm support strategies were different.  For caffe2, all files and classes would be renamed following the pattern of CUDA to HIP, Cuda to Hip, cuda to hip, and so on.  PyTorch did not rename classes, but would create new files following the same renaming pattern (e.g., aten/src/ATen/cuda/CUDABlas.h to aten/src/ATen/hip/HIPBlas.h).  As a consequence, caffe2 had a distinct device backend named "HIP" (renamed from "CUDA") while ROCm PyTorch masquerades as the "cuda" device (`torch.empty(1, device="cuda")`).  Once caffe2 and PyTorch projects were merged, this caused a mismatch between caffe2 expecting to use a "HIP" device while PyTorch expecting a "cuda" device.  To alleviate this mismatch, "Masquerading" classes were created under aten/src/ATen/hip/impl.
+- HIPAllocatorMasqueradingAsCUDA.h
+- HIPCachingAllocatorMasqueradingAsCUDA.h
+- HIPGuardImplMasqueradingAsCUDA.h
+- HIPStreamMasqueradingAsCUDA.h
+These classes were often transparently utilized during ROCm PyTorch's hipify preprocessing of source files.  All files under c10/ and caffe2/ were hipified using the caffe2 renaming behavior, while all other "PyTorch" files used the other strategy.  The Masquerading classes would replace their CUDA counterpart during hipify preprocessing.  For example, c10/cuda/CUDAStream.h's CUDAStream would be replaced by aten/src/ATen/hip/impl/HIPStreamMasqueradingAsCUDA.h's HIPStreamMasqueradingAsCUDA.  These Masquerading classes call the underlying caffe2 code and create "HIP" devices, and the device would be reset to "cuda" by the Masquerading classes.
+#### hipify v2 new behavior
+Hipify v2 ([#174087](https://github.com/pytorch/pytorch/pull/174087), [#174300](https://github.com/pytorch/pytorch/pull/174300), [#174388](https://github.com/pytorch/pytorch/pull/174388), [#174499](https://github.com/pytorch/pytorch/pull/174499), [#175098](https://github.com/pytorch/pytorch/pull/175098)) makes the following changes:
+- "Masquerading" classes are deprecated. Reworked to be thin shells around existing classes, for backward compatibility.
+- Do not rename "CUDA" classes to "HIP". Only rename CUDA Runtime APIs. Files are still renamed out of place.
+- Removes caffe2 work-arounds for HIP device versus CUDA device.
+Great care has been taken to make this change backwards compatible.  Though PyTorch today builds cleanly using hipify v2 behavior, downstream PyTorch extension projects that explicitly included Masquerading headers or called Masquerading APIs could be affected, resulting in failed builds.  As an example, before backwards compatibility was realized, the xformers project had failed to build using the hipify v2 changes.  A [PR demonstrates the changes that were initially necessary to work around the build failures,](https://github.com/facebookresearch/xformers/pull/1351) but such changes are no longer necessary after hipify v2 BC-breaking behavior was improved.
 ### new features
 - Expose device properties clock_rate, memory_clock_rate, memory_bus_width, memory_per_block, shared_memory_per_block. ([#170572](https://github.com/pytorch/pytorch/pull/170572))
 - Support for device-side assertions via TORCH_USE_HIP_DSA. ([#172679](https://github.com/pytorch/pytorch/pull/172679))
@@ -57,10 +70,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add hipsparseSpSV and hipsparseSpSM support for triangular solve. ([#171097](https://github.com/pytorch/pytorch/pull/171097))
 - Support for PyTorch's StaticCudaLauncher, which provides static compilation and launching of Triton kernels. ([#166492](https://github.com/pytorch/pytorch/pull/166492))
 ### improvements
-- Hipify v2. ([#174087](https://github.com/pytorch/pytorch/pull/174087), [#174300](https://github.com/pytorch/pytorch/pull/174300), [#174388](https://github.com/pytorch/pytorch/pull/174388), [#174499](https://github.com/pytorch/pytorch/pull/174499), [#175098](https://github.com/pytorch/pytorch/pull/175098))
-  - "Masquerading" classes are deprecated. Reworked to be thin shells around existing classes, for backward compatibility.
-  - Do not rename "CUDA" classes to "HIP". Only rename CUDA Runtime APIs. Files are still renamed out of place.
-  - Removes caffe2 work-arounds for HIP device versus CUDA device.
 - addmm behavior now takes into account preferred BLAS backend instead of forcing hipblaslt. ([#174350](https://github.com/pytorch/pytorch/pull/174350))
 - Enable hipBLASLt on gfx1103. ([#172180](https://github.com/pytorch/pytorch/pull/172180))
 ### bug fixes
