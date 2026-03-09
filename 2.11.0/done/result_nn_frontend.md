@@ -66,7 +66,7 @@ The signature of `torch.nn.attention.varlen_attn` has changed: a `*` (keyword-on
 output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, True, None, 1.0)
 
 # After (2.11) — pass as keyword argument
-output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, is_causal=True, return_aux=None, scale=1.0)
+output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window_size=(-1, 0), return_aux=None, scale=1.0)
 ```
 
 
