@@ -28,3 +28,9 @@
 
 ## fx (from quantization)
 - Add _disable_torch_fn_metadata_mode option to make_fx and aot_export_joint_with_descriptors ([#172087](https://github.com/pytorch/pytorch/pull/172087))
+
+## quantization (from composability)
+- Remove assert in library/cuda/ao ([#170803](https://github.com/pytorch/pytorch/pull/170803))
+
+## inductor (from composability)
+- Fix `torch.isin` compile shape for scalar `test_elements` ([#172531](https://github.com/pytorch/pytorch/pull/172531))
