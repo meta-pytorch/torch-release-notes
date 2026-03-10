@@ -25,3 +25,6 @@
 - Better error handling in torch/csrc/jit/passes by replacing std::runtime_error with TORCH_CHECK in passes ([#165620](https://github.com/pytorch/pytorch/pull/165620))
 - Remove outdated jit files ([#173015](https://github.com/pytorch/pytorch/pull/173015))
 - Assert removal finish in testing and start jit ([#173959](https://github.com/pytorch/pytorch/pull/173959))
+
+## fx (from quantization)
+- Add _disable_torch_fn_metadata_mode option to make_fx and aot_export_joint_with_descriptors ([#172087](https://github.com/pytorch/pytorch/pull/172087))
