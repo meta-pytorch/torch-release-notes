@@ -34,3 +34,8 @@
 
 ## inductor (from composability)
 - Fix `torch.isin` compile shape for scalar `test_elements` ([#172531](https://github.com/pytorch/pytorch/pull/172531))
+
+## aotdispatcher (from functorch)
+- [functorch] Add cache-friendly custom estimator/solver support ([#171601](https://github.com/pytorch/pytorch/pull/171601))
+- [functorch] force save with_effects outputs in partitioner ([#172889](https://github.com/pytorch/pytorch/pull/172889))
+- [functorch] support with_effects flowing through FunctionalTensorMode ([#172887](https://github.com/pytorch/pytorch/pull/172887))
