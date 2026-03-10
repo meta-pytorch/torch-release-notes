@@ -48,22 +48,16 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+The memory visualizer now has a checkbox to toggle showing the trace, useful for large traces that take
+a long time to load ([#174717](https://github.com/pytorch/pytorch/pull/174717)). The memory profiler
+now exposes a new `skip_actions` flag to filter out specific events ([#168183](https://github.com/pytorch/pytorch/pull/168183)).
+The profiler now exposes a `post_process_timeout_s` field to prevent post processing from blocking
+further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 ### bug fixes
-- Fix _ExperimentalConfig pickle serialization ([#171108](https://github.com/pytorch/pytorch/pull/171108))
-- [Visualizer] Switch to jsdelivr CDN ([#172899](https://github.com/pytorch/pytorch/pull/172899))
-- [Visualizer] Fix D3 event handling ([#173592](https://github.com/pytorch/pytorch/pull/173592))
+Various fixes in our memory visualizer, in particular some y-axis unit mismatches and JavaScript errors.
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Add skip_actions flag to filter out memory snapshot events ([#168183](https://github.com/pytorch/pytorch/pull/168183))
-- [pytorch] expose profiling post-processing timeouts in public API ([#173957](https://github.com/pytorch/pytorch/pull/173957))
-- [memoryviz] Adding a checkbox to toggle on/off show trace on click ([#174717](https://github.com/pytorch/pytorch/pull/174717))
-- [memoryviz] Fix y-axis unit mismatch ([#174796](https://github.com/pytorch/pytorch/pull/174796))
 ### not user facing
-- Clean up ifdef in global_kineto_init ([#170847](https://github.com/pytorch/pytorch/pull/170847))
-- [PrivateUse1][Profiler] Refactor `RegisterPRIVATEUSE1Observer` constructor and macro for clarity ([#171253](https://github.com/pytorch/pytorch/pull/171253))
-- [profiler] Add some helper functions for readability ([#172110](https://github.com/pytorch/pytorch/pull/172110))
-- [profiler] update tests to avoid deprecated use_cuda ([#174144](https://github.com/pytorch/pytorch/pull/174144))
-- [Profiler][Easy] Let `MemRecordsAcc.in_interval` to use nanoseconds directly ([#171788](https://github.com/pytorch/pytorch/pull/171788))
 ### security
