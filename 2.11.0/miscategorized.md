@@ -6,6 +6,9 @@
 
 ## not user facing
 - Rm platform args xplat/caffe2/aten/src/ATen/native/quantized/cpu/qnnpack/buckbuild.bzl ([#169130](https://github.com/pytorch/pytorch/pull/169130))
+- [reland][ROCm] remove caffe2 from hipify ([#172796](https://github.com/pytorch/pytorch/pull/172796))
+- [pytorch][PR] [reland][ROCm] remove caffe2 from hipify ([#173372](https://github.com/pytorch/pytorch/pull/173372))
+- [reland][ROCm] remove caffe2 from hipify ([#174087](https://github.com/pytorch/pytorch/pull/174087))
 - [pytorch] redirect `fbcode//caffe2/c10:c10` to the OSS/conda version ([#169004](https://github.com/pytorch/pytorch/pull/169004))
 - Rm platform compiler flags from xplat/caffe2/third_party/xnnpack.buck.bzl ([#169808](https://github.com/pytorch/pytorch/pull/169808))
 - [aarch64][caffe2] Fix FBGEMM detection on aarch64 ([#169379](https://github.com/pytorch/pytorch/pull/169379))
@@ -32,10 +35,18 @@
 ## quantization (from composability)
 - Remove assert in library/cuda/ao ([#170803](https://github.com/pytorch/pytorch/pull/170803))
 
-## inductor (from composability)
-- Fix `torch.isin` compile shape for scalar `test_elements` ([#172531](https://github.com/pytorch/pytorch/pull/172531))
-
 ## aotdispatcher (from functorch)
 - [functorch] Add cache-friendly custom estimator/solver support ([#171601](https://github.com/pytorch/pytorch/pull/171601))
 - [functorch] force save with_effects outputs in partitioner ([#172889](https://github.com/pytorch/pytorch/pull/172889))
 - [functorch] support with_effects flowing through FunctionalTensorMode ([#172887](https://github.com/pytorch/pytorch/pull/172887))
+
+
+## fx (from inductor)
+- [opaque_obj] Add nested value-type opaque obj support ([#169845](https://github.com/pytorch/pytorch/pull/169845))
+
+## inductor (aoti) (from inductor)
+- [AOTI] Support mixed-device constants ([#169504](https://github.com/pytorch/pytorch/pull/169504))
+- [hop][print]Add args print support to hop print ([#170880](https://github.com/pytorch/pytorch/pull/170880))
+- [cpp_wrapper] De-duplicate some unnecessary code duplication ([#170963](https://github.com/pytorch/pytorch/pull/170963))
+- [xpu][feature] Support aot_inductor.emit_multi_arch_kernel for XPU. ([#171432](https://github.com/pytorch/pytorch/pull/171432))
+- [inductor] Change cpp_kernel_name to public API to match AOTI shim gen; add mm_type_out to AOTI fallback kernel  ([#174489](https://github.com/pytorch/pytorch/pull/174489))
