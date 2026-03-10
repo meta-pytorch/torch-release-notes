@@ -49,11 +49,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix NestedTensor min/max operations for integer dtypes ([#167685](https://github.com/pytorch/pytorch/pull/167685))
 ### performance
 ### docs
-- Add warning about inactive development to NJT doc ([#172645](https://github.com/pytorch/pytorch/pull/172645))
+- Add warning about inactive development to NJT docs ([#172645](https://github.com/pytorch/pytorch/pull/172645))
 ### devs
 ### Untopiced
-- Fix NestedTensor min/max operations for integer dtypes. ([#167685](https://github.com/pytorch/pytorch/pull/167685))
 ### not user facing
 ### security
