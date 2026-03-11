@@ -48,13 +48,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Optimizer graph capture check now supports XPU devices in addition to CUDA ([#172759](https://github.com/pytorch/pytorch/pull/172759))
 ### bug fixes
 ### performance
-- Use fma for fused Adam(W) on CUDA ([#173224](https://github.com/pytorch/pytorch/pull/173224))
+- Use fused multiply-add (FMA) instructions for fused Adam and AdamW on CUDA, improving numerical accuracy and performance ([#173224](https://github.com/pytorch/pytorch/pull/173224))
 ### docs
+- Improved EMA (Exponential Moving Average) equation documentation in optimizer docs ([#172423](https://github.com/pytorch/pytorch/pull/172423))
 ### devs
-### Untopiced
-- docs: improve EMA equation docs (reviving #164960) ([#172423](https://github.com/pytorch/pytorch/pull/172423))
-- Enable XPU support to graph capture check in optimizer ([#172759](https://github.com/pytorch/pytorch/pull/172759))
 ### not user facing
 ### security
+### Untopiced
