@@ -102,6 +102,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Remove stale Ventura skips ([#174410](https://github.com/pytorch/pytorch/pull/174410))
 - Enable rsqrt tests for XPU ([#174471](https://github.com/pytorch/pytorch/pull/174471))
 - Adjust error_inputs conv tests for MPS ([#174776](https://github.com/pytorch/pytorch/pull/174776))
+- Add typing utils to copy signatures from methods or signatures ([#163418](https://github.com/pytorch/pytorch/pull/163418))
 ### security
 - Fixed a ZipSlip directory traversal vulnerability in `torch.hub` that could allow malicious zip files to extract files outside the target directory. `torch.hub` now validates all extracted paths and raises a `ValueError` if an archive attempts to write outside the expected folder. ([#171754](https://github.com/pytorch/pytorch/pull/171754))
 ### Untopiced

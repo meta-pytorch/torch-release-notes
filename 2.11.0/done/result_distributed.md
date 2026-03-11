@@ -132,6 +132,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Remove mixed dtype rejection for `clip_grad_norm` to align with documentation (FSDP) ([#173641](https://github.com/pytorch/pytorch/pull/173641))
 - Fix all-reduce strides in compiled code ([#171616](https://github.com/pytorch/pytorch/pull/171616))
 - Fix `ProcessGroupWrapper` missing method forwarding ([#173599](https://github.com/pytorch/pytorch/pull/173599))
+- Fix syntax for suppression comments. ([#167088](https://github.com/pytorch/pytorch/pull/167088))
 ### performance
 - Sort mempool registrations via allocation-time counter for CUDA mempools ([#167662](https://github.com/pytorch/pytorch/pull/167662))
 - Improve `_get_param_to_fqns` from O(N^2) to O(N) in FSDP ([#174675](https://github.com/pytorch/pytorch/pull/174675))
@@ -223,4 +224,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix test_replicate_with_fsdp.py ([#174737](https://github.com/pytorch/pytorch/pull/174737))
 - Document higher-precision reduction (c10d) ([#174690](https://github.com/pytorch/pytorch/pull/174690))
 - Set device index only for existing devices (DTensor) ([#174845](https://github.com/pytorch/pytorch/pull/174845))
+- Use Python 3.10 typing ([#170368](https://github.com/pytorch/pytorch/pull/170368))
+- Fix for test/distributed/test_device_mesh.py::TestDeviceMeshGetItem::test_flatten_mesh_4d ([#172189](https://github.com/pytorch/pytorch/pull/172189))
 ### security

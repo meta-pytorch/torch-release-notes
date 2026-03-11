@@ -49,6 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix mixed DTensor error with nested FSDP and activation checkpoint ([#171779](https://github.com/pytorch/pytorch/pull/171779))
 ### performance
 ### docs
 ### devs
@@ -56,4 +57,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### not user facing
 - Test that FSDP2 works with CUDA graphs ([#171835](https://github.com/pytorch/pytorch/pull/171835))
 - Remove @skip_if_lt_x_gpu(1) to run FSDP2 tests on CPU ([#173986](https://github.com/pytorch/pytorch/pull/173986))
+- Use Python 3.10 typing ([#170280](https://github.com/pytorch/pytorch/pull/170280))
+- Share more code between replicate and fully_shard ([#173580](https://github.com/pytorch/pytorch/pull/173580))
+- Consolidate shard_mesh and shard_mesh_from_root ([#174107](https://github.com/pytorch/pytorch/pull/174107))
 ### security

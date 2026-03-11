@@ -49,6 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 - Optimizer graph capture check now supports XPU devices in addition to CUDA ([#172759](https://github.com/pytorch/pytorch/pull/172759))
+- Added support for FP16 half-precision GEMM via OpenBLAS on CPU, enabling faster FP16 inference ([#169042](https://github.com/pytorch/pytorch/pull/169042))
 ### bug fixes
 ### performance
 - Use fused multiply-add (FMA) instructions for fused Adam and AdamW on CUDA, improving numerical accuracy and performance ([#173224](https://github.com/pytorch/pytorch/pull/173224))

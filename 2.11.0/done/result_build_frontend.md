@@ -55,4 +55,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### Untopiced
 ### not user facing
 - Bump PyTorch C standard from 11 to 17 ([#170387](https://github.com/pytorch/pytorch/pull/170387))
+- Redirect `fbcode//caffe2/c10:c10` to the OSS/conda version ([#169004](https://github.com/pytorch/pytorch/pull/169004))
+- Rm platform compiler flags from xplat/caffe2/third_party/xnnpack.buck.bzl ([#169808](https://github.com/pytorch/pytorch/pull/169808))
+- Fix deprecated-literal-operator in caffe2/aten/src/ATen/native/cudnn/Conv_v7.cpp +4 ([#170329](https://github.com/pytorch/pytorch/pull/170329))
+- Remove use of `folly:molly` target ([#171711](https://github.com/pytorch/pytorch/pull/171711))
+- Fix caffe2 genrules for root based genrules rollout ([#170574](https://github.com/pytorch/pytorch/pull/170574))
+- Fix signal handler deleting siginfo_t in resulting Coredump ([#174247](https://github.com/pytorch/pytorch/pull/174247))
+- Fix incorrect TORCH_CHECK usage in MHA.cpp ([#174885](https://github.com/pytorch/pytorch/pull/174885))
+- Fix conditional-uninitialized warnings in Math.h ([#174904](https://github.com/pytorch/pytorch/pull/174904))
 ### security

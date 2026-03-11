@@ -56,4 +56,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### not user facing
 - Test Copy Engine All-Gather ([#170265](https://github.com/pytorch/pytorch/pull/170265))
 - Test Copy Engine All-to-all ([#170344](https://github.com/pytorch/pytorch/pull/170344))
+- NCCL device comm manager ([#170544](https://github.com/pytorch/pytorch/pull/170544))
+- Improve header dependency re nccl_device support ([#170634](https://github.com/pytorch/pytorch/pull/170634))
 ### security

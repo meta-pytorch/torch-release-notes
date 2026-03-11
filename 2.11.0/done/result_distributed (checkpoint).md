@@ -49,6 +49,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix TypedStorage deprecation warning in distributed checkpoint ([#170759](https://github.com/pytorch/pytorch/pull/170759))
+- Fix typo in variable name from 'statetful_sd' to 'stateful_sd' ([#171292](https://github.com/pytorch/pytorch/pull/171292))
 ### performance
 ### docs
 ### devs
@@ -57,4 +59,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix resource leak: destroy CUDA event after waiting on it ([#169790](https://github.com/pytorch/pytorch/pull/169790))
 - Fix resource leak: destroy CUDA event after waiting on it ([#169790](https://github.com/pytorch/pytorch/pull/169790))
 - Fixes memory leak in async_save in distributed checkpoint ([#170431](https://github.com/pytorch/pytorch/pull/170431))
+- Optimize checkpoint resharding with sweep-line algorithm ([#169115](https://github.com/pytorch/pytorch/pull/169115))
+- Cleanup unused ignores 2 ([#171639](https://github.com/pytorch/pytorch/pull/171639))
+- Write metadata file for Consolidate hf safetensors file on every rank ([#171885](https://github.com/pytorch/pytorch/pull/171885))
 ### security

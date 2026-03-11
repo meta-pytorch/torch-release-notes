@@ -64,4 +64,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [BE][MPS] Don't pass `nnz` to `mark_segments` ([#170403](https://github.com/pytorch/pytorch/pull/170403))
 - Add missing thrust include ([#171210](https://github.com/pytorch/pytorch/pull/171210))
 - Fix pyrefly errors by using `pyrefly check --suppress-errors` ([#171188](https://github.com/pytorch/pytorch/pull/171188))
+- Remove caffe2 from hipify ([#172796](https://github.com/pytorch/pytorch/pull/172796))
+- Remove caffe2 from hipify ([#173372](https://github.com/pytorch/pytorch/pull/173372))
+- Remove caffe2 from hipify ([#174087](https://github.com/pytorch/pytorch/pull/174087))
 ### security

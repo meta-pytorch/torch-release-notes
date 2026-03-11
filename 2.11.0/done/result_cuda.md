@@ -73,4 +73,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### Untopiced
 ### not user facing
 - Fix computation of NVRTC library hash ([#169214](https://github.com/pytorch/pytorch/pull/169214))
+- Revert "[CUDA] add unit test utility busy_wait_for_flag (#166218)" ([#170462](https://github.com/pytorch/pytorch/pull/170462))
 ### security

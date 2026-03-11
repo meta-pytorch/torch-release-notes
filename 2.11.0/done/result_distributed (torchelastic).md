@@ -55,4 +55,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### Untopiced
 ### not user facing
 - Replace hard-coded /tmp paths with tempfile.gettempdir() ([#171446](https://github.com/pytorch/pytorch/pull/171446))
+- Improve NUMA binding docs ([#171543](https://github.com/pytorch/pytorch/pull/171543))
 ### security
