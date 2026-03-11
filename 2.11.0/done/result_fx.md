@@ -49,13 +49,21 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 - `torch.fx.symbolic_trace` now supports tracing `HigherOrderOperator`s that do not take callable arguments ([#173839](https://github.com/pytorch/pytorch/pull/173839))
+- Hint_int -> size_hint, support size_hint in user code. ([#171944](https://github.com/pytorch/pytorch/pull/171944))
+- Add metadata hook for all nodes created in runtime_assert pass ([#173970](https://github.com/pytorch/pytorch/pull/173970))
+- Add _disable_torch_fn_metadata_mode option to make_fx and aot_export_joint_with_descriptors ([#172087](https://github.com/pytorch/pytorch/pull/172087))
+- Add nested value-type opaque obj support ([#169845](https://github.com/pytorch/pytorch/pull/169845))
 ### bug fixes
 - Fix `torch.fx.symbolic_trace` `to_folder` with `torch.nn.Sequential` modules ([#169279](https://github.com/pytorch/pytorch/pull/169279))
 - Fix `Node.type` pickling in `torch.fx` ([#169172](https://github.com/pytorch/pytorch/pull/169172))
+- Raise ValueError for invalid fusion strategy and add test ([#171573](https://github.com/pytorch/pytorch/pull/171573))
+- Fix typos ([#171042](https://github.com/pytorch/pytorch/pull/171042))
+- Fix input mutation handling for subclasses (DTensor copy_) ([#170467](https://github.com/pytorch/pytorch/pull/170467))
 ### performance
 - Improve node index lookup performance in FX graphs by using an index lookup map ([#173385](https://github.com/pytorch/pytorch/pull/173385))
 ### docs
 - Add documentation for previously undocumented functions ([#170581](https://github.com/pytorch/pytorch/pull/170581))
+- Remove outdated jit files ([#173015](https://github.com/pytorch/pytorch/pull/173015))
 ### devs
 - `GraphModule.print_readable()` improvements: new `additional_meta` argument for displaying additional node metadata ([#173734](https://github.com/pytorch/pytorch/pull/173734)), long annotations are now truncated for readability ([#173119](https://github.com/pytorch/pytorch/pull/173119)), and fix trailing whitespace with inner graphs ([#172644](https://github.com/pytorch/pytorch/pull/172644))
 - `GraphPickler` improvements: support for custom ignored metadata field keys ([#172587](https://github.com/pytorch/pytorch/pull/172587)), a `debug_dumps` method for debugging pickle failures ([#173675](https://github.com/pytorch/pytorch/pull/173675)), respecting `__getstate__` for `GraphModule` serialization ([#173810](https://github.com/pytorch/pytorch/pull/173810)), and automatic fallback to dill if available ([#173801](https://github.com/pytorch/pytorch/pull/173801))
@@ -63,5 +71,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add process group support to `fx_graph_runnable` ([#173932](https://github.com/pytorch/pytorch/pull/173932))
 - Strict type coverage in dispatch and partial subclass ([#171808](https://github.com/pytorch/pytorch/pull/171808))
 ### not user facing
+- Remove redudant items in unordered_set/unodered_map ([#170055](https://github.com/pytorch/pytorch/pull/170055))
+- Mark more hash impls as noexcept for efficiency ([#171388](https://github.com/pytorch/pytorch/pull/171388))
+- Clean up classes properly ([#172503](https://github.com/pytorch/pytorch/pull/172503))
+- Remove unused code ([#172599](https://github.com/pytorch/pytorch/pull/172599))
+- Better error handling in torch/csrc/jit/passes by replacing std::runtime_error with TORCH_CHECK in passes ([#165620](https://github.com/pytorch/pytorch/pull/165620))
+- Assert removal finish in testing and start jit ([#173959](https://github.com/pytorch/pytorch/pull/173959))
+- AOTAutograd: at runtime, specialcase saved-for-bw tensors whos version counters werent checked in eager ([#171353](https://github.com/pytorch/pytorch/pull/171353))
+- Cleanup pyrefly ignores 3 ([#171640](https://github.com/pytorch/pytorch/pull/171640))
+- Modernize symbolic shape dataclasses ([#172115](https://github.com/pytorch/pytorch/pull/172115))
 ### security
 ### Untopiced

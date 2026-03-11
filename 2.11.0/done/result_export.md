@@ -68,4 +68,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add strobelight profiling support for the export process ([#174606](https://github.com/pytorch/pytorch/pull/174606))
 ### Untopiced
 ### not user facing
+- Support default kwargs in new export ([#173613](https://github.com/pytorch/pytorch/pull/173613))
 ### security

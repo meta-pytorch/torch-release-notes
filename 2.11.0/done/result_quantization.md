@@ -105,4 +105,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - More test assert migration ([#174218](https://github.com/pytorch/pytorch/pull/174218))
 - Continue removing assert in test and flip config to allowlist ([#174235](https://github.com/pytorch/pytorch/pull/174235))
 - Finish test numpy assert removal ([#174254](https://github.com/pytorch/pytorch/pull/174254))
+- Rm platform args xplat/caffe2/aten/src/ATen/native/quantized/cpu/qnnpack/buckbuild.bzl ([#169130](https://github.com/pytorch/pytorch/pull/169130))
+- Remove assert in library/cuda/ao ([#170803](https://github.com/pytorch/pytorch/pull/170803))
+- Apply various ruff fixes ([#170968](https://github.com/pytorch/pytorch/pull/170968))
 ### security

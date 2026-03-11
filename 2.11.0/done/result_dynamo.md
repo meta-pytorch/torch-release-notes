@@ -60,6 +60,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   - Support for `Enum.__contains__` and constants ([#173223](https://github.com/pytorch/pytorch/pull/173223))
   - Updated nn module hook handling to work with `kwargs=True` ([#172519](https://github.com/pytorch/pytorch/pull/172519))
   - Support `object` type in dynamo tracing ([#171457](https://github.com/pytorch/pytorch/pull/171457))
+- Add args print support to hop print ([#170880](https://github.com/pytorch/pytorch/pull/170880))
 ### bug fixes
 - Fixed memory leaks: cleared weakrefs from memos/guards after compilation ([#165367](https://github.com/pytorch/pytorch/pull/165367)), cleared weak references from `FakeTensorMode` after compile ([#171209](https://github.com/pytorch/pytorch/pull/171209)), fixed CUDA memory usage for CPU-only compile ([#163841](https://github.com/pytorch/pytorch/pull/163841))
 - Fixed overguarding on `OrderedSet`, `set`, and `frozenset` with activation checkpointing ([#169535](https://github.com/pytorch/pytorch/pull/169535), [#170291](https://github.com/pytorch/pytorch/pull/170291))

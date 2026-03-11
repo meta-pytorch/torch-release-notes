@@ -48,15 +48,19 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- [aoti] better error message for mixed device tensors ([#173982](https://github.com/pytorch/pytorch/pull/173982))
-- [xpu][feature][AOTI] Suport standalone compile API in _Exporter for xpu. ([#171450](https://github.com/pytorch/pytorch/pull/171450))
+- better error message for mixed device tensors ([#173982](https://github.com/pytorch/pytorch/pull/173982))
+- Suport standalone compile API in _Exporter for xpu. ([#171450](https://github.com/pytorch/pytorch/pull/171450))
+- Support mixed-device constants ([#169504](https://github.com/pytorch/pytorch/pull/169504))
+- Support aot_inductor.emit_multi_arch_kernel for XPU. ([#171432](https://github.com/pytorch/pytorch/pull/171432))
+- Change cpp_kernel_name to public API to match AOTI shim gen; add mm_type_out to AOTI fallback kernel  ([#174489](https://github.com/pytorch/pytorch/pull/174489))
 ### bug fixes
 - Fix import error in aoti load ([#173751](https://github.com/pytorch/pytorch/pull/173751))
-- [AOTI] Fix mixed-device zero-size constant indexing error ([#172748](https://github.com/pytorch/pytorch/pull/172748))
+- Fix mixed-device zero-size constant indexing error ([#172748](https://github.com/pytorch/pytorch/pull/172748))
 ### performance
 ### docs
 ### devs
 ### Untopiced
 
 ### not user facing
+- De-duplicate some unnecessary code duplication ([#170963](https://github.com/pytorch/pytorch/pull/170963))
 ### security

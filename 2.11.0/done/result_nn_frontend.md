@@ -90,4 +90,6 @@ output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window
 
 
 ### not user facing
+- Avoid differing results in `linalg.(tensor_)solve` when vmapped ([#154983](https://github.com/pytorch/pytorch/pull/154983))
+- Remove outdated CUDA code ([#170357](https://github.com/pytorch/pytorch/pull/170357))
 ### security

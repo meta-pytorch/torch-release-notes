@@ -55,4 +55,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 ### Untopiced
 ### not user facing
+- Add cache-friendly custom estimator/solver support ([#171601](https://github.com/pytorch/pytorch/pull/171601))
+- Force save with_effects outputs in partitioner ([#172889](https://github.com/pytorch/pytorch/pull/172889))
+- Support with_effects flowing through FunctionalTensorMode ([#172887](https://github.com/pytorch/pytorch/pull/172887))
 ### security

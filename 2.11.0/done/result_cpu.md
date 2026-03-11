@@ -54,5 +54,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 - Fixed compilation failure with GCC 14.2.0 on ARM SVE targets (e.g., `-march=armv8-a+sve+bf16` on Debian 13) by broadening the GCC version workaround for SVE compilation ([#174647](https://github.com/pytorch/pytorch/pull/174647))
 ### not user facing
+- Fix FBGEMM detection on aarch64 ([#169379](https://github.com/pytorch/pytorch/pull/169379))
 ### security
 ### Untopiced
