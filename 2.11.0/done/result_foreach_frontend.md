@@ -47,16 +47,17 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Added `torch.linalg._powsum` and `torch._foreach_powsum` as fused kernels that compute `sum(abs(x)**ord)` (equivalent to `vector_norm` without the root extraction) ([#172685](https://github.com/pytorch/pytorch/pull/172685))
 ### improvements
 ### bug fixes
+- Fixed `_foreach_copy_` producing incorrect results when destination tensors have mixed dtypes ([#173531](https://github.com/pytorch/pytorch/pull/173531))
+- Fixed `_foreach_max` returning incorrect results when tensors contain negative values, by initializing output with `lowest()` instead of zeros ([#173241](https://github.com/pytorch/pytorch/pull/173241))
+- `_foreach_norm` now properly raises an error when computing infinity norm on empty tensors, instead of returning undefined results ([#173238](https://github.com/pytorch/pytorch/pull/173238))
+- Fixed `_foreach_norm` to support symbolic tensors with dynamic shapes ([#174026](https://github.com/pytorch/pytorch/pull/174026))
 ### performance
+- Enabled fast path for `_foreach_addcmul` and `_foreach_addcdiv` when `tensor1` is a 0D (scalar) tensor ([#172731](https://github.com/pytorch/pytorch/pull/172731))
 ### docs
 ### devs
-### Untopiced
-- Enable fast path for foreach_addcmul/addcdiv with 0D tensor1 ([#172731](https://github.com/pytorch/pytorch/pull/172731))
-- Fix _foreach_copy_ with mixed destination dtypes ([#173531](https://github.com/pytorch/pytorch/pull/173531))
-- Initialize output_per_tensor with lowest() instead of zeros ([#173241](https://github.com/pytorch/pytorch/pull/173241))
-- Added check for infinity norm when one of the tensors is empty. ([#173238](https://github.com/pytorch/pytorch/pull/173238))
-- Fix _foreach_norm to support symbolic tensors with dynamic shapes ([#174026](https://github.com/pytorch/pytorch/pull/174026))
 ### not user facing
 ### security
+### Untopiced
