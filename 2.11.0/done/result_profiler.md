@@ -1,5 +1,5 @@
 
-# Release Notes worksheet nested tensor_frontend
+# Release Notes worksheet profiler
 
 You should:
 
@@ -43,17 +43,21 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## nested tensor_frontend
+## profiler
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+The memory visualizer now has a checkbox to toggle showing the trace, useful for large traces that take
+a long time to load ([#174717](https://github.com/pytorch/pytorch/pull/174717)). The memory profiler
+now exposes a new `skip_actions` flag to filter out specific events ([#168183](https://github.com/pytorch/pytorch/pull/168183)).
+The profiler now exposes a `post_process_timeout_s` field to prevent post processing from blocking
+further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 ### bug fixes
+Various fixes in our memory visualizer, in particular some y-axis unit mismatches and JavaScript errors.
 ### performance
 ### docs
-- Add warning about inactive development to NJT doc ([#172645](https://github.com/pytorch/pytorch/pull/172645))
 ### devs
 ### Untopiced
-- Fix NestedTensor min/max operations for integer dtypes. ([#167685](https://github.com/pytorch/pytorch/pull/167685))
 ### not user facing
 ### security

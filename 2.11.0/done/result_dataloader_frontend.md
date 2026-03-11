@@ -49,16 +49,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix DataLoader to respect overridden __getitem__ in Subset subclasses ([#163961](https://github.com/pytorch/pytorch/pull/163961))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Fix DataLoader to respect overridden getitem in Subset subclasses ([#163961](https://github.com/pytorch/pytorch/pull/163961))
-- [2/N] Call parent init method ([#169765](https://github.com/pytorch/pytorch/pull/169765))
-- Clean up refactor pin memory function ([#169700](https://github.com/pytorch/pytorch/pull/169700))
-- [Fix] Fix broken size mismatch check in __init__ (always False) ([#171795](https://github.com/pytorch/pytorch/pull/171795))
-- Fix #174546: Remove deprecated device arg from Tensor.pin_memory() call ([#174584](https://github.com/pytorch/pytorch/pull/174584))
 ### not user facing
-- More assert removal for test ([#174217](https://github.com/pytorch/pytorch/pull/174217))
-- More test assert removal ([#174256](https://github.com/pytorch/pytorch/pull/174256))
 ### security

@@ -62,3 +62,25 @@
 
 ### cuda/rocm
 - Revert "[ROCm][CUDA] add unit test utility busy_wait_for_flag (#166218)" ([#170462](https://github.com/pytorch/pytorch/pull/170462)) (from: dynamo, CUDA/ROCm revert)
+
+## fx (from quantization)
+- Add _disable_torch_fn_metadata_mode option to make_fx and aot_export_joint_with_descriptors ([#172087](https://github.com/pytorch/pytorch/pull/172087))
+
+## quantization (from composability)
+- Remove assert in library/cuda/ao ([#170803](https://github.com/pytorch/pytorch/pull/170803))
+
+## aotdispatcher (from functorch)
+- [functorch] Add cache-friendly custom estimator/solver support ([#171601](https://github.com/pytorch/pytorch/pull/171601))
+- [functorch] force save with_effects outputs in partitioner ([#172889](https://github.com/pytorch/pytorch/pull/172889))
+- [functorch] support with_effects flowing through FunctionalTensorMode ([#172887](https://github.com/pytorch/pytorch/pull/172887))
+
+
+## fx (from inductor)
+- [opaque_obj] Add nested value-type opaque obj support ([#169845](https://github.com/pytorch/pytorch/pull/169845))
+
+## inductor (aoti) (from inductor)
+- [AOTI] Support mixed-device constants ([#169504](https://github.com/pytorch/pytorch/pull/169504))
+- [hop][print]Add args print support to hop print ([#170880](https://github.com/pytorch/pytorch/pull/170880))
+- [cpp_wrapper] De-duplicate some unnecessary code duplication ([#170963](https://github.com/pytorch/pytorch/pull/170963))
+- [xpu][feature] Support aot_inductor.emit_multi_arch_kernel for XPU. ([#171432](https://github.com/pytorch/pytorch/pull/171432))
+- [inductor] Change cpp_kernel_name to public API to match AOTI shim gen; add mm_type_out to AOTI fallback kernel  ([#174489](https://github.com/pytorch/pytorch/pull/174489))

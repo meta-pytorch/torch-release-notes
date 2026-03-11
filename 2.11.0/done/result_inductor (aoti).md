@@ -48,25 +48,15 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- [MPS] Cholesky inverse ([#172186](https://github.com/pytorch/pytorch/pull/172186))
-- [MPS] Vibe-code torch.gcd ([#173406](https://github.com/pytorch/pytorch/pull/173406))
+- [aoti] better error message for mixed device tensors ([#173982](https://github.com/pytorch/pytorch/pull/173982))
+- [xpu][feature][AOTI] Suport standalone compile API in _Exporter for xpu. ([#171450](https://github.com/pytorch/pytorch/pull/171450))
 ### bug fixes
 - Fix import error in aoti load ([#173751](https://github.com/pytorch/pytorch/pull/173751))
+- [AOTI] Fix mixed-device zero-size constant indexing error ([#172748](https://github.com/pytorch/pytorch/pull/172748))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [AOTI] Fix mixed-device zero-size constant indexing error ([#172748](https://github.com/pytorch/pytorch/pull/172748))
-- Add FA3 to SDPA ([#172040](https://github.com/pytorch/pytorch/pull/172040))
-- [Pytorch][AOTI] include nonzero_static for c-shim ([#173229](https://github.com/pytorch/pytorch/pull/173229))
-- [aoti] better error message for mixed device tensors ([#173982](https://github.com/pytorch/pytorch/pull/173982))
-- [xpu][feature][AOTI] Suport standalone compile API in _Exporter for xpu. ([#171450](https://github.com/pytorch/pytorch/pull/171450))
-- Add `deleter` support to `torch::stable::from_blob` ([#173371](https://github.com/pytorch/pytorch/pull/173371))
+
 ### not user facing
-- [codemod][lowrisk] Remove unused exception parameter from caffe2/torch/csrc/StorageSharing.cpp ([#169678](https://github.com/pytorch/pytorch/pull/169678))
-- [Inductor][HOP][print]Add inductor and IR class for print ([#167680](https://github.com/pytorch/pytorch/pull/167680))
-- Start fixing torchgen asserts ([#173814](https://github.com/pytorch/pytorch/pull/173814))
-- [bug] Fix string-conversion issue in caffe2/torch/csrc/Storage.cpp +4 ([#174477](https://github.com/pytorch/pytorch/pull/174477))
-- [inductor][refactor] Extract shared logic for C++ wrapper GPU codegen ([#174082](https://github.com/pytorch/pytorch/pull/174082))
-- [inductor][refactor] Pass inductor_meta through kernel call chain ([#174083](https://github.com/pytorch/pytorch/pull/174083))
 ### security

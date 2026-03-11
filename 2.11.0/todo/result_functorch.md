@@ -53,12 +53,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
+### not user facing
 - [BE][Functorch] Add type hints to torch/_functorch files for pyrefly coverage ([#173401](https://github.com/pytorch/pytorch/pull/173401))
 - [BE][Functorch] Add type hints to torch/_functorch files pt 2 ([#173460](https://github.com/pytorch/pytorch/pull/173460))
 - [BE][Functorch] Add type hints to torch/_functorch files pt 4 ([#173673](https://github.com/pytorch/pytorch/pull/173673))
-### not user facing
-- [functorch] support with_effects flowing through FunctionalTensorMode ([#172887](https://github.com/pytorch/pytorch/pull/172887))
-- [functorch] Add cache-friendly custom estimator/solver support ([#171601](https://github.com/pytorch/pytorch/pull/171601))
 - [BE][functorch] Increase coverage for functorch: compilers, predispatch ([#173193](https://github.com/pytorch/pytorch/pull/173193))
-- [functorch] force save with_effects outputs in partitioner ([#172889](https://github.com/pytorch/pytorch/pull/172889))
 ### security

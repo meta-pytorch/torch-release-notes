@@ -1,5 +1,5 @@
 
-# Release Notes worksheet composability
+# Release Notes worksheet cpp_frontend
 
 You should:
 
@@ -43,36 +43,23 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## composability
+## cpp_frontend
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+- Added support for `Float8_e8m0fnu` and `Float4_e2m1fn_x2` dtypes to stable ABI ([#173669](https://github.com/pytorch/pytorch/pull/173669))
+- Added `torch::stable::Tensor.layout()` ([#174735](https://github.com/pytorch/pytorch/pull/174735))
 ### bug fixes
+- Fixed bug in stable ABI shim to handle special types (`SymInt`, `MemoryFormat`, `ScalarType`, `Layout`) correctly ([#174734](https://github.com/pytorch/pytorch/pull/174734))
 ### performance
-- Multiple optimizations to symbolic shape reasoning, including faster symbol sorting, reduced redundant hint computations, and optimized construction of relational expressions ([#174615](https://github.com/pytorch/pytorch/pull/174615), [#174655](https://github.com/pytorch/pytorch/pull/174655), [#174664](https://github.com/pytorch/pytorch/pull/174664), [#174652](https://github.com/pytorch/pytorch/pull/174652), [#174665](https://github.com/pytorch/pytorch/pull/174665), [#174662](https://github.com/pytorch/pytorch/pull/174662))
 ### docs
+- Added C++ docs for `torch::stable` namespace ([#170912](https://github.com/pytorch/pytorch/pull/170912))
 ### devs
 ### Untopiced
-- Fix-bucketize-export-crash ([#170751](https://github.com/pytorch/pytorch/pull/170751))
-- Remove unused type ignores ([#171800](https://github.com/pytorch/pytorch/pull/171800))
-- Remove unused ignores of pyrefly ([#171839](https://github.com/pytorch/pytorch/pull/171839))
-- remove assert in library/cuda/ao ([#170803](https://github.com/pytorch/pytorch/pull/170803))
-- Fix torch.isin compile shape for scalar test_elements ([#172531](https://github.com/pytorch/pytorch/pull/172531))
-- [custom ops] Add check for out variant ([#174473](https://github.com/pytorch/pytorch/pull/174473))
 ### not user facing
-- More decomp assert removal ([#170080](https://github.com/pytorch/pytorch/pull/170080))
-- Updating the strides to be F-continuous for nonzero_static. ([#164120](https://github.com/pytorch/pytorch/pull/164120))
-- [export] Fix isin decomposition ([#170362](https://github.com/pytorch/pytorch/pull/170362))
-- [xpu][test] Enable int4 and int8 test on Intel GPU ([#166504](https://github.com/pytorch/pytorch/pull/166504))
-- Remove assert meta/prims/refs ([#170776](https://github.com/pytorch/pytorch/pull/170776))
-- Fix convolution_backward meta kernel stride predictions ([#171623](https://github.com/pytorch/pytorch/pull/171623))
-- Fix conv shape check to be device-aware for zero-sized outputs ([#171888](https://github.com/pytorch/pytorch/pull/171888))
-- Fix `MaxUnpool` crash ([#169359](https://github.com/pytorch/pytorch/pull/169359))
-- Fix: Make are_strides_like_channels_last python match c++ ([#173038](https://github.com/pytorch/pytorch/pull/173038))
-- Fix dde in _exec_fft ([#172717](https://github.com/pytorch/pytorch/pull/172717))
-- [dynamic shapes] fix diagonal op DDEs ([#173408](https://github.com/pytorch/pytorch/pull/173408))
-- [BugFix][Display]:  type(alpha) not type(beta) ([#173655](https://github.com/pytorch/pytorch/pull/173655))
-- Add single-level NVFP4 to scaled_mm_v2 tracing ([#173806](https://github.com/pytorch/pytorch/pull/173806))
-- add meta impl for foreach_norm ([#174342](https://github.com/pytorch/pytorch/pull/174342))
+- [codemod][lowrisk] Remove unused exception parameter from caffe2 ([#170325](https://github.com/pytorch/pytorch/pull/170325))
+- [codemod][lowrisk] Remove unused exception parameter from caffe2/aten/src/ATen/native/transformers/cuda/sdp_utils.cpp ([#170386](https://github.com/pytorch/pytorch/pull/170386))
+- Fix typos in transformer.cpp comments ([#169395](https://github.com/pytorch/pytorch/pull/169395))
+- Enable passing in compiler variables for TORCH_LIBRARY namespace ([#174424](https://github.com/pytorch/pytorch/pull/174424))
 ### security

@@ -1,5 +1,5 @@
 
-# Release Notes worksheet cpp_frontend
+# Release Notes worksheet nested tensor_frontend
 
 You should:
 
@@ -43,23 +43,17 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## cpp_frontend
+## nested tensor_frontend
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
-- Support Float8_e8m0fnu and Float4_e2m1fn_x2 in stable ABI ([#173669](https://github.com/pytorch/pytorch/pull/173669))
-- Add torch::stable::Tensor.layout() ([#174735](https://github.com/pytorch/pytorch/pull/174735))
 ### bug fixes
-- Use real_type over type so that IValues go to intended path ([#174734](https://github.com/pytorch/pytorch/pull/174734))
+- Fix NestedTensor min/max operations for integer dtypes ([#167685](https://github.com/pytorch/pytorch/pull/167685))
 ### performance
 ### docs
-- Add cpp docs for torch::stable ([#170912](https://github.com/pytorch/pytorch/pull/170912))
+- Add warning about inactive development to NJT docs ([#172645](https://github.com/pytorch/pytorch/pull/172645))
 ### devs
 ### Untopiced
-- Fix typos in transformer.cpp comments ([#169395](https://github.com/pytorch/pytorch/pull/169395))
-- Enable passing in compiler variables for TORCH_LIBRARY namespace ([#174424](https://github.com/pytorch/pytorch/pull/174424))
 ### not user facing
-- [codemod][lowrisk] Remove unused exception parameter from caffe2 ([#170325](https://github.com/pytorch/pytorch/pull/170325))
-- [codemod][lowrisk] Remove unused exception parameter from caffe2/aten/src/ATen/native/transformers/cuda/sdp_utils.cpp ([#170386](https://github.com/pytorch/pytorch/pull/170386))
 ### security

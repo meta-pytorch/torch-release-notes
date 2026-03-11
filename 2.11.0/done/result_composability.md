@@ -1,5 +1,5 @@
 
-# Release Notes worksheet profiler
+# Release Notes worksheet composability
 
 You should:
 
@@ -43,27 +43,34 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## profiler
+## composability
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+- Add `check_out_variant` and `to_out_variant` utilities for custom operator out variant validation. `check_out_variant` verifies that a custom op's out variant is compatible with Inductor's out_variant pass, and `to_out_variant` converts an `OpOverload` to its out variant. ([#174473](https://github.com/pytorch/pytorch/pull/174473))
 ### bug fixes
-- Fix _ExperimentalConfig pickle serialization ([#171108](https://github.com/pytorch/pytorch/pull/171108))
-- [Visualizer] Switch to jsdelivr CDN ([#172899](https://github.com/pytorch/pytorch/pull/172899))
-- [Visualizer] Fix D3 event handling ([#173592](https://github.com/pytorch/pytorch/pull/173592))
+- Fix `torch.bucketize` crash during `torch.export` when `test_elements` is a scalar ([#170751](https://github.com/pytorch/pytorch/pull/170751))
+- Fix `MaxUnpool` crash when input tensors are small ([#169359](https://github.com/pytorch/pytorch/pull/169359))
 ### performance
+- Multiple optimizations to symbolic shape reasoning, including faster symbol sorting, reduced redundant hint computations, and optimized construction of relational expressions ([#174615](https://github.com/pytorch/pytorch/pull/174615), [#174655](https://github.com/pytorch/pytorch/pull/174655), [#174664](https://github.com/pytorch/pytorch/pull/174664), [#174652](https://github.com/pytorch/pytorch/pull/174652), [#174665](https://github.com/pytorch/pytorch/pull/174665), [#174662](https://github.com/pytorch/pytorch/pull/174662))
 ### docs
 ### devs
 ### Untopiced
-- Add skip_actions flag to filter out memory snapshot events ([#168183](https://github.com/pytorch/pytorch/pull/168183))
-- [pytorch] expose profiling post-processing timeouts in public API ([#173957](https://github.com/pytorch/pytorch/pull/173957))
-- [memoryviz] Adding a checkbox to toggle on/off show trace on click ([#174717](https://github.com/pytorch/pytorch/pull/174717))
-- [memoryviz] Fix y-axis unit mismatch ([#174796](https://github.com/pytorch/pytorch/pull/174796))
 ### not user facing
-- Clean up ifdef in global_kineto_init ([#170847](https://github.com/pytorch/pytorch/pull/170847))
-- [PrivateUse1][Profiler] Refactor `RegisterPRIVATEUSE1Observer` constructor and macro for clarity ([#171253](https://github.com/pytorch/pytorch/pull/171253))
-- [profiler] Add some helper functions for readability ([#172110](https://github.com/pytorch/pytorch/pull/172110))
-- [profiler] update tests to avoid deprecated use_cuda ([#174144](https://github.com/pytorch/pytorch/pull/174144))
-- [Profiler][Easy] Let `MemRecordsAcc.in_interval` to use nanoseconds directly ([#171788](https://github.com/pytorch/pytorch/pull/171788))
+- Remove unused type ignores ([#171800](https://github.com/pytorch/pytorch/pull/171800))
+- Remove unused ignores of pyrefly ([#171839](https://github.com/pytorch/pytorch/pull/171839))
+- More decomp assert removal ([#170080](https://github.com/pytorch/pytorch/pull/170080))
+- Update strides to be F-contiguous for `nonzero_static` ([#164120](https://github.com/pytorch/pytorch/pull/164120))
+- Fix isin decomposition for export ([#170362](https://github.com/pytorch/pytorch/pull/170362))
+- Enable int4 and int8 test on Intel GPU ([#166504](https://github.com/pytorch/pytorch/pull/166504))
+- Remove assert in meta/prims/refs ([#170776](https://github.com/pytorch/pytorch/pull/170776))
+- Fix convolution_backward meta kernel stride predictions ([#171623](https://github.com/pytorch/pytorch/pull/171623))
+- Fix conv shape check to be device-aware for zero-sized outputs ([#171888](https://github.com/pytorch/pytorch/pull/171888))
+- Fix channels_last stride matching between Python and C++ ([#173038](https://github.com/pytorch/pytorch/pull/173038))
+- Fix data-dependent error in _exec_fft for unbacked symbols ([#172717](https://github.com/pytorch/pytorch/pull/172717))
+- Fix diagonal op data-dependent errors in dynamic shapes ([#173408](https://github.com/pytorch/pytorch/pull/173408))
+- Fix display bug showing wrong type in error message ([#173655](https://github.com/pytorch/pytorch/pull/173655))
+- Add single-level NVFP4 to scaled_mm_v2 tracing ([#173806](https://github.com/pytorch/pytorch/pull/173806))
+- Add meta impl for foreach_norm ([#174342](https://github.com/pytorch/pytorch/pull/174342))
 ### security
