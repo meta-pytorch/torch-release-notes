@@ -48,9 +48,6 @@
 - [BE][Ez]: Modernize symbolic shape dataclasses ([#172115](https://github.com/pytorch/pytorch/pull/172115)) (from: dynamo, labeled `release notes: fx`)
 - [annotation][export] Add metadata hook for all nodes created in runtime_assert pass ([#173970](https://github.com/pytorch/pytorch/pull/173970)) (from: dynamo, labeled `release notes: fx`)
 
-### python_frontend
-- [BE][Ez]: Add slots to treespec dataclasses ([#172172](https://github.com/pytorch/pytorch/pull/172172)) (from: dynamo, labeled `release notes: python_frontend`)
-
 ### inductor
 - [dynamo] Add per-graph inductor config override for debugging/bisecting ([#174228](https://github.com/pytorch/pytorch/pull/174228)) (from: dynamo, labeled `release notes: inductor`)
 
