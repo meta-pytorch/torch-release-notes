@@ -46,23 +46,78 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ## linalg_frontend
 ### bc breaking
 ### deprecation
+- The MAGMA backend for linear algebra operations is now deprecated and will be removed in a future release. Setting `torch.backends.cuda.preferred_linalg_library("magma")` or retrieving a previously-set MAGMA preference will now issue a deprecation warning. cuSOLVER remains the default backend. ([#172823](https://github.com/pytorch/pytorch/pull/172823))
+
+  If you see any errors when using cuSOLVER that did not occur with MAGMA, please file an issue on GitHub. To silence the warning, stop explicitly selecting the MAGMA backend:
+
+  Version 2.10:
+  ```python
+  # No warning
+  torch.backends.cuda.preferred_linalg_library("magma")
+  ```
+
+  Version 2.11:
+  ```python
+  # Issues a deprecation warning — remove this call to use the default cuSOLVER backend
+  torch.backends.cuda.preferred_linalg_library("magma")
+  ```
+
+- `torch.linalg.svd` no longer dispatches to MAGMA. The MAGMA backend is deprecated and cuSOLVER is now used unconditionally, providing significant speedups (2x–400x depending on matrix size and batch dimensions). ([#172824](https://github.com/pytorch/pytorch/pull/172824))
+
+  Previously, setting `torch.backends.cuda.preferred_linalg_library("magma")` would route SVD through MAGMA. This setting is now ignored for SVD, and cuSOLVER is always used.
+
+  Version 2.10:
+  ```python
+  torch.backends.cuda.preferred_linalg_library("magma")
+  U, S, Vh = torch.linalg.svd(x)  # Uses MAGMA
+  ```
+
+  Version 2.11:
+  ```python
+  # MAGMA preference is ignored; cuSOLVER is always used
+  U, S, Vh = torch.linalg.svd(x)  # Uses cuSOLVER
+  ```
+
+- `torch.linalg.solve_triangular` and `torch.triangular_solve` no longer dispatch to MAGMA. cuBLAS is now used unconditionally, providing speedups of 2x–24x for most matrix sizes (small matrices may see minor regressions of ~0.6x). ([#174109](https://github.com/pytorch/pytorch/pull/174109))
+
+  Version 2.10:
+  ```python
+  torch.backends.cuda.preferred_linalg_library("magma")
+  torch.linalg.solve_triangular(A, B, upper=False)  # Uses MAGMA
+  ```
+
+  Version 2.11:
+  ```python
+  # MAGMA preference is ignored; cuBLAS is always used
+  torch.linalg.solve_triangular(A, B, upper=False)  # Uses cuBLAS
+  ```
+
+- `torch.linalg.lstsq` no longer dispatches to MAGMA. cuSOLVER/cuBLAS are now used unconditionally, providing speedups of 1.7x–620x depending on matrix size and batch dimensions. ([#174779](https://github.com/pytorch/pytorch/pull/174779))
+
+  Version 2.10:
+  ```python
+  torch.backends.cuda.preferred_linalg_library("magma")
+  result = torch.linalg.lstsq(A, B)  # Uses MAGMA
+  ```
+
+  Version 2.11:
+  ```python
+  # MAGMA preference is ignored; cuSOLVER/cuBLAS is always used
+  result = torch.linalg.lstsq(A, B)  # Uses cuSOLVER/cuBLAS
+  ```
+
 ### new features
 ### improvements
 ### bug fixes
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [xplat] Fix build warnings and update mcf dependency ([#170102](https://github.com/pytorch/pytorch/pull/170102))
-- linalg._powsum and _foreach_powsum ops ([#172685](https://github.com/pytorch/pytorch/pull/172685))
-- [MAGMA] issue a deprecation warning upon retrieving/setting linalg backend ([#172823](https://github.com/pytorch/pytorch/pull/172823))
-- [MAGMA] svd: deprecate magma backend and dispatch to cusolver unconditionally ([#172824](https://github.com/pytorch/pytorch/pull/172824))
-- [MAGMA][CUDA] triangular_solve: deprecate MAGMA and dispatch to cuBLAS unconditionally ([#174109](https://github.com/pytorch/pytorch/pull/174109))
-- [MAGMA][CUDA] lstsq: deprecate MAGMA and dispatch to cuSolver/cuBLAS unconditionally ([#174779](https://github.com/pytorch/pytorch/pull/174779))
 ### not user facing
+- Fix build warnings and update mcf dependency in xplat ([#170102](https://github.com/pytorch/pytorch/pull/170102))
 - Remove outdated CUDA and ROCm skip conditions ([#170868](https://github.com/pytorch/pytorch/pull/170868))
-- linalg: sort eigenvalues in eig/eigvals comparison tests ([#171717](https://github.com/pytorch/pytorch/pull/171717))
-- Allow for unaligned cpu inputs ([#173395](https://github.com/pytorch/pytorch/pull/173395))
+- Sort eigenvalues in eig/eigvals comparison tests ([#171717](https://github.com/pytorch/pytorch/pull/171717))
+- Allow for unaligned CPU inputs ([#173395](https://github.com/pytorch/pytorch/pull/173395))
 - More test file assert removal ([#174255](https://github.com/pytorch/pytorch/pull/174255))
-- test_linalg: Skip test__int4_mm and test_compile_int4_mm on <CDNA2 ([#173358](https://github.com/pytorch/pytorch/pull/173358))
+- Skip test__int4_mm and test_compile_int4_mm on <CDNA2 ([#173358](https://github.com/pytorch/pytorch/pull/173358))
 ### security
+### Untopiced
