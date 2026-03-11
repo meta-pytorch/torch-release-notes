@@ -48,11 +48,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- The `spin lint` command now supports pass-through arguments to lintrunner, including `--take`, `--skip`, and `--tee-json` flags, giving developers more control over which linters run ([#169373](https://github.com/pytorch/pytorch/pull/169373))
 ### bug fixes
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Allow argument pass-through for spin commands ([#169373](https://github.com/pytorch/pytorch/pull/169373))
 ### not user facing
 ### security
+### Untopiced
