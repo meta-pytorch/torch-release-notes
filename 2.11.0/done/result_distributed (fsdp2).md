@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (dtensor)
+# Release Notes worksheet distributed (fsdp2)
 
 You should:
 
@@ -43,34 +43,17 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (dtensor)
+## distributed (fsdp2)
 ### bc breaking
-- [DTensor] Fix `to_local` backward by providing default `grad_placement` type ([#173454](https://github.com/pytorch/pytorch/pull/173454))
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
-- Preserve Partial(max/min) on torch.max/min ([#170203](https://github.com/pytorch/pytorch/pull/170203))
-- Prevent pointwise operations between Partials which are different ([#170209](https://github.com/pytorch/pytorch/pull/170209))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [DTensor] pr time benchmarks for collectives, from/to_local, backwards ([#171576](https://github.com/pytorch/pytorch/pull/171576))
-- [DTensor] benchmark for misc dispatch paths ([#171847](https://github.com/pytorch/pytorch/pull/171847))
 ### not user facing
-- [DTensor] Fix redistribute_cost to detect shard_order ([#170106](https://github.com/pytorch/pytorch/pull/170106))
-- [DTensor] Fix redistribute_cost using incorrect comm_bytes_gb ([#170107](https://github.com/pytorch/pytorch/pull/170107))
-- [DTensor] refactor redistribute_cost function ([#170108](https://github.com/pytorch/pytorch/pull/170108))
-- [DTensor] Update redistribute planner cost function based on communication cost ([#170109](https://github.com/pytorch/pytorch/pull/170109))
-- [DTensor] Fix _StridedShard to Replicate padding issue ([#170914](https://github.com/pytorch/pytorch/pull/170914))
-- [DTensor] Added conversion from Replicate to _StridedShard ([#171337](https://github.com/pytorch/pytorch/pull/171337))
-- Make placements opaque ([#171482](https://github.com/pytorch/pytorch/pull/171482))
-- [DTensor] Make single-dim rules support multi-output ops ([#172257](https://github.com/pytorch/pytorch/pull/172257))
-- Make placements opaque ([#171482](https://github.com/pytorch/pytorch/pull/171482))
-- Make placements opaque ([#171482](https://github.com/pytorch/pytorch/pull/171482))
-- [BE][Functorch] Add type hints to torch/_functorch files pt 3 ([#173543](https://github.com/pytorch/pytorch/pull/173543))
-- [dtensor] fix flatten mesh dims arg relative to submesh ([#173790](https://github.com/pytorch/pytorch/pull/173790))
-- [DTensor] support Partial input for matmul in single-dim registration ([#174926](https://github.com/pytorch/pytorch/pull/174926))
-- [DTensor] support Partial input for matmul in single-dim registration ([#174926](https://github.com/pytorch/pytorch/pull/174926))
+- Test that FSDP2 works with CUDA graphs ([#171835](https://github.com/pytorch/pytorch/pull/171835))
+- Remove @skip_if_lt_x_gpu(1) to run FSDP2 tests on CPU ([#173986](https://github.com/pytorch/pytorch/pull/173986))
 ### security

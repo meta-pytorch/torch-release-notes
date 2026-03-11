@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (fsdp2)
+# Release Notes worksheet distributed (dtensor)
 
 You should:
 
@@ -43,19 +43,47 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (fsdp2)
+## distributed (dtensor)
 ### bc breaking
+- `DTensor.to_local()` backward now converts `Partial` placements to `Replicate` by default when `grad_placements` is not provided. ([#173454](https://github.com/pytorch/pytorch/pull/173454))
+
+  Previously, calling `to_local()` on a `Partial` DTensor would preserve the `Partial` placement in the backward gradient, which could produce incorrect gradients when combined with `from_local()`. Now, the backward pass automatically maps `Partial` forward placements to `Replicate` gradient placements, matching the behavior of `from_local()`.
+
+  Users who relied on the previous behavior (where `to_local()` backward preserved `Partial` gradients) may see different gradient values. To ensure correctness, explicitly pass `grad_placements` to `to_local()`.
+
+  Version 2.10:
+  ```python
+  # Partial placement preserved in backward — could produce incorrect gradients
+  local_tensor = partial_dtensor.to_local()
+  ```
+
+  Version 2.11:
+  ```python
+  # Partial → Replicate in backward by default (correct behavior)
+  local_tensor = partial_dtensor.to_local()
+  # Or explicitly specify grad_placements for full control:
+  local_tensor = partial_dtensor.to_local(grad_placements=[Replicate()])
+  ```
+
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
+- Preserve `Partial(max/min)` reduce op type on `torch.max`/`torch.min` output DTensors ([#170203](https://github.com/pytorch/pytorch/pull/170203))
+- Prevent pointwise operations between `Partial` DTensors with different reduce ops ([#170209](https://github.com/pytorch/pytorch/pull/170209))
 ### performance
 ### docs
 ### devs
+- Add DTensor performance benchmarks for collectives, `from_local`/`to_local`, and backward passes ([#171576](https://github.com/pytorch/pytorch/pull/171576))
+- Add DTensor benchmarks for miscellaneous dispatch paths ([#171847](https://github.com/pytorch/pytorch/pull/171847))
 ### Untopiced
 ### not user facing
-- Test that FSDP2 works with cuda graphs. ([#171835](https://github.com/pytorch/pytorch/pull/171835))
-- [FSDP2] remove @skip_if_lt_x_gpu(1) to run tests on cpu ([#173986](https://github.com/pytorch/pytorch/pull/173986))
-- [FSDP2] enable more tests on CPU ([#174048](https://github.com/pytorch/pytorch/pull/174048))
-- [FSDP2] enable more tests on CPU ([#174048](https://github.com/pytorch/pytorch/pull/174048))
+- Fix redistribute_cost to detect shard_order ([#170106](https://github.com/pytorch/pytorch/pull/170106))
+- Fix redistribute_cost using incorrect comm_bytes_gb ([#170107](https://github.com/pytorch/pytorch/pull/170107))
+- Refactor redistribute_cost function ([#170108](https://github.com/pytorch/pytorch/pull/170108))
+- Update redistribute planner cost function based on communication cost ([#170109](https://github.com/pytorch/pytorch/pull/170109))
+- Fix _StridedShard to Replicate padding issue ([#170914](https://github.com/pytorch/pytorch/pull/170914))
+- Add conversion from Replicate to _StridedShard ([#171337](https://github.com/pytorch/pytorch/pull/171337))
+- Make single-dim rules support multi-output ops ([#172257](https://github.com/pytorch/pytorch/pull/172257))
+- Add type hints to torch/_functorch files ([#173543](https://github.com/pytorch/pytorch/pull/173543))
 ### security
