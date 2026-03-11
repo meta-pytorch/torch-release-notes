@@ -99,6 +99,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Update TP api to support single-dim strategies ([#173567](https://github.com/pytorch/pytorch/pull/173567))
 - Initial support for decomps + sharding prop ([#171652](https://github.com/pytorch/pytorch/pull/171652))
 - Add shard prop cache logging ([#173775](https://github.com/pytorch/pytorch/pull/173775))
+- Optimize redistribute comms using flattened meshes ([#174630](https://github.com/pytorch/pytorch/pull/174630))
 ### bug fixes
 - Preserve `Partial(max/min)` reduce op type on `torch.max`/`torch.min` output DTensors ([#170203](https://github.com/pytorch/pytorch/pull/170203))
 - Prevent pointwise operations between `Partial` DTensors with different reduce ops ([#170209](https://github.com/pytorch/pytorch/pull/170209))
@@ -153,7 +154,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Make RedistributionPlanner handle all partials ([#172479](https://github.com/pytorch/pytorch/pull/172479))
 - Single-dim expander raises clear inplace error ([#173572](https://github.com/pytorch/pytorch/pull/173572))
 - Infer RuntimeSchemaInfo for decomposition ops ([#174422](https://github.com/pytorch/pytorch/pull/174422))
-- Optimize redistribute comms using flattened meshes ([#174630](https://github.com/pytorch/pytorch/pull/174630))
 - Set static args for decomp OpSchema ([#174616](https://github.com/pytorch/pytorch/pull/174616))
 - Strategy Validation: placement utilities and data structures ([#174798](https://github.com/pytorch/pytorch/pull/174798))
 - Skip decomposition for CIA ops ([#174918](https://github.com/pytorch/pytorch/pull/174918))
