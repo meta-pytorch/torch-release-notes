@@ -199,3 +199,84 @@ Tell the user:
 - Remind them to review the result and open a PR when ready
 
 Do NOT commit or open a PR automatically unless the user asks.
+
+## Area-specific guidance
+
+### releng (Release Engineering)
+
+Releng release notes follow recurring patterns across releases. Use these examples as a reference for how to categorize and write up common releng changes.
+
+#### Typical releng categories
+
+**BC breaking** — Changes that affect how users install or run PyTorch:
+- CUDA version changes on PyPI (e.g., PyPI wheels switching from CUDA 12.x to CUDA 13.0)
+- GPU architecture support removal from binary builds (e.g., Volta removed from CUDA 12.8+ builds)
+- Package renames (e.g., `pytorch-triton` renamed to `triton`)
+
+Each BC-breaking entry must explain what changed, why, and how users should adapt. Include install commands showing the old and new behavior.
+
+Example (from 2.11.0):
+```markdown
+- PyPI wheels now ship with CUDA 13.0 instead of CUDA 12.x ([#172663](...))
+
+  Starting with PyTorch 2.11, `pip install torch` on PyPI installs CUDA 13.0 wheels by default
+  for both Linux x86_64 and Linux aarch64. Users whose systems have only CUDA 12.x drivers
+  installed may encounter errors. CUDA 12.6 and 12.8 binaries remain available via
+  `download.pytorch.org`.
+
+  Version 2.10:
+  ```bash
+  # PyPI wheel used CUDA 12.x
+  pip install torch
+  ```
+
+  Version 2.11:
+  ```bash
+  # PyPI wheel now uses CUDA 13.0
+  pip install torch
+
+  # To get CUDA 12.8 wheels instead:
+  pip install torch --index-url https://download.pytorch.org/whl/cu128
+  ```
+```
+
+**Improvements** — These recur from release to release. Group related PRs together:
+- **CUDA version upgrades**: "Add support for CUDA X.Y" or "Upgrade to CUDA X.Y.Z" — group all CI/CD, binary build, benchmark, and driver PRs for that CUDA version into one entry.
+- **ROCm version upgrades**: "Upgrade to ROCm X.Y" — group Docker images, magma tarballs, binary builds, CI coverage PRs.
+- **New GPU architecture support**: "Add support for [GPU model] (gfxNNNN)" — group all PRs enabling a new GPU.
+- **XPU/Intel upgrades**: "Upgrade XPU support package to X.Y"
+- **Build infrastructure upgrades**: GCC version bumps, Ubuntu image migrations, etc.
+
+Example entries (from 2.10.0):
+```markdown
+### improvements
+- Add support for CUDA 13.0 in CI/CD including binary builds, inductor benchmarks, and
+  upgrade to CUDA 13.0.2 ([#162455](...), [#162425](...), [#163787](...), ...)
+- Upgrade to ROCm 7.0 and 7.1 ([#163860](...), [#163883](...), ...)
+- Add support for MI355, MI300, gfx1100, gfx1150, gfx1151, and gfx950 GPU architectures
+  ([#160215](...), [#167587](...), ...)
+- Add B200 GPU support with symmetric memory testing and smoke tests ([#162988](...), ...)
+- Upgrade XPU support package to 2025.3 ([#166829](...))
+- Upgrade XPU build infrastructure to GCC 13 and Ubuntu 24.04 ([#162474](...), ...)
+```
+
+**New features** — Genuinely new capabilities (not upgrades of existing ones):
+- New CI testing infrastructure (e.g., Pallas CI)
+- New build formats (e.g., PEP 517 source distribution)
+- New automated processes (e.g., auto-revert)
+
+**Performance** — Benchmark infrastructure additions:
+- New operator microbenchmarks added to CI
+- New benchmark suites (e.g., HuggingFace LLM benchmarks)
+
+**Devs** — Build system changes affecting source builders:
+- Build tool migrations (e.g., setup.py to pip install)
+
+**Not user facing** — The bulk of releng PRs are internal:
+- Hash pin updates (vllm, audio, vision, xla, triton)
+- CI runner changes (c7i migrations, runner type swaps)
+- CI workflow refactors
+- Dependency bumps (protobuf, setuptools, etc.)
+- Docker image updates
+- Linter/lint rule changes
+- Individual test fixes or test additions
