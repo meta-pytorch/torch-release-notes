@@ -114,4 +114,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Remove assert in functorch and start onnx ([#173928](https://github.com/pytorch/pytorch/pull/173928))
 - Finish onnx and start testing ([#173929](https://github.com/pytorch/pytorch/pull/173929))
 - Clean up type utils ([#174393](https://github.com/pytorch/pytorch/pull/174393))
+- Use OpSignature from onnx_ir ([#174740](https://github.com/pytorch/pytorch/pull/174740))
 ### security

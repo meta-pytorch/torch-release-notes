@@ -306,4 +306,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Inductor] Disable mm_persistent_tma template for B200+ ([#174745](https://github.com/pytorch/pytorch/pull/174745))
 - [Inductor XPU GEMM] Step 7/N: Refactor CUDABenchmarkRequest ([#160729](https://github.com/pytorch/pytorch/pull/160729))
 - Skip subprocess test in fbcode for D91862702 ([#174117](https://github.com/pytorch/pytorch/pull/174117))
+- Use native tensor allocation on the TPU ([#175007](https://github.com/pytorch/pytorch/pull/175007))
 ### security
