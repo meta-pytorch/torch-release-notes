@@ -307,4 +307,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Inductor XPU GEMM] Step 7/N: Refactor CUDABenchmarkRequest ([#160729](https://github.com/pytorch/pytorch/pull/160729))
 - Skip subprocess test in fbcode for D91862702 ([#174117](https://github.com/pytorch/pytorch/pull/174117))
 - Use native tensor allocation on the TPU ([#175007](https://github.com/pytorch/pytorch/pull/175007))
+- Avoid multi-stage for mix-order-red by default ([#176228](https://github.com/pytorch/pytorch/pull/176228))
+- Don't unfuse addmm for bf16/fp16 to avoid precision loss ([#176848](https://github.com/pytorch/pytorch/pull/176848))
+- Reject non-contiguous subnode fusion in mix-order reduction ([#176131](https://github.com/pytorch/pytorch/pull/176131))
 ### security

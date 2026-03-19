@@ -74,6 +74,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 - Update XPU Get Started guide with new client GPU and formatting ([#169810](https://github.com/pytorch/pytorch/pull/169810))
 - Document previous version of Torch XPU installation ([#174453](https://github.com/pytorch/pytorch/pull/174453))
+- Update previous version 2.10 installation in get start xpu ([#176141](https://github.com/pytorch/pytorch/pull/176141))
 
 ### devs
 - Switch Intel Triton compiled kernel format from `spv` to `zebin` ([#167972](https://github.com/pytorch/pytorch/pull/167972))
@@ -83,4 +84,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [test] Enable more Inductor UT for XPU ([#171773](https://github.com/pytorch/pytorch/pull/171773))
 - Enable BHSD layout and add deterministic check for SDPA XPU FlashAttention backend ([#170414](https://github.com/pytorch/pytorch/pull/170414))
 - Enable tensor descriptor for FlexAttention backward ([#166927](https://github.com/pytorch/pytorch/pull/166927))
+- Fix SyclExtension Windows build for oneAPI 2025.3+ breaking change ([#170701](https://github.com/pytorch/pytorch/pull/170701))
 ### security

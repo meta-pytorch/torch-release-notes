@@ -97,4 +97,6 @@ Great care has been taken to make this change backwards compatible.  Though PyTo
 - Unify hipBLASLt architecture lists into common hook methods. ([#172791](https://github.com/pytorch/pytorch/pull/172791))
 ### Untopiced
 ### not user facing
+- Forward fix #174087, take 4 ([#175098](https://github.com/pytorch/pytorch/pull/175098))
+- Added CUDA check to test_pattern_matcher ([#175092](https://github.com/pytorch/pytorch/pull/175092))
 ### security

@@ -95,19 +95,33 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 - Upgrade to ROCm 7.2 with new Docker images, magma tarball, and binary builds ([#173096](https://github.com/pytorch/pytorch/pull/173096), [#173106](https://github.com/pytorch/pytorch/pull/173106), [#173187](https://github.com/pytorch/pytorch/pull/173187), [#174234](https://github.com/pytorch/pytorch/pull/174234))
+- Add an option to install cuda if required cuda/cudnn on windows AMI do not match ([#177273](https://github.com/pytorch/pytorch/pull/177273))
 ### bug fixes
 - Fixed macOS wheel metadata where setuptools misinterpreted the platform version string, producing incorrect wheel tags for macOS arm64 builds ([#173541](https://github.com/pytorch/pytorch/pull/173541))
 - Fixed incorrect wheel naming ([#173945](https://github.com/pytorch/pytorch/pull/173945))
 - Fixed macOS arm64 libtorch release upload failure ([#175100](https://github.com/pytorch/pytorch/pull/175100))
+- Fix macOS arm64 libtorch release upload failure ([#175100](https://github.com/pytorch/pytorch/pull/175100))
+- Fix pep517 release handling ([#175635](https://github.com/pytorch/pytorch/pull/175635))
 ### performance
 ### docs
 - Fixed stable C++ docs rendering ([#171957](https://github.com/pytorch/pytorch/pull/171957))
 - Updated pytorch_sphinx_theme2 version to 0.4.3 ([#174806](https://github.com/pytorch/pytorch/pull/174806))
+- Updated pytorch_sphinx_theme2 version to 0.4.6 ([#177562](https://github.com/pytorch/pytorch/pull/177562))
 ### devs
 - Clarified needs-repro guidelines and edge cases for issue triage ([#174028](https://github.com/pytorch/pytorch/pull/174028))
 - Updated tlparse instructions in PT2 bug report template ([#172392](https://github.com/pytorch/pytorch/pull/172392))
+- Remove +ptx from CUDA 13.0 builds ([#175567](https://github.com/pytorch/pytorch/pull/175567))
+- Update inductor CI jobs to CUDA 13.0 ([#175826](https://github.com/pytorch/pytorch/pull/175826))
+- Upgrade ROCm CI to 7.2 ([#173188](https://github.com/pytorch/pytorch/pull/173188))
+- Switch vLLM test and benchmark workflows to CUDA 13.0 ([#175393](https://github.com/pytorch/pytorch/pull/175393))
+- Windows override AMI pre-installed cudnn ([#177027](https://github.com/pytorch/pytorch/pull/177027))
+- Unpin cuda-bindings dependencies ([#176042](https://github.com/pytorch/pytorch/pull/176042))
+- Stop using G3 runners ([#175938](https://github.com/pytorch/pytorch/pull/175938))
 ### Untopiced
 ### not user facing
+- Add CUDA 13 periodic tests ([#174850](https://github.com/pytorch/pytorch/pull/174850))
+- Remove CUDA 12.4 periodic tests ([#175170](https://github.com/pytorch/pytorch/pull/175170))
+- Move CUDA 12.8 GPU tests from per-commit trunk to periodic ([#175067](https://github.com/pytorch/pytorch/pull/175067))
 - Bump filelock from 3.18.0 to 3.20.1 in .ci/docker (df0ac1b506e)
 - Bump filelock from 3.20.1 to 3.20.3 in .ci/docker (75fd1a27b67)
 - Bump aiohttp from 3.13.2 to 3.13.3 in .ci/docker (3dd897e669a, 3bfdf85fe5f)
@@ -265,4 +279,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [CI] Move CUDA 12.8 GPU tests from per-commit trunk to periodic ([#175067](https://github.com/pytorch/pytorch/pull/175067))
 - [BE] Remove cuda 12.4 periodic tests ([#175170](https://github.com/pytorch/pytorch/pull/175170))
 - [CI] Add CUDA 13 periodic tests ([#174850](https://github.com/pytorch/pytorch/pull/174850))
+- Release only changes for 2.11 ([#175091](https://github.com/pytorch/pytorch/pull/175091))
 ### security

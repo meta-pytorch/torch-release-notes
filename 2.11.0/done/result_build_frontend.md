@@ -63,4 +63,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix signal handler deleting siginfo_t in resulting Coredump ([#174247](https://github.com/pytorch/pytorch/pull/174247))
 - Fix incorrect TORCH_CHECK usage in MHA.cpp ([#174885](https://github.com/pytorch/pytorch/pull/174885))
 - Fix conditional-uninitialized warnings in Math.h ([#174904](https://github.com/pytorch/pytorch/pull/174904))
+- Remove python constraint on setuptools ([#175577](https://github.com/pytorch/pytorch/pull/175577))
 ### security

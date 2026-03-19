@@ -62,4 +62,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [codemod][lowrisk] Remove unused exception parameter from caffe2/aten/src/ATen/native/transformers/cuda/sdp_utils.cpp ([#170386](https://github.com/pytorch/pytorch/pull/170386))
 - Fix typos in transformer.cpp comments ([#169395](https://github.com/pytorch/pytorch/pull/169395))
 - Enable passing in compiler variables for TORCH_LIBRARY namespace ([#174424](https://github.com/pytorch/pytorch/pull/174424))
+- Let stable::from_blob accept a lambda as deleter ([#175089](https://github.com/pytorch/pytorch/pull/175089))
 ### security

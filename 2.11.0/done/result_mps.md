@@ -69,6 +69,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fixed masked op logic in MPS Inductor ([#170134](https://github.com/pytorch/pytorch/pull/170134))
 - Fixed `orgqr` race condition on MPS ([#174143](https://github.com/pytorch/pytorch/pull/174143))
 - Fixed 2-pass SDPA memory corruption by forcing float accumulators, resolving nondeterministic/corrupt results with bf16/fp16 and GQA when seq_len > 1023 ([#174945](https://github.com/pytorch/pytorch/pull/174945))
+- Fix 2-pass SDPA memory corruption by forcing float accumulators ([#174945](https://github.com/pytorch/pytorch/pull/174945))
+- Fix half-precision type mismatches in Metal shader codegen ([#176436](https://github.com/pytorch/pytorch/pull/176436))
 ### performance
 - Migrated `atan2` to native MPS Metal kernel ([#173405](https://github.com/pytorch/pytorch/pull/173405))
 - Migrated `pow_tensor_scalar` and `reciprocal` to Metal shaders ([#170077](https://github.com/pytorch/pytorch/pull/170077))
