@@ -81,4 +81,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### Untopiced
 ### not user facing
 - [test] Enable more Inductor UT for XPU ([#171773](https://github.com/pytorch/pytorch/pull/171773))
+- Enable BHSD layout and add deterministic check for SDPA XPU FlashAttention backend ([#170414](https://github.com/pytorch/pytorch/pull/170414))
+- Enable tensor descriptor for FlexAttention backward ([#166927](https://github.com/pytorch/pytorch/pull/166927))
 ### security
