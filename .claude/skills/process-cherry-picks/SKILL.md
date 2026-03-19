@@ -64,9 +64,23 @@ For each structured entry, extract:
 
 ### Step 2: Filter to merged cherry-picks only
 
-Check whether each cherry-pick entry has been merged. In the `gh issue view --comments` output, merged entries are followed by a line like `@<username> merged` (as an edit annotation or a follow-up comment).
+**Do NOT rely on `@<username> merged` annotations in issue comments** — these are unreliable and frequently missing for entries that were actually merged. Instead, check the actual merge state of each release branch PR via GraphQL:
 
-Only process entries that have been merged. Report skipped/unmerged entries so the user knows what was excluded and can follow up.
+```bash
+gh api graphql -f query='
+{
+  pr175108: repository(owner: "pytorch", name: "pytorch") {
+    pullRequest(number: 175108) { number merged }
+  }
+  pr175159: repository(owner: "pytorch", name: "pytorch") {
+    pullRequest(number: 175159) { number merged }
+  }
+}'
+```
+
+Build the query with one alias per release branch PR (up to 100 per query, split if needed). A cherry-pick entry is merged if and only if `merged: true` on its release branch PR. If an entry has multiple release branch PRs, it is merged if at least one of them is merged.
+
+Only process entries whose release branch PR is merged. Report skipped/unmerged entries so the user knows what was excluded and can follow up.
 
 ### Step 3: Separate reverts from new commits
 
