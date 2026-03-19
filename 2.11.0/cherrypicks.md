@@ -26,8 +26,10 @@
 - Skip pytorch_CycleGAN_and_pix2pix from inductor benchmarks ([#175066](https://github.com/pytorch/pytorch/pull/175066))
 - Disable einops 0.8.2 check on PyTorch ([#175351](https://github.com/pytorch/pytorch/pull/175351))
 - Bump transformers version to 5.2.0 ([#175274](https://github.com/pytorch/pytorch/pull/175274))
+- Fix acc failure for vit_base_patch14_dinov2.lvd142m ([#177042](https://github.com/pytorch/pytorch/pull/177042))
 ### Inductor
 - Avoid multi-stage for mix-order-red by default ([#176228](https://github.com/pytorch/pytorch/pull/176228))
+- Don't unfuse addmm for bf16/fp16 to avoid precision loss ([#176848](https://github.com/pytorch/pytorch/pull/176848))
 ### ROCm
 - Forward fix #174087, take 4 ([#175098](https://github.com/pytorch/pytorch/pull/175098))
 ### Release Engineering
