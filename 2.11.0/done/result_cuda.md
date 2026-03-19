@@ -59,6 +59,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bug fixes
 - Don't false-positive on record_stream and account for 0-element tensors in CUDA stream sanitizer ([#172562](https://github.com/pytorch/pytorch/pull/172562))
 - Fix failures due to launch bounds for `ctc_loss_gpu_template` on SM12+ ([#172447](https://github.com/pytorch/pytorch/pull/172447))
+- Fix the torch.Stream context manager reentrance ([#176568](https://github.com/pytorch/pytorch/pull/176568))
 ### performance
 - Use `opmath_t` and not double compute type in fused SGD and Adam ([#173227](https://github.com/pytorch/pytorch/pull/173227))
 - Speedup `grouped_mm` a bit ([#170802](https://github.com/pytorch/pytorch/pull/170802))

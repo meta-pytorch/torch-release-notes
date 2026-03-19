@@ -88,6 +88,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add invoke_subgraph HOP export support ([#174283](https://github.com/pytorch/pytorch/pull/174283))
 - Fix InputObserver.infer_arguments with empty caches ([#174205](https://github.com/pytorch/pytorch/pull/174205))
 - Expose ONNXProgram.rename_axes for renaming dims ([#172032](https://github.com/pytorch/pytorch/pull/172032))
+- Support custom empty tensor shapes in `InputObserver` for multimodal LLM export ([#174964](https://github.com/pytorch/pytorch/pull/174964))
 ### improvements
 - Implement torch.sym_sum and torch.sym_ite ([#170263](https://github.com/pytorch/pytorch/pull/170263))
 - Raise an error if there are duplicated input/output names ([#173077](https://github.com/pytorch/pytorch/pull/173077))

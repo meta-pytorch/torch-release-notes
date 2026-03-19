@@ -209,4 +209,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - use shape_id to inform inputs that must have matching sizes in support in mark_unbacked ([#172716](https://github.com/pytorch/pytorch/pull/172716))
 - [user-streams] Assign streams to epilogue copies ([#168368](https://github.com/pytorch/pytorch/pull/168368))
 - Disable einops 0.8.2 check on PyTorch ([#175351](https://github.com/pytorch/pytorch/pull/175351))
+- Update inductor expected accuracy files ([#175041](https://github.com/pytorch/pytorch/pull/175041))
+- Skip pytorch_CycleGAN_and_pix2pix from inductor benchmarks ([#175066](https://github.com/pytorch/pytorch/pull/175066))
+- Disable einops 0.8.2 check on PyTorch ([#175351](https://github.com/pytorch/pytorch/pull/175351))
+- Bump transformers version to 5.2.0 ([#175274](https://github.com/pytorch/pytorch/pull/175274))
+- Fix acc failure for vit_base_patch14_dinov2.lvd142m ([#177042](https://github.com/pytorch/pytorch/pull/177042))
+- Update vLLM pinned commit ([#175238](https://github.com/pytorch/pytorch/pull/175238))
 ### security
