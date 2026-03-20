@@ -71,7 +71,7 @@ Below are the full release notes for this release.
 
 ## Python Frontend
 
-### `torch.hub.list()`, `torch.hub.load()`, and `torch.hub.get_dir()` now default the `trust_repo` parameter to `"check"` instead of `None`. The `trust_repo=None` option has been removed. ([#174101](https://github.com/pytorch/pytorch/pull/174101))
+### `torch.hub.list()`, `torch.hub.load()`, and `torch.hub.help()` now default the `trust_repo` parameter to `"check"` instead of `None`. The `trust_repo=None` option has been removed. ([#174101](https://github.com/pytorch/pytorch/pull/174101))
 
   Previously, passing `trust_repo=None` (or relying on the default) would silently download and run code from untrusted repositories with only a warning. Now, the default `"check"` behavior will prompt the user for explicit confirmation before running code from repositories not on the trusted list.
 
@@ -107,7 +107,7 @@ output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, is_cau
 output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window_size=(-1, 0))
 ```
 
-### Add `sliding_window` support to `varlen_attn`, making optional arguments keyword-only ([#172238](https://github.com/pytorch/pytorch/pull/172238))
+### Add sliding window support to `varlen_attn` via `window_size`, making optional arguments keyword-only ([#172238](https://github.com/pytorch/pytorch/pull/172238))
 
 The signature of `torch.nn.attention.varlen_attn` has changed: a `*` (keyword-only separator) has been inserted before the optional arguments. Previously, optional arguments like `is_causal`, `return_aux`, and `scale` could be passed positionally; they must now be passed as keyword arguments. A new `window_size` keyword argument has also been added.
 
@@ -126,12 +126,12 @@ output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window
   This avoids issues where `$HOME` is not set or not writable. Users who relied on `~/.cache/torch` being used regardless of `$XDG_CACHE_HOME` may see debug info written to a different location.
 
   Version 2.10:
-  ```python
+  ```
   # C++ DebugInfoWriter always wrote to ~/.cache/torch
   ```
 
   Version 2.11:
-  ```python
+  ```
   # C++ DebugInfoWriter now respects $XDG_CACHE_HOME/torch (same as Python code)
   # Falls back to ~/.cache/torch if $XDG_CACHE_HOME is not set
   ```
@@ -174,6 +174,7 @@ output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window
   # Or explicitly specify grad_placements for full control:
   local_tensor = partial_dtensor.to_local(grad_placements=[Replicate()])
   ```
+
 ### `_PhiloxState.seed` and `_PhiloxState.offset` now return `torch.Tensor` instead of `int` ([#173876](https://github.com/pytorch/pytorch/pull/173876))
 
   The DTensor RNG internal `_PhiloxState` class changed its `seed` and `offset` properties to return tensors instead of Python ints, and the setters now expect tensors. This makes the RNG state compatible with PT2 tracing (the previous `.item()` calls were not fake-tensor friendly).
@@ -200,7 +201,7 @@ output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window
 
 ## ROCm
 
-### caffe2 support is fully removed from ROCm PyTorch's hipify preprocessing.  This is known as "hipify v2" behavior.  
+### caffe2 support is fully removed from ROCm PyTorch's hipify preprocessing. This is known as "hipify v2" behavior.
 #### hipify v1 background
 When caffe2 and PyTorch were separate projects, the ROCm support strategies were different.  For caffe2, all files and classes would be renamed following the pattern of CUDA to HIP, Cuda to Hip, cuda to hip, and so on.  PyTorch did not rename classes, but would create new files following the same renaming pattern (e.g., aten/src/ATen/cuda/CUDABlas.h to aten/src/ATen/hip/HIPBlas.h).  As a consequence, caffe2 had a distinct device backend named "HIP" (renamed from "CUDA") while ROCm PyTorch masquerades as the "cuda" device (`torch.empty(1, device="cuda")`).  Once caffe2 and PyTorch projects were merged, this caused a mismatch between caffe2 expecting to use a "HIP" device while PyTorch expecting a "cuda" device.  To alleviate this mismatch, "Masquerading" classes were created under aten/src/ATen/hip/impl.
 - HIPAllocatorMasqueradingAsCUDA.h
@@ -219,7 +220,7 @@ Great care has been taken to make this change backwards compatible.  Though PyTo
 
 ### `torch.export.export_for_training` has been removed ([#171714](https://github.com/pytorch/pytorch/pull/171714))
 
-  `export_for_training` was previously available as a separate API for exporting models while preserving training semantics. This function has been removed. Users should use `torch.export.export` instead, which returns same graph as the previous `export_for_training`.
+  `export_for_training` was previously available as a separate API for exporting models while preserving training semantics. This function has been removed. Users should use `torch.export.export` instead, which returns the same graph as the previous `export_for_training`.
 
 ## ONNX
 
@@ -392,22 +393,22 @@ Great care has been taken to make this change backwards compatible.  Though PyTo
 - Async error reporting from GPU operations ([#170002](https://github.com/pytorch/pytorch/pull/170002), [#170050](https://github.com/pytorch/pytorch/pull/170050))
     ```python
     import torch
-    x=torch.rand(10, 1, 10, device='mps')
+    x = torch.rand(10, 1, 10, device='mps')
     y=x[:, [1]]
     torch.mps.synchronize()  # will raise index out of bounds error
     ```
 - Added support for Metal 4 ([#172229](https://github.com/pytorch/pytorch/pull/172229), [#172230](https://github.com/pytorch/pytorch/pull/172230))
 ## ROCm
-- Expose device properties clock_rate, memory_clock_rate, memory_bus_width, memory_per_block, shared_memory_per_block. ([#170572](https://github.com/pytorch/pytorch/pull/170572))
+- Expose device properties `clock_rate`, `memory_clock_rate`, `memory_bus_width`, `memory_per_block`, `shared_memory_per_block`. ([#170572](https://github.com/pytorch/pytorch/pull/170572))
 - Support for device-side assertions via TORCH_USE_HIP_DSA. ([#172679](https://github.com/pytorch/pytorch/pull/172679))
-- Attention operator support on gfx1151/1152/1153 via AOTriton 0.11.2b.
+- Attention operator support on gfx1151/1152/1153 via AOTriton 0.11.2b update ([#174105](https://github.com/pytorch/pytorch/pull/174105))
 - Enable scaled group mm on gfx950. ([#173737](https://github.com/pytorch/pytorch/pull/173737))
 - Enable group gemm on gfx90a. ([#169356](https://github.com/pytorch/pytorch/pull/169356))
 - Enable MIOpen backend for CTC Loss. ([#170749](https://github.com/pytorch/pytorch/pull/170749))
 - Add hipsparseSpSV and hipsparseSpSM support for triangular solve. ([#171097](https://github.com/pytorch/pytorch/pull/171097))
 - Support for PyTorch's StaticCudaLauncher, which provides static compilation and launching of Triton kernels. ([#166492](https://github.com/pytorch/pytorch/pull/166492))
 ## XPU
-- Introduce XPUGraph a runtime optimization feature designed to reduce kernels host overhead on XPU devices, detail in: [design](https://github.com/pytorch/pytorch/issues/162143]) and [usage](https://docs.pytorch.org/docs/2.11/xpu.html#graphs). ([#166285](https://github.com/pytorch/pytorch/pull/166285), [#174041](https://github.com/pytorch/pytorch/pull/174041), [#174351](https://github.com/pytorch/pytorch/pull/174351), [#174059](https://github.com/pytorch/pytorch/pull/174059), [#174046](https://github.com/pytorch/pytorch/pull/174046), [#166843](https://github.com/pytorch/pytorch/pull/166843))
+- Introduce XPUGraph a runtime optimization feature designed to reduce kernels host overhead on XPU devices, detail in: [design](https://github.com/pytorch/pytorch/issues/162143) and [usage](https://docs.pytorch.org/docs/2.11/xpu.html#graphs). ([#166285](https://github.com/pytorch/pytorch/pull/166285), [#174041](https://github.com/pytorch/pytorch/pull/174041), [#174351](https://github.com/pytorch/pytorch/pull/174351), [#174059](https://github.com/pytorch/pytorch/pull/174059), [#174046](https://github.com/pytorch/pytorch/pull/174046), [#166843](https://github.com/pytorch/pytorch/pull/166843))
 ## torch.compile
 #### Dynamo
 - `torch.compile` now supports tracing through `contextlib.ExitStack` and `contextlib.suppress` context managers, allowing code that uses these patterns to be compiled without graph breaks ([#146506](https://github.com/pytorch/pytorch/pull/146506), [#147990](https://github.com/pytorch/pytorch/pull/147990))
@@ -571,7 +572,7 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Add per-graph inductor config override for debugging/bisecting ([#174228](https://github.com/pytorch/pytorch/pull/174228))
 ## torch.fx
 - `torch.fx.symbolic_trace` now supports tracing `HigherOrderOperator`s that do not take callable arguments ([#173839](https://github.com/pytorch/pytorch/pull/173839))
-- Hint_int -> size_hint, support size_hint in user code. ([#171944](https://github.com/pytorch/pytorch/pull/171944))
+- Rename hint_int -> size_hint, support size_hint in user code. ([#171944](https://github.com/pytorch/pytorch/pull/171944))
 - Add metadata hook for all nodes created in runtime_assert pass ([#173970](https://github.com/pytorch/pytorch/pull/173970))
 - Add _disable_torch_fn_metadata_mode option to make_fx and aot_export_joint_with_descriptors ([#172087](https://github.com/pytorch/pytorch/pull/172087))
 - Add nested value-type opaque obj support ([#169845](https://github.com/pytorch/pytorch/pull/169845))
@@ -591,9 +592,9 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 ## devx
 - The `spin lint` command now supports pass-through arguments to lintrunner, including `--take`, `--skip`, and `--tee-json` flags, giving developers more control over which linters run ([#169373](https://github.com/pytorch/pytorch/pull/169373))
 ## Ahead-Of-Time Inductor (AOTI)
-- better error message for mixed device tensors ([#173982](https://github.com/pytorch/pytorch/pull/173982))
+- Better error message for mixed device tensors ([#173982](https://github.com/pytorch/pytorch/pull/173982))
 - Support mixed-device constants ([#169504](https://github.com/pytorch/pytorch/pull/169504))
-- Change cpp_kernel_name to public API to match AOTI shim gen; add mm_type_out to AOTI fallback kernel  ([#174489](https://github.com/pytorch/pytorch/pull/174489))
+- Change `cpp_kernel_name` to public API to match AOTI shim gen; add `mm_type_out` to AOTI fallback kernel ([#174489](https://github.com/pytorch/pytorch/pull/174489))
 
 
 
@@ -687,7 +688,7 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Fix fake_quantize undefined behavior with inf. ([#171777](https://github.com/pytorch/pytorch/pull/171777))
 - Fix deterministic scan kernel edge case. ([#170763](https://github.com/pytorch/pytorch/pull/170763))
 - Use torch's caching allocator for CK workspaces, for better memory behavior and hipGraph capture. ([#172311](https://github.com/pytorch/pytorch/pull/172311))
-- Grouped gemm 2d2d has uninitalized data. ([#174314](https://github.com/pytorch/pytorch/pull/174314))
+- Fixes grouped gemm 2d2d for edge cases with uninitialized data. ([#174314](https://github.com/pytorch/pytorch/pull/174314))
 ## Sparse Frontend
 - Fixed `torch.sparse.spdiags` crashing with zero-dimension shapes ([#174052](https://github.com/pytorch/pytorch/pull/174052))
 ## torch.func
@@ -816,7 +817,7 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Rewrote `log_normal` and `geometric` distributions as Metal shaders ([#174189](https://github.com/pytorch/pytorch/pull/174189))
 - Migrated `grid_sampler_2d` to Metal ([#174343](https://github.com/pytorch/pytorch/pull/174343))
 ## ROCm
-- MIOpen channels last support remains opt-in using the environment variables PYTORCH_MIOPEN_SUGGEST_NHWC=1 and PYTORCH_MIOPEN_SUGGEST_NHWC_BATCHNORM=1. ([#170780](https://github.com/pytorch/pytorch/pull/170780))
+- Revert MIOpen channels last support back to opt-in using the environment variables PYTORCH_MIOPEN_SUGGEST_NHWC=1 and PYTORCH_MIOPEN_SUGGEST_NHWC_BATCHNORM=1. ([#170780](https://github.com/pytorch/pytorch/pull/170780))
 - New fx pass to reduce atomic contention. ([#168073](https://github.com/pytorch/pytorch/pull/168073))
 - TopK performance improvements; single-block warp-level compaction ([#171940](https://github.com/pytorch/pytorch/pull/171940)), warp merge sort ([#170029](https://github.com/pytorch/pytorch/pull/170029)).
 - Enable fastSpecializedAtomicAdd for gfx950, improving performance of index-based operators like embedding bag, sampling, and scatter/gather. ([#170330](https://github.com/pytorch/pytorch/pull/170330))
@@ -833,7 +834,7 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - FlexAttention performance: Improved flex decoding by avoiding unbalanced splitting, support multi BLOCK_M for flex-decoding, elide score-mod when not needed, and avoid materializing lse grad ([#167935](https://github.com/pytorch/pytorch/pull/167935), [#170343](https://github.com/pytorch/pytorch/pull/170343), [#172380](https://github.com/pytorch/pytorch/pull/172380), [#173481](https://github.com/pytorch/pytorch/pull/173481))
 - Compile-time improvements: optimized reorder/sink passes, removed expensive `dynamo_timed` calls, used `_has_symbolic_sizes_strides` more pervasively, overlapped template fusion with async_compile, and optimized Triton template heuristics ([#169370](https://github.com/pytorch/pytorch/pull/169370), [#169661](https://github.com/pytorch/pytorch/pull/169661), [#169662](https://github.com/pytorch/pytorch/pull/169662), [#170444](https://github.com/pytorch/pytorch/pull/170444), [#170565](https://github.com/pytorch/pytorch/pull/170565), [#172249](https://github.com/pytorch/pytorch/pull/172249), [#174408](https://github.com/pytorch/pytorch/pull/174408))
 - Apply gumbel max trick for sampling ([#171143](https://github.com/pytorch/pytorch/pull/171143))
-- Improved combo kernels design, add per-sub-kernel block dimensions for combo kernels and flattened grid dispatch ([#171671](https://github.com/pytorch/pytorch/pull/171671)) ([#172527](https://github.com/pytorch/pytorch/pull/172527))
+- Improved combo kernels design, add per-sub-kernel block dimensions for combo kernels and flattened grid dispatch ([#171671](https://github.com/pytorch/pytorch/pull/171671), [#172527](https://github.com/pytorch/pytorch/pull/172527))
 - Rewrote `avg_pool2d` as a reduction for improved performance ([#167228](https://github.com/pytorch/pytorch/pull/167228))
 - Optimized tensor broadcasting ([#170772](https://github.com/pytorch/pytorch/pull/170772))
 - Reduced autotune search space for pointwise Triton kernels ([#169508](https://github.com/pytorch/pytorch/pull/169508))
@@ -872,7 +873,7 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 ## XPU
 - Update XPU Get Started guide with new client GPU and formatting ([#169810](https://github.com/pytorch/pytorch/pull/169810))
 - Document previous version of Torch XPU installation ([#174453](https://github.com/pytorch/pytorch/pull/174453))
-- Update previous version 2.10 installation in get start xpu ([#176141](https://github.com/pytorch/pytorch/pull/176141))
+- Update previous version 2.10 installation in XPU Get Started guide ([#176141](https://github.com/pytorch/pytorch/pull/176141))
 ## torch.fx
 - Add documentation for previously undocumented functions ([#170581](https://github.com/pytorch/pytorch/pull/170581))
 - Remove outdated jit files ([#173015](https://github.com/pytorch/pytorch/pull/173015))
