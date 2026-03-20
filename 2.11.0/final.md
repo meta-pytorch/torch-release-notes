@@ -95,18 +95,6 @@ Below are the full release notes for this release.
 
 ## torch.nn
 
-### Remove `is_causal` flag from `varlen_attn` ([#172245](https://github.com/pytorch/pytorch/pull/172245))
-
-  The `is_causal` parameter has been removed from `torch.nn.attention.varlen_attn`. Causal attention is now expressed through the `window_size` parameter: use `window_size=(-1, 0)` for causal masking, or `window_size=(W, 0)` for causal attention with a sliding window of size `W`. The default `window_size=(-1, -1)` corresponds to full (non-causal) attention.
-
-  ```python
-  # Before (2.10)
-  output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, is_causal=True)
-
-  # After (2.11) — use window_size instead
-  output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window_size=(-1, 0))
-  ```
-
 ### Add sliding window support to `varlen_attn` via `window_size`, making optional arguments keyword-only ([#172238](https://github.com/pytorch/pytorch/pull/172238))
 
   The signature of `torch.nn.attention.varlen_attn` has changed: a `*` (keyword-only separator) has been inserted before the optional arguments. Previously, optional arguments like `is_causal`, `return_aux`, and `scale` could be passed positionally; they must now be passed as keyword arguments. A new `window_size` keyword argument has also been added.
@@ -117,6 +105,18 @@ Below are the full release notes for this release.
 
   # After (2.11) — pass as keyword argument
   output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window_size=(-1, 0), return_aux=None, scale=1.0)
+  ```
+
+### Remove `is_causal` flag from `varlen_attn` ([#172245](https://github.com/pytorch/pytorch/pull/172245))
+
+  The `is_causal` parameter has been removed from `torch.nn.attention.varlen_attn`. Causal attention is now expressed through the `window_size` parameter: use `window_size=(-1, 0)` for causal masking, or `window_size=(W, 0)` for causal attention with a sliding window of size `W`. The default `window_size=(-1, -1)` corresponds to full (non-causal) attention.
+
+  ```python
+  # Before (2.10)
+  output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, is_causal=True)
+
+  # After (2.11) — use window_size instead
+  output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window_size=(-1, 0))
   ```
 
 ## Distributed
