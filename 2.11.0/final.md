@@ -318,7 +318,7 @@ Great care has been taken to make this change backwards compatible.  Though PyTo
   U, S, Vh = torch.linalg.svd(x)  # Uses cuSOLVER
   ```
 
-- `torch.linalg.solve_triangular` and `torch.triangular_solve` no longer dispatch to MAGMA. cuBLAS is now used unconditionally, providing speedups of 2x–24x for most matrix sizes (small matrices may see minor regressions of ~0.6x). ([#174109](https://github.com/pytorch/pytorch/pull/174109))
+- `torch.linalg.solve_triangular` and `torch.triangular_solve` no longer dispatch to MAGMA on CUDA. cuBLAS is now used unconditionally, providing speedups of 2x–24x for most matrix sizes (small matrices may see minor regressions of ~0.6x). ([#174109](https://github.com/pytorch/pytorch/pull/174109))
 
   Version 2.10:
   ```python
