@@ -437,9 +437,7 @@ Great care has been taken to make this change backwards compatible.  Though PyTo
 - InputObserver to guess the dynamic shapes for export ([#172838](https://github.com/pytorch/pytorch/pull/172838))
 - Add a parameter to force the first dimension to be dynamic in InputObserver.infer_dynamic_shapes ([#173533](https://github.com/pytorch/pytorch/pull/173533))
 - Implement while_loop ([#162645](https://github.com/pytorch/pytorch/pull/162645))
-- Implement while_loop ([#162645](https://github.com/pytorch/pytorch/pull/162645))
 - Add invoke_subgraph HOP export support ([#174283](https://github.com/pytorch/pytorch/pull/174283))
-- Fix InputObserver.infer_arguments with empty caches ([#174205](https://github.com/pytorch/pytorch/pull/174205))
 - Expose ONNXProgram.rename_axes for renaming dims ([#172032](https://github.com/pytorch/pytorch/pull/172032))
 - Support custom empty tensor shapes in `InputObserver` for multimodal LLM export ([#174964](https://github.com/pytorch/pytorch/pull/174964))
 ## Foreach
@@ -519,7 +517,7 @@ Great care has been taken to make this change backwards compatible.  Though PyTo
 - Add `torch.xpu.memory_snapshot` ([#169442](https://github.com/pytorch/pytorch/pull/169442))
 - Add `local_mem_size` to XPU device properties ([#172314](https://github.com/pytorch/pytorch/pull/172314))
 - Support `torch.accelerator.get_device_capability` on XPU ([#170747](https://github.com/pytorch/pytorch/pull/170747))
- Enable Triton online softmax kernels on XPU ([#163251](https://github.com/pytorch/pytorch/pull/163251))
+- Enable Triton online softmax kernels on XPU ([#163251](https://github.com/pytorch/pytorch/pull/163251))
 - Support woq_int8 Inductor pattern on Intel GPU ([#163615](https://github.com/pytorch/pytorch/pull/163615))
 - Add XPU ATen GEMM overloads with output dtype ([#170523](https://github.com/pytorch/pytorch/pull/170523))
 - Support `aot_inductor.emit_multi_arch_kernel` on XPU ([#171432](https://github.com/pytorch/pytorch/pull/171432))
@@ -568,9 +566,7 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Replace `record_function` with `_RecordFunctionFast` in CompiledFxGraph for reduced profiling overhead ([#163976](https://github.com/pytorch/pytorch/pull/163976))
 - Relaxed restriction on triton template `mutated_inputs`, allowing more flexible template usage ([#170721](https://github.com/pytorch/pytorch/pull/170721))
 - Added `combo_kernels_pointwise_only` config option to exclude reduction kernels from combo kernel fusion ([#174894](https://github.com/pytorch/pytorch/pull/174894))
-- Added woq_int8 inductor pattern support on Intel GPU, lowering to `_weight_int8pack_mm` instead of fallback `mul().sum()` ([#163615](https://github.com/pytorch/pytorch/pull/163615))
 - Add a fusion region utility for grouping inductor fusible nodes for aten estimation ([#170559](https://github.com/pytorch/pytorch/pull/170559))
-- Switched Intel Triton compiled kernel format from `spv` to `zebin` ([#167972](https://github.com/pytorch/pytorch/pull/167972))
 - Pallas backend: Added support for pooling with strided indexing, masked operations, random, FloorDiv, flattened indexing, welford fallback, ModularIndexing, transpose, im2col gather pattern detection, element-wise pairing, sympy min/max, FMA, automatic padding to WARPGROUP_SIZE, atomic_add store mode, TMA for OOB masking on Mosaic GPU, jax/cuda stream sync, better iter var tracking, and interleaved rope ([#170014](https://github.com/pytorch/pytorch/pull/170014), [#170145](https://github.com/pytorch/pytorch/pull/170145), [#170221](https://github.com/pytorch/pytorch/pull/170221), [#170222](https://github.com/pytorch/pytorch/pull/170222), [#170232](https://github.com/pytorch/pytorch/pull/170232), [#170595](https://github.com/pytorch/pytorch/pull/170595), [#170616](https://github.com/pytorch/pytorch/pull/170616), [#170627](https://github.com/pytorch/pytorch/pull/170627), [#170738](https://github.com/pytorch/pytorch/pull/170738), [#170741](https://github.com/pytorch/pytorch/pull/170741), [#171449](https://github.com/pytorch/pytorch/pull/171449), [#171475](https://github.com/pytorch/pytorch/pull/171475), [#171518](https://github.com/pytorch/pytorch/pull/171518), [#171539](https://github.com/pytorch/pytorch/pull/171539), [#171567](https://github.com/pytorch/pytorch/pull/171567), [#172306](https://github.com/pytorch/pytorch/pull/172306), [#173840](https://github.com/pytorch/pytorch/pull/173840), [#174249](https://github.com/pytorch/pytorch/pull/174249), [#174797](https://github.com/pytorch/pytorch/pull/174797))
 - Add per-graph inductor config override for debugging/bisecting ([#174228](https://github.com/pytorch/pytorch/pull/174228))
 ## torch.fx
@@ -596,9 +592,7 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - The `spin lint` command now supports pass-through arguments to lintrunner, including `--take`, `--skip`, and `--tee-json` flags, giving developers more control over which linters run ([#169373](https://github.com/pytorch/pytorch/pull/169373))
 ## Ahead-Of-Time Inductor (AOTI)
 - better error message for mixed device tensors ([#173982](https://github.com/pytorch/pytorch/pull/173982))
-- Suport standalone compile API in _Exporter for xpu. ([#171450](https://github.com/pytorch/pytorch/pull/171450))
 - Support mixed-device constants ([#169504](https://github.com/pytorch/pytorch/pull/169504))
-- Support aot_inductor.emit_multi_arch_kernel for XPU. ([#171432](https://github.com/pytorch/pytorch/pull/171432))
 - Change cpp_kernel_name to public API to match AOTI shim gen; add mm_type_out to AOTI fallback kernel  ([#174489](https://github.com/pytorch/pytorch/pull/174489))
 
 
@@ -609,7 +603,6 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Fixed macOS wheel metadata where setuptools misinterpreted the platform version string, producing incorrect wheel tags for macOS arm64 builds ([#173541](https://github.com/pytorch/pytorch/pull/173541))
 - Fixed incorrect wheel naming ([#173945](https://github.com/pytorch/pytorch/pull/173945))
 - Fixed macOS arm64 libtorch release upload failure ([#175100](https://github.com/pytorch/pytorch/pull/175100))
-- Fix macOS arm64 libtorch release upload failure ([#175100](https://github.com/pytorch/pytorch/pull/175100))
 - Fix pep517 release handling ([#175635](https://github.com/pytorch/pytorch/pull/175635))
 ## Python Frontend
 - Fixed a bug where `torch.load` with `FakeTensorMode` or `skip_data` context would compute incorrect storage sizes ([#170618](https://github.com/pytorch/pytorch/pull/170618))
@@ -624,7 +617,6 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Fix `MaxUnpool` crash when input tensors are small ([#169359](https://github.com/pytorch/pytorch/pull/169359))
 ## Dataloader
 - Fix DataLoader to respect overridden __getitem__ in Subset subclasses ([#163961](https://github.com/pytorch/pytorch/pull/163961))
-## Linear Algebra
 ## Nested Tensor (NJT)
 - Fix NestedTensor min/max operations for integer dtypes ([#167685](https://github.com/pytorch/pytorch/pull/167685))
 ## torch.nn
@@ -686,7 +678,6 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Fixed masked op logic in MPS Inductor ([#170134](https://github.com/pytorch/pytorch/pull/170134))
 - Fixed `orgqr` race condition on MPS ([#174143](https://github.com/pytorch/pytorch/pull/174143))
 - Fixed 2-pass SDPA memory corruption by forcing float accumulators, resolving nondeterministic/corrupt results with bf16/fp16 and GQA when seq_len > 1023 ([#174945](https://github.com/pytorch/pytorch/pull/174945))
-- Fix 2-pass SDPA memory corruption by forcing float accumulators ([#174945](https://github.com/pytorch/pytorch/pull/174945))
 - Fix half-precision type mismatches in Metal shader codegen ([#176436](https://github.com/pytorch/pytorch/pull/176436))
 ## ROCm
 - Sliding window attention nan issue is fixed by AOTriton 0.11.2b. ([#173204](https://github.com/pytorch/pytorch/issues/173204), [#174105](https://github.com/pytorch/pytorch/pull/174105))
@@ -790,6 +781,7 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 ## ONNX
 - Handle complex initializers ([#170231](https://github.com/pytorch/pytorch/pull/170231))
 - Fix export of torch.cdist with dynamic axes ([#172758](https://github.com/pytorch/pytorch/pull/172758))
+- Fix InputObserver.infer_arguments with empty caches ([#174205](https://github.com/pytorch/pytorch/pull/174205))
 ## Foreach
 - Fixed `_foreach_copy_` producing incorrect results when destination tensors have mixed dtypes ([#173531](https://github.com/pytorch/pytorch/pull/173531))
 - Fixed `_foreach_max` returning incorrect results when tensors contain negative values, by initializing output with `lowest()` instead of zeros ([#173241](https://github.com/pytorch/pytorch/pull/173241))
