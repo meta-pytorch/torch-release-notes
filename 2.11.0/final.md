@@ -12,12 +12,37 @@
 
 
 # Highlights
-TODO
-
-For more details about these highlighted features, you can look at the release blogpost.
-Below are the full release notes for this release.
 
 
+<table>
+  <tr>
+    <td>
+      Added Support for <strong>Differentiable Collectives</strong> for Distributed Training
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <strong>FlexAttention</strong> now has a <strong>FlashAttention-4</strong> backend on <strong>Hopper</strong> and <strong>Blackwell</strong> GPUs
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <strong>MPS (Apple Silicon)</strong> Comprehensive Operator Expansion
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Added <strong>RNN/LSTM</strong> GPU Export Support
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Added <strong>XPU Graph</strong> Support
+    </td>
+  </tr>
+</table>
+
+For more details about these highlighted features, you can look at the [release blogpost](https://pytorch.org/blog/pytorch2-11/). Below are the full release notes for this release.
 
 # Backwards Incompatible Changes
 
