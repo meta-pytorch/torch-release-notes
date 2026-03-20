@@ -97,27 +97,27 @@ Below are the full release notes for this release.
 
 ### Remove `is_causal` flag from `varlen_attn` ([#172245](https://github.com/pytorch/pytorch/pull/172245))
 
-The `is_causal` parameter has been removed from `torch.nn.attention.varlen_attn`. Causal attention is now expressed through the `window_size` parameter: use `window_size=(-1, 0)` for causal masking, or `window_size=(W, 0)` for causal attention with a sliding window of size `W`. The default `window_size=(-1, -1)` corresponds to full (non-causal) attention.
+  The `is_causal` parameter has been removed from `torch.nn.attention.varlen_attn`. Causal attention is now expressed through the `window_size` parameter: use `window_size=(-1, 0)` for causal masking, or `window_size=(W, 0)` for causal attention with a sliding window of size `W`. The default `window_size=(-1, -1)` corresponds to full (non-causal) attention.
 
-```python
-# Before (2.10)
-output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, is_causal=True)
+  ```python
+  # Before (2.10)
+  output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, is_causal=True)
 
-# After (2.11) — use window_size instead
-output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window_size=(-1, 0))
-```
+  # After (2.11) — use window_size instead
+  output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window_size=(-1, 0))
+  ```
 
 ### Add sliding window support to `varlen_attn` via `window_size`, making optional arguments keyword-only ([#172238](https://github.com/pytorch/pytorch/pull/172238))
 
-The signature of `torch.nn.attention.varlen_attn` has changed: a `*` (keyword-only separator) has been inserted before the optional arguments. Previously, optional arguments like `is_causal`, `return_aux`, and `scale` could be passed positionally; they must now be passed as keyword arguments. A new `window_size` keyword argument has also been added.
+  The signature of `torch.nn.attention.varlen_attn` has changed: a `*` (keyword-only separator) has been inserted before the optional arguments. Previously, optional arguments like `is_causal`, `return_aux`, and `scale` could be passed positionally; they must now be passed as keyword arguments. A new `window_size` keyword argument has also been added.
 
-```python
-# Before (2.10)
-output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, True, None, 1.0)
+  ```python
+  # Before (2.10)
+  output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, True, None, 1.0)
 
-# After (2.11) — pass as keyword argument
-output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window_size=(-1, 0), return_aux=None, scale=1.0)
-```
+  # After (2.11) — pass as keyword argument
+  output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window_size=(-1, 0), return_aux=None, scale=1.0)
+  ```
 
 ## Distributed
 
@@ -201,7 +201,7 @@ output = varlen_attn(query, key, value, cu_seq_q, cu_seq_k, max_q, max_k, window
 
 ## ROCm
 
-### caffe2 support is fully removed from ROCm PyTorch's hipify preprocessing. This is known as "hipify v2" behavior.
+### caffe2 support is fully removed from ROCm PyTorch's hipify preprocessing. This is known as "hipify v2" behavior. ([#174087](https://github.com/pytorch/pytorch/pull/174087), [#174300](https://github.com/pytorch/pytorch/pull/174300), [#174388](https://github.com/pytorch/pytorch/pull/174388), [#174499](https://github.com/pytorch/pytorch/pull/174499), [#175098](https://github.com/pytorch/pytorch/pull/175098))
 #### hipify v1 background
 When caffe2 and PyTorch were separate projects, the ROCm support strategies were different.  For caffe2, all files and classes would be renamed following the pattern of CUDA to HIP, Cuda to Hip, cuda to hip, and so on.  PyTorch did not rename classes, but would create new files following the same renaming pattern (e.g., aten/src/ATen/cuda/CUDABlas.h to aten/src/ATen/hip/HIPBlas.h).  As a consequence, caffe2 had a distinct device backend named "HIP" (renamed from "CUDA") while ROCm PyTorch masquerades as the "cuda" device (`torch.empty(1, device="cuda")`).  Once caffe2 and PyTorch projects were merged, this caused a mismatch between caffe2 expecting to use a "HIP" device while PyTorch expecting a "cuda" device.  To alleviate this mismatch, "Masquerading" classes were created under aten/src/ATen/hip/impl.
 - HIPAllocatorMasqueradingAsCUDA.h
@@ -589,7 +589,7 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 ## Optimizer
 - Optimizer graph capture check now supports XPU devices in addition to CUDA ([#172759](https://github.com/pytorch/pytorch/pull/172759))
 - Added support for FP16 half-precision GEMM via OpenBLAS on CPU, enabling faster FP16 inference ([#169042](https://github.com/pytorch/pytorch/pull/169042))
-## devx
+## DevX
 - The `spin lint` command now supports pass-through arguments to lintrunner, including `--take`, `--skip`, and `--tee-json` flags, giving developers more control over which linters run ([#169373](https://github.com/pytorch/pytorch/pull/169373))
 ## Ahead-Of-Time Inductor (AOTI)
 - Better error message for mixed device tensors ([#173982](https://github.com/pytorch/pytorch/pull/173982))
