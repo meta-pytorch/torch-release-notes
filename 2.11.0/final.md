@@ -514,6 +514,8 @@ Great care has been taken to make this change backwards compatible.  Though PyTo
 - Initial support for decomps + sharding prop ([#171652](https://github.com/pytorch/pytorch/pull/171652))
 - Add shard prop cache logging ([#173775](https://github.com/pytorch/pytorch/pull/173775))
 - Optimize redistribute comms using flattened meshes ([#174630](https://github.com/pytorch/pytorch/pull/174630))
+## CPU
+- Added support for FP16 half-precision GEMM via OpenBLAS on CPU, enabling faster FP16 inference ([#169042](https://github.com/pytorch/pytorch/pull/169042))
 ## CUDA
 - Remove _scaled_mm layout check on Blackwells ([#170693](https://github.com/pytorch/pytorch/pull/170693))
 - Add uint16, uint32, uint64 support to JIT CUDA kernels ([#174303](https://github.com/pytorch/pytorch/pull/174303))
@@ -613,7 +615,6 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Refactor optimize and version conversion logic ([#173185](https://github.com/pytorch/pytorch/pull/173185))
 ## Optimizer
 - Optimizer graph capture check now supports XPU devices in addition to CUDA ([#172759](https://github.com/pytorch/pytorch/pull/172759))
-- Added support for FP16 half-precision GEMM via OpenBLAS on CPU, enabling faster FP16 inference ([#169042](https://github.com/pytorch/pytorch/pull/169042))
 ## DevX
 - The `spin lint` command now supports pass-through arguments to lintrunner, including `--take`, `--skip`, and `--tee-json` flags, giving developers more control over which linters run ([#169373](https://github.com/pytorch/pytorch/pull/169373))
 ## Ahead-Of-Time Inductor (AOTI)
@@ -831,7 +832,6 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Sort mempool registrations via allocation-time counter for CUDA mempools ([#167662](https://github.com/pytorch/pytorch/pull/167662))
 - Improve `_get_param_to_fqns` from O(N^2) to O(N) in FSDP ([#174675](https://github.com/pytorch/pytorch/pull/174675))
 ## CUDA
-- Use `opmath_t` and not double compute type in fused SGD and Adam ([#173227](https://github.com/pytorch/pytorch/pull/173227))
 - Speedup `grouped_mm` a bit ([#170802](https://github.com/pytorch/pytorch/pull/170802))
 - Add fast memory snapshot option which skips traces ([#173949](https://github.com/pytorch/pytorch/pull/173949))
 - Allow all 10.x compute capabilities to use vec8 kernel for higher realized memory bandwidth ([#174362](https://github.com/pytorch/pytorch/pull/174362))
@@ -870,6 +870,7 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Use oneDNN primitive for FP8 quantized convolution on x86, replacing the previous reference kernel ([#172551](https://github.com/pytorch/pytorch/pull/172551))
 ## Optimizer
 - Use fused multiply-add (FMA) instructions for fused Adam and AdamW on CUDA, improving numerical accuracy and performance ([#173224](https://github.com/pytorch/pytorch/pull/173224))
+- Improve performance of fused Adam, AdamW and SGD by not using double compute ([#173227](https://github.com/pytorch/pytorch/pull/173227))
 ## Foreach
 - Enabled fast path for `_foreach_addcmul` and `_foreach_addcdiv` when `tensor1` is a 0D (scalar) tensor ([#172731](https://github.com/pytorch/pytorch/pull/172731))
 
