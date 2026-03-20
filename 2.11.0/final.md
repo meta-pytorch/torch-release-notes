@@ -832,7 +832,6 @@ further execution ([#173957](https://github.com/pytorch/pytorch/pull/173957)).
 - Sort mempool registrations via allocation-time counter for CUDA mempools ([#167662](https://github.com/pytorch/pytorch/pull/167662))
 - Improve `_get_param_to_fqns` from O(N^2) to O(N) in FSDP ([#174675](https://github.com/pytorch/pytorch/pull/174675))
 ## CUDA
-- Use `opmath_t` and not double compute type in fused SGD and Adam ([#173227](https://github.com/pytorch/pytorch/pull/173227))
 - Speedup `grouped_mm` a bit ([#170802](https://github.com/pytorch/pytorch/pull/170802))
 - Add fast memory snapshot option which skips traces ([#173949](https://github.com/pytorch/pytorch/pull/173949))
 - Allow all 10.x compute capabilities to use vec8 kernel for higher realized memory bandwidth ([#174362](https://github.com/pytorch/pytorch/pull/174362))
