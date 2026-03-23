@@ -42,7 +42,7 @@
   </tr>
 </table>
 
-For more details about these highlighted features, you can look at the [release blogpost](https://pytorch.org/blog/pytorch2-11/). Below are the full release notes for this release.
+For more details about these highlighted features, you can look at the [release blogpost](https://pytorch.org/blog/pytorch-2-11-release-blog/). Below are the full release notes for this release.
 
 # Backwards Incompatible Changes
 
