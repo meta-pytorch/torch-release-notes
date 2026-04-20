@@ -1,6 +1,7 @@
 ---
 name: release-blog-features
 description: Produce a draft "Features" section for a PyTorch release blog post by comparing two release branches (e.g., release/2.11 vs release/2.12). Use when the user asks to generate a release blog, list new features for a release, compare release branches, or draft content for pytorch.org/blog. Organizes features similar to https://pytorch.org/blog/pytorch-2-11-release-blog/ with Highlights and per-component sections (Dynamo, Inductor, Distributed, Export, MPS, ROCm, XPU, CPU, etc.), each tagged with stability (Stable / Beta / Prototype / API-Unstable).
+disable-model-invocation: true
 ---
 
 # PyTorch Release Blog Features Skill

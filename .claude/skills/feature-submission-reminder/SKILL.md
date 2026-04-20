@@ -1,6 +1,7 @@
 ---
 name: feature-submission-reminder
 description: Draft a dev-discuss.pytorch.org forum post that calls for feature submissions for an upcoming PyTorch release, in the style of "Reminder — Calls for Features & Upcoming Branch Cut". Use when the user asks for a release announcement, feature-submission reminder, call-for-features post, or dev-discuss post for a release. Produces a Markdown draft that merges the official key-dates timeline with the AI-identified feature list, and asks owning teams to file "Release highlight for Proposed Feature" issues.
+disable-model-invocation: true
 ---
 
 # Feature Submission Reminder Skill
