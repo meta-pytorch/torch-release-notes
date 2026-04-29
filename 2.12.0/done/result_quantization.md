@@ -49,19 +49,18 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix activation quantization creating duplicate backward placeholders ([#180287](https://github.com/pytorch/pytorch/pull/180287))
 ### performance
 ### docs
 ### devs
 ### Untopiced
+### not user facing
 - Remove unused suppressions ([#175464](https://github.com/pytorch/pytorch/pull/175464))
 - Add do_not_emit_stack_traces config to skip stack trace collection during FX tracing ([#175423](https://github.com/pytorch/pytorch/pull/175423))
 - Add pre_grad_pass_timing config for early vs late pre-grad passes ([#177429](https://github.com/pytorch/pytorch/pull/177429))
 - [pytorch] address violations of warning unreachable-code-return in aten ([#177795](https://github.com/pytorch/pytorch/pull/177795))
-- Remove stale Python  comments ([#179106](https://github.com/pytorch/pytorch/pull/179106))
+- Remove stale Python comments ([#179106](https://github.com/pytorch/pytorch/pull/179106))
 - Add autograd_cache_key to aot_autograd with tests ([#178152](https://github.com/pytorch/pytorch/pull/178152))
-- Fix activation quantization creating duplicate backward placeholders ([#180287](https://github.com/pytorch/pytorch/pull/180287))
-### not user facing
-- Finish test/onnx and test/quantization assert removal ([#174686](https://github.com/pytorch/pytorch/pull/174686))
 - Finish test/onnx and test/quantization assert removal ([#174686](https://github.com/pytorch/pytorch/pull/174686))
 - [BE] Add Union/Optional rewrites to optim through special subdirectories ([#176011](https://github.com/pytorch/pytorch/pull/176011))
 - [BE] Apply UP007 and 045 to amp - autograd dirs ([#175937](https://github.com/pytorch/pytorch/pull/175937))
