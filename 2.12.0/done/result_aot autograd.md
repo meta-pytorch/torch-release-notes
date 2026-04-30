@@ -50,8 +50,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 ### bug fixes
 ### performance
-- Skip expensive debug_lines computation in AOT autograd cache ([#179733](https://github.com/pytorch/pytorch/pull/179733))
-- Speed up ConfigModule._get_dict by avoiding unnecessary work ([#179734](https://github.com/pytorch/pytorch/pull/179734))
+- Reduce AOTAutograd compile time by skipping expensive `debug_lines` computation in the cache ([#179733](https://github.com/pytorch/pytorch/pull/179733))
+- Reduce AOTAutograd compile time by speeding up `ConfigModule._get_dict` ([#179734](https://github.com/pytorch/pytorch/pull/179734))
 ### docs
 ### devs
 ### Untopiced
