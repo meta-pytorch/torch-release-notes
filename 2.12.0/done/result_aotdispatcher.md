@@ -49,14 +49,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- [AOTAutograd] Fix crash on no_grad views of differentiable intermediates ([#175673](https://github.com/pytorch/pytorch/pull/175673))
+- Fix crash in AOTAutograd on no_grad views of differentiable intermediates ([#175673](https://github.com/pytorch/pytorch/pull/175673))
+- Fix inplace checks in autograd backward functions during functionalization ([#177213](https://github.com/pytorch/pytorch/pull/177213))
 ### performance
+- Speed up tensor subclass wrapping in AOTDispatch by replacing the closure-based wrapper with codegen'd straight-line Python ([#176741](https://github.com/pytorch/pytorch/pull/176741))
 ### docs
+- Document supported input and output dtypes for custom ops ([#175452](https://github.com/pytorch/pytorch/pull/175452))
 ### devs
 ### Untopiced
-- [custom op][BE] document supported input and output dtypes. ([#175452](https://github.com/pytorch/pytorch/pull/175452))
-- Codegen AOTDispatchSubclassWrapper ([#176741](https://github.com/pytorch/pytorch/pull/176741))
-- [aotautograd] Fix inplace checks in autograd backward functions during functionalization ([#177213](https://github.com/pytorch/pytorch/pull/177213))
 ### not user facing
 - Add cache key test for multiple outputs ([#178174](https://github.com/pytorch/pytorch/pull/178174))
 ### security
