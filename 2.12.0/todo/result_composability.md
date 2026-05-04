@@ -53,6 +53,22 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
+- Delete `size_vars` `size_hint` API ([#175365](https://github.com/pytorch/pytorch/pull/175365)) _(from fx worksheet)_
+- Add partition merging for regions connected by data dependencies in regional inductor ([#178690](https://github.com/pytorch/pytorch/pull/178690)) _(from fx worksheet)_
+- Revert to CapabilityBasedPartitioner with per-region partitioning in regional inductor ([#179209](https://github.com/pytorch/pytorch/pull/179209)) _(from fx worksheet)_
+- Use FloorDiv and Mod instead of // and % on sympy exprs ([#177051](https://github.com/pytorch/pytorch/pull/177051)) _(from fx worksheet)_
+- Reduce threshold for calling `sympy.factor` to 50, avoiding expensive symbolic simplification on large expressions ([#177779](https://github.com/pytorch/pytorch/pull/177779)) _(from fx worksheet)_
+- Improve tracing speed via the `aggressive_guard_free_semantics` config flag ([#174654](https://github.com/pytorch/pytorch/pull/174654)) _(from fx worksheet)_
+- Add `DynamicInt` `__pow__` and `__rpow__` methods ([#179868](https://github.com/pytorch/pytorch/pull/179868)) _(from fx worksheet)_
+- Fix `_build_proxy_for_sym_expr` for n-ary `sympy.Add` by mapping to `torch.sym_sum` ([#175398](https://github.com/pytorch/pytorch/pull/175398)) _(from fx worksheet)_
+- Fix `SYMPY_INTERP` calling convention for `IsNonOverlappingAndDenseIndicator` ([#179031](https://github.com/pytorch/pytorch/pull/179031)) _(from fx worksheet)_
+- Fix wrong bool to int conversion ([#177178](https://github.com/pytorch/pytorch/pull/177178)) _(from fx worksheet)_
+- Add per-SymNode expression cache keyed on `_replacements_version_counter`, reducing redundant symbolic computation ([#175353](https://github.com/pytorch/pytorch/pull/175353)) _(from fx worksheet)_
+- Decompose `mm`/`addmm` to pointwise multiply when K==1, yielding up to 1.55x speedup for outer-product-like matrix multiplications ([#175825](https://github.com/pytorch/pytorch/pull/175825)) _(from fx worksheet)_
+- Preserve scalar item() semantics for size-1 tensors ([#177270](https://github.com/pytorch/pytorch/pull/177270)) _(from fx worksheet)_
+- Handle div by 0 in optimization hint when fallback is 0 ([#177709](https://github.com/pytorch/pytorch/pull/177709)) _(from fx worksheet)_
+- Tag backward nodes via `_patch_autograd_grad` and update remat pass ([#179105](https://github.com/pytorch/pytorch/pull/179105)) _(from fx worksheet)_
+- Support `fast_bind` used in `normalize_function` for FakeTensor ([#175740](https://github.com/pytorch/pytorch/pull/175740)) _(from fx worksheet)_
 - Fix stride handling in FFT meta registrations ([#175731](https://github.com/pytorch/pytorch/pull/175731))
 - Fix exception messages displaying as tuples instead of formatted strings ([#175957](https://github.com/pytorch/pytorch/pull/175957))
 - [Bugfix] Fix onehot runtime error ([#177160](https://github.com/pytorch/pytorch/pull/177160))

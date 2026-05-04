@@ -18,12 +18,6 @@ PRs that ended up in the wrong worksheet, organized by which area they belong to
 - [user-streams] Enforce barriers across syncs w/ dependency HOP ([#168894](https://github.com/pytorch/pytorch/pull/168894)) _(from inductor worksheet)_
 - Fixes bmm/ matmul mixed dtype in compile ([#177696](https://github.com/pytorch/pytorch/pull/177696)) _(from inductor worksheet)_
 
-## belongs to: fx
-- Delete size_vars size_hint API ([#175365](https://github.com/pytorch/pytorch/pull/175365)) _(from inductor worksheet)_
-- [inductor] Decompose mm/addmm to pointwise mul when K==1 ([#175825](https://github.com/pytorch/pytorch/pull/175825)) _(from inductor worksheet)_
-- Use FloorDiv and Mod instead of // and % on sympy exprs ([#177051](https://github.com/pytorch/pytorch/pull/177051)) _(from inductor worksheet)_
-- [Inductor] repeat_interleave fx graph runnable fix (#177909) ([#177909](https://github.com/pytorch/pytorch/pull/177909)) _(from inductor worksheet)_
-
 ## belongs to: inductor (aoti)
 - [AOTI] Fix the SIGPE by adding additional check logics in the codegen of the ([#170669](https://github.com/pytorch/pytorch/pull/170669)) _(from inductor worksheet)_
 - Allow custom op with `Optional[List[T]]` in cpp wrapper ([#174460](https://github.com/pytorch/pytorch/pull/174460)) _(from inductor worksheet)_
@@ -52,11 +46,9 @@ PRs that ended up in the wrong worksheet, organized by which area they belong to
 
 ## belongs to: xpu
 - Enable FMA-based addcdiv lowering for XPU ([#176163](https://github.com/pytorch/pytorch/pull/176163)) _(from inductor worksheet)_
+## belongs to: inductor
+- Fix horizontal fusion bug and add partition tests for regional inductor ([#178421](https://github.com/pytorch/pytorch/pull/178421)) _(from fx worksheet)_
+
 ## MPS
 
 - [MPS] Add nonzero_static implementation ([#179589](https://github.com/pytorch/pytorch/pull/179589)) — from inductor (aoti)
-
-## Export
-
-- export: add float8_e8m0fnu serde support ([#176270](https://github.com/pytorch/pytorch/pull/176270)) — from inductor (aoti)
-- Support `torch.uint{32,64}` in `torch.export.save` ([#179434](https://github.com/pytorch/pytorch/pull/179434)) — from inductor (aoti)
