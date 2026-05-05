@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (tools)
+# Release Notes worksheet distributed (checkpoint)
 
 You should:
 
@@ -43,16 +43,26 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (tools)
+## distributed (checkpoint)
 ### bc breaking
 ### deprecation
 ### new features
-- [local_tensor] Add standalone rank_map/tensor_map functions ([#174795](https://github.com/pytorch/pytorch/pull/174795))
 ### improvements
+- DCP: Improve save plan validation error messaging ([#176728](https://github.com/pytorch/pytorch/pull/176728))
+- DCP: Preserve original exception in metadata read failure for better debuggability ([#177739](https://github.com/pytorch/pytorch/pull/177739))
 ### bug fixes
+- DCP: Fix save plan caching bug during validation failures ([#176289](https://github.com/pytorch/pytorch/pull/176289))
+- DCP: Fix `Metadata.storage_meta` regression from `dataclasses.replace()` ([#178001](https://github.com/pytorch/pytorch/pull/178001))
+- DCP: Fix unpicklable `FrameSummary._code` on Python 3.13+ ([#177754](https://github.com/pytorch/pytorch/pull/177754))
 ### performance
+- Optimize DCP consolidation I/O for remote mounts (from ~2h to 35s) ([#175762](https://github.com/pytorch/pytorch/pull/175762))
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
+- Start test/distributed assert removal ([#174262](https://github.com/pytorch/pytorch/pull/174262))
+- Finish removing assert in test/distributed ([#174263](https://github.com/pytorch/pytorch/pull/174263))
+- Finish removing asserts in torch/distributed ([#174689](https://github.com/pytorch/pytorch/pull/174689))
+- [BE] Apply up007 and up045 to torch/distributed ([#176342](https://github.com/pytorch/pytorch/pull/176342))
+- [DCP] Fix test_pg_transport timeout by adding class-level skip to PgTransportGPU (#177333) ([#177333](https://github.com/pytorch/pytorch/pull/177333))
 ### security

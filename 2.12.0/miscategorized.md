@@ -10,6 +10,7 @@ PRs that ended up in the wrong worksheet, organized by which area they belong to
 ## belongs to: cuda
 - [CUDA] Add support for torch.cond with cuda graphs ([#168912](https://github.com/pytorch/pytorch/pull/168912)) _(from inductor worksheet)_
 - [inductor] Fix CUTLASS illegal memory access via subprocess isolation (#171094) ([#172123](https://github.com/pytorch/pytorch/pull/172123)) _(from inductor worksheet)_
+- document public APIs using a Claude Skill ([#175578](https://github.com/pytorch/pytorch/pull/175578)) _(from distributed worksheet)_
 
 ## belongs to: distributed (torchelastic)
 - [BE][Ez]: Improve logger calls to remove eager str casts ([#178414](https://github.com/pytorch/pytorch/pull/178414)) _(from inductor worksheet)_
@@ -43,6 +44,7 @@ PRs that ended up in the wrong worksheet, organized by which area they belong to
 
 ## belongs to: rocm
 - [ROCm] Tune Flex-Attention occupancy for head_dim=64/128/256 ([#176261](https://github.com/pytorch/pytorch/pull/176261)) _(from inductor worksheet)_
+- [ROCm] Reland: Enable expandable segments (#173330) ([#177974](https://github.com/pytorch/pytorch/pull/177974)) _(from distributed worksheet)_
 
 ## belongs to: xpu
 - Enable FMA-based addcdiv lowering for XPU ([#176163](https://github.com/pytorch/pytorch/pull/176163)) _(from inductor worksheet)_

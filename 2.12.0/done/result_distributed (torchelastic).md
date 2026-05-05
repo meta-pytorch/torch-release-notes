@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (pipeline)
+# Release Notes worksheet distributed (torchelastic)
 
 You should:
 
@@ -43,16 +43,40 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (pipeline)
+## distributed (torchelastic)
 ### bc breaking
+- `torchrun` now defaults to an OS-assigned free port for single-node training instead of port 29500 ([#175699](https://github.com/pytorch/pytorch/pull/175699))
+
+  When running `torchrun --nproc-per-node=N script.py` without specifying `--master-port` or `--standalone`, the default behavior now automatically uses an OS-assigned free port via the `c10d` rendezvous backend. This eliminates "Address already in use" errors when running multiple training jobs concurrently. Multi-node training, explicit `--master-port`, `PET_MASTER_PORT` env var, and `--standalone` are unchanged.
+
+  Version 2.11:
+  ```bash
+  # Used static rendezvous on port 29500 by default
+  torchrun --nproc-per-node=4 train.py
+  ```
+
+  Version 2.12:
+  ```bash
+  # Uses OS-assigned free port by default
+  torchrun --nproc-per-node=4 train.py
+
+  # To explicitly use a fixed port:
+  torchrun --nproc-per-node=4 --master-port=29500 train.py
+  ```
+
 ### deprecation
 ### new features
+- Add configurable `--shutdown-timeout` to `torchrun` for controlling the SIGTERM-to-SIGKILL timeout during worker shutdown ([#172596](https://github.com/pytorch/pytorch/pull/172596))
 ### improvements
+- [elastic] Add Windows support for stdout/stderr redirects ([#176789](https://github.com/pytorch/pytorch/pull/176789))
+- torchelastic: Keep health check alive during exit barrier ([#178197](https://github.com/pytorch/pytorch/pull/178197))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- [PP][3/3] DTensor Pipeline Parallelism unit and integration tests ([#177729](https://github.com/pytorch/pytorch/pull/177729))
+- ROCm: Skip elastic multiprocessing test_function_raise ([#177742](https://github.com/pytorch/pytorch/pull/177742))
+- Start health check thrift server before rendezvous ([#176576](https://github.com/pytorch/pytorch/pull/176576))
+- Start health check server before MAST rendezvous ([#179560](https://github.com/pytorch/pytorch/pull/179560))
 ### security
