@@ -10,6 +10,7 @@ PRs that ended up in the wrong worksheet, organized by which area they belong to
 ## belongs to: cuda
 - [CUDA] Add support for torch.cond with cuda graphs ([#168912](https://github.com/pytorch/pytorch/pull/168912)) _(from inductor worksheet)_
 - [inductor] Fix CUTLASS illegal memory access via subprocess isolation (#171094) ([#172123](https://github.com/pytorch/pytorch/pull/172123)) _(from inductor worksheet)_
+- [CUDA] Remove unused cudaLockMutex/cudaUnlockMutex ([#178833](https://github.com/pytorch/pytorch/pull/178833)) _(from dynamo worksheet)_
 - document public APIs using a Claude Skill ([#175578](https://github.com/pytorch/pytorch/pull/175578)) _(from distributed worksheet)_
 
 ## belongs to: distributed (torchelastic)
@@ -54,3 +55,7 @@ PRs that ended up in the wrong worksheet, organized by which area they belong to
 ## MPS
 
 - [MPS] Add nonzero_static implementation ([#179589](https://github.com/pytorch/pytorch/pull/179589)) — from inductor (aoti)
+- [BE] Remove pre-MacOS14 check from MpsDeviceInterface ([#175804](https://github.com/pytorch/pytorch/pull/175804)) — from dynamo worksheet
+
+## belongs to: foreach_frontend
+- Add _foreach_clone ([#177421](https://github.com/pytorch/pytorch/pull/177421)) _(from dynamo worksheet)_
