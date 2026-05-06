@@ -48,7 +48,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- [nativert] Add nested tensor deserialization support ([#174843](https://github.com/pytorch/pytorch/pull/174843))
+- Added nested tensor deserialization support ([#174843](https://github.com/pytorch/pytorch/pull/174843))
 ### bug fixes
 ### performance
 ### docs
