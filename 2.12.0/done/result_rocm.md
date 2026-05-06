@@ -47,7 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Enable expandable segments ([#173330](https://github.com/pytorch/pytorch/pull/173330), [#179930](https://github.com/pytorch/pytorch/pull/179930), [#179781](https://github.com/pytorch/pytorch/pull/179781))
+- Enable expandable segments ([#173330](https://github.com/pytorch/pytorch/pull/173330), [#177974](https://github.com/pytorch/pytorch/pull/177974), [#179930](https://github.com/pytorch/pytorch/pull/179930), [#179781](https://github.com/pytorch/pytorch/pull/179781))
 - hipSPARSELt
   - Enable for ROCm >= 7.12 ([#170852](https://github.com/pytorch/pytorch/pull/170852), [#178285](https://github.com/pytorch/pytorch/pull/178285))
   - Enable FP8 semi-structured sparsity ([#179310](https://github.com/pytorch/pytorch/pull/179310))
@@ -55,13 +55,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 - CPP extensions only compile for user's detected arch ([#168998](https://github.com/pytorch/pytorch/pull/168998))
 - Remove obsolete HIP NaN handling workarounds; remove technical debt ([#171104](https://github.com/pytorch/pytorch/pull/171104))
+- TunableOp supports FP64 on hipBLASLt ([#178195](https://github.com/pytorch/pytorch/pull/178195))
 ### bug fixes
-- Fix build due to void pointer arithmetic in CUDACachingAllocator ([c67b40befbb](https://github.com/pytorch/pytorch/commit/c67b40befbb9f12a3ca6ffadd94832a59eaab2d8))
 - Fix SDPA build error when USE_FLASH_ATTENTION=0 USE_MEM_EFF_ATTENTION=1 ([#177552](https://github.com/pytorch/pytorch/pull/177552))
 - Fix `_get_amdsmi_device_index` to return devices in correct order ([#178398](https://github.com/pytorch/pytorch/pull/178398))
 - Fix scaled_mm incorrectly validating unsupported swizzle ([#178688](https://github.com/pytorch/pytorch/pull/178688))
 - Move rocblas.h include out of anonymous namespace ([#178767](https://github.com/pytorch/pytorch/pull/178767))
-- Don't crash for MHA backward with head dim > 192, fall back to CK tile (#178946) ([#178946](https://github.com/pytorch/pytorch/pull/178946))
+- Don't crash for MHA backward with head dim > 192, fall back to CK tile ([#178946](https://github.com/pytorch/pytorch/pull/178946))
 - Don't fail torch.cuda.device_count() if pynvml is installed ([#175077](https://github.com/pytorch/pytorch/pull/175077))
 - Fix hipblaslt GEMMs executing concurrently on multiple HIP streams ([#179053](https://github.com/pytorch/pytorch/pull/179053))
 - Windows
@@ -69,10 +69,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   - Fix int4mm std::memcpy build error ([#175410](https://github.com/pytorch/pytorch/pull/175410))
   - Fix Windows access violation in MIOpen CTC loss dispatch ([#178284](https://github.com/pytorch/pytorch/pull/178284))
   - Fix Windows DLL linkage for batch norm (`-Winconsistent-dllimport`) ([#179706](https://github.com/pytorch/pytorch/pull/179706))
-- TunableOp supports FP64 on hipBLASLt ([#178195](https://github.com/pytorch/pytorch/pull/178195))
 - Workaround hipGraph event query errors in NCCL watchdog ([#175377](https://github.com/pytorch/pytorch/pull/175377))
 - Fix linker error for aotriton when USE_MEM_EFF_ATTENTION=ON but USE_FLASH_ATTENTION=OFF ([#175079](https://github.com/pytorch/pytorch/pull/175079))
 - Fix build_amd.py (hipify) failure when MSLK submodule is missing ([#175180](https://github.com/pytorch/pytorch/pull/175180))
+- Hipify CUdeviceptr in lazy scratch allocation codegen ([#179978](https://github.com/pytorch/pytorch/pull/179978))
 ### performance
 - Directly access GPU scalars if largeBar is enabled, avoiding D2H copy ([#177023](https://github.com/pytorch/pytorch/pull/177023))
 - TopK operator performance improvement via RadixSelect prefetching ([#174897](https://github.com/pytorch/pytorch/pull/174897), [#177149](https://github.com/pytorch/pytorch/pull/177149), [#178188](https://github.com/pytorch/pytorch/pull/178188), [#174837](https://github.com/pytorch/pytorch/pull/174837))
@@ -82,6 +82,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - In group_gemm, use new kernel for all K equal cases ([#173502](https://github.com/pytorch/pytorch/pull/173502))
 - Use BFloat16 native hardware type casting ([#178814](https://github.com/pytorch/pytorch/pull/178814))
 - Use optimized tiled kernel for LayerNorm gamma beta backward ([#179019](https://github.com/pytorch/pytorch/pull/179019))
+- Tune Flex-Attention occupancy on gfx942 for head_dim 64/128/256 ([#176261](https://github.com/pytorch/pytorch/pull/176261))
 ### docs
 ### devs
 ### Untopiced
