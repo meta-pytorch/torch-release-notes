@@ -1,5 +1,5 @@
 
-# Release Notes worksheet cudnn
+# Release Notes worksheet optim
 
 You should:
 
@@ -43,7 +43,7 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## cudnn
+## optim
 ### bc breaking
 ### deprecation
 ### new features
@@ -51,10 +51,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bug fixes
 ### performance
 ### docs
+- Add minimal usage example to Muon optimizer docstring (#177029) ([#177262](https://github.com/pytorch/pytorch/pull/177262))
 ### devs
 ### Untopiced
-- [cuDNN][SDPA] Don't route to cuDNN SDPA when dropout probability is not a multiple of 1/16 ([#174245](https://github.com/pytorch/pytorch/pull/174245))
-- Fix cuDNN SDPA with zero-stride (broadcast) Q/K/V inputs ([#175764](https://github.com/pytorch/pytorch/pull/175764))
-- [cuDNN][SDPA] Fix attn-mask conversion constant ([#177868](https://github.com/pytorch/pytorch/pull/177868))
 ### not user facing
+- [pytorch][optim] Re-add _cuda_graph_capture_health_check as backward compat alias ([#175062](https://github.com/pytorch/pytorch/pull/175062))
 ### security

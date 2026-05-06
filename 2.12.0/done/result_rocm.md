@@ -81,6 +81,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Avoid double casting in ReduceLogicKernel ([#176132](https://github.com/pytorch/pytorch/pull/176132))
 - In group_gemm, use new kernel for all K equal cases ([#173502](https://github.com/pytorch/pytorch/pull/173502))
 - Use BFloat16 native hardware type casting ([#178814](https://github.com/pytorch/pytorch/pull/178814))
+- Use optimized tiled kernel for LayerNorm gamma beta backward ([#179019](https://github.com/pytorch/pytorch/pull/179019))
 ### docs
 ### devs
 ### Untopiced
