@@ -59,7 +59,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - implement branch free and guard free padding+mul operator (#177699) ([#177699](https://github.com/pytorch/pytorch/pull/177699))
 - [HIM][sparsity][x/n] Allow semi tensor to be instantiated with alg_id (#178659) (#178659) ([#178659](https://github.com/pytorch/pytorch/pull/178659))
 - Optimize the performance by reducing the cpu overhead (#179193) ([#179193](https://github.com/pytorch/pytorch/pull/179193))
-- [TorchAO][hipSPARSELt] Enable FP8 semi-structured sparsity on ROCm (#179310) ([#179310](https://github.com/pytorch/pytorch/pull/179310))
 - [TorchAO][hipSPARSELt] Add alg_id to FP8 semi-structured sparsity benchmark ([#179926](https://github.com/pytorch/pytorch/pull/179926))
 ### not user facing
 - [CUDA] Abate `thrust::distance` deprecation warnings ([#171722](https://github.com/pytorch/pytorch/pull/171722))

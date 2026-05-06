@@ -31,7 +31,6 @@ PRs that ended up in the wrong worksheet, organized by which area they belong to
 - [torch][inductor] Emit int64_t type declaration for kernel numel variables ([#176922](https://github.com/pytorch/pytorch/pull/176922)) _(from inductor worksheet)_
 - [inductor] Fix CPP wrapper lazy compile for scalar tensor args ([#178478](https://github.com/pytorch/pytorch/pull/178478)) _(from inductor worksheet)_
 - Fix triton kernel stream for user stream contexts ([#178547](https://github.com/pytorch/pytorch/pull/178547)) _(from inductor worksheet)_
-- Hipify CUdeviceptr in lazy scratch allocation codegen ([#179978](https://github.com/pytorch/pytorch/pull/179978)) _(from inductor worksheet)_
 
 ## belongs to: jit
 - [1/12] Upgrade runtime JIT/Inductor codegen to C++20 ([#176502](https://github.com/pytorch/pytorch/pull/176502)) _(from inductor worksheet)_
@@ -42,10 +41,6 @@ PRs that ended up in the wrong worksheet, organized by which area they belong to
 ## belongs to: releng
 - [Inductor][CUTLASS] Fix subprocess benchmark crash for addmm with input_reorder ([#177930](https://github.com/pytorch/pytorch/pull/177930)) _(from inductor worksheet)_
 - [Inductor] Add deterministic mode for benchmark perf tests ([#178233](https://github.com/pytorch/pytorch/pull/178233)) _(from inductor worksheet)_
-
-## belongs to: rocm
-- [ROCm] Tune Flex-Attention occupancy for head_dim=64/128/256 ([#176261](https://github.com/pytorch/pytorch/pull/176261)) _(from inductor worksheet)_
-- [ROCm] Reland: Enable expandable segments (#173330) ([#177974](https://github.com/pytorch/pytorch/pull/177974)) _(from distributed worksheet)_
 
 ## belongs to: xpu
 - Enable FMA-based addcdiv lowering for XPU ([#176163](https://github.com/pytorch/pytorch/pull/176163)) _(from inductor worksheet)_

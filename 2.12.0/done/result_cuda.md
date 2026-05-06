@@ -78,12 +78,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Typo] Quiet -> Quite ([#179266](https://github.com/pytorch/pytorch/pull/179266))
 ### devs
 ### Untopiced
-- [ROCm] RadixSelect: Remove loop padding and make prefetching conditional ([#174897](https://github.com/pytorch/pytorch/pull/174897))
-- [ROCm] No-fence in normalization kernel ([#175286](https://github.com/pytorch/pytorch/pull/175286))
-- [ROCm] Fix int4mm device memcpy error on Windows ([#175410](https://github.com/pytorch/pytorch/pull/175410))
-- [ROCm] fix radixselect ([#177149](https://github.com/pytorch/pytorch/pull/177149))
-- [ROCm] Reduce RadixSelect sync overhead by moving __syncthreads to findPatternDataSmem ([#178188](https://github.com/pytorch/pytorch/pull/178188))
-- [AMD] Use optimized tiled kernel for LayerNorm gamma beta backward ([#179019](https://github.com/pytorch/pytorch/pull/179019))
-- [ROCm] simplify unrolling by leveraging compiler ([#177697](https://github.com/pytorch/pytorch/pull/177697))
 ### not user facing
 ### security
