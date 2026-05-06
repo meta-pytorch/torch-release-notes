@@ -48,20 +48,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- [2/12] Upgrade cpp_extension and cpp_builder to C++20 ([#176659](https://github.com/pytorch/pytorch/pull/176659))
-- Move PyTorch .ci/ onto C++20 ([#176899](https://github.com/pytorch/pytorch/pull/176899))
-- Enforce C++20 minimum in CMake build files (#178662) ([#178662](https://github.com/pytorch/pytorch/pull/178662))
-- Enforce C++20 for XPU SYCL device compilation ([#179497](https://github.com/pytorch/pytorch/pull/179497))
+- Upgraded `cpp_extension` and `cpp_builder` to C++20 ([#176659](https://github.com/pytorch/pytorch/pull/176659))
 ### bug fixes
-- fix: use return value instead of errno for posix_fallocate error handling ([#176075](https://github.com/pytorch/pytorch/pull/176075))
 ### performance
 ### docs
-- Improve docs on headeronly DISPATCH macros for our stable ABI ([#177996](https://github.com/pytorch/pytorch/pull/177996))
-- More improvements on docs, e.g., on STD_TORCH_CHECK ([#177997](https://github.com/pytorch/pytorch/pull/177997))
-- Restructure C++ docs ([#174096](https://github.com/pytorch/pytorch/pull/174096))
+- Improved stable ABI docs for header-only dispatch macros and `STD_TORCH_CHECK` ([#177996](https://github.com/pytorch/pytorch/pull/177996), [#177997](https://github.com/pytorch/pytorch/pull/177997))
+- Restructured C++ docs ([#174096](https://github.com/pytorch/pytorch/pull/174096))
 ### devs
 ### Untopiced
-- 141884 optimizer defaults fix ([#165182](https://github.com/pytorch/pytorch/pull/165182))
 ### not user facing
 - Move caffe2/caffe2/.clang-format onto C++20 ([#176897](https://github.com/pytorch/pytorch/pull/176897))
 - Move caffe2/tools/rules_cc/cuda_support.patch onto C++20 ([#177081](https://github.com/pytorch/pytorch/pull/177081))
@@ -69,4 +63,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Move PyTorch .bazelrc onto C++20 ([#176900](https://github.com/pytorch/pytorch/pull/176900))
 - Update XPU version to one using C++20 by default ([#179613](https://github.com/pytorch/pytorch/pull/179613))
 - Update torchao pin for C++20 compatibility ([#180302](https://github.com/pytorch/pytorch/pull/180302))
+- Move PyTorch .ci/ onto C++20 ([#176899](https://github.com/pytorch/pytorch/pull/176899))
+- fix: use return value instead of errno for posix_fallocate error handling ([#176075](https://github.com/pytorch/pytorch/pull/176075))
+- 141884 optimizer defaults fix ([#165182](https://github.com/pytorch/pytorch/pull/165182))
 ### security

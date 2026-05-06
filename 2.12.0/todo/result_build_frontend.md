@@ -59,6 +59,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### Untopiced
 - Include `CMAKE_CUDA_FLAGS` in build settings report ([#175236](https://github.com/pytorch/pytorch/pull/175236))
 - Update min CUDA version one can build pytorch with to 12.1 ([#178925](https://github.com/pytorch/pytorch/pull/178925))
+- Enforce C++20 minimum in CMake build files (#178662) ([#178662](https://github.com/pytorch/pytorch/pull/178662))
+- Enforce C++20 for XPU SYCL device compilation ([#179497](https://github.com/pytorch/pytorch/pull/179497))
 ### not user facing
 - Add license for bundled libomp.dylib ([#174400](https://github.com/pytorch/pytorch/pull/174400))
 - [CMake] Bump C++ version to 20 ([#167929](https://github.com/pytorch/pytorch/pull/167929))
