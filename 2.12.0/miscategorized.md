@@ -38,9 +38,15 @@ PRs that ended up in the wrong worksheet, organized by which area they belong to
 ## belongs to: optim
 - [XPU] Enable skipped inductor test on Intel GPU - generalize code and enable xpu for functions under torch/ folder ([#174053](https://github.com/pytorch/pytorch/pull/174053)) _(from inductor worksheet)_
 
-## belongs to: releng
-- [Inductor][CUTLASS] Fix subprocess benchmark crash for addmm with input_reorder ([#177930](https://github.com/pytorch/pytorch/pull/177930)) _(from inductor worksheet)_
-- [Inductor] Add deterministic mode for benchmark perf tests ([#178233](https://github.com/pytorch/pytorch/pull/178233)) _(from inductor worksheet)_
+## belongs to: cudnn
+- [cuDNN] Upgrade 12.8, 13.0 (and 12.9) wheels to cuDNN 9.20.0.48 ([#177321](https://github.com/pytorch/pytorch/pull/177321)) _(from releng worksheet)_
+
+## belongs to: nn_frontend
+- Add AArch64 xfails for inductor, nn, jit, and linalg tests ([#177584](https://github.com/pytorch/pytorch/pull/177584)) _(from releng worksheet)_
+- [varlen] fix FA4 integration ([#177675](https://github.com/pytorch/pytorch/pull/177675)) _(from releng worksheet)_
+
+## belongs to: profiler
+- [memory viz] Restructure Memviz and add some tests ([#179488](https://github.com/pytorch/pytorch/pull/179488)) _(from releng worksheet)_
 
 ## belongs to: xpu
 - Enable FMA-based addcdiv lowering for XPU ([#176163](https://github.com/pytorch/pytorch/pull/176163)) _(from inductor worksheet)_
