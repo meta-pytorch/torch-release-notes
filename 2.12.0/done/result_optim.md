@@ -51,9 +51,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bug fixes
 ### performance
 ### docs
+- Add minimal usage example to Muon optimizer docstring (#177029) ([#177262](https://github.com/pytorch/pytorch/pull/177262))
 ### devs
 ### Untopiced
-- [pytorch][optim] Re-add _cuda_graph_capture_health_check as backward compat alias ([#175062](https://github.com/pytorch/pytorch/pull/175062))
-- Add minimal usage example to Muon optimizer docstring (#177029) ([#177262](https://github.com/pytorch/pytorch/pull/177262))
 ### not user facing
+- [pytorch][optim] Re-add _cuda_graph_capture_health_check as backward compat alias ([#175062](https://github.com/pytorch/pytorch/pull/175062))
 ### security
