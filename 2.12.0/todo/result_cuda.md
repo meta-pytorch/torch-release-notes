@@ -48,42 +48,42 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- [CUDA] [PERFORMANCE] Improve performance for `ScaledGroupMM.cu` by avoiding redundant IO/compute via indicating that indicating that `ElementC` type is void ([#178325](https://github.com/pytorch/pytorch/pull/178325))
-- [CUDA] [PERFORMANCE] Improve performance for `RowwiseScaledMM.cu` by avoiding redundant IO/compute via indicating that indicating that `ElementC` type is void ([#178644](https://github.com/pytorch/pytorch/pull/178644))
+- [CUDA] Fix `offset_t` operators to be `__host__` `__device__` in `SortStable.cu` ([#175997](https://github.com/pytorch/pytorch/pull/175997))
+- [CUDA] [Green Context] Add support for workqueue limit ([#177242](https://github.com/pytorch/pytorch/pull/177242))
+- Remove dead `avg_pool3d` backward shape-check variables in CUDA ([#178893](https://github.com/pytorch/pytorch/pull/178893))
+- [BE] add missing assert on cuda device synchronize in ATen tests ([#174966](https://github.com/pytorch/pytorch/pull/174966))
+- [reland 2][pytorch] Preemptive OOM rejection using `per_process_memory_fraction` + `throw_on_cudamalloc_oom` (#179473) ([#179473](https://github.com/pytorch/pytorch/pull/179473))
+- [cuda graphs] Add `enable_annotations kwarg to `torch.cuda.graph` ([#179867](https://github.com/pytorch/pytorch/pull/179867))
+- [CUDA/ROCm] avoid double casting in `ReduceLogicKernel` ([#176132](https://github.com/pytorch/pytorch/pull/176132))
+- Nit fix: Align state_step tensor max to param tensor max ([#178913](https://github.com/pytorch/pytorch/pull/178913))
 ### bug fixes
-### performance
-- Update eigh CUDA heuristics ([#175403](https://github.com/pytorch/pytorch/pull/175403))
-### docs
-### devs
-### Untopiced
-- [CUBLAS][Blackwell] Try to reenable 32MiB workspaces on Blackwell ([#175344](https://github.com/pytorch/pytorch/pull/175344))
-- [CUDA][TensorIterator] Improve vectorized elementwise kernel: instruction cache ([#175336](https://github.com/pytorch/pytorch/pull/175336))
-- [ROCm] RadixSelect: Remove loop padding and make prefetching conditional ([#174897](https://github.com/pytorch/pytorch/pull/174897))
-- [CUDA] Fix offset_t operators to be __host__ __device__ in SortStable.cu ([#175997](https://github.com/pytorch/pytorch/pull/175997))
-- [pt] Reland vec8 vectorization ([#176352](https://github.com/pytorch/pytorch/pull/176352))
-- [ROCm] No-fence in normalization kernel ([#175286](https://github.com/pytorch/pytorch/pull/175286))
-- fix cuda torch.topk index bug for super long input which are over 32-bit INT_MAX length ([#176095](https://github.com/pytorch/pytorch/pull/176095))
-- [ROCm] Fix int4mm device memcpy error on Windows ([#175410](https://github.com/pytorch/pytorch/pull/175410))
-- [ROCm] fix radixselect ([#177149](https://github.com/pytorch/pytorch/pull/177149))
+- Fix cuda torch.topk index bug for inputs over 32-bit length ([#176095](https://github.com/pytorch/pytorch/pull/176095))
 - Fix `test/inductor/test_fp8.py` hang on sm89 ([#177573](https://github.com/pytorch/pytorch/pull/177573))
 - Use fp8 conversion intrinsics on Hopper+ to work around ptxas codegen bug ([#177870](https://github.com/pytorch/pytorch/pull/177870))
-- [CUDA] [Green Context] Add support for workqueue limit ([#177242](https://github.com/pytorch/pytorch/pull/177242))
-- [ROCm] Reduce RadixSelect sync overhead by moving __syncthreads to findPatternDataSmem ([#178188](https://github.com/pytorch/pytorch/pull/178188))
-- Remove dead avg_pool3d backward shape-check variables in CUDA ([#178893](https://github.com/pytorch/pytorch/pull/178893))
-- [AMD] Use optimized tiled kernel for LayerNorm gamma beta backward ([#179019](https://github.com/pytorch/pytorch/pull/179019))
-- [Typing] ot -> to ([#179265](https://github.com/pytorch/pytorch/pull/179265))
 - [CUDA] Fix wrong non-atomic handling in `AdaptiveMaxPooling2d.cu` ([#179261](https://github.com/pytorch/pytorch/pull/179261))
-- [Typo] Quiet -> Quite ([#179266](https://github.com/pytorch/pytorch/pull/179266))
-- [CUDA] Fix wrong ComplexTransform const kTransformB in fpA_intB_gemm.h ([#179271](https://github.com/pytorch/pytorch/pull/179271))
-- [CUDA] Fix wrong LayoutB in fpA_intB_gemm.h ([#179269](https://github.com/pytorch/pytorch/pull/179269))
-- [reland 2][pytorch] Preemptive OOM rejection using per_process_memory_fraction + throw_on_cudamalloc_oom (#179473) ([#179473](https://github.com/pytorch/pytorch/pull/179473))
-- [cuda graphs] Add enable_annotations kwarg to torch.cuda.graph ([#179867](https://github.com/pytorch/pytorch/pull/179867))
-### not user facing
-- [BE] add missing assert on cuda device synchronize in ATen tests ([#174966](https://github.com/pytorch/pytorch/pull/174966))
-- [BE] Tesor -> Tensor ([#175061](https://github.com/pytorch/pytorch/pull/175061))
-- [CUDA/ROCm] avoid double casting in ReduceLogicKernel ([#176132](https://github.com/pytorch/pytorch/pull/176132))
+- [CUDA] Fix wrong `ComplexTransform` `const kTransformB` in `fpA_intB_gemm.h` ([#179271](https://github.com/pytorch/pytorch/pull/179271))
+- [CUDA] Fix wrong `LayoutB` in `fpA_intB_gemm.h` ([#179269](https://github.com/pytorch/pytorch/pull/179269))
 - Back out "[CUDA][cuBLASLt] set cuBLASLt as a default BLAS backend when available (#174594)" (#177703) ([#177703](https://github.com/pytorch/pytorch/pull/177703))
+### performance
+- Update eigh CUDA heuristics ([#175403](https://github.com/pytorch/pytorch/pull/175403))
+- [CUBLAS][Blackwell] Enable 32MiB cuBLAS workspaces on Blackwell ([#175344](https://github.com/pytorch/pytorch/pull/175344))
+- [CUDA] [PERFORMANCE] Improve performance for `RowwiseScaledMM.cu` by avoiding redundant IO/compute via indicating that indicating that `ElementC` type is void ([#178644](https://github.com/pytorch/pytorch/pull/178644))
+- [CUDA] [PERFORMANCE] Improve performance for `ScaledGroupMM.cu` by avoiding redundant IO/compute via indicating that indicating that `ElementC` type is void ([#178325](https://github.com/pytorch/pytorch/pull/178325))
+- [CUDA][TensorIterator] Improve vectorized elementwise kernel: instruction cache ([#175336](https://github.com/pytorch/pytorch/pull/175336))
+- [pt] Reland vec8 vectorization ([#176352](https://github.com/pytorch/pytorch/pull/176352))
 - Use aminmax instead of min and max kernels in histc ([#178011](https://github.com/pytorch/pytorch/pull/178011))
-- Nit fix: Align state_step tensor max to param tensor max ([#178913](https://github.com/pytorch/pytorch/pull/178913))
+### docs
+- [Typo] ot -> to ([#179265](https://github.com/pytorch/pytorch/pull/179265))
+- [BE] Tesor -> Tensor ([#175061](https://github.com/pytorch/pytorch/pull/175061))
+- [Typo] Quiet -> Quite ([#179266](https://github.com/pytorch/pytorch/pull/179266))
+### devs
+### Untopiced
+- [ROCm] RadixSelect: Remove loop padding and make prefetching conditional ([#174897](https://github.com/pytorch/pytorch/pull/174897))
+- [ROCm] No-fence in normalization kernel ([#175286](https://github.com/pytorch/pytorch/pull/175286))
+- [ROCm] Fix int4mm device memcpy error on Windows ([#175410](https://github.com/pytorch/pytorch/pull/175410))
+- [ROCm] fix radixselect ([#177149](https://github.com/pytorch/pytorch/pull/177149))
+- [ROCm] Reduce RadixSelect sync overhead by moving __syncthreads to findPatternDataSmem ([#178188](https://github.com/pytorch/pytorch/pull/178188))
+- [AMD] Use optimized tiled kernel for LayerNorm gamma beta backward ([#179019](https://github.com/pytorch/pytorch/pull/179019))
 - [ROCm] simplify unrolling by leveraging compiler ([#177697](https://github.com/pytorch/pytorch/pull/177697))
+### not user facing
 ### security
