@@ -47,18 +47,39 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Support `torch.accelerator.Graph` on XPU ([#176421](https://github.com/pytorch/pytorch/pull/176421))
+- Added `memory_clock_rate` and `memory_bus_width` to XPU device properties ([#171967](https://github.com/pytorch/pytorch/pull/171967))
+- Enable `split_group` API when TorchComms is used as a backend for TorchTitan on XPU ([#178236](https://github.com/pytorch/pytorch/pull/178236))
+
 ### improvements
+- Support half precision FFT on XPU backend ([#171231](https://github.com/pytorch/pytorch/pull/171231))
+- Support lazy Triton kernel compilation for cpp-wrapper on XPU (AOT Inductor) ([#179239](https://github.com/pytorch/pytorch/pull/179239))
+- Add proper float64 handling for `addmv`, `addmm`, and `baddbmm` on XPU ([#174590](https://github.com/pytorch/pytorch/pull/174590))
+- Enable FMA-based `addcdiv` lowering for XPU ([#176163](https://github.com/pytorch/pytorch/pull/176163))
+- Enable `bmm_outer_product` Triton override for XPU ([#180816](https://github.com/pytorch/pytorch/pull/180816))
+- Use version check for XPU fallback registration in Inductor ([#174679](https://github.com/pytorch/pytorch/pull/174679))
+- Catch Intel Triton compilation/runtime errors as `IntelGPUError` in Inductor ([#169167](https://github.com/pytorch/pytorch/pull/169167))
+- Improve Inductor UT coverage for XPU ([#174053](https://github.com/pytorch/pytorch/pull/174053), [#174054](https://github.com/pytorch/pytorch/pull/174054), [#174055](https://github.com/pytorch/pytorch/pull/174055), [#174056](https://github.com/pytorch/pytorch/pull/174056), [#174057](https://github.com/pytorch/pytorch/pull/174057), [#174058](https://github.com/pytorch/pytorch/pull/174058))
+- Added Uint16/Uint32/Uint64/FP8 support to XPU device capability reporting ([#178467](https://github.com/pytorch/pytorch/pull/178467))
+
 ### bug fixes
+- Fix `torch.compile` graph break inside `torch.autocast('xpu')` causing dtype mismatch ([#180309](https://github.com/pytorch/pytorch/pull/180309))
+- Fix `conv2d` incorrect results and alignment errors for non-64-byte-aligned tensors on XPU ([#177956](https://github.com/pytorch/pytorch/pull/177956))
+- Fix `nn.Embedding` module failures on XPU ([#178987](https://github.com/pytorch/pytorch/pull/178987))
+- Fix XPU OneDNN symbol leak ([#172437](https://github.com/pytorch/pytorch/pull/172437))
+- Fix meta kernel for `_scaled_dot_product_fused_attention_overrideable` to preserve query layout ([#178986](https://github.com/pytorch/pytorch/pull/178986))
+- Fix tensorwise scaling settings on XPU ([#177810](https://github.com/pytorch/pytorch/pull/177810))
+- Fix `DeviceOpOverrides` registered incorrectly on XPU ([#178959](https://github.com/pytorch/pytorch/pull/178959))
+- Fix `SyclExtension` Windows build for oneAPI 2025.3+ breaking change ([#170701](https://github.com/pytorch/pytorch/pull/170701))
+
 ### performance
+- Remove unnecessary device-to-host synchronization in `torch.nn.functional.one_hot` for XPU by skipping boundary validation checks only needed on CPU ([#179831](https://github.com/pytorch/pytorch/pull/179831))
+- Add GEMM configs to XPU autotuning heuristic ([#177647](https://github.com/pytorch/pytorch/pull/177647))
+
 ### docs
+
 ### devs
-### Untopiced
-- [XPU] Skip complex mean extremal values test (IEEE-754 behavior difference) ([#175328](https://github.com/pytorch/pytorch/pull/175328))
-- Move PeerToPeerAccess from ATen to c10 ([#176856](https://github.com/pytorch/pytorch/pull/176856))
-- [xpu][feature] Add memory_clock_rate and memory_bus_width to XPU device properties ([#171967](https://github.com/pytorch/pytorch/pull/171967))
-- [xpu] Update torch-xpu-ops commit pin ([#177721](https://github.com/pytorch/pytorch/pull/177721))
-- Add SYCL_COMPILER_VERSION to torch.__config__.show() ([#174661](https://github.com/pytorch/pytorch/pull/174661))
-- Support torch.accelerator.Graph on XPU ([#176421](https://github.com/pytorch/pytorch/pull/176421))
+- Enforce C++20 for XPU SYCL device compilation ([#179497](https://github.com/pytorch/pytorch/pull/179497), [#179613](https://github.com/pytorch/pytorch/pull/179613))
+
 ### not user facing
-- [xpu][fix] Fix meta kernel for _scaled_dot_product_fused_attention_overrideable to preserve query layout ([#178986](https://github.com/pytorch/pytorch/pull/178986))
 ### security
