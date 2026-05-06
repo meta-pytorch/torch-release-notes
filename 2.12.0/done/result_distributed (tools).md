@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (checkpoint)
+# Release Notes worksheet distributed (tools)
 
 You should:
 
@@ -43,7 +43,7 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (checkpoint)
+## distributed (tools)
 ### bc breaking
 ### deprecation
 ### new features
@@ -54,10 +54,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 ### Untopiced
 ### not user facing
-- Start test/distributed assert removal ([#174262](https://github.com/pytorch/pytorch/pull/174262))
-- Finish removing assert in test/distributed ([#174263](https://github.com/pytorch/pytorch/pull/174263))
-- Finish removing asserts in torch/distributed ([#174689](https://github.com/pytorch/pytorch/pull/174689))
-- Finish removing asserts in torch/distributed ([#174689](https://github.com/pytorch/pytorch/pull/174689))
-- [BE] Apply up007 and up045 to torch/distributed ([#176342](https://github.com/pytorch/pytorch/pull/176342))
-- [DCP] Fix test_pg_transport timeout by adding class-level skip to PgTransportGPU (#177333) ([#177333](https://github.com/pytorch/pytorch/pull/177333))
 ### security

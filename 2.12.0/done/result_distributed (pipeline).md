@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (torchelastic)
+# Release Notes worksheet distributed (pipeline)
 
 You should:
 
@@ -43,16 +43,19 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (torchelastic)
+## distributed (pipeline)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+- DTensor metadata foundation for Pipeline Parallelism with DTensor-aware stage and schedule refactoring ([#177727](https://github.com/pytorch/pytorch/pull/177727), [#177728](https://github.com/pytorch/pytorch/pull/177728))
+- Pipeline Parallel: Dispatch homogeneous P2P ops individually to avoid stream serialization ([#175712](https://github.com/pytorch/pytorch/pull/175712))
 ### bug fixes
+- Fix `stage_backward_weight` with multi-output intermediate in pipeline parallelism ([#175705](https://github.com/pytorch/pytorch/pull/175705))
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- [elastic] Add Windows support for stdout/stderr redirects ([#176789](https://github.com/pytorch/pytorch/pull/176789))
+- [PP][3/3] DTensor Pipeline Parallelism unit and integration tests ([#177729](https://github.com/pytorch/pytorch/pull/177729))
 ### security
