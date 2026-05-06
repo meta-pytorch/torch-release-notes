@@ -65,7 +65,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Reorder type declarations and move definitions to fix Windows builds with TheRock ([#176207](https://github.com/pytorch/pytorch/pull/176207))
 - [BE] Apply up007 and up045 to directories from headeronly through nn ([#176229](https://github.com/pytorch/pytorch/pull/176229))
 - [BE][JIT] Replace LOG(FATAL) with TORCH_INTERNAL_ASSERT ([#178291](https://github.com/pytorch/pytorch/pull/178291))
-- [ROCm][CI] fix batch_norm decomp for negative running_var ([#177665](https://github.com/pytorch/pytorch/pull/177665))
 - [distributed] Handle FakeScriptObject wrapping of ProcessGroup in pybind ([#178692](https://github.com/pytorch/pytorch/pull/178692))
 - Replace erase-remove idiom with `std::erase_if` ([#179231](https://github.com/pytorch/pytorch/pull/179231))
 ### security

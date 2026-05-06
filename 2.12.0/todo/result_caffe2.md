@@ -53,10 +53,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
-- [rocm][hipsparselt] Enable hipsparselt in caffe2 HIP builds ([#175810](https://github.com/pytorch/pytorch/pull/175810))
 - [caffe2] Fix pybind11 3.0.3 ambiguous return type deduction ([#179277](https://github.com/pytorch/pytorch/pull/179277))
 ### not user facing
-- [rocm][7.0/7.2] Fix [[nodiscard]] build errors and BUCK deps across comms, gloo, caffe2 (#176671) ([#176671](https://github.com/pytorch/pytorch/pull/176671))
 - [python/3.10 removal] Remove CPython 3.10 holdback for caffe2/test/distributed/elastic/rendezvous (#178071) ([#178071](https://github.com/pytorch/pytorch/pull/178071))
 - [pybind11][codemod] Migrate PYBIND11_OVERLOAD to PYBIND11_OVERRIDE in caffe2/torch distributed ([#178876](https://github.com/pytorch/pytorch/pull/178876))
 - [caffe2] Remove unused batch_box_cox perfkernel files ([#179515](https://github.com/pytorch/pytorch/pull/179515))

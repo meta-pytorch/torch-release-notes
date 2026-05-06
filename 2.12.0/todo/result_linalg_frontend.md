@@ -63,11 +63,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fixes determinant gradient for 1 x 1 matrices ([#171225](https://github.com/pytorch/pytorch/pull/171225))
 - [Bugfix] Fix a bug when 0 dim linalg det backwards ([#177498](https://github.com/pytorch/pytorch/pull/177498))
 - [BE][Ez]: Add missing std::move on std::make_tuple return calls ([#177982](https://github.com/pytorch/pytorch/pull/177982))
-- [ROCm][TunableOp] Support FP64 on hipBLASLt ([#178195](https://github.com/pytorch/pytorch/pull/178195))
 - Fix cholesky(upper=True) on macOS for matrices larger than block size ([#179154](https://github.com/pytorch/pytorch/pull/179154))
 ### not user facing
 - Ensure test_tensorinv uses well-conditioned inputs ([#175283](https://github.com/pytorch/pytorch/pull/175283))
 - [BE]: Add missing reserve() calls ([#175503](https://github.com/pytorch/pytorch/pull/175503))
-- [ROCm][CI][TunableOp] Make TunableOp submatrix count backend-aware ([#178448](https://github.com/pytorch/pytorch/pull/178448))
-- [UT][ROCm][TunableOp] Fix test_call_count_tunableop to correctly extract kernel names for RDNA ([#177125](https://github.com/pytorch/pytorch/pull/177125))
 ### security

@@ -58,17 +58,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### Untopiced
 - [CUBLAS][Blackwell] Try to reenable 32MiB workspaces on Blackwell ([#175344](https://github.com/pytorch/pytorch/pull/175344))
 - [CUDA][TensorIterator] Improve vectorized elementwise kernel: instruction cache ([#175336](https://github.com/pytorch/pytorch/pull/175336))
-- [ROCm] RadixSelect: Remove loop padding and make prefetching conditional ([#174897](https://github.com/pytorch/pytorch/pull/174897))
 - [CUDA] Fix offset_t operators to be __host__ __device__ in SortStable.cu ([#175997](https://github.com/pytorch/pytorch/pull/175997))
 - [pt] Reland vec8 vectorization ([#176352](https://github.com/pytorch/pytorch/pull/176352))
-- [ROCm] No-fence in normalization kernel ([#175286](https://github.com/pytorch/pytorch/pull/175286))
 - fix cuda torch.topk index bug for super long input which are over 32-bit INT_MAX length ([#176095](https://github.com/pytorch/pytorch/pull/176095))
-- [ROCm] Fix int4mm device memcpy error on Windows ([#175410](https://github.com/pytorch/pytorch/pull/175410))
-- [ROCm] fix radixselect ([#177149](https://github.com/pytorch/pytorch/pull/177149))
 - Fix `test/inductor/test_fp8.py` hang on sm89 ([#177573](https://github.com/pytorch/pytorch/pull/177573))
 - Use fp8 conversion intrinsics on Hopper+ to work around ptxas codegen bug ([#177870](https://github.com/pytorch/pytorch/pull/177870))
 - [CUDA] [Green Context] Add support for workqueue limit ([#177242](https://github.com/pytorch/pytorch/pull/177242))
-- [ROCm] Reduce RadixSelect sync overhead by moving __syncthreads to findPatternDataSmem ([#178188](https://github.com/pytorch/pytorch/pull/178188))
 - Remove dead avg_pool3d backward shape-check variables in CUDA ([#178893](https://github.com/pytorch/pytorch/pull/178893))
 - [AMD] Use optimized tiled kernel for LayerNorm gamma beta backward ([#179019](https://github.com/pytorch/pytorch/pull/179019))
 - [Typing] ot -> to ([#179265](https://github.com/pytorch/pytorch/pull/179265))
@@ -85,5 +80,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Back out "[CUDA][cuBLASLt] set cuBLASLt as a default BLAS backend when available (#174594)" (#177703) ([#177703](https://github.com/pytorch/pytorch/pull/177703))
 - Use aminmax instead of min and max kernels in histc ([#178011](https://github.com/pytorch/pytorch/pull/178011))
 - Nit fix: Align state_step tensor max to param tensor max ([#178913](https://github.com/pytorch/pytorch/pull/178913))
-- [ROCm] simplify unrolling by leveraging compiler ([#177697](https://github.com/pytorch/pytorch/pull/177697))
 ### security
