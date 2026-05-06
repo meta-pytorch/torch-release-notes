@@ -46,26 +46,21 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ## profiler
 ### bc breaking
 ### deprecation
-- [Profiler] Add a deprecation warning for metadata_json ([#179417](https://github.com/pytorch/pytorch/pull/179417))
+- Profiler's metadata_json field is now deprecated, use event_metadata instead. ([#179417](https://github.com/pytorch/pytorch/pull/179417))
 ### new features
+- Profiler's Activity selection allows for fine-grained activity type selection. ([#176351](https://github.com/pytorch/pytorch/pull/176351))
+- Memory visualize has a new tab to show private pool memory view ([#177289](https://github.com/pytorch/pytorch/pull/177289))
 ### improvements
+- Profiler's events() method now has parity with information returned in export_chrome_trace(). ([#177662](https://github.com/pytorch/pytorch/pull/177662), [#177888](https://github.com/pytorch/pytorch/pull/177888), [#178168](https://github.com/pytorch/pytorch/pull/178168), [#178597](https://github.com/pytorch/pytorch/pull/178597), [#178901](https://github.com/pytorch/pytorch/pull/178901), [#179714](https://github.com/pytorch/pytorch/pull/179714))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Add fine-grained activity type filtering to torch.profiler.profile ([#176351](https://github.com/pytorch/pytorch/pull/176351))
-- [memoryviz] Add a tab to show private pool memory view ([#177289](https://github.com/pytorch/pytorch/pull/177289))
-- [Profiler] Add external id handling to events() ([#177662](https://github.com/pytorch/pytorch/pull/177662))
-- [Profiler] Expose flow_id/flow_type/flow_start to .events() ([#177888](https://github.com/pytorch/pytorch/pull/177888))
-- [Profiler] Enable returning unfinished events and Python events in events() API ([#178168](https://github.com/pytorch/pytorch/pull/178168))
-- [profiler] Fix thread-safety of PyEval_SetProfile for free-threaded Python ([#178551](https://github.com/pytorch/pytorch/pull/178551))
-- [profiler] Make ValueCache per-thread for free-threaded Python safety ([#178552](https://github.com/pytorch/pytorch/pull/178552))
-- [Profiler] Expose activity types and flows for TorchOp events in `events()` ([#178597](https://github.com/pytorch/pytorch/pull/178597))
-- [Profiler] Add structured metadata to events() output ([#178901](https://github.com/pytorch/pytorch/pull/178901))
-- [Profiler] Add cpu op + python function event metadata to events() ([#179714](https://github.com/pytorch/pytorch/pull/179714))
-- [Profiler] Add priority key to EventsMetadata ([#180100](https://github.com/pytorch/pytorch/pull/180100))
 ### not user facing
+- [profiler] Make ValueCache per-thread for free-threaded Python safety ([#178552](https://github.com/pytorch/pytorch/pull/178552))
+- [profiler] Fix thread-safety of PyEval_SetProfile for free-threaded Python ([#178551](https://github.com/pytorch/pytorch/pull/178551))
+- [Profiler] Add priority key to EventsMetadata ([#180100](https://github.com/pytorch/pytorch/pull/180100))
 - privateuse1 backend integration with kineto ([#172154](https://github.com/pytorch/pytorch/pull/172154))
 - [pytorch][profiler] Emit Input Strides metadata regardless of record_concrete_inputs setting (#176823) ([#176823](https://github.com/pytorch/pytorch/pull/176823))
 - [Profiler] Add a test to validate kernel metadata is present in output ([#177745](https://github.com/pytorch/pytorch/pull/177745))
