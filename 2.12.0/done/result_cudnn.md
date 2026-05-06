@@ -49,12 +49,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- [cuDNN][SDPA] Don't route to cuDNN SDPA when dropout probability is not a multiple of 1/16 ([#174245](https://github.com/pytorch/pytorch/pull/174245))
+- Fix cuDNN SDPA with zero-stride (broadcast) Q/K/V inputs ([#175764](https://github.com/pytorch/pytorch/pull/175764))
+- [cuDNN][SDPA] Fix attn-mask conversion constant ([#177868](https://github.com/pytorch/pytorch/pull/177868))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [cuDNN][SDPA] Don't route to cuDNN SDPA when dropout probability is not a multiple of 1/16 ([#174245](https://github.com/pytorch/pytorch/pull/174245))
-- Fix cuDNN SDPA with zero-stride (broadcast) Q/K/V inputs ([#175764](https://github.com/pytorch/pytorch/pull/175764))
-- [cuDNN][SDPA] Fix attn-mask conversion constant ([#177868](https://github.com/pytorch/pytorch/pull/177868))
 ### not user facing
 ### security
