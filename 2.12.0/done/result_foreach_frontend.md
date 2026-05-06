@@ -51,10 +51,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bug fixes
 ### performance
 - Increase kernel argument size 4KB -> 32KB for CUDA 13+ ([#178641](https://github.com/pytorch/pytorch/pull/178641))
+- Add multi-tensor fast path for p=0 norm ([#179869](https://github.com/pytorch/pytorch/pull/179869))
 ### docs
 ### devs
 ### Untopiced
-- Add multi-tensor fast path for p=0 norm ([#179869](https://github.com/pytorch/pytorch/pull/179869))
 ### not user facing
 - [2/N] C++20 template method instantiation adjustements ([#175612](https://github.com/pytorch/pytorch/pull/175612))
 ### security
