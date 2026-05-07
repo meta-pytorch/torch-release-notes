@@ -1,5 +1,5 @@
 
-# Release Notes worksheet cpu (x86)
+# Release Notes worksheet cpu (aarch64)
 
 You should:
 
@@ -43,16 +43,16 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## cpu (x86)
+## cpu (aarch64)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
+- Add vectorized BF16 `transpose_mxn` specialization for AArch64 SVE, providing a deterministic vectorized BF16 transpose implementation independent of fixed vector widths ([#174097](https://github.com/pytorch/pytorch/pull/174097))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [CPUBlas] add brgemm API for fp8 GEMM ([#172548](https://github.com/pytorch/pytorch/pull/172548))
 ### not user facing
 ### security
