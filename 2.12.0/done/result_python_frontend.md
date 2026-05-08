@@ -6,14 +6,12 @@
 ### deprecation
 ### new features
 - Introduced `torch.accelerator.Graph` as a unified frontend Graph interface ([#171285](https://github.com/pytorch/pytorch/pull/171285))
-- Added `_native` ops framework for user-defined native operations ([#176280](https://github.com/pytorch/pytorch/pull/176280), [#178637](https://github.com/pytorch/pytorch/pull/178637), [#178902](https://github.com/pytorch/pytorch/pull/178902))
 ### improvements
 - Used compiler wrapper when building C++ extensions ([#175696](https://github.com/pytorch/pytorch/pull/175696))
 - Updated `uniform` and `normal` sampling on CPU to improve fp16/bf16 results ([#175988](https://github.com/pytorch/pytorch/pull/175988))
 - Changed `requires_grad` to `Optional[bool]` in `torch.asarray` ([#170897](https://github.com/pytorch/pytorch/pull/170897))
 ### bug fixes
 - Fixed `torch.isclose` broadcast failure with `equal_nan=True` ([#175244](https://github.com/pytorch/pytorch/pull/175244))
-- Used vendored `packaging` instead of external dependency in `torch/_native/` ([#179456](https://github.com/pytorch/pytorch/pull/179456))
 ### performance
 ### docs
 - Documented `get_device_capability` and clarified supported dtypes ([#178397](https://github.com/pytorch/pytorch/pull/178397))
