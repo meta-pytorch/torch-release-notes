@@ -48,6 +48,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Upgrade 12.8, 13.0 (and 12.9) wheels to cuDNN 9.20.0.48 ([#177321](https://github.com/pytorch/pytorch/pull/177321))
 ### bug fixes
 - [cuDNN][SDPA] Don't route to cuDNN SDPA when dropout probability is not a multiple of 1/16 ([#174245](https://github.com/pytorch/pytorch/pull/174245))
 - Fix cuDNN SDPA with zero-stride (broadcast) Q/K/V inputs ([#175764](https://github.com/pytorch/pytorch/pull/175764))

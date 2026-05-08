@@ -19,6 +19,7 @@
 - Fixed `GroupNorm` backward correctness bug on AMD wavefront-64 GPUs ([#178872](https://github.com/pytorch/pytorch/pull/178872))
 - Fixed `nn.functional.pad` compile crash with deterministic mode and replication padding ([#177166](https://github.com/pytorch/pytorch/pull/177166))
 - Fixed issue #110505 ([#176559](https://github.com/pytorch/pytorch/pull/176559))
+- Fix FA4 integration for varlen ([#177675](https://github.com/pytorch/pytorch/pull/177675))
 ### performance
 - Added NEON implementation of `interpolate` for bilinear/bicubic with antialias on ChannelsLast RGB images on ARM ([#176217](https://github.com/pytorch/pytorch/pull/176217))
 - Parallelized `upsample_bicubic2d` across batch/channel dimensions — 4-43x speedup for VLM position embedding resizing ([#174578](https://github.com/pytorch/pytorch/pull/174578))
@@ -35,4 +36,5 @@
 - [xpu][test][1/N] Enable tests of test_nn.py on Intel GPU - instantiate TestNN with instantiate_device_type_tests ([#166396](https://github.com/pytorch/pytorch/pull/166396))
 - [rnn] Update condition in test_rnn_check_device ([#178981](https://github.com/pytorch/pytorch/pull/178981))
 - [Testing] Add guard-page test for uint8 interpolate overread ([#180219](https://github.com/pytorch/pytorch/pull/180219))
+- Add AArch64 xfails for inductor, nn, jit, and linalg tests ([#177584](https://github.com/pytorch/pytorch/pull/177584))
 ### security

@@ -21,6 +21,7 @@
 - Fix fuse_by_partitions crash when partition has no external outputs ([#175203](https://github.com/pytorch/pytorch/pull/175203))
 - Fix set_stack_trace ([#177332](https://github.com/pytorch/pytorch/pull/177332))
 - Handle weakref objects during graph serialization in GraphPickler ([#178190](https://github.com/pytorch/pytorch/pull/178190))
+- Fix horizontal fusion bug and add partition tests for regional inductor ([#178421](https://github.com/pytorch/pytorch/pull/178421))
 ### performance
 - Fix quadratic name generation in `_NamespaceBase.create_name`, significantly improving performance for graphs with many nodes ([#176515](https://github.com/pytorch/pytorch/pull/176515), [#177217](https://github.com/pytorch/pytorch/pull/177217))
 - Propagate custom annotations to runtime asserts ([#170796](https://github.com/pytorch/pytorch/pull/170796))

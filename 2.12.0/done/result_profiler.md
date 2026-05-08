@@ -52,6 +52,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Memory visualize has a new tab to show private pool memory view ([#177289](https://github.com/pytorch/pytorch/pull/177289))
 ### improvements
 - Profiler's events() method now has parity with information returned in export_chrome_trace(). ([#177662](https://github.com/pytorch/pytorch/pull/177662), [#177888](https://github.com/pytorch/pytorch/pull/177888), [#178168](https://github.com/pytorch/pytorch/pull/178168), [#178597](https://github.com/pytorch/pytorch/pull/178597), [#178901](https://github.com/pytorch/pytorch/pull/178901), [#179714](https://github.com/pytorch/pytorch/pull/179714))
+- Restructure Memviz and add tests ([#179488](https://github.com/pytorch/pytorch/pull/179488))
 ### bug fixes
 ### performance
 ### docs
