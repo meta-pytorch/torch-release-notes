@@ -19,7 +19,6 @@
 - Fixed `GroupNorm` backward correctness bug on AMD wavefront-64 GPUs ([#178872](https://github.com/pytorch/pytorch/pull/178872))
 - Fixed `nn.functional.pad` compile crash with deterministic mode and replication padding ([#177166](https://github.com/pytorch/pytorch/pull/177166))
 - Fixed FA4 integration in varlen attention ([#177675](https://github.com/pytorch/pytorch/pull/177675))
-- Fixed issue #110505
 - Fixed issue #110505 ([#176559](https://github.com/pytorch/pytorch/pull/176559))
 ### performance
 - Added NEON implementation of `interpolate` for bilinear/bicubic with antialias on ChannelsLast RGB images on ARM ([#176217](https://github.com/pytorch/pytorch/pull/176217))
