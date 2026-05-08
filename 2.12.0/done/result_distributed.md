@@ -64,30 +64,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 
 ### deprecation
-- Compiling through FSDP2 hooks without graph breaks is no longer supported ([#174906](https://github.com/pytorch/pytorch/pull/174906)). If you use compiled autograd with FSDP2, update your code to allow graph breaks around FSDP2 hooks or disable compiled autograd for the FSDP2 training step.
-
-  Version 2.11:
-  ```python
-  with torch._dynamo.config.patch(compiled_autograd=True):
-      compiled_model = torch.compile(fsdp_model, fullgraph=True)
-      loss = compiled_model(input).sum()
-      loss.backward()
-  ```
-
-  Version 2.12:
-  ```python
-  # Either run FSDP2 backward without fullgraph.
-  compiled_model = torch.compile(fsdp_model, fullgraph=False)
-  loss = compiled_model(input).sum()
-  loss.backward()
-
-  # Or apply compile before applying FSDP
-  compiled_model_pre_fsdp = torch.compile(model, fullgraph=True)
-  compiled_model = fully_shard(compiled_model_pre_fsdp, ...)
-  loss = compiled_model(input).sum()
-  loss.backward()
-  ```
-
 ### new features
 - Add `Store::barrier` API and TCPStore client `BARRIER` support, reducing synchronization round trips compared to the existing `ADD`+`WAIT` pattern ([#174920](https://github.com/pytorch/pytorch/pull/174920))
 - Add NCCL communicator `suspend()`, `resume()`, and `memory_stats()` APIs for managing communicator memory lifecycle ([#176300](https://github.com/pytorch/pytorch/pull/176300))
@@ -102,8 +78,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add `timeout` parameter to `torch.distributed.barrier()` ([#174974](https://github.com/pytorch/pytorch/pull/174974))
 - Add `reduce_scatter_tensor_coalesced` support to `ProcessGroupWrapper` ([#168961](https://github.com/pytorch/pytorch/pull/168961))
 - Functional collectives API now automatically handles non-contiguous inputs instead of asserting ([#177965](https://github.com/pytorch/pytorch/pull/177965))
-- FSDP2: Allow `ModuleList`/`ModuleDict` subclasses that implement `forward()` ([#175033](https://github.com/pytorch/pytorch/pull/175033))
-- FSDP2: Support dataclass args/kwargs output without memory leakage ([#174692](https://github.com/pytorch/pytorch/pull/174692))
 - DDP: Add `batched_grad_copy` option to reduce per-parameter kernel launches to 2 kernels per bucket ([#176638](https://github.com/pytorch/pytorch/pull/176638))
 - DDP: Refactor bucket capacity config into `BucketCapacityConfig` dataclass ([#175217](https://github.com/pytorch/pytorch/pull/175217))
 - Add signal name to `ChildFailedError` exitcode output for better debugging ([#175254](https://github.com/pytorch/pytorch/pull/175254))
@@ -124,10 +98,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `_CoalescingManager` not passing `Opts` to `allgather_into_tensor_coalesced()` ([#175379](https://github.com/pytorch/pytorch/pull/175379))
 - Fix `_CoalescingManager` to raise exception when ops in the coalesced list are not the same type ([#175573](https://github.com/pytorch/pytorch/pull/175573))
 - Fix `getenv`/`setenv` race condition causing segfault during NCCL initialization with heartbeat thread ([#167523](https://github.com/pytorch/pytorch/pull/167523))
-- Fix HSDP `sync_module_states` broadcast order for buffers with meta-device initialization ([#178569](https://github.com/pytorch/pytorch/pull/178569))
 - Fix `AsyncCollectiveTensor` inputs leaking into compiled regions, causing `RuntimeError` or silent data corruption in TP + compile workflows ([#179849](https://github.com/pytorch/pytorch/pull/179849))
 - Fix potential infinite loop in FlightRecorder when multiple ProcessGroups run into barrier ([#179449](https://github.com/pytorch/pytorch/pull/179449))
-- Fix activation checkpointing crash when passing `BlockMask` as argument ([#179215](https://github.com/pytorch/pytorch/pull/179215))
 - Fix two forward passes of DDP-wrapped BatchNorm raising error ([#175851](https://github.com/pytorch/pytorch/pull/175851))
 - Fix `USE_RCOM` typo to `USE_ROCM` in `intra_node_comm.cpp` ([#175078](https://github.com/pytorch/pytorch/pull/175078))
 - Fix HPU backend mapping issue ([#174764](https://github.com/pytorch/pytorch/pull/174764))
@@ -192,7 +164,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Extract bucket_mode from all passes to inductor config ([#175877](https://github.com/pytorch/pytorch/pull/175877))
 - Add "coalesced" bucket_mode for zero-copy reduce_scatter bucketing ([#177132](https://github.com/pytorch/pytorch/pull/177132))
 - Remove unused suppressions in torch/distributed ([#175257](https://github.com/pytorch/pytorch/pull/175257))
-- Use () for tuple() for slightly improved performance ([#175492](https://github.com/pytorch/pytorch/pull/175492))
 - Unify symmetric memory key and map types across backends ([#179903](https://github.com/pytorch/pytorch/pull/179903))
 - Fix race condition in RPC test_tensor_view_as_return_value ([#175529](https://github.com/pytorch/pytorch/pull/175529))
 - Address violations of warning unreachable-code-return ([#179518](https://github.com/pytorch/pytorch/pull/179518))

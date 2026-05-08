@@ -50,7 +50,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add support for twice-differentiable DTensor redistribution ([#160509](https://github.com/pytorch/pytorch/pull/160509))
 - DeviceMesh is now traceable by torch.compile. Make DeviceMesh opaque ([#176661](https://github.com/pytorch/pytorch/pull/176661)), Make placements opaque ([#171482](https://github.com/pytorch/pytorch/pull/171482)).
 - Add `grad_placements` parameter to `DTensor.from_local()`, allowing explicit control over gradient placements in the backward pass ([#175867](https://github.com/pytorch/pytorch/pull/175867))
-- Support `fully_shard` with DTensors on a full SPMD mesh via new `DataParallelMeshDims` ([#176334](https://github.com/pytorch/pytorch/pull/176334))
 ### improvements
 - Support DTensor view ops (flatten/unflatten) with `_StridedSharding` for full `nn.Linear(DTensor)` compatibility ([#166483](https://github.com/pytorch/pytorch/pull/166483))
 - Add Dijkstra-based single-dim strategy search for DTensor sharding propagation, avoiding exponential enumeration of strategy combinations ([#169438](https://github.com/pytorch/pytorch/pull/169438))
@@ -84,7 +83,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 - Improve DTensor performance for `torch.cat` and pytree ops ([#174879](https://github.com/pytorch/pytorch/pull/174879))
 - Skip unnecessary all-reduce of `total_weight` in DTensor `nll_loss_backward` for `reduction='sum'` ([#177233](https://github.com/pytorch/pytorch/pull/177233))
-- Cache `shard_mesh` in FSDP2 to avoid repeated `_create_sub_mesh` calls ([#179655](https://github.com/pytorch/pytorch/pull/179655))
 - Cache `DecompStrategy` and fake mesh in DTensor ([#175205](https://github.com/pytorch/pytorch/pull/175205))
 ### docs
 ### devs
