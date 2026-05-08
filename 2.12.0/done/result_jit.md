@@ -16,7 +16,7 @@
 ### docs
 ### devs
 - Removed `torch/csrc/utils/six.h` ([#179110](https://github.com/pytorch/pytorch/pull/179110))
-- Upgraded runtime JIT/Inductor codegen to C++20 ([#176502](https://github.com/pytorch/pytorch/pull/176502)) _(from miscategorized)_
+- Upgraded runtime JIT/Inductor codegen to C++20 ([#176502](https://github.com/pytorch/pytorch/pull/176502))
 ### not user facing
 - [BE] Use namespace alias in ir.h ([#175382](https://github.com/pytorch/pytorch/pull/175382))
 - Remove ir.h from `jit/api/` headers include chain ([#175413](https://github.com/pytorch/pytorch/pull/175413))

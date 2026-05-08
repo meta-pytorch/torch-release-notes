@@ -56,4 +56,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### Untopiced
 ### not user facing
 - [pytorch][optim] Re-add _cuda_graph_capture_health_check as backward compat alias ([#175062](https://github.com/pytorch/pytorch/pull/175062))
+- [XPU] Enable skipped inductor test on Intel GPU - generalize code and enable xpu for functions under torch/ folder ([#174053](https://github.com/pytorch/pytorch/pull/174053))
 ### security

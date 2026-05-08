@@ -55,6 +55,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
+- [cuDNN] Upgraded 12.8, 13.0 (and 12.9) wheels to cuDNN 9.20.0.48 ([#177321](https://github.com/pytorch/pytorch/pull/177321))
 ### Untopiced
 ### not user facing
 ### security

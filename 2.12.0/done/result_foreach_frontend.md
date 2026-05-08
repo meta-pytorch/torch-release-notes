@@ -47,6 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Added `_foreach_clone` ([#177421](https://github.com/pytorch/pytorch/pull/177421))
 ### improvements
 ### bug fixes
 ### performance

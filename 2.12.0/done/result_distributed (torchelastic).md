@@ -79,4 +79,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - ROCm: Skip elastic multiprocessing test_function_raise ([#177742](https://github.com/pytorch/pytorch/pull/177742))
 - Start health check thrift server before rendezvous ([#176576](https://github.com/pytorch/pytorch/pull/176576))
 - Start health check server before MAST rendezvous ([#179560](https://github.com/pytorch/pytorch/pull/179560))
+- [BE][Ez]: Improve logger calls to remove eager str casts ([#178414](https://github.com/pytorch/pytorch/pull/178414))
+- Document public APIs using a Claude Skill ([#175578](https://github.com/pytorch/pytorch/pull/175578))
 ### security

@@ -69,4 +69,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [profiler] Acquire GIL in PythonTracer destructor before Py_XDECREF ([#178830](https://github.com/pytorch/pytorch/pull/178830))
 - [Profiler] Reduce size of the payload used in test_profiler_name_pattern ([#179626](https://github.com/pytorch/pytorch/pull/179626))
 - [Profiler] Fix profiler test_kineto_kernel_metadata_in_trace on ROCm machines ([#179815](https://github.com/pytorch/pytorch/pull/179815))
+- [memory viz] Restructure Memviz and add some tests ([#179488](https://github.com/pytorch/pytorch/pull/179488))
 ### security

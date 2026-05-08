@@ -105,6 +105,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Drop `tile_k` from nvMatmulHeuristics matching ([#176845](https://github.com/pytorch/pytorch/pull/176845))
 
 ### bug fixes
+- Fix horizontal fusion bug and add partition tests for regional inductor ([#178421](https://github.com/pytorch/pytorch/pull/178421))
 - Fix `floordiv` Inductor lowering for mixed signedness (Triton workaround) ([#175168](https://github.com/pytorch/pytorch/pull/175168))
 - Use `Sm100CollectiveEpilogue` on SM100 ([#175305](https://github.com/pytorch/pytorch/pull/175305))
 - Fix `aten.resize` on overlapping-stride views ([#176651](https://github.com/pytorch/pytorch/pull/176651))

@@ -14,7 +14,7 @@
 - Added `index_reduce` on MPS ([#174936](https://github.com/pytorch/pytorch/pull/174936))
 - Implemented `torch.distributions.Gamma` (forward + backward) on MPS ([#179228](https://github.com/pytorch/pytorch/pull/179228))
 - Enabled `mvlgamma` on MPS ([#178914](https://github.com/pytorch/pytorch/pull/178914))
-- Added `nonzero_static` implementation on MPS ([#179589](https://github.com/pytorch/pytorch/pull/179589)) _(from miscategorized)_
+- Added `nonzero_static` implementation on MPS ([#179589](https://github.com/pytorch/pytorch/pull/179589))
 ### improvements
 - Fixed `abs` complex overflow/underflow on MPS ([#174346](https://github.com/pytorch/pytorch/pull/174346))
 - Migrated `index_fill_` to native Metal ([#175822](https://github.com/pytorch/pytorch/pull/175822))
@@ -60,7 +60,7 @@
 ### docs
 ### devs
 - Standardized Metal kernel compilation around `AsyncCompile` ([#179838](https://github.com/pytorch/pytorch/pull/179838))
-- Removed pre-MacOS14 check from `MpsDeviceInterface` ([#175804](https://github.com/pytorch/pytorch/pull/175804)) _(from miscategorized)_
+- Removed pre-MacOS14 check from `MpsDeviceInterface` ([#175804](https://github.com/pytorch/pytorch/pull/175804))
 ### not user facing
 - [BE][MPS] Use `fmt::format` to compute key ([#175249](https://github.com/pytorch/pytorch/pull/175249))
 - [BE][MPS] Add `_3d` suffix `grid_sampler` kernel ([#175060](https://github.com/pytorch/pytorch/pull/175060))

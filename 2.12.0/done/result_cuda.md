@@ -48,6 +48,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- [CUDA] Add support for `torch.cond` with CUDA graphs ([#168912](https://github.com/pytorch/pytorch/pull/168912))
 - [CUDA] Fix `offset_t` operators to be `__host__` `__device__` in `SortStable.cu` ([#175997](https://github.com/pytorch/pytorch/pull/175997))
 - [CUDA] [Green Context] Add support for workqueue limit ([#177242](https://github.com/pytorch/pytorch/pull/177242))
 - Remove dead `avg_pool3d` backward shape-check variables in CUDA ([#178893](https://github.com/pytorch/pytorch/pull/178893))
@@ -64,6 +65,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [CUDA] Fix wrong `ComplexTransform` `const kTransformB` in `fpA_intB_gemm.h` ([#179271](https://github.com/pytorch/pytorch/pull/179271))
 - [CUDA] Fix wrong `LayoutB` in `fpA_intB_gemm.h` ([#179269](https://github.com/pytorch/pytorch/pull/179269))
 - Back out "[CUDA][cuBLASLt] set cuBLASLt as a default BLAS backend when available (#174594)" (#177703) ([#177703](https://github.com/pytorch/pytorch/pull/177703))
+- Fixed CUTLASS illegal memory access via subprocess isolation ([#172123](https://github.com/pytorch/pytorch/pull/172123))
 ### performance
 - Update eigh CUDA heuristics ([#175403](https://github.com/pytorch/pytorch/pull/175403))
 - [CUBLAS][Blackwell] Enable 32MiB cuBLAS workspaces on Blackwell ([#175344](https://github.com/pytorch/pytorch/pull/175344))
@@ -79,4 +81,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 ### Untopiced
 ### not user facing
+- [CUDA] Remove unused cudaLockMutex/cudaUnlockMutex ([#178833](https://github.com/pytorch/pytorch/pull/178833))
 ### security

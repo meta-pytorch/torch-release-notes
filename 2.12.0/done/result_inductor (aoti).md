@@ -53,12 +53,21 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Support lazy Triton kernel compilation for cpp-wrapper on XPU ([#179239](https://github.com/pytorch/pytorch/pull/179239))
 - Add dynamic shapes support to AOTI Eager via `AOTIPythonKernelHolder`, allowing a single compiled kernel to serve multiple input shapes ([#176018](https://github.com/pytorch/pytorch/pull/176018))
 - Support multi-return ops in AOTI Eager (e.g., `native_layer_norm`, `aminmax`) ([#176019](https://github.com/pytorch/pytorch/pull/176019))
+- Allow custom op with `Optional[List[T]]` in cpp wrapper ([#174460](https://github.com/pytorch/pytorch/pull/174460))
+- Added lazy Triton kernel compilation for cpp-wrapper ([#175416](https://github.com/pytorch/pytorch/pull/175416))
+- Added TMA support for lazy Triton kernel compilation ([#175548](https://github.com/pytorch/pytorch/pull/175548))
+- Added compile backend registry and custom device support for AOTI eager ([#175605](https://github.com/pytorch/pytorch/pull/175605))
 ### bug fixes
 - Fix AOTI incorrect loads from bool tensor pointers in user-defined Triton kernels ([#176353](https://github.com/pytorch/pytorch/pull/176353))
 - Fix lazy compile kernel state collisions across modules by making it per-module instead of global ([#178163](https://github.com/pytorch/pytorch/pull/178163))
 - Fix expression-nesting limit in cpp-wrapper when combo kernel gets too large ([#180217](https://github.com/pytorch/pytorch/pull/180217))
 - Fix const folding in `run_single_threaded` ([#174998](https://github.com/pytorch/pytorch/pull/174998))
 - Fix AOTI Eager caching to populate the in-memory cache after first compilation, avoiding repeated disk round-trips on every dispatch ([#176017](https://github.com/pytorch/pytorch/pull/176017))
+- Fixed AOTI SIGPE by adding additional check logic in codegen ([#170669](https://github.com/pytorch/pytorch/pull/170669))
+- Fixed scratch size for TMA in C++ wrapper ([#175385](https://github.com/pytorch/pytorch/pull/175385))
+- Fixed CPP wrapper lazy compile for scalar tensor args ([#178478](https://github.com/pytorch/pytorch/pull/178478))
+- Fixed Triton kernel stream for user stream contexts ([#178547](https://github.com/pytorch/pytorch/pull/178547))
+- Emitted int64_t type declaration for kernel numel variables ([#176922](https://github.com/pytorch/pytorch/pull/176922))
 ### performance
 - Batch cubin-to-obj conversion using `.incbin` assembly, dramatically reducing AOTI compile time for models with many Triton kernels (e.g., ~640x speedup on the cubin embedding phase for a 4-layer MoE with 661 cubins) ([#177864](https://github.com/pytorch/pytorch/pull/177864))
 - Parallelize PTX-to-fatbin compilation when `emit_multi_arch_kernel` is enabled, saving several minutes on AOTI export for large models ([#177904](https://github.com/pytorch/pytorch/pull/177904))
@@ -71,4 +80,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [inductor] Move lazy compile helper to a precompilable C++ header ([#178164](https://github.com/pytorch/pytorch/pull/178164))
 - [inductor] Mark lazy compile wrapper functions as noniline ([#178165](https://github.com/pytorch/pytorch/pull/178165))
 - [4/11][aoti] Add MinimalArrayref V2 descriptor ABI (#179482) ([#179482](https://github.com/pytorch/pytorch/pull/179482))
+- [BE][inductor] Apply PEP 604 type annotations (part 1/3) ([#175675](https://github.com/pytorch/pytorch/pull/175675))
 ### security
