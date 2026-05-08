@@ -110,6 +110,8 @@ def write_output(per_category_commits, output_filename):
         'vulkan': 'Vulkan',
         'python_frontend': 'Python Frontend',
         'distributed (checkpoint)': 'Distributed Checkpointing',
+        'distributed (fsdp)': 'Distributed FSDP',
+        'distributed (fsdp2)': 'Distributed FSDP2',
         'dataloader_frontend': 'Dataloader Frontend',
         'jit': 'JIT',
         'linalg_frontend': 'Linear Algebra Frontend',
