@@ -47,6 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Added support for `torch.cond` with CUDA graphs, using conditional graph nodes (CUDA 12.4+) so data-dependent control flow can be captured entirely inside a single CUDA graph. Works with the `eager` and `cudagraphs` `torch.compile` backends (no Inductor support yet). ([#168912](https://github.com/pytorch/pytorch/pull/168912))
 ### improvements
 - [CUDA] Fix `offset_t` operators to be `__host__` `__device__` in `SortStable.cu` ([#175997](https://github.com/pytorch/pytorch/pull/175997))
 - [CUDA] [Green Context] Add support for workqueue limit ([#177242](https://github.com/pytorch/pytorch/pull/177242))
@@ -64,6 +65,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [CUDA] Fix wrong `ComplexTransform` `const kTransformB` in `fpA_intB_gemm.h` ([#179271](https://github.com/pytorch/pytorch/pull/179271))
 - [CUDA] Fix wrong `LayoutB` in `fpA_intB_gemm.h` ([#179269](https://github.com/pytorch/pytorch/pull/179269))
 - Back out "[CUDA][cuBLASLt] set cuBLASLt as a default BLAS backend when available (#174594)" (#177703) ([#177703](https://github.com/pytorch/pytorch/pull/177703))
+- Fix CUTLASS illegal memory access via subprocess isolation ([#172123](https://github.com/pytorch/pytorch/pull/172123))
 ### performance
 - Update eigh CUDA heuristics ([#175403](https://github.com/pytorch/pytorch/pull/175403))
 - [CUBLAS][Blackwell] Enable 32MiB cuBLAS workspaces on Blackwell ([#175344](https://github.com/pytorch/pytorch/pull/175344))
@@ -76,7 +78,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Typo] ot -> to ([#179265](https://github.com/pytorch/pytorch/pull/179265))
 - [BE] Tesor -> Tensor ([#175061](https://github.com/pytorch/pytorch/pull/175061))
 - [Typo] Quiet -> Quite ([#179266](https://github.com/pytorch/pytorch/pull/179266))
+- Document public APIs using a Claude Skill ([#175578](https://github.com/pytorch/pytorch/pull/175578))
 ### devs
 ### Untopiced
 ### not user facing
+- Remove unused `cudaLockMutex`/`cudaUnlockMutex` ([#178833](https://github.com/pytorch/pytorch/pull/178833))
 ### security
