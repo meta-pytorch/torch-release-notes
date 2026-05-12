@@ -14,7 +14,7 @@
 # Highlights
 
 <table>
-  <tr><td><strong>CUDA 13.0</strong> is the primary binary build target, with CUDA 12.8 builds deprecated and source builds requiring CUDA 12.1 or newer.</td></tr>
+  <tr><td><strong>CUDA 13.0</strong> is the primary binary build target, with CUDA 12.8 builds deprecated and source builds requiring CUDA 12.6 or newer.</td></tr>
   <tr><td><strong>torchrun</strong> single-node jobs now avoid default port collisions by using an OS-assigned free port.</td></tr>
   <tr><td><strong>MPS</strong> now uses unified memory for tensors and includes additional SDPA and channels-last fixes.</td></tr>
   <tr><td><strong>torch.compile</strong>, Dynamo, Inductor, and AOTI received new features, stability fixes, and better diagnostics.</td></tr>
@@ -31,18 +31,18 @@ For more details about these highlighted features, you can look at the release b
 
   Source builds that enable SVE now validate the compiler configuration more strictly. If a build previously passed with an incomplete or mismatched SVE setup, it may now fail during CMake configuration instead of later in compilation. Update the compiler/toolchain flags so they accurately describe the target SVE support, or disable SVE for that build.
 
-- Updated the minimum CUDA version required to build PyTorch from source to CUDA 12.1 ([#178925](https://github.com/pytorch/pytorch/pull/178925))
+- Updated the minimum CUDA version required to build PyTorch from source to CUDA 12.6 ([#178925](https://github.com/pytorch/pytorch/pull/178925))
 
-  Building PyTorch from source with CUDA versions older than 12.1 is no longer supported. Users building custom binaries should install CUDA 12.1 or newer and make sure `CUDA_HOME` points to that installation.
+  Building PyTorch from source with CUDA versions older than 12.6 is no longer supported. Users building custom binaries should install CUDA 12.6 or newer and make sure `CUDA_HOME` points to that installation.
 
   Version 2.11:
   ```bash
-  CUDA_HOME=/usr/local/cuda-12.0 python setup.py develop
+  CUDA_HOME=/usr/local/cuda-12.4 python setup.py develop
   ```
 
   Version 2.12:
   ```bash
-  CUDA_HOME=/usr/local/cuda-12.1 python setup.py develop
+  CUDA_HOME=/usr/local/cuda-12.6 python setup.py develop
   ```
 
 - Enforced a C++20 minimum in CMake build files ([#178662](https://github.com/pytorch/pytorch/pull/178662))
