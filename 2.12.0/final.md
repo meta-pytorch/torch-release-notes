@@ -14,11 +14,12 @@
 # Highlights
 
 <table>
-  <tr><td><strong>CUDA 13.0</strong> is the primary binary build target, with CUDA 12.8 builds deprecated and source builds requiring CUDA 12.6 or newer.</td></tr>
-  <tr><td><strong>torchrun</strong> single-node jobs now avoid default port collisions by using an OS-assigned free port.</td></tr>
-  <tr><td><strong>MPS</strong> now uses unified memory for tensors and includes additional SDPA and channels-last fixes.</td></tr>
-  <tr><td><strong>torch.compile</strong>, Dynamo, Inductor, and AOTI received new features, stability fixes, and better diagnostics.</td></tr>
-  <tr><td><strong>Distributed</strong> training areas, including DTensor, FSDP, FSDP2, and c10d, received new functionality and correctness fixes.</td></tr>
+  <tr><td><strong>Batched linalg.eigh on CUDA</strong> is up to 100x faster due to updated cuSolver backend selection.</td></tr>
+  <tr><td>New <strong>torch.accelerator.Graph</strong> API unifies graph capture and replay across CUDA, XPU, and out-of-tree backends.</td></tr>
+  <tr><td><strong>torch.export.save</strong> now supports Microscaling (MX) quantization formats, enabling full export of aggressively compressed models.</td></tr>
+  <tr><td><strong>Adagrad</strong> now supports <code>fused=True</code>, joining Adam, AdamW, and SGD with a single-kernel optimizer implementation.</td></tr>
+  <tr><td><strong>torch.cond</strong> control flow can now be captured and replayed inside CUDA Graphs.</td></tr>
+  <tr><td><strong>ROCm</strong> users gain expandable memory segments, rocSHMEM symmetric memory collectives, and FlexAttention pipelining.</td></tr>
 </table>
 
 For more details about these highlighted features, you can look at the release blogpost. Below are the full release notes for this release.
