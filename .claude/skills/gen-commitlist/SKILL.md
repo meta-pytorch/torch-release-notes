@@ -205,13 +205,11 @@ cp "$EXPORT"/export/result_*.md "$VERSION/todo"/      # worksheets (keep result_
 rm -f "$VERSION/todo/result_Uncategorized.md"          # drop empty Uncategorized if present
 touch "$VERSION/done/placeholder.md"                   # keep empty done/ tracked
 cp "$EXPORT/commitlist_no_cherry_picks.csv" "$VERSION/commitlist.csv"  # gitignored
-cp final_template.md "$VERSION/final.md"
 ```
 
-Then create the `cherrypicks.md` template (empty `## <category>` headings:
-bc breaking, deprecation, new features, improvements, bug fixes, performance,
-docs, devs, not user facing, security) and a `miscategorized.md` stub. See an
-existing version (e.g. `2.12.0/`) for the exact format.
+Then create a `miscategorized.md` stub (see an existing version, e.g. `2.12.0/`,
+for the exact format). Do NOT create `cherrypicks.md` or `final.md` here — those
+are added later in the release-notes process, matching the leaner initial seed.
 
 If `<version>/` already exists, confirm before overwriting.
 
