@@ -54,5 +54,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 ### Untopiced
 ### not user facing
-- [BE] Fix B018 useless-expression violations in package_importer and _pattern_matcher ([#183273](https://github.com/pytorch/pytorch/pull/183273))
+- Fix B018 useless-expression lint violations in `package_importer` and `_pattern_matcher` ([#183273](https://github.com/pytorch/pytorch/pull/183273))
 ### security
