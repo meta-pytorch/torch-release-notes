@@ -74,4 +74,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - xpu: match dpclang SYCL_LIBRARY setting with icpx ([#185571](https://github.com/pytorch/pytorch/pull/185571))
 - Add oneDNN LSTM primitive support for XPU inference ([#185531](https://github.com/pytorch/pytorch/pull/185531))
 ### not user facing
+- [xpu][refine] Use zes_device_ext_properties_t and deprecate ze_device_properties_t ([#181069](https://github.com/pytorch/pytorch/pull/181069))
 ### security
