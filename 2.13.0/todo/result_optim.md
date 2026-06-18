@@ -62,4 +62,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### not user facing
 - Refine graph capture check in optimizer ([#180453](https://github.com/pytorch/pytorch/pull/180453))
 - docs: make optimizer load_state_dict example generic ([#185401](https://github.com/pytorch/pytorch/pull/185401))
+- Fix typos in optimizer, distribution, and utility modules ([#185620](https://github.com/pytorch/pytorch/pull/185620))
 ### security
