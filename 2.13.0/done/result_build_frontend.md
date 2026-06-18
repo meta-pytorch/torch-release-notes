@@ -48,15 +48,16 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- [BE] Use raw string literals for path/flag entries in macros.h.in ([#181579](https://github.com/pytorch/pytorch/pull/181579))
 ### bug fixes
-- [Windows] Fix -Winconsistent-dllimport in tensor_numpy and tensor_new headers ([#183703](https://github.com/pytorch/pytorch/pull/183703))
+- Fix `-Winconsistent-dllimport` warning in `tensor_numpy` and `tensor_new` headers on Windows ([#183703](https://github.com/pytorch/pytorch/pull/183703))
+- Fix missing symbol exports for `ValueError`/`NotImplementedError` on Windows ([#175340](https://github.com/pytorch/pytorch/pull/175340))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [c10] Fix missing symbol exports for ValueError/NotImplementedError on Windows ([#175340](https://github.com/pytorch/pytorch/pull/175340))
 ### not user facing
 - Add CONFIGURE_DEPENDS to file(GLOB) source/header lists ([#181508](https://github.com/pytorch/pytorch/pull/181508))
+- Use raw string literals for path/flag entries in macros.h.in ([#181579](https://github.com/pytorch/pytorch/pull/181579))
 - [Build] Fix torch_version generation ([#184786](https://github.com/pytorch/pytorch/pull/184786))
+- New decorators for expected test failures on Windows RTX runners ([#178332](https://github.com/pytorch/pytorch/pull/178332))
 ### security
