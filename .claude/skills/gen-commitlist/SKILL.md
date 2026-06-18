@@ -1,6 +1,6 @@
 ---
 name: gen-commitlist
-description: Bootstrap a new PyTorch release version in this repo by generating the categorized commit list and per-area worksheets. Use when starting a release (e.g. "gen commitlist for 2.13", "set up 2.13.0 worksheets", "generate the commits for the next release"). This is the UPSTREAM step that produces <version>/todo/result_*.md; use gen-release-notes to complete each worksheet and process-cherry-picks for cherry-picks.
+description: Bootstrap a new PyTorch release version in this repo by generating the categorized commit list and per-area worksheets. Use when starting a release (e.g. "gen commitlist for 2.13", "set up 2.13.0 worksheets", "generate the commits for the next release"). This is the UPSTREAM step that produces <version>/todo/result_*.md; use gen-release-notes to complete each worksheet.
 ---
 
 # Generate Commit List & Worksheets for a New Release
@@ -13,8 +13,19 @@ new `<version>/` folder in THIS repo, following the layout in the repo
 It is the **upstream / bootstrap** step. Once it finishes, the downstream skills
 take over:
 - `/gen-release-notes <version> <area>` — complete each `todo/result_<area>.md`.
-- `/process-cherry-picks <version> <tracker-issue-url>` — handle cherry-picks.
 - `/categorize-miscategorized` — reclassify PRs in `miscategorized.md`.
+
+## Use the PREVIOUS release's cherry-pick tracker (important)
+
+This skill needs the **previous** release's cherry-pick tracker, NOT the one for
+the release you are generating notes for. When generating notes for 2.13.0, use
+the `[v.2.12.0] Release Tracker`.
+
+Why: the previous release's cherry-picks already shipped in that release, but
+their trunk commits land inside this release's commit range. Without removing
+them (Step 3), they would be wrongly listed again in this release's notes. So we
+take the previous tracker and remove its cherry-picked commits from the commit
+list we parse for the current release.
 
 ## Inputs to collect first
 
@@ -24,9 +35,12 @@ take over:
 2. **Version** — the release version in `X.Y.Z` form, no `v` prefix (e.g.
    `2.13.0`). This names the output folder in this repo. Usually inferred in
    Step 1; ask only if tags are ambiguous.
-3. **Cherry-pick tracking issue URL** (optional) — only if you also want to
-   pre-clean cherry-picks here. Normally leave cherry-picks to the downstream
-   `/process-cherry-picks` skill and generate worksheets from the full list.
+3. **Previous version's cherry-pick tracker URL** (required) — the GitHub issue
+   tracking the *previous* release's cherry-picks (e.g.
+   `https://github.com/pytorch/pytorch/issues/180506` for `[v.2.12.0]`). Used in
+   Step 3 to pre-remove already-shipped commits. Do not guess it — ask the user.
+   You can sanity-check the title matches the previous version:
+   `gh issue view <n> --repo pytorch/pytorch --json title`.
 
 ## Step 0: Environment
 
@@ -80,6 +94,9 @@ echo "version (this repo):  $VERSION"
 echo "endpoint (latest rc): ${ENDPOINT:-<none found>}"
 ```
 
+The base also tells you which **previous tracker** to ask for: it is the tracker
+for `$BASE` (e.g. base `v2.12.0` -> ask for the `[v.2.12.0]` tracker URL).
+
 Handle edge cases before confirming:
 - **No rc tags yet** (`endpoint` empty): branch may not be cut, or tags need
   fetching. Ask how to proceed (wait, or use `origin/release/<NEXT>`).
@@ -111,22 +128,30 @@ first, then title bracket prefixes, then file-path keywords. Check the spread:
 python commitlist.py --stat
 ```
 
-## Step 3: Cherry-picks (optional here)
+## Step 3: Pre-remove the previous release's cherry-picks (always)
 
-In this repo, cherry-picks are normally handled downstream by
-`/process-cherry-picks` (which removes reverts from worksheets and populates
-`<version>/cherrypicks.md`). So usually **skip pre-cleaning** and export from the
-full `commitlist.csv`.
-
-Only if the user wants to pre-remove cherry-picks here (using a tracker issue):
+The commit range includes commits that were cherry-picked into the previous
+release and already shipped there. Remove them using the **previous version's**
+tracker URL from the inputs:
 
 ```bash
-python parse_cherry_picks.py <issue_url> --commitlist results/commitlist.csv
+# Parse the previous tracker -> resolve each cherry-pick to its landed trunk
+# commit and validate against the commitlist. Uses `gh`, takes a few minutes.
+python parse_cherry_picks.py <prev_tracker_url> --commitlist results/commitlist.csv
+
+# Remove the matched commits. Never mutates the input; writes a new file.
 python remove_cherry_picks.py \
   --commitlist results/commitlist.csv \
   --cherry-picks results/cherry_picks_<issue_number>.csv
-# -> results/commitlist_no_cherry_picks.csv (export from this instead)
 ```
+
+Outputs:
+- `results/commitlist_no_cherry_picks.csv` — **the cleaned list to export from.**
+- `results/cherry_pick_removals.log` — removed / not-found / skipped log.
+
+"Not found" entries are cherry-picks whose trunk commit is outside this release's
+range (already in an even older release, or revert-only) — nothing to remove.
+"Skipped" are N/A rows with no trunk commit.
 
 ## Step 4: Categorize the remainder (optional)
 
@@ -136,7 +161,7 @@ Most commits arrive labeled; a few land `Uncategorized`. List them:
 python - <<'EOF'
 import csv
 csv.field_size_limit(1000000)
-with open("results/commitlist.csv") as f:
+with open("results/commitlist_no_cherry_picks.csv") as f:
     rows = [r for r in csv.DictReader(f) if r["category"] == "Uncategorized"]
 print(f"Uncategorized: {len(rows)}")
 for r in rows:
@@ -156,12 +181,11 @@ expect that form.
 
 ## Step 5: Export per-area worksheets
 
-Wipe stale files and export. Use `commitlist.csv` (or the
-`*_no_cherry_picks.csv` from Step 3 if you pre-cleaned):
+Export from the cleaned (cherry-pick-removed) list. Wipe stale files first:
 
 ```bash
 rm -rf results/export
-python commitlist.py --export_markdown --path results/commitlist.csv
+python commitlist.py --export_markdown --path results/commitlist_no_cherry_picks.csv
 ```
 
 Output: `results/export/result_<area>.md`, one per category, each with a
@@ -180,7 +204,7 @@ mkdir -p "$VERSION/todo" "$VERSION/done"
 cp "$EXPORT"/export/result_*.md "$VERSION/todo"/      # worksheets (keep result_skip.md)
 rm -f "$VERSION/todo/result_Uncategorized.md"          # drop empty Uncategorized if present
 touch "$VERSION/done/placeholder.md"                   # keep empty done/ tracked
-cp "$EXPORT/commitlist.csv" "$VERSION/commitlist.csv"  # gitignored
+cp "$EXPORT/commitlist_no_cherry_picks.csv" "$VERSION/commitlist.csv"  # gitignored
 cp final_template.md "$VERSION/final.md"
 ```
 
@@ -196,8 +220,8 @@ If `<version>/` already exists, confirm before overwriting.
 Tell the user:
 - Commit count, category spread, and any remaining `Uncategorized`.
 - That `<version>/todo/` is populated and ready.
-- Next: run `/gen-release-notes <version> <area>` per area, and
-  `/process-cherry-picks <version> <tracker-issue-url>` once a tracker exists.
+- Next: run `/gen-release-notes <version> <area>` per area to complete the
+  worksheets.
 - Do NOT commit or open a PR unless asked.
 
 ## Notes
