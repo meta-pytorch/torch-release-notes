@@ -49,10 +49,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix import-time device loading in benchmark timer ([#181716](https://github.com/pytorch/pytorch/pull/181716))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Fix import-time device loading in benchmark timer ([#181716](https://github.com/pytorch/pytorch/pull/181716))
 ### not user facing
 ### security
