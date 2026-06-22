@@ -53,6 +53,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
-- Switch lookup-only std::map/std::set to unordered variants ([#184846](https://github.com/pytorch/pytorch/pull/184846))
 ### not user facing
+- Switch lookup-only std::map/std::set to unordered variants ([#184846](https://github.com/pytorch/pytorch/pull/184846))
+- Remove unused pyrefly ignores ([#180474](https://github.com/pytorch/pytorch/pull/180474))
 ### security
