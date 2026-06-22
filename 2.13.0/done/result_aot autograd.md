@@ -76,5 +76,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### not user facing
-- [invoke_subgraph] Pair fw and bw HOPs by per-call call_id in run_joint_graph_passes_on_hops ([#181808](https://github.com/pytorch/pytorch/pull/181808))
+- Pair forward and backward `invoke_subgraph` HOPs by per-call call_id in `run_joint_graph_passes_on_hops` ([#181808](https://github.com/pytorch/pytorch/pull/181808))
 ### security
