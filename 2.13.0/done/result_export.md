@@ -48,27 +48,25 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Support serialization of opaque type constants in `torch.export` save/load ([#181676](https://github.com/pytorch/pytorch/pull/181676))
 ### bug fixes
+- Fix NaN float scalar input handling in export guard codegen and input constraint checks ([#180399](https://github.com/pytorch/pytorch/pull/180399))
+- Fix `IndexError` during decomposition by also excluding lifted tensor constants and custom objects when identifying user-input placeholders ([#181179](https://github.com/pytorch/pytorch/pull/181179))
+- Fix serialization of predispatch wrapper functions (JVP, vmap) in `torch.export` save/load ([#181263](https://github.com/pytorch/pytorch/pull/181263))
+- Fix Triton HOP argument packing to preserve kernel argument metadata ([#182101](https://github.com/pytorch/pytorch/pull/182101))
+- Simplify `Min`/`Max` of scaled symbolic terms (e.g. `Min(128*s, 512*s)` reduces to `128*s`) so export no longer rejects valid branch guards ([#185092](https://github.com/pytorch/pytorch/pull/185092))
+- Clean up the buffer-registration hook on non-strict export trace failures to avoid a stray `AssertionError` on later eager buffer assignment ([#184956](https://github.com/pytorch/pytorch/pull/184956))
+- Fix export dynamic shapes for sparse COO inputs ([#184993](https://github.com/pytorch/pytorch/pull/184993))
+- Handle scalar tensor slice bounds in non-strict export ([#184925](https://github.com/pytorch/pytorch/pull/184925))
+- Fix `torch.export.load` GIL contention during tensor deserialization ([#175983](https://github.com/pytorch/pytorch/pull/175983))
 ### performance
 ### docs
+- Fix typos in attention bias, activation, and dataloader docs ([#184244](https://github.com/pytorch/pytorch/pull/184244))
 ### devs
 ### Untopiced
-- [PyTorch][Export] Fix NaN handling in export guard codegen and input constraint checks (#180399) ([#180399](https://github.com/pytorch/pytorch/pull/180399))
-- Replace isinstance(x, OpaqueBase) with is_opaque_value() ([#180530](https://github.com/pytorch/pytorch/pull/180530))
-- [export] Adds additional filtering for constants  ([#181179](https://github.com/pytorch/pytorch/pull/181179))
-- [PT2] Fix predispatch function serialization in torch.export save/load (#181263) ([#181263](https://github.com/pytorch/pytorch/pull/181263))
-- Fix typo in constant_folding.py comment ([#181932](https://github.com/pytorch/pytorch/pull/181932))
-- Fix typos in export, native, and nativert docs and headers ([#182734](https://github.com/pytorch/pytorch/pull/182734))
-- [nativert] Fix NativeRT Triton HOP argument packing (#182101) ([#182101](https://github.com/pytorch/pytorch/pull/182101))
-- [export] Support opaque type constants in save/load ([#181676](https://github.com/pytorch/pytorch/pull/181676))
-- [scan] Introduced movedim of outputs ([#182673](https://github.com/pytorch/pytorch/pull/182673))
-- Simplify Min/Max of scaled symbolic terms ([#185092](https://github.com/pytorch/pytorch/pull/185092))
-- Clean up export buffer hooks on trace failures ([#184956](https://github.com/pytorch/pytorch/pull/184956))
-- Fix export dynamic shapes for sparse COO inputs ([#184993](https://github.com/pytorch/pytorch/pull/184993))
 ### not user facing
-- revisit guarding in mark dynamic APIs ([#176341](https://github.com/pytorch/pytorch/pull/176341))
+- Fix typos in export, native, and nativert docs and headers ([#182734](https://github.com/pytorch/pytorch/pull/182734))
 - revisit guarding in mark dynamic APIs ([#176341](https://github.com/pytorch/pytorch/pull/176341))
 - Fix "it's" vs "its" typos in comments ([#181988](https://github.com/pytorch/pytorch/pull/181988))
-- Error on raw SymInt args in fx graph call funciton nodes, and add Graph helpers for sym shape/stride/storage_offset nodes. ([#183664](https://github.com/pytorch/pytorch/pull/183664))
-- Error on raw SymInt args in fx graph call funciton nodes, and add Graph helpers to make it easier to construct correct node and materialize symints to nodes. ([#183664](https://github.com/pytorch/pytorch/pull/183664))
+- Fix typo in constant_folding.py comment ([#181932](https://github.com/pytorch/pytorch/pull/181932))
 ### security
