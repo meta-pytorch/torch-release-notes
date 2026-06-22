@@ -48,27 +48,23 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Show forward op name instead of backward node name in autograd errors ([#180383](https://github.com/pytorch/pytorch/pull/180383))
-- [autograd] Add torch.autograd.enforce_grad_layout_policy ([#180552](https://github.com/pytorch/pytorch/pull/180552))
+- Implement autograd derivatives for `torch.nextafter` ([#148820](https://github.com/pytorch/pytorch/pull/148820))
+- Add `torch.autograd.enforce_grad_layout_policy` to control the memory layout policy for accumulated gradients ([#180552](https://github.com/pytorch/pytorch/pull/180552))
 ### bug fixes
 - Fix checkpoint context cleanup on forward errors ([#184018](https://github.com/pytorch/pytorch/pull/184018))
+- Fix `torch.autograd.enforce_grad_layout_policy` decorator state leak ([#183868](https://github.com/pytorch/pytorch/pull/183868))
 ### performance
+- Use indexed storage for selective activation checkpointing (SAC) to avoid calling `policy_fn` during recompute ([#176455](https://github.com/pytorch/pytorch/pull/176455))
 ### docs
 ### devs
-### Untopiced
-- Implement derivatives for nextafter operation ([#148820](https://github.com/pytorch/pytorch/pull/148820))
-- Remove unused pyrefly ignores ([#180474](https://github.com/pytorch/pytorch/pull/180474))
-- Use indexed storage for SAC to avoid calling policy_fn during recompute ([#176455](https://github.com/pytorch/pytorch/pull/176455))
-- Revert "[autograd] Convert shared_ptr<Node> to intrusive_ptr<Node>" ([#181432](https://github.com/pytorch/pytorch/pull/181432))
-- [autograd] Convert shared_ptr<Node> to intrusive_ptr<Node> (v2) (#181782) ([#181782](https://github.com/pytorch/pytorch/pull/181782))
-- [autograd] Fix enforce_grad_layout_policy decorator state leak. ([#183868](https://github.com/pytorch/pytorch/pull/183868))
+- Expose the PrivateUse1 backend name as an alias in `DeviceType` ([#184835](https://github.com/pytorch/pytorch/pull/184835))
+- Show the forward op name instead of the backward node name in autograd anomaly/error messages ([#180383](https://github.com/pytorch/pytorch/pull/180383))
 ### not user facing
-- Rename check_has_torch_function to has_torch_function ([#177533](https://github.com/pytorch/pytorch/pull/177533))
+- Rename `check_has_torch_function` to `has_torch_function` ([#177533](https://github.com/pytorch/pytorch/pull/177533))
 - [autograd] Extract Node class into node.h ([#179765](https://github.com/pytorch/pytorch/pull/179765))
 - [misc] Fix duplicated-word typos in comments and docstrings ([#181028](https://github.com/pytorch/pytorch/pull/181028))
 - [autograd] Thread-safe Python wrapping for Node ([#181390](https://github.com/pytorch/pytorch/pull/181390))
 - [BE] Finish Bazel removal: delete orphan `BUILD.bazel` files and stubs ([#183928](https://github.com/pytorch/pytorch/pull/183928))
 - [lint] Cover ATen + autograd/serde generated C++ in clang-tidy ([#184951](https://github.com/pytorch/pytorch/pull/184951))
-- [Autograd][Pri vateUse1] Expose backend name as alias in DeviceType for PrivateUse1 ([#184835](https://github.com/pytorch/pytorch/pull/184835))
 - Delay device init for tensor subclass new methods ([#185368](https://github.com/pytorch/pytorch/pull/185368))
 ### security
