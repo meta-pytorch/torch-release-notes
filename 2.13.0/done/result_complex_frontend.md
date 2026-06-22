@@ -48,11 +48,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Enable rewriting of FX traces containing complex tensors during compilation ([#169832](https://github.com/pytorch/pytorch/pull/169832))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Rewrite traces with complex tensors ([#169832](https://github.com/pytorch/pytorch/pull/169832))
 ### not user facing
 ### security
