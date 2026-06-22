@@ -47,32 +47,39 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Profiler/Kineto now emits channel metadata on CUDA backends ([#185968](https://github.com/pytorch/pytorch/pull/185968))
+
 ### improvements
+- The memory viz tool now more accurately represents GPU footprint when impacted by fragmentation ([#180515](https://github.com/pytorch/pytorch/pull/180515))
+- The memory viz tool now aggregates stripes per-pool to improve visualization for large snapshots ([#180613](https://github.com/pytorch/pytorch/pull/180613))
+- Profiler now also exposes CUDA occupancy metadata as a nested dictionary in the .events() output ([#180275](https://github.com/pytorch/pytorch/pull/180275))
+
 ### bug fixes
+- Fix an issue where profiler would issue a "Profiler clears events at the end of each cycle" warning even when no cycles are used in the schedule ([#180387](https://github.com/pytorch/pytorch/pull/180387))
+- Ensures that Profiler does not keep driving Kineto transitions even when GPU collection has stopped ([#180698](https://github.com/pytorch/pytorch/pull/180698))
+
 ### performance
+
 ### docs
+- Remove references to _KinetoProfile in public docs ([#180672](https://github.com/pytorch/pytorch/pull/180672))
+
 ### devs
+
 ### Untopiced
-- [Profiler] Rename occupancy -> est_occupancy_pct ([#180275](https://github.com/pytorch/pytorch/pull/180275))
-- Update profiler .pyi stub ([#180400](https://github.com/pytorch/pytorch/pull/180400))
-- [profiler] Add profiler chrome trace validator with rules ([#177947](https://github.com/pytorch/pytorch/pull/177947))
-- [Profiler] Remove references to _KinetoProfile in public docs ([#180672](https://github.com/pytorch/pytorch/pull/180672))
-- [mem viz] use segment size for envelope to show fragmentation ([#180515](https://github.com/pytorch/pytorch/pull/180515))
-- [mem viz] Add summary blocks to pools ([#180613](https://github.com/pytorch/pytorch/pull/180613))
-- [Profiler][PrivateUse1] Expose backend name as alias in ProfilerActivity for PrivateUse1 ([#180421](https://github.com/pytorch/pytorch/pull/180421))
-- Fix profiler event clearing warning to only fire when events are actually cleared  ([#180387](https://github.com/pytorch/pytorch/pull/180387))
-- Adds helper function _rename_profiler_activity ([#181652](https://github.com/pytorch/pytorch/pull/181652))
-- Enable profiler schedule to early-exit on problems ([#180698](https://github.com/pytorch/pytorch/pull/180698))
-- [Profiler] Propagate NCCL collective metadata to GPU kernels in Pytho… ([#184637](https://github.com/pytorch/pytorch/pull/184637))
-- [Profiler] Add channel events to .events() output ([#185968](https://github.com/pytorch/pytorch/pull/185968))
-- Add experimental profiler integration for the CUPTI monitor ([#186037](https://github.com/pytorch/pytorch/pull/186037))
+
 ### not user facing
 - [Profiler] Improve events() <> chrome trace parity test ([#180085](https://github.com/pytorch/pytorch/pull/180085))
-- [Profiler][PrivateUse1] Make `PrivateUse1ProfilerRegistry::registerWithKineto()` private to fix data race ([#180332](https://github.com/pytorch/pytorch/pull/180332))
 - [Profiler] Add ryanzhang22 as a profiler owner ([#180680](https://github.com/pytorch/pytorch/pull/180680))
 - Fix profiler event canonicalization with PEP 657 caret lines ([#184275](https://github.com/pytorch/pytorch/pull/184275))
 - [profiler] Add channel / channel_type dummy fields to EventMetadata ([#184560](https://github.com/pytorch/pytorch/pull/184560))
-- [Profiler] Add trace_only ExperimentalConfig flag to speed up __exit__ ([#184306](https://github.com/pytorch/pytorch/pull/184306))
 - [Profiler] Guard traceActivities() behind USE_KINETO ([#184916](https://github.com/pytorch/pytorch/pull/184916))
 - [Profiler] Fix gc test by checking for at least one gc event between bounds ([#186832](https://github.com/pytorch/pytorch/pull/186832))
+- Add experimental profiler integration for the CUPTI monitor ([#186037](https://github.com/pytorch/pytorch/pull/186037))
+- Update profiler .pyi stub ([#180400](https://github.com/pytorch/pytorch/pull/180400))
+- [Profiler] Add trace_only ExperimentalConfig flag to speed up __exit__ ([#184306](https://github.com/pytorch/pytorch/pull/184306))
+- [Profiler] Propagate NCCL collective metadata to GPU kernels in Pytho… ([#184637](https://github.com/pytorch/pytorch/pull/184637))
+- [Profiler][PrivateUse1] Expose backend name as alias in ProfilerActivity for PrivateUse1 ([#180421](https://github.com/pytorch/pytorch/pull/180421))
+- [Profiler][PrivateUse1] Make `PrivateUse1ProfilerRegistry::registerWithKineto()` private to fix data race ([#180332](https://github.com/pytorch/pytorch/pull/180332))
+- [profiler] Add profiler chrome trace validator with rules ([#177947](https://github.com/pytorch/pytorch/pull/177947))
+- Adds helper function _rename_profiler_activity ([#181652](https://github.com/pytorch/pytorch/pull/181652))
 ### security
