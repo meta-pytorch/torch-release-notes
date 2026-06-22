@@ -1,5 +1,5 @@
 
-# Release Notes worksheet aotdispatcher
+# Release Notes worksheet aot autograd
 
 You should:
 
@@ -43,16 +43,38 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## aotdispatcher
+## aot autograd
 ### bc breaking
 ### deprecation
+- Custom operators that return an output aliasing one of their inputs are deprecated ([#182063](https://github.com/pytorch/pytorch/pull/182063))
+
+  When a custom operator returns an output that is the same tensor as (or otherwise aliases) one of its inputs under `torch.compile`, PyTorch now emits a `UserWarning` stating that this is deprecated and will become an error in a future version of PyTorch. Previously the warning stated the change would land in PyTorch 2.12; that timeline has been pushed back. To update your code, return a clone of the offending output instead of the input, or refactor the operator so it does not return the aliased tensor.
+
+  Deprecated:
+  ```python
+  @torch.library.custom_op("mylib::foo", mutates_args=())
+  def foo(x: torch.Tensor) -> torch.Tensor:
+      return x  # output aliases the input -- deprecated
+  ```
+
+  Updated:
+  ```python
+  @torch.library.custom_op("mylib::foo", mutates_args=())
+  def foo(x: torch.Tensor) -> torch.Tensor:
+      return x.clone()  # return a clone instead
+  ```
 ### new features
 ### improvements
+- Support CPU activation offloading in the rematerialization pass, including marking recomputed nodes for backward and adding a resize-to-0 deallocation op so offloaded tensors are freed after their host-to-device copy ([#181937](https://github.com/pytorch/pytorch/pull/181937), [#181938](https://github.com/pytorch/pytorch/pull/181938))
+- Use FX node names in `merge_view_inputs` error messages, so non-differentiable view input mutation errors identify the specific offending inputs ([#180424](https://github.com/pytorch/pytorch/pull/180424))
 ### bug fixes
+- Fix `torch.compile` crash with batched matmul in `inference_mode` ([#181913](https://github.com/pytorch/pytorch/pull/181913))
+- Fix expanded output tangent stride handling ([#184519](https://github.com/pytorch/pytorch/pull/184519))
+- Fix AOT synthetic-base out view returns ([#185029](https://github.com/pytorch/pytorch/pull/185029))
+- Handle functionalized tensors in `aten.lift` functionalization ([#185805](https://github.com/pytorch/pytorch/pull/185805))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [aot_autograd] Use FX node names in merge_view_inputs error messages ([#180424](https://github.com/pytorch/pytorch/pull/180424))
 ### not user facing
+- [invoke_subgraph] Pair fw and bw HOPs by per-call call_id in run_joint_graph_passes_on_hops ([#181808](https://github.com/pytorch/pytorch/pull/181808))
 ### security
