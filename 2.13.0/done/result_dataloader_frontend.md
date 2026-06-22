@@ -49,12 +49,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix `DataLoader` file descriptor leak from `atexit` cleanup ([#176607](https://github.com/pytorch/pytorch/pull/176607))
 ### performance
 ### docs
+- Document previously undocumented functions in the `torch.utils.data` documentation ([#182682](https://github.com/pytorch/pytorch/pull/182682))
 ### devs
 ### Untopiced
-- Fix DataLoader file descriptor leak from atexit cleanup ([#176607](https://github.com/pytorch/pytorch/pull/176607))
-- Fix typos in optimizer, distribution, and utility modules ([#185620](https://github.com/pytorch/pytorch/pull/185620))
 ### not user facing
-- [Docathon] Document undocumented functions in data.md (6 functions) ([#182682](https://github.com/pytorch/pytorch/pull/182682))
 ### security
