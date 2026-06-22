@@ -47,26 +47,24 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add `nn.LinearCrossEntropyLoss`, a fused linear-projection plus cross-entropy loss module that avoids materializing the full logits tensor ([#181573](https://github.com/pytorch/pytorch/pull/181573))
 ### improvements
+- Expose `num_splits` in FlashAttention-2 and bump the flash-attention submodule ([#179760](https://github.com/pytorch/pytorch/pull/179760))
+- Support `linear_bias` in `linear_cross_entropy` on the reference and chunked paths ([#185129](https://github.com/pytorch/pytorch/pull/185129), [#185276](https://github.com/pytorch/pytorch/pull/185276))
 ### bug fixes
+- Validate `stride`/`padding`/`kernel_size` length in `slow_conv3d` ([#181063](https://github.com/pytorch/pytorch/pull/181063))
+- Validate inputs in `math_channel_shuffle` ([#181029](https://github.com/pytorch/pytorch/pull/181029))
+- Validate `delta` type in `nn.HuberLoss` constructor ([#184012](https://github.com/pytorch/pytorch/pull/184012))
+- Lowercase the environment variable in `torch/serialization.py` so it matches the true values ([#180959](https://github.com/pytorch/pytorch/pull/180959))
+- Fix int32 overflow in `layer_norm` on CUDA for tensors with more than 2^32 elements ([#181600](https://github.com/pytorch/pytorch/pull/181600))
+- Reject `NestedTensor` inputs in `flex_attention` with a clear error instead of an unclear backend failure ([#183516](https://github.com/pytorch/pytorch/pull/183516))
+- Fix SDPA incorrect early return on 0 head dim qk with valid v ([#184914](https://github.com/pytorch/pytorch/pull/184914))
+- Fix `reflection_pad1d` backward CUDA launch for large batches ([#185024](https://github.com/pytorch/pytorch/pull/185024))
+- Fix `lp_pool` infinity norm handling ([#183997](https://github.com/pytorch/pytorch/pull/183997))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- expose num_splits in FA2 + bump flash attention submodule commit ([#179760](https://github.com/pytorch/pytorch/pull/179760))
-- expose num_splits in FA2 + bump flash attention submodule commit ([#179760](https://github.com/pytorch/pytorch/pull/179760))
-- Validate stride/padding/kernel_size length in slow_conv3d ([#181063](https://github.com/pytorch/pytorch/pull/181063))
-- Validate inputs in math_channel_shuffle ([#181029](https://github.com/pytorch/pytorch/pull/181029))
-- fix: lowercase the env to match the true values in torch/serialization.py ([#180959](https://github.com/pytorch/pytorch/pull/180959))
-- Add nn.LinearCrossEntropyLoss (2) ([#181573](https://github.com/pytorch/pytorch/pull/181573))
-- [CUDA] Fix int32 overflow in layer_norm for tensors with >2^32 elements ([#181600](https://github.com/pytorch/pytorch/pull/181600))
-- Reject NestedTensor inputs in flex_attention ([#183516](https://github.com/pytorch/pytorch/pull/183516))
-- Fix typos in attention bias, activation, and dataloader docs ([#184244](https://github.com/pytorch/pytorch/pull/184244))
-- fix sdpa incorrect early return on 0 head dim qk w/ valid v ([#184914](https://github.com/pytorch/pytorch/pull/184914))
-- Fix reflection_pad1d backward CUDA launch for large batches ([#185024](https://github.com/pytorch/pytorch/pull/185024))
-- Add linear_bias kwarg to linear_cross_entropy reference path ([#185129](https://github.com/pytorch/pytorch/pull/185129))
-- linear_cross_entropy: support linear_bias on the chunked path ([#185276](https://github.com/pytorch/pytorch/pull/185276))
-- Fix lp_pool infinity norm handling ([#183997](https://github.com/pytorch/pytorch/pull/183997))
 ### not user facing
 - Fix typo in Transformer._reset_parameters docstring ([#182243](https://github.com/pytorch/pytorch/pull/182243))
 - Fix RuntimeError formatting in AdaptiveLogSoftmaxWithLoss ([#182325](https://github.com/pytorch/pytorch/pull/182325))
@@ -77,5 +75,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Audit @skipIfMPS decorators: drop obsolete, refine with @dtypesIfMPS ([#184655](https://github.com/pytorch/pytorch/pull/184655))
 - Fix typos in torch.nn.modules docstrings ([#185603](https://github.com/pytorch/pytorch/pull/185603))
 - [ROCm] Remove test_upsamplingNearest2d_launch_rocm test as ROCm reduces max grid size ([#186257](https://github.com/pytorch/pytorch/pull/186257))
-- Validate delta type in nn.HuberLoss constructor ([#184012](https://github.com/pytorch/pytorch/pull/184012))
 ### security
