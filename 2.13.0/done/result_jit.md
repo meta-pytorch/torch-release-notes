@@ -45,43 +45,62 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## jit
 ### bc breaking
+- Bare `PyObject` is no longer allowed in operator schemas ([#184209](https://github.com/pytorch/pytorch/pull/184209))
+
+  Bare `PyObject` was accidentally accepted in operator schema strings in
+  PyTorch 2.12 while adding support for registered opaque type names. This was
+  undocumented and is now rejected, since `torch.compile` does not support
+  arbitrary `PyObject` inputs to custom ops. Registered opaque type names
+  continue to work. If you parse or register a schema with a bare `PyObject`
+  argument or return type, you will now get a schema parse error; switch to a
+  registered opaque type name instead.
+
+  Version 2.12:
+  ```python
+  >>> from torch._C import parse_schema
+  >>> parse_schema("foo(PyObject x) -> ()")  # accepted
+  ```
+
+  Version 2.13:
+  ```python
+  >>> from torch._C import parse_schema
+  >>> parse_schema("foo(PyObject x) -> ()")  # raises a schema parse error
+  ```
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
-- Fix OOB read in MemoryReadAdapter::read ([#181193](https://github.com/pytorch/pytorch/pull/181193))
+- Fix OOB read in `MemoryReadAdapter::read` ([#181193](https://github.com/pytorch/pytorch/pull/181193))
 - Validate tensor sizes/strides/storage_offset in C++ Unpickler ([#183381](https://github.com/pytorch/pytorch/pull/183381))
+- Fix integer overflow in Unpickler storage size computation ([#181310](https://github.com/pytorch/pytorch/pull/181310))
+- Fix `broadcast_shapes` op missing in selective builds ([#180860](https://github.com/pytorch/pytorch/pull/180860))
+- Fix `binary_cross_entropy` SymInt error with dynamic shapes by registering `aten::broadcast_shapes` as a TorchScript builtin ([#180583](https://github.com/pytorch/pytorch/pull/180583))
+- Fix use-after-free in symbolic-shape runtime fusion guard ([#183760](https://github.com/pytorch/pytorch/pull/183760))
+- Apply bugfixes when enabling Link-Time Optimizations ([#180868](https://github.com/pytorch/pytorch/pull/180868))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [PyTorch] Fix broadcast_shapes op missing in selective builds (#180860) ([#180860](https://github.com/pytorch/pytorch/pull/180860))
-- Use TORCH_CHECK instead of AT_ASSERT for single input/output node helpers ([#181282](https://github.com/pytorch/pytorch/pull/181282))
-- Apply bugfixes from LTO enablement PR ([#180868](https://github.com/pytorch/pytorch/pull/180868))
+- Add `torch._C._jit_replace_submodule` to swap submodules in scripted modules while updating parent types and remapping referenced types across graphs ([#180296](https://github.com/pytorch/pytorch/pull/180296))
+- Use `TORCH_CHECK` instead of `AT_ASSERT` for single input/output node helpers, producing clearer error messages ([#181282](https://github.com/pytorch/pytorch/pull/181282))
+- Expose `overlapsWithUsedNodes` and `getVmap` from `SubgraphRewriter` ([#183333](https://github.com/pytorch/pytorch/pull/183333))
+### not user facing
 - Fix typos in comments, docstrings, and error messages ([#181391](https://github.com/pytorch/pytorch/pull/181391))
-- [PyTorch] Add _jit_replace_submodule (#180296) ([#180296](https://github.com/pytorch/pytorch/pull/180296))
-- [BE][Ez]: Make IValueArray move only ([#181517](https://github.com/pytorch/pytorch/pull/181517))
 - Fix typos in comments and docstrings ([#181970](https://github.com/pytorch/pytorch/pull/181970))
 - Fix typos in comments: recoding -> recording, sppecified -> specified ([#181983](https://github.com/pytorch/pytorch/pull/181983))
-- [preproc] shared lock for jit (#175181) ([#175181](https://github.com/pytorch/pytorch/pull/175181))
 - Fix typos in comment and deprecation message ([#182685](https://github.com/pytorch/pytorch/pull/182685))
 - Fix "dont" typos across JIT, dynamo, and fx modules ([#182702](https://github.com/pytorch/pytorch/pull/182702))
 - Fix typos in C++ comments ([#182767](https://github.com/pytorch/pytorch/pull/182767))
-- [AI Codemod][PerfAICT-ObjCpy] perf: Avoid unnecessary std::string construction (#183011) ([#183011](https://github.com/pytorch/pytorch/pull/183011))
-- Fix use-after-free in symbolic-shape runtime fusion guard ([#183760](https://github.com/pytorch/pytorch/pull/183760))
-- Use pop in place of last() + drop() in JIT runtime ([#184063](https://github.com/pytorch/pytorch/pull/184063))
-- Disallow bare PyObject in operator schemas ([#184209](https://github.com/pytorch/pytorch/pull/184209))
-- Fix integer overflow in Unpickler storage size computation ([#181310](https://github.com/pytorch/pytorch/pull/181310))
 - Fix "its'" typos to "its" across AOT autograd and JIT frontend ([#185242](https://github.com/pytorch/pytorch/pull/185242))
-- [Regional AOTI] Mutate root ScriptModule in place in _replace_submodule_with_typecheck_pybind (#185321) ([#185321](https://github.com/pytorch/pytorch/pull/185321))
 - Fix typo "onceto" -> "once to" in JIT CSE comments ([#185584](https://github.com/pytorch/pytorch/pull/185584))
-- [export] Fix torch.export.load GIL contention during tensor deserialization ([#175983](https://github.com/pytorch/pytorch/pull/175983))
-### not user facing
-- [PyTorch] Fix binary_cross_entropy SymInt error with dynamic shapes (#180583) ([#180583](https://github.com/pytorch/pytorch/pull/180583))
-- Use C++20 concepts where it improves readability ([#179286](https://github.com/pytorch/pytorch/pull/179286))
 - Fix duplicate word typo in LLVM JIT comment ([#184213](https://github.com/pytorch/pytorch/pull/184213))
-- Replace c10::ssize with std::ssize ([#184775](https://github.com/pytorch/pytorch/pull/184775))
 - Fix article and spelling typos in comments and docstrings ([#185230](https://github.com/pytorch/pytorch/pull/185230))
-- [CPU Kernel Fusion Framework] Expose overlapsWithUsedNodes and getVmap from SubgraphRewriter (#183333) ([#183333](https://github.com/pytorch/pytorch/pull/183333))
+- [BE][Ez]: Make IValueArray move only ([#181517](https://github.com/pytorch/pytorch/pull/181517))
 - [BE][Ez]: Append single char instead of str literal overload ([#186477](https://github.com/pytorch/pytorch/pull/186477))
+- Use C++20 concepts where it improves readability ([#179286](https://github.com/pytorch/pytorch/pull/179286))
+- Replace c10::ssize with std::ssize ([#184775](https://github.com/pytorch/pytorch/pull/184775))
+- Use pop in place of last() + drop() in JIT runtime ([#184063](https://github.com/pytorch/pytorch/pull/184063))
+- [preproc] shared lock for jit ([#175181](https://github.com/pytorch/pytorch/pull/175181))
+- Avoid unnecessary std::string construction in JIT object copy ([#183011](https://github.com/pytorch/pytorch/pull/183011))
+- [Regional AOTI] Mutate root ScriptModule in place in `_replace_submodule_with_typecheck_pybind` ([#185321](https://github.com/pytorch/pytorch/pull/185321))
+- Add LLVM 23+ branch for `ObjectLinkingLayerCreator` in tensorexpr ([#180746](https://github.com/pytorch/pytorch/pull/180746))
 ### security
