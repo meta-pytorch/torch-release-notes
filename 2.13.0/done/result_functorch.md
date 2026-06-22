@@ -48,12 +48,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Add `vmap` batching rule for `torch.unbind_copy` ([#178035](https://github.com/pytorch/pytorch/pull/178035))
+- Add `vmap` batching rule for `Tensor.view(dtype)` (`aten::view.dtype`) ([#180728](https://github.com/pytorch/pytorch/pull/180728))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [functorch] Add vmap batching rule for aten::unbind_copy.int ([#178035](https://github.com/pytorch/pytorch/pull/178035))
 ### not user facing
 - [functorch] check for canonical graph order when deciding to sync decision cross ranks (do toposort in has_same_nodes) ([#180355](https://github.com/pytorch/pytorch/pull/180355))
 ### security
