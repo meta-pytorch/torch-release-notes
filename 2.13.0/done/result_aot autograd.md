@@ -1,5 +1,5 @@
 
-# Release Notes worksheet aotdispatcher
+# Release Notes worksheet aot autograd
 
 You should:
 
@@ -43,16 +43,20 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## aotdispatcher
+## aot autograd
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+- Support CPU activation offloading in the rematerialization pass, including marking recomputed nodes for backward and adding a resize-to-0 deallocation op so offloaded tensors are freed after their host-to-device copy ([#181937](https://github.com/pytorch/pytorch/pull/181937), [#181938](https://github.com/pytorch/pytorch/pull/181938))
+- Use FX node names in `merge_view_inputs` error messages, so non-differentiable view input mutation errors identify the specific offending inputs ([#180424](https://github.com/pytorch/pytorch/pull/180424))
 ### bug fixes
+- Fix `torch.compile` crash with batched matmul in `inference_mode` ([#181913](https://github.com/pytorch/pytorch/pull/181913))
+- Fix expanded output tangent stride handling ([#184519](https://github.com/pytorch/pytorch/pull/184519))
+- Fix AOT synthetic-base out view returns ([#185029](https://github.com/pytorch/pytorch/pull/185029))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [aot_autograd] Use FX node names in merge_view_inputs error messages ([#180424](https://github.com/pytorch/pytorch/pull/180424))
 ### not user facing
+- Pair forward and backward `invoke_subgraph` HOPs by per-call call_id in `run_joint_graph_passes_on_hops` ([#181808](https://github.com/pytorch/pytorch/pull/181808))
 ### security
