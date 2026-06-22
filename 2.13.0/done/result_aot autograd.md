@@ -46,20 +46,19 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ## aot autograd
 ### bc breaking
 ### deprecation
-- Push custom op incorrect aliasing deprecation message to the future ([#182063](https://github.com/pytorch/pytorch/pull/182063))
 ### new features
 ### improvements
+- Support CPU activation offloading in the rematerialization pass, including marking recomputed nodes for backward and adding a resize-to-0 deallocation op so offloaded tensors are freed after their host-to-device copy ([#181937](https://github.com/pytorch/pytorch/pull/181937), [#181938](https://github.com/pytorch/pytorch/pull/181938))
+- Use FX node names in `merge_view_inputs` error messages, so non-differentiable view input mutation errors identify the specific offending inputs ([#180424](https://github.com/pytorch/pytorch/pull/180424))
 ### bug fixes
+- Fix `torch.compile` crash with batched matmul in `inference_mode` ([#181913](https://github.com/pytorch/pytorch/pull/181913))
+- Fix expanded output tangent stride handling ([#184519](https://github.com/pytorch/pytorch/pull/184519))
+- Fix AOT synthetic-base out view returns ([#185029](https://github.com/pytorch/pytorch/pull/185029))
+- Preserve linalg error checks in AOT graphs ([#184111](https://github.com/pytorch/pytorch/pull/184111))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [offloading] Mark nodes for backward in remat pass ([#181937](https://github.com/pytorch/pytorch/pull/181937))
-- Fix torch.compile crash with batched matmul in inference_mode ([#181913](https://github.com/pytorch/pytorch/pull/181913))
-- [offloading] Create resize 0 dealloc op ([#181938](https://github.com/pytorch/pytorch/pull/181938))
-- Fix expanded output tangent stride handling ([#184519](https://github.com/pytorch/pytorch/pull/184519))
-- Fix AOT synthetic-base out view returns ([#185029](https://github.com/pytorch/pytorch/pull/185029))
-- Handle functionalized tensors in aten.lift functionalization ([#185805](https://github.com/pytorch/pytorch/pull/185805))
 ### not user facing
-- [invoke_subgraph] Pair fw and bw HOPs by per-call call_id in run_joint_graph_passes_on_hops ([#181808](https://github.com/pytorch/pytorch/pull/181808))
+- Pair forward and backward `invoke_subgraph` HOPs by per-call call_id in `run_joint_graph_passes_on_hops` ([#181808](https://github.com/pytorch/pytorch/pull/181808))
+- Make `AOTConfig` immutable in AOT stage 2 ([#184070](https://github.com/pytorch/pytorch/pull/184070))
 ### security
