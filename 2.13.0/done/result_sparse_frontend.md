@@ -48,18 +48,15 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Validate `mat1`/`mat2` layouts in `sspaddmm` and clarify error messages ([#179037](https://github.com/pytorch/pytorch/pull/179037))
 ### bug fixes
-- [sparse] check_invariants does not silence warning for torch.sparse_csr_tensor ([#183256](https://github.com/pytorch/pytorch/pull/183256))
-- [sparse] check_invariants does not silence warning for torch.sparse_csr_tensor ([#183256](https://github.com/pytorch/pytorch/pull/183256))
 ### performance
+- Optimize the layernorm + sigmoid epilogue by providing an ideal input shape to layernorm after sparse matmul ([#183472](https://github.com/pytorch/pytorch/pull/183472))
 ### docs
 ### devs
 ### Untopiced
-- [sparse][triton] Add XPU device support to sparse Triton ops ([#179805](https://github.com/pytorch/pytorch/pull/179805))
-- [3/N] Use const_data_ptr ([#180801](https://github.com/pytorch/pytorch/pull/180801))
-- sspaddmm: validate mat1/mat2 layout and clarify errors ([#179037](https://github.com/pytorch/pytorch/pull/179037))
+### not user facing
+- [4/N] Use const_data_ptr ([#180801](https://github.com/pytorch/pytorch/pull/180801))
 - Fix typos in comments and docstrings ([#181346](https://github.com/pytorch/pytorch/pull/181346))
 - [1/N] Replace data_ptr with mutable_data_ptr ([#182664](https://github.com/pytorch/pytorch/pull/182664))
-- Optimize for layernorm + sigmoid epilogue by prodiving ideal input shape to layernorm after sparse matmul (#183472) ([#183472](https://github.com/pytorch/pytorch/pull/183472))
-### not user facing
 ### security
