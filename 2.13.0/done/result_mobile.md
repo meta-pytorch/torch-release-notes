@@ -53,10 +53,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
-- [Xcode 26.4 SDK] Fix -Wnullable-to-nonnull-conversion in MetalContext.mm and MetalDevice.h (PyTorch Metal) ([#181912](https://github.com/pytorch/pytorch/pull/181912))
-- Use std::to_array/std::initializer_list  ([#185607](https://github.com/pytorch/pytorch/pull/185607))
 ### not user facing
+- Fix -Wnullable-to-nonnull-conversion in MetalContext.mm and MetalDevice.h for Xcode 26.4 SDK ([#181912](https://github.com/pytorch/pytorch/pull/181912))
+- Use std::to_array/std::initializer_list ([#185607](https://github.com/pytorch/pytorch/pull/185607))
 - Fix typos in comments and error messages ([#181982](https://github.com/pytorch/pytorch/pull/181982))
-- [BE][MacOS] Suppress deprecated declarations warnings ([#183927](https://github.com/pytorch/pytorch/pull/183927))
+- Suppress deprecated declarations warnings on MacOS ([#183927](https://github.com/pytorch/pytorch/pull/183927))
 - Fix typos in comments ([#185556](https://github.com/pytorch/pytorch/pull/185556))
 ### security
