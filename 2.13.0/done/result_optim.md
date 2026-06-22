@@ -1,5 +1,5 @@
 
-# Release Notes worksheet foreach_frontend
+# Release Notes worksheet optim
 
 You should:
 
@@ -43,21 +43,24 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## foreach_frontend
+## optim
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+- Fix SequentialLR wrong learning rate initialization when milestones contain 0 ([#185986](https://github.com/pytorch/pytorch/pull/185986))
 ### bug fixes
 ### performance
 ### docs
+- Use \gamma consistently for `lr` in Adafactor math blocks ([#184773](https://github.com/pytorch/pytorch/pull/184773))
+- Clarify ReduceLROnPlateau `threshold_mode` behavior ([#180638](https://github.com/pytorch/pytorch/pull/180638))
 ### devs
+- Add optimizer reparameterization helper for non-strict tracing ([#181643](https://github.com/pytorch/pytorch/pull/181643))
 ### Untopiced
-- Fix/add empty check foreachmax ([#173483](https://github.com/pytorch/pytorch/pull/173483))
-- [xpu][test]port test_foreach for Intel GPU ([#169354](https://github.com/pytorch/pytorch/pull/169354))
-- [ROCm] Make foreach fastpath detection robust in test_foreach ([#180695](https://github.com/pytorch/pytorch/pull/180695))
 ### not user facing
-- [BE][Ez]: Fix missing reserve calls on std::vector ([#185245](https://github.com/pytorch/pytorch/pull/185245))
-- [native_dsl] Add nvmath cublasLt grouped GEMM for _foreach_mm ([#185530](https://github.com/pytorch/pytorch/pull/185530))
-- [native_dsl] Fix foreach_mm nvmath routing checks ([#186417](https://github.com/pytorch/pytorch/pull/186417))
+- Removed  skipIfTorchDynamo from test_set_default_dtype_works_with_foreach unit test ([#177129](https://github.com/pytorch/pytorch/pull/177129))
+- [xpu][fix] Add xpu to maybe_fallback ([#180451](https://github.com/pytorch/pytorch/pull/180451))
+- Refine graph capture check in optimizer ([#180453](https://github.com/pytorch/pytorch/pull/180453))
+- docs: make optimizer load_state_dict example generic ([#185401](https://github.com/pytorch/pytorch/pull/185401))
+- Fix typos in optimizer, distribution, and utility modules ([#185620](https://github.com/pytorch/pytorch/pull/185620))
 ### security
