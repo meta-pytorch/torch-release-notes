@@ -1,5 +1,5 @@
 
-# Release Notes worksheet aot autograd
+# Release Notes worksheet aotdispatcher
 
 You should:
 
@@ -43,23 +43,14 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## aot autograd
+## aotdispatcher
 ### bc breaking
 ### deprecation
-- Push custom op incorrect aliasing deprecation message to the future ([#182063](https://github.com/pytorch/pytorch/pull/182063))
 ### new features
 ### improvements
 ### bug fixes
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [offloading] Mark nodes for backward in remat pass ([#181937](https://github.com/pytorch/pytorch/pull/181937))
-- Fix torch.compile crash with batched matmul in inference_mode ([#181913](https://github.com/pytorch/pytorch/pull/181913))
-- [offloading] Create resize 0 dealloc op ([#181938](https://github.com/pytorch/pytorch/pull/181938))
-- Fix expanded output tangent stride handling ([#184519](https://github.com/pytorch/pytorch/pull/184519))
-- Fix AOT synthetic-base out view returns ([#185029](https://github.com/pytorch/pytorch/pull/185029))
-- Handle functionalized tensors in aten.lift functionalization ([#185805](https://github.com/pytorch/pytorch/pull/185805))
 ### not user facing
-- [invoke_subgraph] Pair fw and bw HOPs by per-call call_id in run_joint_graph_passes_on_hops ([#181808](https://github.com/pytorch/pytorch/pull/181808))
 ### security
