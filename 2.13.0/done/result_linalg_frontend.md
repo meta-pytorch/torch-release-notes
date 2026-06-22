@@ -48,20 +48,18 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Add `Half` and `BFloat16` dispatch support for `torch.trace` on CPU ([#184874](https://github.com/pytorch/pytorch/pull/184874))
+- Improve heuristics for the cuSOLVER vs cuBLAS backend switch in `torch.linalg.lu` ([#185344](https://github.com/pytorch/pytorch/pull/185344))
 ### bug fixes
+- Validate pivot range in `torch.linalg.ldl_solve` CPU kernel ([#181032](https://github.com/pytorch/pytorch/pull/181032))
+- Fix rocBLAS tunable GEMM solution handling in TunableOp ([#182380](https://github.com/pytorch/pytorch/pull/182380))
+- Route fp16 backward GEMMs to rocBLAS to preserve subnormals ([#183766](https://github.com/pytorch/pytorch/pull/183766))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Validate pivot range in linalg.ldl_solve CPU kernel ([#181032](https://github.com/pytorch/pytorch/pull/181032))
-- [ROCm][TunableOp] Fix ROCBLAS tunable GEMM solution handling ([#182380](https://github.com/pytorch/pytorch/pull/182380))
-- [ATen][FakeTensor] Handle unbacked dims in folded matmul ([#183397](https://github.com/pytorch/pytorch/pull/183397))
-- [ATen][ProxyTensor] Preserve unbacked batch dims in SDPA tracing ([#183398](https://github.com/pytorch/pytorch/pull/183398))
-- [ROCm] route fp16 backward GEMMs to rocBLAS to preserve subnormals ([#183766](https://github.com/pytorch/pytorch/pull/183766))
-- [ROCm] Replace MI300 TF32 test skips with measured dispositions ([#180926](https://github.com/pytorch/pytorch/pull/180926))
-- Add Half and BFloat16 dispatch support for torch.trace on CPU ([#184874](https://github.com/pytorch/pytorch/pull/184874))
-- torch.linalg.lu: improve heuristics for the cuSOLVER vs cuBLAS switch ([#185344](https://github.com/pytorch/pytorch/pull/185344))
 ### not user facing
+- [ROCm] Replace MI300 TF32 test skips with measured dispositions ([#180926](https://github.com/pytorch/pytorch/pull/180926))
 - Add type annotations to torch/_linalg_utils.py ([#181464](https://github.com/pytorch/pytorch/pull/181464))
 - [ROCm] Enabled test_linalg tests that were skipped due to skipCUDAIfNoMagmaAndNoCusolver ([#180303](https://github.com/pytorch/pytorch/pull/180303))
 - [ROCm] Add CK BLAS backend torch.mm test ([#182195](https://github.com/pytorch/pytorch/pull/182195))
