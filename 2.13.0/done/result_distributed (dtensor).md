@@ -49,14 +49,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Avoid native sharding cache for symbolic IValue arguments, fixing stale cached output shardings that confused global and local shard shapes for shape-sensitive ops under compiled autograd ([#183246](https://github.com/pytorch/pytorch/pull/183246))
+- Fix `upsample` backward crashes when the input is sharded ([#182595](https://github.com/pytorch/pytorch/pull/182595))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [dtensor] Avoid native sharding cache for symbolic IValue args ([#183246](https://github.com/pytorch/pytorch/pull/183246))
 ### not user facing
-- [dtensor][instructions count] Fix instruction count regression for dtensor_dispatch_collectives ([#181397](https://github.com/pytorch/pytorch/pull/181397))
-- [DTensor] Fix upsample backward crashes when sharded ([#182595](https://github.com/pytorch/pytorch/pull/182595))
-- [DTensor] Use explicit hints for unbacked sharding ([#183545](https://github.com/pytorch/pytorch/pull/183545))
-- [DTensor] Use explicit hints for unbacked sharding ([#183545](https://github.com/pytorch/pytorch/pull/183545))
+- Fix instruction count regression for `dtensor_dispatch_collectives` ([#181397](https://github.com/pytorch/pytorch/pull/181397))
 ### security
