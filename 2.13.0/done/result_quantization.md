@@ -45,41 +45,42 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## quantization
 ### bc breaking
-- [onednn] Fix qconv2d_pointwise binary ops to not alias inputs ([#177171](https://github.com/pytorch/pytorch/pull/177171))
+- The `onednn::qconv2d_pointwise.binary` and `.binary_tensor` operators no longer alias their input. Previously these ops mutated the `qaccum` input buffer and returned it directly, violating the PyTorch invariant that custom operator outputs must not alias inputs. This silently bypassed aliasing checks via the old `-> Tensor(a!)` schema and would become a hard error in PyTorch 2.12, so the schema and implementation were corrected to return a fresh output ([#177171](https://github.com/pytorch/pytorch/pull/177171))
 ### deprecation
+- Creating tensors with the quantized dtypes `quint8`, `qint8`, and `qint32` is now deprecated and emits a `DeprecationWarning`. This covers both Python and C++ call sites; see [#184982](https://github.com/pytorch/pytorch/issues/184982) for migration guidance ([#184984](https://github.com/pytorch/pytorch/pull/184984))
+
+  Version 2.12:
+  ```python
+  >>> x = torch.quantize_per_tensor(torch.randn(3), 0.1, 0, torch.quint8)
+  ```
+
+  Version 2.13:
+  ```python
+  >>> x = torch.quantize_per_tensor(torch.randn(3), 0.1, 0, torch.quint8)
+  UserWarning: Creating tensors with quantized dtypes (quint8, qint8, qint32) is deprecated
+  ```
 ### new features
 ### improvements
 ### bug fixes
+- Fix a segmentation fault when running fp8 qlinear on x86 CPU without AMX, caused by the qlinear primitive cache ([#184317](https://github.com/pytorch/pytorch/pull/184317))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Remove unused noqa directives in torch/, batch 5 ([#180139](https://github.com/pytorch/pytorch/pull/180139))
-- Remove unused noqa directives in torch/, batch 3 ([#180137](https://github.com/pytorch/pytorch/pull/180137))
-- [split] Remove LEGACY template parameter from callers of fbgemm::Quantize (extracted from D100683749) ([#181067](https://github.com/pytorch/pytorch/pull/181067))
-- [6/N]Use const_data_ptr ([#180970](https://github.com/pytorch/pytorch/pull/180970))
-- [Build/BUCK] Fix torch_headers header deduplication for Windows MSVC ([#181495](https://github.com/pytorch/pytorch/pull/181495))
-- Fix typos in comments, docstrings, and documentation ([#181991](https://github.com/pytorch/pytorch/pull/181991))
-- [7/N] Use const_data_ptr   ([#182245](https://github.com/pytorch/pytorch/pull/182245))
-- [8/N] Use const_data_ptr  ([#182267](https://github.com/pytorch/pytorch/pull/182267))
-- Fix typos in error messages, comments, and docstrings ([#182540](https://github.com/pytorch/pytorch/pull/182540))
-- [ROCm][Windows] Align TORCH_API on ATen native declarations (fix -Winconsistent-dllimport) ([#183324](https://github.com/pytorch/pytorch/pull/183324))
-- Fix typos in quantization observer and distributed tensor random ([#182761](https://github.com/pytorch/pytorch/pull/182761))
-- add a deprecation warning for quantized tensor creation ([#184984](https://github.com/pytorch/pytorch/pull/184984))
-- Fix typos in comments and docstrings across torch ([#185643](https://github.com/pytorch/pytorch/pull/185643))
 ### not user facing
+- Remove unused noqa directives in torch/, batch 5 and batch 3 ([#180139](https://github.com/pytorch/pytorch/pull/180139), [#180137](https://github.com/pytorch/pytorch/pull/180137))
+- [split] Remove LEGACY template parameter from callers of fbgemm::Quantize ([#181067](https://github.com/pytorch/pytorch/pull/181067))
+- Use const_data_ptr in quantization code ([#180970](https://github.com/pytorch/pytorch/pull/180970), [#182245](https://github.com/pytorch/pytorch/pull/182245), [#182267](https://github.com/pytorch/pytorch/pull/182267))
+- [Build/BUCK] Fix torch_headers header deduplication for Windows MSVC ([#181495](https://github.com/pytorch/pytorch/pull/181495))
+- Fix typos in comments, docstrings, error messages, and documentation ([#181991](https://github.com/pytorch/pytorch/pull/181991), [#182540](https://github.com/pytorch/pytorch/pull/182540), [#182761](https://github.com/pytorch/pytorch/pull/182761), [#185643](https://github.com/pytorch/pytorch/pull/185643))
+- [ROCm][Windows] Align TORCH_API on ATen native declarations (fix -Winconsistent-dllimport) ([#183324](https://github.com/pytorch/pytorch/pull/183324))
 - Remove unused noqa directives in non-torch/, batch 2 ([#180141](https://github.com/pytorch/pytorch/pull/180141))
 - [CUDA][FP8][CPU][TEST] Properly saturate E4M3 on finite-overflow on CPU/C++ conversion code ([#178817](https://github.com/pytorch/pytorch/pull/178817))
-- Remove unused noqa directives in non-torch/, batch 2 ([#180141](https://github.com/pytorch/pytorch/pull/180141))
 - Enable RUF100 ([#180142](https://github.com/pytorch/pytorch/pull/180142))
 - [test] Fix duplicated-word typos in test comments and docstrings ([#181132](https://github.com/pytorch/pytorch/pull/181132))
 - Back out #180958 and #180679 ([#181163](https://github.com/pytorch/pytorch/pull/181163))
 - [Docs] Check __all__ exports in coverage to catch decorated callables ([#178410](https://github.com/pytorch/pytorch/pull/178410))
 - Fix duplicate word typos across the codebase ([#181268](https://github.com/pytorch/pytorch/pull/181268))
-- [torch] Fix duplicated-word typos in comments and docstrings ([#181260](https://github.com/pytorch/pytorch/pull/181260))
 - [compile] fix diagonal_scatter backward ([#183720](https://github.com/pytorch/pytorch/pull/183720))
-- Make AOTConfig immutable in AOT stage 2 ([#184070](https://github.com/pytorch/pytorch/pull/184070))
-- [CPU] fix a fp8 bug caused by qlinear primitive cache on x86 without AMX ([#184317](https://github.com/pytorch/pytorch/pull/184317))
 - Fix test_qrnncell unit-test failure ([#174125](https://github.com/pytorch/pytorch/pull/174125))
 - Enable missing test in XPU backend when bug fixed ([#181822](https://github.com/pytorch/pytorch/pull/181822))
 - [BE][Ez]: Add missing std::move in std::make_tuple calls ([#185254](https://github.com/pytorch/pytorch/pull/185254))
@@ -87,5 +88,3 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Disable XNNPACK by default in CMake ([#185297](https://github.com/pytorch/pytorch/pull/185297))
 - [BE][Ez]: More semi-automated edits to move return values ([#186480](https://github.com/pytorch/pytorch/pull/186480))
 ### security
-- Add boundary checks  in set_storage_quantized_ ([#184561](https://github.com/pytorch/pytorch/pull/184561))
-- Add boundary checks  in set_storage_quantized_ ([#184561](https://github.com/pytorch/pytorch/pull/184561))
