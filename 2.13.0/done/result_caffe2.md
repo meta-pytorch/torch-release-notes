@@ -53,10 +53,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
-- [caffe2/tensorexpr] Add LLVM 23+ branch for `ObjectLinkingLayerCreator` ([#180746](https://github.com/pytorch/pytorch/pull/180746))
-- [BE] Use std::string in caffe2/core/common.cc ([#181553](https://github.com/pytorch/pytorch/pull/181553))
 ### not user facing
-- [buck][apple] Replace is_production_build/is_profile_build with build_mode_select in caffe2 buckbuild (#182103) ([#182103](https://github.com/pytorch/pytorch/pull/182103))
+- [BE] Use std::string in caffe2/core/common.cc ([#181553](https://github.com/pytorch/pytorch/pull/181553))
+- [buck][apple] Replace is_production_build/is_profile_build with build_mode_select in caffe2 buckbuild ([#182103](https://github.com/pytorch/pytorch/pull/182103))
 - [xplat] Fix clang-diagnostic-conditional-uninitialized errors (caffe2) ([#181784](https://github.com/pytorch/pytorch/pull/181784))
-- fix buck build fbsource//xplat/caffe2/android:test_host (#185160) ([#185160](https://github.com/pytorch/pytorch/pull/185160))
+- fix buck build fbsource//xplat/caffe2/android:test_host ([#185160](https://github.com/pytorch/pytorch/pull/185160))
 ### security
