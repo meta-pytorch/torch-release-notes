@@ -73,4 +73,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [BE] Use [[maybe_unused]] instead of (void)what in ReadAdapter overrides ([#181192](https://github.com/pytorch/pytorch/pull/181192))
 - Move intrusive_ptr's is_always_lock_free static_assert to .cpp ([#181719](https://github.com/pytorch/pytorch/pull/181719))
 - Update torch-xpu-ops pin to pick up C++20 fixes ([#184649](https://github.com/pytorch/pytorch/pull/184649))
+- Revert "Convert `shared_ptr<Node>` to `intrusive_ptr<Node>`" ([#181432](https://github.com/pytorch/pytorch/pull/181432))
+- Convert `shared_ptr<Node>` to `intrusive_ptr<Node>` (v2) ([#181782](https://github.com/pytorch/pytorch/pull/181782))
 ### security

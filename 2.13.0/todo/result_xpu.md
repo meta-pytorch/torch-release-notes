@@ -47,6 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add XPU device support to sparse Triton ops ([#179805](https://github.com/pytorch/pytorch/pull/179805))
 ### improvements
 ### bug fixes
 ### performance

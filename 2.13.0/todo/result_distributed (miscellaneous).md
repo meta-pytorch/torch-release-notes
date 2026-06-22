@@ -50,6 +50,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 ### bug fixes
 - [distributed] Make LocalTensorMode transparent to torch.compile ([#182667](https://github.com/pytorch/pytorch/pull/182667))
+- Fix typos in comments and docstrings across distributed, decomp, and fx modules ([#181979](https://github.com/pytorch/pytorch/pull/181979))
+- Fix typos in comments and error messages ([#181965](https://github.com/pytorch/pytorch/pull/181965))
 ### performance
 ### docs
 ### devs

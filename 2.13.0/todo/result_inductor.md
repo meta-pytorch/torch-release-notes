@@ -508,4 +508,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Repro for Inductor tl.broadcast_to(False) Triton compile crash (#186621) ([#186621](https://github.com/pytorch/pytorch/pull/186621))
 - [inductor] Fix scan accumulator default for unsigned integer types (#184514) ([#184514](https://github.com/pytorch/pytorch/pull/184514))
 - [inductor] Replace topological sort with direct node moves in overlap scheduling ([#184711](https://github.com/pytorch/pytorch/pull/184711))
+- Fix `torch.cat` axis handling in Inductor pre-grad fusion ([#183995](https://github.com/pytorch/pytorch/pull/183995))
+- Avoid a Triton sort compile-time cliff in `create_block_mask` ([#182745](https://github.com/pytorch/pytorch/pull/182745))
+- [Inductor] Support dynamic shapes in sort lowering and symbolic floor/ceil in FX wrapper ([#182786](https://github.com/pytorch/pytorch/pull/182786))
+- Use int32 indices for grid sampler lowering ([#184269](https://github.com/pytorch/pytorch/pull/184269))
+- Fix AOT FXIR parallel Triton kernel reload that failed with `AttributeError` when the worker returned a pickled, stripped `JITFunction` ([#185134](https://github.com/pytorch/pytorch/pull/185134))
 ### security
