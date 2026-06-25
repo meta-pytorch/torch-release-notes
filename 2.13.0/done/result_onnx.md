@@ -61,7 +61,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 ### not user facing
 - Use `.reshape()` instead of `.contiguous().view()` in stride-agnostic paths ([#184957](https://github.com/pytorch/pytorch/pull/184957))
-- Use `Py_IsNone`/`Py_IsTrue`/`Py_IsFalse` for singleton identity checks ([#180753](https://github.com/pytorch/pytorch/pull/180753))
-- Fix indefinite article typos ("a" -> "an") before vowel sounds ([#181976](https://github.com/pytorch/pytorch/pull/181976))
 ### Untopiced
 ### security
