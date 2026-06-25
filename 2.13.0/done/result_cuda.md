@@ -47,38 +47,37 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add `CUDAGraph.get_graph_data()` for graph topology introspection ([#183165](https://github.com/pytorch/pytorch/pull/183165))
+- Lightweight API to get private pool reserved memory bytes ([#178240](https://github.com/pytorch/pytorch/pull/178240))
 ### improvements
-- Verify that external inputs to a cuda graph are alive before replay ([#174649](https://github.com/pytorch/pytorch/pull/174649))
-- Verify that external inputs to a cuda graph are alive before replay ([#174649](https://github.com/pytorch/pytorch/pull/174649))
+- Debugging tool to verify that external inputs to a cuda graph are alive before replay ([#174649](https://github.com/pytorch/pytorch/pull/174649))
+- [CUDA][cuBLAS] Add get/set/reset functions for BLAS workspace sizes ([#177912](https://github.com/pytorch/pytorch/pull/177912))
+- [BE] Cleanup double import in `BinaryDivFloorKernel.cu` ([#179260](https://github.com/pytorch/pytorch/pull/179260))
+- Return supported CUDA arch list when no GPU is present but GPU is compiled ([#180356](https://github.com/pytorch/pytorch/pull/180356))
+- Detect and fix stale stream references in autograd during CUDA graph capture ([#180090](https://github.com/pytorch/pytorch/pull/180090))
+- Use `opmath_t` in i1 and i1e CUDA kernels ([#183778](https://github.com/pytorch/pytorch/pull/183778))
+- Support `resize_` with address hint ([#178215](https://github.com/pytorch/pytorch/pull/178215))
+- Support bfloat16 in `_embedding_bag_per_sample_weights_backward` on CUDA ([#185889](https://github.com/pytorch/pytorch/pull/185889))
+- Align `parsePerProcessMemoryFraction`'s return type with other parsers ([#185139](https://github.com/pytorch/pytorch/pull/185139))
+- [CUDA] Improve error message when cuda-bindings version is too old ([#185990](https://github.com/pytorch/pytorch/pull/185990))
 ### bug fixes
-- Workaround for nvrtcCompileProgram changing locale in CUDA < 12.6.2 ([#180569](https://github.com/pytorch/pytorch/pull/180569))
+- Workaround for `nvrtcCompileProgram` changing locale in CUDA < 12.6.2 ([#180569](https://github.com/pytorch/pytorch/pull/180569))
 - [CUDA] Zero `total_weight` before accumulating in `nll_loss2d` ([#182082](https://github.com/pytorch/pytorch/pull/182082))
+- [CUDA] Fix dtype promotion in max/min kernel ([#181505](https://github.com/pytorch/pytorch/pull/181505))
+- Round per-process memory fraction cap to avoid spurious OOM ([#179444](https://github.com/pytorch/pytorch/pull/179444))
+- Fix `torch.cuda.ExternalStream(0)` to wrap the NULL stream ([#183258](https://github.com/pytorch/pytorch/pull/183258))
+- [CUDA Graphs] Fix stream pool collision in conditional graph nodes ([#185836](https://github.com/pytorch/pytorch/pull/185836))
 ### performance
+- Fix CUDA version check gating warp merge sort ([#183527](https://github.com/pytorch/pytorch/pull/183527))
+- Allow specifying nbits to radix sort in `embedding_dense_backward_cuda` (#183578) ([#183578](https://github.com/pytorch/pytorch/pull/183578))
 ### docs
 ### devs
 ### Untopiced
-- [CUDA][cuBLAS] Add get/set/reset functions for BLAS workspaces ([#177912](https://github.com/pytorch/pytorch/pull/177912))
-- [BE] Remove double import in BinaryDivFloorKernel.cu ([#179260](https://github.com/pytorch/pytorch/pull/179260))
-- cuda: return arch list when no GPU is present but GPU is compiled ([#180356](https://github.com/pytorch/pytorch/pull/180356))
-- fix: fixed dtype promotion in max/min kernel ([#181505](https://github.com/pytorch/pytorch/pull/181505))
-- Detect and fix stale stream references in autograd during CUDA graph capture ([#180090](https://github.com/pytorch/pytorch/pull/180090))
 - [ROCm] fix triu/tril for 64-bit indexing for large matrices ([#179717](https://github.com/pytorch/pytorch/pull/179717))
 - [ROCm] Fix perf regression in index_add and index_reduce ([#182533](https://github.com/pytorch/pytorch/pull/182533))
-- [ATen] Set reduction numerics to match between oss and internal ([#182668](https://github.com/pytorch/pytorch/pull/182668))
-- Add CUDAGraph.get_graph_data() for graph topology introspection ([#183165](https://github.com/pytorch/pytorch/pull/183165))
-- Fix CUDA version check for warp merge sort ([#183527](https://github.com/pytorch/pytorch/pull/183527))
-- Round per-process memory fraction cap to avoid spurious OOM ([#179444](https://github.com/pytorch/pytorch/pull/179444))
-- Use opmath in i1 and i1e CUDA kernels ([#183778](https://github.com/pytorch/pytorch/pull/183778))
-- lightweight API to get private pool reserved memory bytes ([#178240](https://github.com/pytorch/pytorch/pull/178240))
-- Support resize_ with address hint ([#178215](https://github.com/pytorch/pytorch/pull/178215))
-- Fix torch.cuda.ExternalStream(0) to wrap the NULL stream ([#183258](https://github.com/pytorch/pytorch/pull/183258))
-- Align parsePerProcessMemoryFraction's return type with other parsers ([#185139](https://github.com/pytorch/pytorch/pull/185139))
+- [ATen][ROCm] Set reduction numerics to match between oss and internal ([#182668](https://github.com/pytorch/pytorch/pull/182668))
 - [ROCm] Fix LayerNorm backward kernel for AMD Strix Halo GPUs ([#183864](https://github.com/pytorch/pytorch/pull/183864))
-- Support bfloat16 in _embedding_bag_per_sample_weights_backward on CUDA ([#185889](https://github.com/pytorch/pytorch/pull/185889))
-- [cuda] Improve error message when cuda-bindings version is too old ([#185990](https://github.com/pytorch/pytorch/pull/185990))
-- [cuda graphs] Fix stream pool collision in conditional graph nodes ([#185836](https://github.com/pytorch/pytorch/pull/185836))
-### not user facing
 - [ROCm] No fence optimization to jit reduce template. ([#176812](https://github.com/pytorch/pytorch/pull/176812))
-- [torch] Enable nbits radix sort in embedding_dense_backward_cuda (#183578) ([#183578](https://github.com/pytorch/pytorch/pull/183578))
 - [PyTorch][ROCm] Decline CuteDSL scatter_add on ROCm ([#185678](https://github.com/pytorch/pytorch/pull/185678))
+### not user facing
 ### security
