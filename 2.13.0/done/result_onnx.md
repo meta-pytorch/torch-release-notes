@@ -48,20 +48,20 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Add `adaptive_max_pool2d` and `adaptive_max_pool3d` decompositions for ONNX export ([#184396](https://github.com/pytorch/pytorch/pull/184396))
 ### bug fixes
-- [ONNX] Remove CastLike handling logic from OpRecorder ([#182197](https://github.com/pytorch/pytorch/pull/182197))
-### performance
-### docs
-### devs
-### Untopiced
-- Use Py_IsNone/Py_IsTrue/Py_IsFalse for singleton identity checks ([#180753](https://github.com/pytorch/pytorch/pull/180753))
-- Remove stale Caffe2 references from ONNX TorchScript exporter docs ([#180498](https://github.com/pytorch/pytorch/pull/180498))
-- Fix indefinite article typos ("a" -> "an") before vowel sounds ([#181976](https://github.com/pytorch/pytorch/pull/181976))
-- [ONNX] Fix _rotary_embedding_23_fake_impl stride drift for 3D and 4D inputs ([#184854](https://github.com/pytorch/pytorch/pull/184854))
-- Fix invoke_subgraph export with lifted tensor constants ([#182230](https://github.com/pytorch/pytorch/pull/182230))
+- Remove incorrect `CastLike` handling logic from `OpRecorder` ([#182197](https://github.com/pytorch/pytorch/pull/182197))
+- Fix `_rotary_embedding_23_fake_impl` stride drift for 3D and 4D inputs ([#184854](https://github.com/pytorch/pytorch/pull/184854))
+- Fix `invoke_subgraph` export with lifted tensor constants ([#182230](https://github.com/pytorch/pytorch/pull/182230))
 - Fix ONNX dynamic-shape RNN capture ([#184872](https://github.com/pytorch/pytorch/pull/184872))
 - Fix ONNX type promotion overload selection ([#185005](https://github.com/pytorch/pytorch/pull/185005))
-- Add adaptive_max_pool2d/3d decompositions for ONNX export ([#184396](https://github.com/pytorch/pytorch/pull/184396))
+### performance
+### docs
+- Remove stale Caffe2 references from ONNX TorchScript exporter docs ([#180498](https://github.com/pytorch/pytorch/pull/180498))
+### devs
 ### not user facing
-- Use .reshape() instead of .contiguous().view() in stride-agnostic paths ([#184957](https://github.com/pytorch/pytorch/pull/184957))
+- Use `.reshape()` instead of `.contiguous().view()` in stride-agnostic paths ([#184957](https://github.com/pytorch/pytorch/pull/184957))
+- Use `Py_IsNone`/`Py_IsTrue`/`Py_IsFalse` for singleton identity checks ([#180753](https://github.com/pytorch/pytorch/pull/180753))
+- Fix indefinite article typos ("a" -> "an") before vowel sounds ([#181976](https://github.com/pytorch/pytorch/pull/181976))
+### Untopiced
 ### security
