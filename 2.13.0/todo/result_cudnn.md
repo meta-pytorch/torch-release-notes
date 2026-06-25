@@ -48,13 +48,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Add flag to select depthwise convolution backend ([#176500](https://github.com/pytorch/pytorch/pull/176500))
+- [cuDNN] Upgrade `cudnn_frontend` submodule to 1.24 ([#185554](https://github.com/pytorch/pytorch/pull/185554))
 ### bug fixes
 - [cuDNN][SDPA] Don't route to cuDNN SDPA for batch size or head dim > 65536 ([#180718](https://github.com/pytorch/pytorch/pull/180718))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Add cuDNN depthwise convolution backend flag ([#176500](https://github.com/pytorch/pytorch/pull/176500))
 ### not user facing
-- [cuDNN] Upgrade cudnn_frontend submodule to 1.24 ([#185554](https://github.com/pytorch/pytorch/pull/185554))
 ### security
