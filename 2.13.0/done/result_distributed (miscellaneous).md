@@ -61,6 +61,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `None` gradient handling in pipeline backward send/recv ([#182182](https://github.com/pytorch/pytorch/pull/182182))
 - Fix a pipelining crash when `split_module` interleaves `get_attr` nodes with placeholder nodes ([#182644](https://github.com/pytorch/pytorch/pull/182644))
 ### performance
+- Fuse slice-cat TP collective patterns ([#184911](https://github.com/pytorch/pytorch/pull/184911))
 ### docs
 - Convert the torchelastic `elastic/quickstart.rst` from reStructuredText to MyST Markdown ([#182569](https://github.com/pytorch/pytorch/pull/182569))
 - Convert the RPC `rpc/rref.rst` from reStructuredText to MyST Markdown ([#182877](https://github.com/pytorch/pytorch/pull/182877))
@@ -76,4 +77,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [xpu][test] Port distributed _shard tests cases on Intel GPUs ([#180881](https://github.com/pytorch/pytorch/pull/180881))
 - Convert rpc/distributed_autograd.rst from rST to MyST Markdown ([#182926](https://github.com/pytorch/pytorch/pull/182926))
 - [BE][Ez]: Add missing typing vars for decorators. Prevent type erasure ([#183116](https://github.com/pytorch/pytorch/pull/183116))
+- Fix typos in comments and docstrings ([#182246](https://github.com/pytorch/pytorch/pull/182246))
+- Fix grammar typos in comments and error messages ([#182806](https://github.com/pytorch/pytorch/pull/182806))
 ### security

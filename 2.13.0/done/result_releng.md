@@ -307,4 +307,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Full git fetch on tag pushes so release manywheel builds detect the tag ([#187042](https://github.com/pytorch/pytorch/pull/187042))
 - Followup - Full git fetch on tag pushes so release manywheel builds detect the tag ([#187047](https://github.com/pytorch/pytorch/pull/187047))
 - Full git fetch on tag pushes so macOS release wheel builds detect the tag ([#187139](https://github.com/pytorch/pytorch/pull/187139))
+- Distributed triaging sub-skill ([#180401](https://github.com/pytorch/pytorch/pull/180401))
+- Get rid of redundant ptd-bot-triaged label ([#185537](https://github.com/pytorch/pytorch/pull/185537))
 ### security

@@ -50,14 +50,17 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 - Fix/add empty check foreachmax ([#173483](https://github.com/pytorch/pytorch/pull/173483))
 ### bug fixes
+- Fix _foreach_sub under compile ([#184421](https://github.com/pytorch/pytorch/pull/184421))
 ### performance
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
+- Clean up unused variables, redundant casts and namespaces in CUDA kernels ([#185040](https://github.com/pytorch/pytorch/pull/185040))
 - Add _foreach_mm supported by Python nvmath cublasLt grouped GEMM ([#185530](https://github.com/pytorch/pytorch/pull/185530))
 - [native_dsl] Fix foreach_mm nvmath routing checks ([#186417](https://github.com/pytorch/pytorch/pull/186417))
 - [xpu][test]port test_foreach for Intel GPU ([#169354](https://github.com/pytorch/pytorch/pull/169354))
 - [BE][Ez]: Fix missing reserve calls on std::vector ([#185245](https://github.com/pytorch/pytorch/pull/185245))
 - [ROCm] Make foreach fastpath detection robust in test_foreach ([#180695](https://github.com/pytorch/pytorch/pull/180695))
+- Make per_subkernel_blocks an explicit ForeachKernelSchedulerNode attribute ([#182901](https://github.com/pytorch/pytorch/pull/182901))
 ### security

@@ -47,6 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add torch.autograd.graph.region_activation_memory_budget ([#185979](https://github.com/pytorch/pytorch/pull/185979))
 ### improvements
 - Implement autograd derivatives for `torch.nextafter` ([#148820](https://github.com/pytorch/pytorch/pull/148820))
 - Add `torch.autograd.enforce_grad_layout_policy` to control the memory layout policy for accumulated gradients ([#180552](https://github.com/pytorch/pytorch/pull/180552))

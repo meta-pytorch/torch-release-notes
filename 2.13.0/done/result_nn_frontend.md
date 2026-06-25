@@ -47,7 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Add `nn.LinearCrossEntropyLoss`, a fused linear-projection plus cross-entropy loss module that avoids materializing the full logits tensor ([#181573](https://github.com/pytorch/pytorch/pull/181573))
+- Add `nn.LinearCrossEntropyLoss`, a fused linear-projection plus cross-entropy loss module that avoids materializing the full logits tensor ([#181573](https://github.com/pytorch/pytorch/pull/181573), [#185852](https://github.com/pytorch/pytorch/pull/185852))
 ### improvements
 - Expose `num_splits` in FlashAttention-2 and bump the flash-attention submodule ([#179760](https://github.com/pytorch/pytorch/pull/179760))
 - Support `linear_bias` in `linear_cross_entropy` on the reference and chunked paths ([#185129](https://github.com/pytorch/pytorch/pull/185129), [#185276](https://github.com/pytorch/pytorch/pull/185276))

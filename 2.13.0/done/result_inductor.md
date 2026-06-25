@@ -77,6 +77,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add a keep_static_cubin_raw config to retain cubin bytes in cached kernels so caches restored on another machine avoid recompilation ([#186404](https://github.com/pytorch/pytorch/pull/186404))
 - Extend BatchLinearLHSFusion's matcher to also match the inlined torch._C._nn.linear form so the (opt-in) fusion can fire on Dynamo-inlined linear ([#186632](https://github.com/pytorch/pytorch/pull/186632))
 - Add a clearer error message with install instructions when a compatible Flash Attention package is unavailable for flex attention ([#186827](https://github.com/pytorch/pytorch/pull/186827))
+- [Optimus] Add another batch linear anchor node ([#180477](https://github.com/pytorch/pytorch/pull/180477))
+- [Optimus] Support detach method call ([#180513](https://github.com/pytorch/pytorch/pull/180513))
 ### bug fixes
 - Fix max_autotune BMM correctness with dynamic OpenMP threads ([#169128](https://github.com/pytorch/pytorch/pull/169128))
 - Fix NaN output in CPU LayerNorm by guarding the Welford variance computation ([#173989](https://github.com/pytorch/pytorch/pull/173989))
@@ -235,6 +237,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix fake dtype inference for weighted torch.bincount so downstream codegen uses the correct dtype ([#186077](https://github.com/pytorch/pytorch/pull/186077))
 - Preserve tensor dtype in the scatter_upon_const_tensor rewrite for low-precision const tensors ([#186481](https://github.com/pytorch/pytorch/pull/186481))
 - Fix Inductor Triton compile/runtime crash from codegen emitting tl.broadcast_to(False, ...) by using tl.full instead ([#186621](https://github.com/pytorch/pytorch/pull/186621))
+- Fix `diagonal_scatter` backward under `torch.compile` ([#185146](https://github.com/pytorch/pytorch/pull/185146))
+- Fix a SymInt crash in the overlap scheduler's collective/compute node benchmarking ([#186065](https://github.com/pytorch/pytorch/pull/186065))
+- Allow generator placeholders through control deps ([#183863](https://github.com/pytorch/pytorch/pull/183863))
+- Fix torch.cat axis handling in Inductor pre-grad fusion ([#183995](https://github.com/pytorch/pytorch/pull/183995))
+- Fix stale backed-symbol references in AOTI deferred runtime asserts ([#184624](https://github.com/pytorch/pytorch/pull/184624))
+- Fix AOT FXIR parallel Triton kernel reload ([#185134](https://github.com/pytorch/pytorch/pull/185134))
 ### performance
 - Eliminate unnecessary clones for dtype views in auto_functionalize, improving FP8 KV-cache performance ([#173177](https://github.com/pytorch/pytorch/pull/173177))
 - Fix basic_gnn_sage fp32 single-thread performance regression ([#177958](https://github.com/pytorch/pytorch/pull/177958))
@@ -261,6 +269,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fuse the decomposed _safe_softmax SDPA math path back into a native scaled_dot_product_attention call (new SFDP patterns 29/30) ([#185574](https://github.com/pytorch/pytorch/pull/185574))
 - Support CUTLASS EVT epilogue fusion through view/reshape between a GEMM and its pointwise consumer ([#185796](https://github.com/pytorch/pytorch/pull/185796))
 - Restore dense MKL-DNN pointwise convolution speed by keeping forward_inference prop kind only for channels-last/MKLDNN-layout, fixing a ~2x dense-contiguous slowdown ([#185997](https://github.com/pytorch/pytorch/pull/185997))
+- Pre-bucket FSDP collectives in the compile overlap scheduler, merging many per-parameter all-gathers into bandwidth-saturating buckets ([#179935](https://github.com/pytorch/pytorch/pull/179935))
 ### docs
 ### devs
 - Enable the Inductor SYCL-TLA standalone runner on XPU (developer benchmarking tooling) ([#174958](https://github.com/pytorch/pytorch/pull/174958))

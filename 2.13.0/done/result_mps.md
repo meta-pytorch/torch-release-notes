@@ -50,6 +50,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add Flex Attention support for MPS ([#182552](https://github.com/pytorch/pytorch/pull/182552), [#186215](https://github.com/pytorch/pytorch/pull/186215))
 - Add support for `torch.distributions.Dirichlet` on MPS by adding `_sample_dirichlet` and `_dirichlet_grad` Metal implementations ([#185458](https://github.com/pytorch/pytorch/pull/185458), [#185854](https://github.com/pytorch/pytorch/pull/185854))
 - Add `grid_sampler_2d` backward support on MPS ([#179756](https://github.com/pytorch/pytorch/pull/179756))
+- Add `grid_sampler_3d` backward support on MPS ([#179388](https://github.com/pytorch/pytorch/pull/179388))
 - Add `lcm` support on MPS via a new Metal kernel ([#186279](https://github.com/pytorch/pytorch/pull/186279))
 - Add complex support to `c10/metal/reduction_utils.h` ([#180708](https://github.com/pytorch/pytorch/pull/180708)) and a complex->bool specialization ([#185938](https://github.com/pytorch/pytorch/pull/185938))
 ### improvements
@@ -96,6 +97,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - 2D dispatch for strided unary kernels ([#185291](https://github.com/pytorch/pytorch/pull/185291))
 - Templatize Im2Col to regain performance when 32-bit indexing suffices ([#185860](https://github.com/pytorch/pytorch/pull/185860))
 - Faster norms ([#186076](https://github.com/pytorch/pytorch/pull/186076))
+- Flatten 5D tensors to 4D in batch_norm for performance ([#180335](https://github.com/pytorch/pytorch/pull/180335))
 ### docs
 ### devs
 ### not user facing

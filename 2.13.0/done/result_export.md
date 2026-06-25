@@ -49,6 +49,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 - Support serialization of opaque type constants in `torch.export` save/load ([#181676](https://github.com/pytorch/pytorch/pull/181676))
+- Make functorch JVP operator torch.exportable ([#179686](https://github.com/pytorch/pytorch/pull/179686))
+- Add UpdateConstantBufferFromCpu for host to device copy ([#181637](https://github.com/pytorch/pytorch/pull/181637))
 ### bug fixes
 - Fix NaN float scalar input handling in export guard codegen and input constraint checks ([#180399](https://github.com/pytorch/pytorch/pull/180399))
 - Fix `IndexError` during decomposition by also excluding lifted tensor constants and custom objects when identifying user-input placeholders ([#181179](https://github.com/pytorch/pytorch/pull/181179))
@@ -69,4 +71,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - revisit guarding in mark dynamic APIs ([#176341](https://github.com/pytorch/pytorch/pull/176341))
 - Fix "it's" vs "its" typos in comments ([#181988](https://github.com/pytorch/pytorch/pull/181988))
 - Fix typo in constant_folding.py comment ([#181932](https://github.com/pytorch/pytorch/pull/181932))
+- Fix typos in inductor and export comments ([#181971](https://github.com/pytorch/pytorch/pull/181971))
 ### security

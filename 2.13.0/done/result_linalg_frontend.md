@@ -54,6 +54,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Validate pivot range in `torch.linalg.ldl_solve` CPU kernel ([#181032](https://github.com/pytorch/pytorch/pull/181032))
 - Fix rocBLAS tunable GEMM solution handling in TunableOp ([#182380](https://github.com/pytorch/pytorch/pull/182380))
 - Route fp16 backward GEMMs to rocBLAS to preserve subnormals ([#183766](https://github.com/pytorch/pytorch/pull/183766))
+- Make collective bucketing tolerate hinted unbacked SymInts ([#183544](https://github.com/pytorch/pytorch/pull/183544))
 ### performance
 ### docs
 ### devs

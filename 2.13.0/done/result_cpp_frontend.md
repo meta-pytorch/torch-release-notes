@@ -84,4 +84,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - FakeTensor C++ Migration: Modifying TensorImpl ([#181387](https://github.com/pytorch/pytorch/pull/181387))
 - Deduplicate `operator<<` for `Vectorized<T>` ([#185502](https://github.com/pytorch/pytorch/pull/185502))
 - [BE][Ez]: Micro-opt char literal ostream overloads ([#186387](https://github.com/pytorch/pytorch/pull/186387))
+- Fix typos in comments and docstrings ([#186234](https://github.com/pytorch/pytorch/pull/186234))
 ### security

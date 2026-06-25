@@ -53,6 +53,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### not user facing
+- Fix duplicated-word typos in comments and docstrings ([#181260](https://github.com/pytorch/pytorch/pull/181260))
 - [AMD][PyTorch] Redirect index_add_ to scatter_add_ on HIP for large tensors (#180430) ([#180430](https://github.com/pytorch/pytorch/pull/180430))
 - Revert "Fix FakeProcessGroup collectives leaving output uninitialized (ba4b3197027)
 - Revert "[compile] allow tangents to be freed before the end of compiled bw (39ce8f9fd60)
