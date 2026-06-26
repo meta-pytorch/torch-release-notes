@@ -1,5 +1,5 @@
 
-# Release Notes worksheet profiler
+# Release Notes worksheet cpp_frontend
 
 You should:
 
@@ -43,36 +43,45 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## profiler
+## cpp_frontend
 ### bc breaking
+- Convert `shared_ptr<Node>` to `intrusive_ptr<Node>` throughout autograd ([#181139](https://github.com/pytorch/pytorch/pull/181139)). This changes the signature of `Tensor::grad_fn`. Accesses to `Tensor.grad_fn()` should change from `std::shared_ptr<Node>` to `c10::intrusive_ptr<Node>`. Similarly, construction of a C++ autograd function should change:
+
+  Version 2.12:
+  ```cpp
+  std::shared_ptr<CustomCppNode> node(new CustomCppNode(), torch::autograd::deleteNode);
+  ```
+
+  Version 2.13:
+  ```cpp
+  auto node = c10::make_intrusive<CustomCppNode>();
+  ```
+- Enforce C++20 minimum in header guards ([#178150](https://github.com/pytorch/pytorch/pull/178150)). In Version 2.13, C++20 is now required to import ATen / PyTorch headers.
 ### deprecation
 ### new features
 ### improvements
+- Add stable ABI for `set_python_module` on `torch::Library` ([#182720](https://github.com/pytorch/pytorch/pull/182720))
+- Add `==` overloads for `HeaderOnlyArrayRef` ([#185379](https://github.com/pytorch/pytorch/pull/185379))
+- Add `torch::stable::Generator` ([#186423](https://github.com/pytorch/pytorch/pull/186423))
+- Add `c10::layout` typecaster for `torch.layout` ([#179607](https://github.com/pytorch/pytorch/pull/179607))
+- Add default args support to `def_static` ([#175644](https://github.com/pytorch/pytorch/pull/175644))
+- Add support for controlling scientific notation in C++-side tensor printing ([#173321](https://github.com/pytorch/pytorch/pull/173321))
 ### bug fixes
+- Fix crash with invalid embedding bag mode ([#186428](https://github.com/pytorch/pytorch/pull/186428))
 ### performance
+- Fix reduced-precision `rsqrt()` double promotion ([#181232](https://github.com/pytorch/pytorch/pull/181232))
 ### docs
+- Fix typos in export wrapper docstring and transformer module comment ([#181972](https://github.com/pytorch/pytorch/pull/181972))
 ### devs
 ### Untopiced
-- [Profiler] Rename occupancy -> est_occupancy_pct ([#180275](https://github.com/pytorch/pytorch/pull/180275))
-- Update profiler .pyi stub ([#180400](https://github.com/pytorch/pytorch/pull/180400))
-- [profiler] Add profiler chrome trace validator with rules ([#177947](https://github.com/pytorch/pytorch/pull/177947))
-- [Profiler] Remove references to _KinetoProfile in public docs ([#180672](https://github.com/pytorch/pytorch/pull/180672))
-- [mem viz] use segment size for envelope to show fragmentation ([#180515](https://github.com/pytorch/pytorch/pull/180515))
-- [mem viz] Add summary blocks to pools ([#180613](https://github.com/pytorch/pytorch/pull/180613))
-- [Profiler][PrivateUse1] Expose backend name as alias in ProfilerActivity for PrivateUse1 ([#180421](https://github.com/pytorch/pytorch/pull/180421))
-- Fix profiler event clearing warning to only fire when events are actually cleared  ([#180387](https://github.com/pytorch/pytorch/pull/180387))
-- Adds helper function _rename_profiler_activity ([#181652](https://github.com/pytorch/pytorch/pull/181652))
-- Enable profiler schedule to early-exit on problems ([#180698](https://github.com/pytorch/pytorch/pull/180698))
-- [Profiler] Propagate NCCL collective metadata to GPU kernels in Pytho… ([#184637](https://github.com/pytorch/pytorch/pull/184637))
-- [Profiler] Add channel events to .events() output ([#185968](https://github.com/pytorch/pytorch/pull/185968))
-- Add experimental profiler integration for the CUPTI monitor ([#186037](https://github.com/pytorch/pytorch/pull/186037))
 ### not user facing
-- [Profiler] Improve events() <> chrome trace parity test ([#180085](https://github.com/pytorch/pytorch/pull/180085))
-- [Profiler][PrivateUse1] Make `PrivateUse1ProfilerRegistry::registerWithKineto()` private to fix data race ([#180332](https://github.com/pytorch/pytorch/pull/180332))
-- [Profiler] Add ryanzhang22 as a profiler owner ([#180680](https://github.com/pytorch/pytorch/pull/180680))
-- Fix profiler event canonicalization with PEP 657 caret lines ([#184275](https://github.com/pytorch/pytorch/pull/184275))
-- [profiler] Add channel / channel_type dummy fields to EventMetadata ([#184560](https://github.com/pytorch/pytorch/pull/184560))
-- [Profiler] Add trace_only ExperimentalConfig flag to speed up __exit__ ([#184306](https://github.com/pytorch/pytorch/pull/184306))
-- [Profiler] Guard traceActivities() behind USE_KINETO ([#184916](https://github.com/pytorch/pytorch/pull/184916))
-- [Profiler] Fix gc test by checking for at least one gc event between bounds ([#186832](https://github.com/pytorch/pytorch/pull/186832))
+- [BE] Use [[maybe_unused]] instead of (void)what in ReadAdapter overrides ([#181192](https://github.com/pytorch/pytorch/pull/181192))
+- Move intrusive_ptr's is_always_lock_free static_assert to .cpp ([#181719](https://github.com/pytorch/pytorch/pull/181719))
+- Update torch-xpu-ops pin to pick up C++20 fixes ([#184649](https://github.com/pytorch/pytorch/pull/184649))
+- Revert "Convert `shared_ptr<Node>` to `intrusive_ptr<Node>`" ([#181432](https://github.com/pytorch/pytorch/pull/181432))
+- Convert `shared_ptr<Node>` to `intrusive_ptr<Node>` (v2) ([#181782](https://github.com/pytorch/pytorch/pull/181782))
+- c10/core/DispatchKeySet.h: add [[nodiscard]] to all query methods ([#185960](https://github.com/pytorch/pytorch/pull/185960))
+- FakeTensor C++ Migration: Modifying TensorImpl ([#181387](https://github.com/pytorch/pytorch/pull/181387))
+- Deduplicate `operator<<` for `Vectorized<T>` ([#185502](https://github.com/pytorch/pytorch/pull/185502))
+- [BE][Ez]: Micro-opt char literal ostream overloads ([#186387](https://github.com/pytorch/pytorch/pull/186387))
 ### security

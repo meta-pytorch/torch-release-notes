@@ -1,5 +1,5 @@
 
-# Release Notes worksheet xpu
+# Release Notes worksheet cuda
 
 You should:
 
@@ -43,37 +43,41 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## xpu
+## cuda
 ### bc breaking
 ### deprecation
 ### new features
-- Add XPU device support to sparse Triton ops ([#179805](https://github.com/pytorch/pytorch/pull/179805))
+- Add `CUDAGraph.get_graph_data()` for graph topology introspection ([#183165](https://github.com/pytorch/pytorch/pull/183165))
+- Lightweight API to get private pool reserved memory bytes ([#178240](https://github.com/pytorch/pytorch/pull/178240))
 ### improvements
+- Debugging tool to verify that external inputs to a cuda graph are alive before replay ([#174649](https://github.com/pytorch/pytorch/pull/174649))
+- Add get/set/reset functions for BLAS workspace sizes ([#177912](https://github.com/pytorch/pytorch/pull/177912))
+- Cleanup double import in `BinaryDivFloorKernel.cu` ([#179260](https://github.com/pytorch/pytorch/pull/179260))
+- Return supported CUDA arch list when no GPU is present but GPU is compiled ([#180356](https://github.com/pytorch/pytorch/pull/180356))
+- Detect and fix stale stream references in autograd during CUDA graph capture ([#180090](https://github.com/pytorch/pytorch/pull/180090))
+- Use `opmath_t` in i1 and i1e CUDA kernels ([#183778](https://github.com/pytorch/pytorch/pull/183778))
+- Support `resize_` with address hint ([#178215](https://github.com/pytorch/pytorch/pull/178215))
+- Support bfloat16 in `_embedding_bag_per_sample_weights_backward` on CUDA ([#185889](https://github.com/pytorch/pytorch/pull/185889))
+- Align `parsePerProcessMemoryFraction`'s return type with other parsers ([#185139](https://github.com/pytorch/pytorch/pull/185139))
+- Improve error message when cuda-bindings version is too old ([#185990](https://github.com/pytorch/pytorch/pull/185990))
 ### bug fixes
+- Workaround for `nvrtcCompileProgram` changing locale in CUDA < 12.6.2 ([#180569](https://github.com/pytorch/pytorch/pull/180569))
+- Zero `total_weight` before accumulating in `nll_loss2d` ([#182082](https://github.com/pytorch/pytorch/pull/182082))
+- Fix dtype promotion in max/min kernel ([#181505](https://github.com/pytorch/pytorch/pull/181505))
+- Round per-process memory fraction cap to avoid spurious OOM ([#179444](https://github.com/pytorch/pytorch/pull/179444))
+- Fix `torch.cuda.ExternalStream(0)` to wrap the NULL stream ([#183258](https://github.com/pytorch/pytorch/pull/183258))
+- Fix stream pool collision in conditional graph nodes ([#185836](https://github.com/pytorch/pytorch/pull/185836))
 ### performance
+- Fix CUDA version check gating warp merge sort ([#183527](https://github.com/pytorch/pytorch/pull/183527))
+- Allow specifying nbits to radix sort in `embedding_dense_backward_cuda` (#183578) ([#183578](https://github.com/pytorch/pytorch/pull/183578))
 ### docs
 ### devs
 ### Untopiced
-- [xpu][refine] Clean up unsed code about oneDNN ([#180531](https://github.com/pytorch/pytorch/pull/180531))
-- [XPU] Register XPUPluggableAllocator pybind11 to fix c10::Allocator conversion ([#179392](https://github.com/pytorch/pytorch/pull/179392))
-- [xpu][feature] Support fork-safe device_count by pyzes ([#178496](https://github.com/pytorch/pytorch/pull/178496))
-- [xpu][fix] Refine oneDNN stride check ([#166861](https://github.com/pytorch/pytorch/pull/166861))
-- [xpu][fix] Respect device index -1 for getGlobalIdxFromDevice ([#181361](https://github.com/pytorch/pytorch/pull/181361))
-- Clean up CMake related to XPU ([#181355](https://github.com/pytorch/pytorch/pull/181355))
-- [xpu][feature] Add torch.xpu.temperature to query GPU temperature ([#181082](https://github.com/pytorch/pytorch/pull/181082))
-- Add TraceTracker callback in XPUCachingAllocator ([#180502](https://github.com/pytorch/pytorch/pull/180502))
-- [xpu][feature] Add torch.xpu.clock_rate to query GPU frequency ([#183427](https://github.com/pytorch/pytorch/pull/183427))
-- [xpu][feature] Add torch.xpu.power_draw to query GPU card power ([#183428](https://github.com/pytorch/pytorch/pull/183428))
-- [xpu][feature] Add torch.xpu.utilization to query GPU engine utilization ([#183429](https://github.com/pytorch/pytorch/pull/183429))
-- [xpu][feature] Add torch.xpu.memory_usage to query GPU memory bandwidth usage ([#183430](https://github.com/pytorch/pytorch/pull/183430))
-- [xpu][feature] Add torch.xpu.device_memory_used to query GPU used device global memory ([#183431](https://github.com/pytorch/pytorch/pull/183431))
-- xpu: enable dpclang sycl compiler ([#179763](https://github.com/pytorch/pytorch/pull/179763))
-- [xpu][feature] Add is_integrated_gpu to XPU device properties ([#182624](https://github.com/pytorch/pytorch/pull/182624))
-- [xpu][feature] Add device-wide synchronization ([#182630](https://github.com/pytorch/pytorch/pull/182630))
-- [xpu] Refactor OneDNN C API to C++ API ([#184486](https://github.com/pytorch/pytorch/pull/184486))
-- [XPU] Drop SYCL < 2025 version guards ([#185204](https://github.com/pytorch/pytorch/pull/185204))
-- xpu: match dpclang SYCL_LIBRARY setting with icpx ([#185571](https://github.com/pytorch/pytorch/pull/185571))
-- Add oneDNN LSTM primitive support for XPU inference ([#185531](https://github.com/pytorch/pytorch/pull/185531))
+- [ROCm] fix triu/tril for 64-bit indexing for large matrices ([#179717](https://github.com/pytorch/pytorch/pull/179717))
+- [ROCm] Fix perf regression in index_add and index_reduce ([#182533](https://github.com/pytorch/pytorch/pull/182533))
+- [ATen][ROCm] Set reduction numerics to match between oss and internal ([#182668](https://github.com/pytorch/pytorch/pull/182668))
+- [ROCm] Fix LayerNorm backward kernel for AMD Strix Halo GPUs ([#183864](https://github.com/pytorch/pytorch/pull/183864))
+- [ROCm] No fence optimization to jit reduce template. ([#176812](https://github.com/pytorch/pytorch/pull/176812))
+- [PyTorch][ROCm] Decline CuteDSL scatter_add on ROCm ([#185678](https://github.com/pytorch/pytorch/pull/185678))
 ### not user facing
-- [xpu][refine] Use zes_device_ext_properties_t and deprecate ze_device_properties_t ([#181069](https://github.com/pytorch/pytorch/pull/181069))
 ### security
