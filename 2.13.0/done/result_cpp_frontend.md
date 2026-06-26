@@ -45,34 +45,43 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## cpp_frontend
 ### bc breaking
-- [autograd] Convert shared_ptr<Node> to intrusive_ptr<Node> ([#181139](https://github.com/pytorch/pytorch/pull/181139))
+- Convert `shared_ptr<Node>` to `intrusive_ptr<Node>` throughout autograd ([#181139](https://github.com/pytorch/pytorch/pull/181139)). This changes the signature of `Tensor::grad_fn`. Accesses to `Tensor.grad_fn()` should change from `std::shared_ptr<Node>` to `c10::intrusive_ptr<Node>`. Similarly, construction of a C++ autograd function should change:
+
+  Version 2.12:
+  ```cpp
+  std::shared_ptr<CustomCppNode> node(new CustomCppNode(), torch::autograd::deleteNode);
+  ```
+
+  Version 2.13:
+  ```cpp
+  auto node = c10::make_intrusive<CustomCppNode>();
+  ```
+- Enforce C++20 minimum in header guards ([#178150](https://github.com/pytorch/pytorch/pull/178150)). In Version 2.13, C++20 is now required to import ATen / PyTorch headers.
 ### deprecation
 ### new features
 ### improvements
-- [12/12] Enforce C++20 minimum in header guards (#178150) ([#178150](https://github.com/pytorch/pytorch/pull/178150))
-- Add stable ABI for torch Library set_python_module ([#182720](https://github.com/pytorch/pytorch/pull/182720))
-- Add == overloads for HeaderOnlyArrayRef ([#185379](https://github.com/pytorch/pytorch/pull/185379))
-- Add == overloads for HeaderOnlyArrayRef ([#185379](https://github.com/pytorch/pytorch/pull/185379))
-- c10/core/DispatchKeySet.h: add [[nodiscard]] to all query methods ([#185960](https://github.com/pytorch/pytorch/pull/185960))
-- Add highlevel C++ torch::stable::Generator ([#186423](https://github.com/pytorch/pytorch/pull/186423))
+- Add stable ABI for `set_python_module` on `torch::Library` ([#182720](https://github.com/pytorch/pytorch/pull/182720))
+- Add `==` overloads for `HeaderOnlyArrayRef` ([#185379](https://github.com/pytorch/pytorch/pull/185379))
+- Add `torch::stable::Generator` ([#186423](https://github.com/pytorch/pytorch/pull/186423))
+- Add `c10::layout` typecaster for `torch.layout` ([#179607](https://github.com/pytorch/pytorch/pull/179607))
+- Add default args support to `def_static` ([#175644](https://github.com/pytorch/pytorch/pull/175644))
+- Add support for controlling scientific notation in C++-side tensor printing ([#173321](https://github.com/pytorch/pytorch/pull/173321))
 ### bug fixes
+- Fix crash with invalid embedding bag mode ([#186428](https://github.com/pytorch/pytorch/pull/186428))
 ### performance
-- [c10] Fix reduced-precision rsqrt double promotion ([#181232](https://github.com/pytorch/pytorch/pull/181232))
+- Fix reduced-precision `rsqrt()` double promotion ([#181232](https://github.com/pytorch/pytorch/pull/181232))
 ### docs
+- Fix typos in export wrapper docstring and transformer module comment ([#181972](https://github.com/pytorch/pytorch/pull/181972))
 ### devs
 ### Untopiced
-- Added c10::layout typecaster for torch.layout ([#179607](https://github.com/pytorch/pytorch/pull/179607))
-- FakeTensor C++ Migration: Modifying TensorImpl ([#181387](https://github.com/pytorch/pytorch/pull/181387))
-- Add default args support to def_static ([#175644](https://github.com/pytorch/pytorch/pull/175644))
-- Fix typos in export wrapper docstring and transformer module comment ([#181972](https://github.com/pytorch/pytorch/pull/181972))
-- Add C++ API support for controlling scientific notation in tensor printing ([#173321](https://github.com/pytorch/pytorch/pull/173321))
-- Deduplicate `operator<<` for `Vectorized<T>` ([#185502](https://github.com/pytorch/pytorch/pull/185502))
-- [BE][Ez]: Micro-opt char literal ostream overloads ([#186387](https://github.com/pytorch/pytorch/pull/186387))
-- [EZ] Add check for mode in embedding bag ([#186428](https://github.com/pytorch/pytorch/pull/186428))
 ### not user facing
 - [BE] Use [[maybe_unused]] instead of (void)what in ReadAdapter overrides ([#181192](https://github.com/pytorch/pytorch/pull/181192))
 - Move intrusive_ptr's is_always_lock_free static_assert to .cpp ([#181719](https://github.com/pytorch/pytorch/pull/181719))
 - Update torch-xpu-ops pin to pick up C++20 fixes ([#184649](https://github.com/pytorch/pytorch/pull/184649))
 - Revert "Convert `shared_ptr<Node>` to `intrusive_ptr<Node>`" ([#181432](https://github.com/pytorch/pytorch/pull/181432))
 - Convert `shared_ptr<Node>` to `intrusive_ptr<Node>` (v2) ([#181782](https://github.com/pytorch/pytorch/pull/181782))
+- c10/core/DispatchKeySet.h: add [[nodiscard]] to all query methods ([#185960](https://github.com/pytorch/pytorch/pull/185960))
+- FakeTensor C++ Migration: Modifying TensorImpl ([#181387](https://github.com/pytorch/pytorch/pull/181387))
+- Deduplicate `operator<<` for `Vectorized<T>` ([#185502](https://github.com/pytorch/pytorch/pull/185502))
+- [BE][Ez]: Micro-opt char literal ostream overloads ([#186387](https://github.com/pytorch/pytorch/pull/186387))
 ### security
