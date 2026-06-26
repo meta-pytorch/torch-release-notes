@@ -45,7 +45,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## cpp_frontend
 ### bc breaking
-- Converted `shared_ptr<Node>` to `intrusive_ptr<Node>` throughout autograd ([#181139](https://github.com/pytorch/pytorch/pull/181139)). This changes the signature of `Tensor::grad_fn`. Accesses to `Tensor.grad_fn()` should change from `std::shared_ptr<Node>` to `c10::intrusive_ptr<Node>`. Similarly, construction of a C++ autograd function should change:
+- Convert `shared_ptr<Node>` to `intrusive_ptr<Node>` throughout autograd ([#181139](https://github.com/pytorch/pytorch/pull/181139)). This changes the signature of `Tensor::grad_fn`. Accesses to `Tensor.grad_fn()` should change from `std::shared_ptr<Node>` to `c10::intrusive_ptr<Node>`. Similarly, construction of a C++ autograd function should change:
 
   Version 2.12:
   ```cpp
@@ -56,22 +56,22 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```cpp
   auto node = c10::make_intrusive<CustomCppNode>();
   ```
-- Added enforcement of C++20 minimum in header guards ([#178150](https://github.com/pytorch/pytorch/pull/178150)). In Version 2.13, C++20 is now required to import ATen / PyTorch headers.
+- Enforce C++20 minimum in header guards ([#178150](https://github.com/pytorch/pytorch/pull/178150)). In Version 2.13, C++20 is now required to import ATen / PyTorch headers.
 ### deprecation
 ### new features
 ### improvements
-- Added stable ABI for `set_python_module` on `torch::Library` ([#182720](https://github.com/pytorch/pytorch/pull/182720))
-- Added `==` overloads for `HeaderOnlyArrayRef` ([#185379](https://github.com/pytorch/pytorch/pull/185379))
-- Added `torch::stable::Generator` ([#186423](https://github.com/pytorch/pytorch/pull/186423))
-- Added `c10::layout` typecaster for `torch.layout` ([#179607](https://github.com/pytorch/pytorch/pull/179607))
-- Added default args support to `def_static` ([#175644](https://github.com/pytorch/pytorch/pull/175644))
-- Added support for controlling scientific notation in C++-side tensor printing ([#173321](https://github.com/pytorch/pytorch/pull/173321))
+- Add stable ABI for `set_python_module` on `torch::Library` ([#182720](https://github.com/pytorch/pytorch/pull/182720))
+- Add `==` overloads for `HeaderOnlyArrayRef` ([#185379](https://github.com/pytorch/pytorch/pull/185379))
+- Add `torch::stable::Generator` ([#186423](https://github.com/pytorch/pytorch/pull/186423))
+- Add `c10::layout` typecaster for `torch.layout` ([#179607](https://github.com/pytorch/pytorch/pull/179607))
+- Add default args support to `def_static` ([#175644](https://github.com/pytorch/pytorch/pull/175644))
+- Add support for controlling scientific notation in C++-side tensor printing ([#173321](https://github.com/pytorch/pytorch/pull/173321))
 ### bug fixes
-- Fixed crash with invalid embedding bag mode ([#186428](https://github.com/pytorch/pytorch/pull/186428))
+- Fix crash with invalid embedding bag mode ([#186428](https://github.com/pytorch/pytorch/pull/186428))
 ### performance
-- Fixed reduced-precision `rsqrt()` double promotion ([#181232](https://github.com/pytorch/pytorch/pull/181232))
+- Fix reduced-precision `rsqrt()` double promotion ([#181232](https://github.com/pytorch/pytorch/pull/181232))
 ### docs
-- Fixed typos in export wrapper docstring and transformer module comment ([#181972](https://github.com/pytorch/pytorch/pull/181972))
+- Fix typos in export wrapper docstring and transformer module comment ([#181972](https://github.com/pytorch/pytorch/pull/181972))
 ### devs
 ### Untopiced
 ### not user facing
