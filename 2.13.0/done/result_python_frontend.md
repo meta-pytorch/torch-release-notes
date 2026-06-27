@@ -77,6 +77,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [TensorIterator] Expose the build pipeline to Python (kwargs API) ([#184603](https://github.com/pytorch/pytorch/pull/184603))
 - Set gradcheck nondeterminism tolerance for index_reduce mean/prod ([#178589](https://github.com/pytorch/pytorch/pull/178589))
 - Bump tolerance slightly for test_jvp with float32 on CPU ([#181881](https://github.com/pytorch/pytorch/pull/181881))
-- [ROCm] Bump conv3d test_grad tolerance for MIOpen Wrw atomic flake ([#182908](https://github.com/pytorch/pytorch/pull/182908))
-- [ROCm][CI] Remove skip decorator because the tests seem to be fixed ([#184266](https://github.com/pytorch/pytorch/pull/184266))
 ### security
