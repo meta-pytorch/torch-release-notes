@@ -74,5 +74,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Drop obsolete fp16/bfloat16 CPU skips in tests ([#184640](https://github.com/pytorch/pytorch/pull/184640))
 - Audit @skipIfMPS decorators: drop obsolete, refine with @dtypesIfMPS ([#184655](https://github.com/pytorch/pytorch/pull/184655))
 - Fix typos in torch.nn.modules docstrings ([#185603](https://github.com/pytorch/pytorch/pull/185603))
-- [ROCm] Remove test_upsamplingNearest2d_launch_rocm test as ROCm reduces max grid size ([#186257](https://github.com/pytorch/pytorch/pull/186257))
 ### security

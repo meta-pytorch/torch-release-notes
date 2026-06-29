@@ -73,11 +73,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
-- [ROCm] fix triu/tril for 64-bit indexing for large matrices ([#179717](https://github.com/pytorch/pytorch/pull/179717))
-- [ROCm] Fix perf regression in index_add and index_reduce ([#182533](https://github.com/pytorch/pytorch/pull/182533))
-- [ATen][ROCm] Set reduction numerics to match between oss and internal ([#182668](https://github.com/pytorch/pytorch/pull/182668))
-- [ROCm] Fix LayerNorm backward kernel for AMD Strix Halo GPUs ([#183864](https://github.com/pytorch/pytorch/pull/183864))
-- [ROCm] No fence optimization to jit reduce template. ([#176812](https://github.com/pytorch/pytorch/pull/176812))
-- [PyTorch][ROCm] Decline CuteDSL scatter_add on ROCm ([#185678](https://github.com/pytorch/pytorch/pull/185678))
 ### not user facing
 ### security

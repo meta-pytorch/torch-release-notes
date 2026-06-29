@@ -72,7 +72,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Use const_data_ptr in quantization code ([#180970](https://github.com/pytorch/pytorch/pull/180970), [#182245](https://github.com/pytorch/pytorch/pull/182245), [#182267](https://github.com/pytorch/pytorch/pull/182267))
 - [Build/BUCK] Fix torch_headers header deduplication for Windows MSVC ([#181495](https://github.com/pytorch/pytorch/pull/181495))
 - Fix typos in comments, docstrings, error messages, and documentation ([#181991](https://github.com/pytorch/pytorch/pull/181991), [#182540](https://github.com/pytorch/pytorch/pull/182540), [#182761](https://github.com/pytorch/pytorch/pull/182761), [#185643](https://github.com/pytorch/pytorch/pull/185643))
-- [ROCm][Windows] Align TORCH_API on ATen native declarations (fix -Winconsistent-dllimport) ([#183324](https://github.com/pytorch/pytorch/pull/183324))
 - Remove unused noqa directives in non-torch/, batch 2 ([#180141](https://github.com/pytorch/pytorch/pull/180141))
 - [CUDA][FP8][CPU][TEST] Properly saturate E4M3 on finite-overflow on CPU/C++ conversion code ([#178817](https://github.com/pytorch/pytorch/pull/178817))
 - Enable RUF100 ([#180142](https://github.com/pytorch/pytorch/pull/180142))

@@ -67,6 +67,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add hint-disproves fast path to statically_known_true/false ([#181276](https://github.com/pytorch/pytorch/pull/181276))
 - [Docathon]: documented coverage_ignored_functions ([#182547](https://github.com/pytorch/pytorch/pull/182547))
 - Replace __args__ with typing.get_args() and TensorType.dims ([#183006](https://github.com/pytorch/pytorch/pull/183006))
-- [ROCm][CI] Skip tests which consume excessive run time in CI ([#182763](https://github.com/pytorch/pytorch/pull/182763))
 - [Test] Make test_fx_annotate.py device-agnostic for out-of-tree backends ([#185226](https://github.com/pytorch/pytorch/pull/185226))
 ### security

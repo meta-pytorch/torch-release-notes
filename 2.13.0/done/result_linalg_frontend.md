@@ -59,14 +59,15 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 ### Untopiced
 ### not user facing
-- [ROCm] Replace MI300 TF32 test skips with measured dispositions ([#180926](https://github.com/pytorch/pytorch/pull/180926))
+- Numerous linalg tests enabled or unskipped for ROCm platform
+  - Replace MI300 TF32 test skips with measured accuracy guards ([#180926](https://github.com/pytorch/pytorch/pull/180926))
+  - Enabled tests that were skipped due to skipCUDAIfNoMagmaAndNoCusolver ([#180303](https://github.com/pytorch/pytorch/pull/180303))
+  - Add Composable Kernel (CK) BLAS backend torch.mm test ([#182195](https://github.com/pytorch/pytorch/pull/182195))
+  - Enable float8 scaled GEMM TunableOp tests for MI350 ([#182079](https://github.com/pytorch/pytorch/pull/182079))
+  - Enable TF32 TunableOp tests for all architectures ([#183474](https://github.com/pytorch/pytorch/pull/183474))
+  - Enable test_preferred_linalg_library test ([#184427](https://github.com/pytorch/pytorch/pull/184427))
 - Add type annotations to torch/_linalg_utils.py ([#181464](https://github.com/pytorch/pytorch/pull/181464))
-- [ROCm] Enabled test_linalg tests that were skipped due to skipCUDAIfNoMagmaAndNoCusolver ([#180303](https://github.com/pytorch/pytorch/pull/180303))
-- [ROCm] Add CK BLAS backend torch.mm test ([#182195](https://github.com/pytorch/pytorch/pull/182195))
-- [ROCm] Enable float8 scaled GEMM TunableOp tests for MI350 ([#182079](https://github.com/pytorch/pytorch/pull/182079))
-- [ROCm] Enable TF32 TunableOp tests for all ROCm architectures ([#183474](https://github.com/pytorch/pytorch/pull/183474))
 - [Docs] Fix linalg.norm docstring: rename parameter `A` to `input` ([#181764](https://github.com/pytorch/pytorch/pull/181764))
-- [ROCm] Enable test_preferred_linalg_library test for ROCm ([#184427](https://github.com/pytorch/pytorch/pull/184427))
 - [Test] Extract CUDA-only tests into TestLinalgCUDA for test_linalg ([#183586](https://github.com/pytorch/pytorch/pull/183586))
 - [Test] Convert 8 @onlyCUDA to @onlyAccelerator for test_linalg ([#183587](https://github.com/pytorch/pytorch/pull/183587))
 - [Test] Replace wrong-device patterns with torch.accelerator for test_linalg ([#183588](https://github.com/pytorch/pytorch/pull/183588))
