@@ -45,63 +45,96 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## releng
 ### bc breaking
-- [CI][Build] Goodbye Bazel ([#180883](https://github.com/pytorch/pytorch/pull/180883))
-- [CI][Build] Goodbye Bazel ([#180883](https://github.com/pytorch/pytorch/pull/180883))
+- Bazel build support has been removed ([#180883](https://github.com/pytorch/pytorch/pull/180883))
+
+  The Bazel build was never broadly adopted and still depended on the antiquated Bazel 6,
+  while the wider ecosystem has since moved to Bazel 9. All Bazel build files and CI jobs have
+  been removed. Users building PyTorch with Bazel should migrate to the supported CMake/`pip install`
+  build flow.
+
+  Version 2.12:
+  ```bash
+  # Build PyTorch with Bazel
+  bazel build //:torch
+  ```
+
+  Version 2.13:
+  ```bash
+  # Bazel build files have been removed; build from source with pip instead
+  pip install --no-build-isolation -e .
+  ```
+
+- CPython 3.13t (free-threaded) binaries are no longer built ([#182951](https://github.com/pytorch/pytorch/pull/182951))
+
+  Upstream `pypa/manylinux` removed CPython 3.13t (free-threaded) on 2026-05-07, because 3.13t
+  was experimental and has been superseded by the now-non-experimental CPython 3.14t. As a result,
+  PyTorch 2.13 no longer ships `cp313t` wheels (Linux, Triton, and related artifacts). Users on the
+  free-threaded interpreter should move to Python 3.14t.
+
+  Version 2.12:
+  ```bash
+  # cp313t (free-threaded 3.13) wheels were available
+  python3.13t -m pip install torch
+  ```
+
+  Version 2.13:
+  ```bash
+  # Use free-threaded Python 3.14t instead
+  python3.14t -m pip install torch
+  ```
+
 ### deprecation
 ### new features
+- Add Python 3.15 wheel builds across Linux (CPU/CUDA), Triton, ROCm, and XPU ([#182954](https://github.com/pytorch/pytorch/pull/182954), [#184600](https://github.com/pytorch/pytorch/pull/184600), [#185409](https://github.com/pytorch/pytorch/pull/185409), [#184829](https://github.com/pytorch/pytorch/pull/184829), [#184891](https://github.com/pytorch/pytorch/pull/184891), [#184906](https://github.com/pytorch/pytorch/pull/184906), [#185094](https://github.com/pytorch/pytorch/pull/185094))
 ### improvements
+- Upgrade ROCm CI/CD images to 7.2.3 ([#181288](https://github.com/pytorch/pytorch/pull/181288))
+- Move the NCCL pin to 2.30 ([#181313](https://github.com/pytorch/pytorch/pull/181313))
+- Advance the Triton pin to 3.7.1 ([#181001](https://github.com/pytorch/pytorch/pull/181001), [#186792](https://github.com/pytorch/pytorch/pull/186792))
+- Upgrade the XPU support package to 2026.0 ([#182003](https://github.com/pytorch/pytorch/pull/182003))
+- Add a configurable threshold to avoid power-of-two rounding for large pinned memory allocations ([#171662](https://github.com/pytorch/pytorch/pull/171662))
 ### bug fixes
 ### performance
+- Add an operator microbenchmark comparison workflow for PRs ([#179476](https://github.com/pytorch/pytorch/pull/179476))
+- Add a batch-invariant accuracy mode for benchmark perf tests ([#180610](https://github.com/pytorch/pytorch/pull/180610))
 ### docs
 ### devs
-### Untopiced
+- Migrate the build to CMake / scikit-build-core: move NCCL checkout, source-file mirroring, header wrapping, `compile_commands` merging, and the `torch._C` extension/`version.py` build out of `setup.py` and into CMake ([#181450](https://github.com/pytorch/pytorch/pull/181450), [#177642](https://github.com/pytorch/pytorch/pull/177642), [#177643](https://github.com/pytorch/pytorch/pull/177643), [#177644](https://github.com/pytorch/pytorch/pull/177644), [#180243](https://github.com/pytorch/pytorch/pull/180243))
+- Drop the setuptools `concat_license_files` hook and adopt PEP 639 `license-files`; replace deprecated `distutils` usage ([#180237](https://github.com/pytorch/pytorch/pull/180237), [#182120](https://github.com/pytorch/pytorch/pull/182120))
+- Install `libaotriton_v2.so` via cmake install for wheel packaging ([#180242](https://github.com/pytorch/pytorch/pull/180242))
+- Embed the macOS OpenMP runtime in `PostBuildSteps` ([#180239](https://github.com/pytorch/pytorch/pull/180239))
+### not user facing
+- CUDA Linux wheels are now always built as "small wheels" that depend on the NVIDIA CUDA pip packages instead of bundling the CUDA shared libraries, and the unused CUDA 12.8/12.9 build paths were removed ([#180612](https://github.com/pytorch/pytorch/pull/180612))
+- Remove the bundled `ptxas` from CUDA 13 binaries now that the upstream Triton fix has landed, reducing wheel size ([#174716](https://github.com/pytorch/pytorch/pull/174716))
 - Remove unused noqa directives in non-torch/, batch 1 ([#180140](https://github.com/pytorch/pytorch/pull/180140))
-- [BE][CD] Always build small wheels for CUDA Linux and remove CUDA 12.8/12.9 ([#180612](https://github.com/pytorch/pytorch/pull/180612))
 - [CI] Remove runtime Chocolatey installs from Windows CI (3a893377d9a)
 - Bump lxml from 6.0.2 to 6.1.0 in /.ci/docker (75b947d3fc8)
-- [CD][CUDA13][PTXAS] Remove ptxas bundle from PyTorch cu13 Binary ([#174716](https://github.com/pytorch/pytorch/pull/174716))
 - [Dependabot] Update(deps): Bump transformers from 5.5.3 to 5.6.1 in /.ci/docker/ci_commit_pins (8d595a30550)
 - [BE][Docs] Error out rather than hang if workflow is missing credentials ([#181433](https://github.com/pytorch/pytorch/pull/181433))
 - Revert "Change runner to linux.12xlarge for nightly doc push (#181256)" ([#181459](https://github.com/pytorch/pytorch/pull/181459))
 - Bump gitpython from 3.1.45 to 3.1.47 in /.ci/lumen_cli (a528959cac4)
-- Move nccl checkout from setup.py to CMake ([#181450](https://github.com/pytorch/pytorch/pull/181450))
-- Move mirroring of source files from setup.py to CMake ([#177642](https://github.com/pytorch/pytorch/pull/177642))
-- Add configurable threshold to avoid power-of-two rounding for large pinned memory allocations ([#171662](https://github.com/pytorch/pytorch/pull/171662))
 - [Dependabot] Update(deps): Bump transformers from 5.6.1 to 5.7.0 in /.ci/docker/ci_commit_pins (2a1f7f19f28)
 - Bump pytest from 7.3.2 to 9.0.3 in /.ci/docker (2ddaba93ea0)
-- Add cmake/PackageData.cmake for scikit-build-core migration ([#177643](https://github.com/pytorch/pytorch/pull/177643))
-- Move header wrapping and compile_commands merging to CMake ([#177644](https://github.com/pytorch/pytorch/pull/177644))
 - [CD] Refactor manywheel build scripts (split env setup, deps, wheel, repair) ([#182409](https://github.com/pytorch/pytorch/pull/182409))
 - Update FA3 wheel to be the official cuda 13 variant ([#182695](https://github.com/pytorch/pytorch/pull/182695))
-- [CD] Drop CPython 3.13t from Linux binary build matrix ([#182951](https://github.com/pytorch/pytorch/pull/182951))
-- Add operator microbenchmark comparison workflow for PRs ([#179476](https://github.com/pytorch/pytorch/pull/179476))
 - Bump gitpython from 3.1.47 to 3.1.50 in /.ci/lumen_cli (142a2f2542c)
 - [CD] Port XPU manywheel build to the Python pipeline ([#182942](https://github.com/pytorch/pytorch/pull/182942))
 - [CD] Port ROCm manywheel build to the Python pipeline ([#182696](https://github.com/pytorch/pytorch/pull/182696))
 - [ci] Fix tlparse artifact collection and enable torch trace on A100/B200 perf jobs ([#183340](https://github.com/pytorch/pytorch/pull/183340))
 - Bump pip from 26.0.1 to 26.1 in /.ci/docker (95e38306137)
 - Update vllm pin and rename test_llm_with_multi_loras ([#183846](https://github.com/pytorch/pytorch/pull/183846))
-- [Stable C Shim] Add new/delete function for StableIValue ([#179421](https://github.com/pytorch/pytorch/pull/179421))
-- [BE] Add macOS OpenMP embedding to PostBuildSteps ([#180239](https://github.com/pytorch/pytorch/pull/180239))
-- Install libaotriton_v2.so via cmake install for wheel packaging ([#180242](https://github.com/pytorch/pytorch/pull/180242))
-- [BE] Upgrade XPU support package to 2026.0 ([#182003](https://github.com/pytorch/pytorch/pull/182003))
-- [Dependabot] Update(deps): Bump transformers from 5.7.0 to 5.9.0 in /.ci/docker/ci_commit_pins (696ebd85f52)
 - Add basic pyrefly infer command ([#173647](https://github.com/pytorch/pytorch/pull/173647))
-- [ROCm] Enable Python 3.15 wheel builds ([#185409](https://github.com/pytorch/pytorch/pull/185409))
 - [CD] Raise timeout for x86 cuda builds to 280 mins ([#185560](https://github.com/pytorch/pytorch/pull/185560))
-- [cuteDSL] Remove cuda dependency in forked precompile subprocesses ([#184865](https://github.com/pytorch/pytorch/pull/184865))
 - torchtitan: track CUDA_STABLE for build/test env and nightly wheel channel ([#186014](https://github.com/pytorch/pytorch/pull/186014))
 - Remove references to torch_tpu.api ([#186083](https://github.com/pytorch/pytorch/pull/186083))
-- Build torch._C extension module and version.py via CMake ([#180243](https://github.com/pytorch/pytorch/pull/180243))
 - Use normalized name spmd-types in wheel Requires-Dist ([#186545](https://github.com/pytorch/pytorch/pull/186545))
 - Disable custom op aliasing errors for vLLM CI ([#184638](https://github.com/pytorch/pytorch/pull/184638))
 - Remove XNNPACK availability check from binary smoke test ([#186662](https://github.com/pytorch/pytorch/pull/186662))
 - [Dependabot] Update(deps): Bump transformers from 5.9.0 to 5.10.1 in /.ci/docker/ci_commit_pins (34ccd6b3cbe)
 - update spmd_types to 0.2.1 ([#186803](https://github.com/pytorch/pytorch/pull/186803))
+- [Dependabot] Update(deps): Bump transformers from 5.7.0 to 5.9.0 in /.ci/docker/ci_commit_pins (696ebd85f52)
 - [release 2.13] Apply Release only changes to 2.13 branch (1f706b96385)
 - [release 2.13] Remove docker image pinning from s390x manywheel builds (da8ca4eb91c)
 - Fetch tags in unified manywheel build job so release tags are detected (d7a7b7d02c2)
-### not user facing
 - [AArch64][CI]Add m8g as an option for nightly Inductor benchmark instances for AArch64 ([#174100](https://github.com/pytorch/pytorch/pull/174100))
 - [CI] Fix checkout path conflict in TD indexer workflow ([#180476](https://github.com/pytorch/pytorch/pull/180476))
 - [runner_determinator] Support per-user rollout percentage for runner experiments ([#180510](https://github.com/pytorch/pytorch/pull/180510))
@@ -123,7 +156,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [s390x CI] Disable scheduled s390x-periodic runs ([#181005](https://github.com/pytorch/pytorch/pull/181005))
 - [vllm hash update] update the pinned vllm hash ([#181048](https://github.com/pytorch/pytorch/pull/181048))
 - [Benchmark] Fix xpu benchmark workflow issue ([#180825](https://github.com/pytorch/pytorch/pull/180825))
-- [Triton 3.7] Update Triton hash ([#181001](https://github.com/pytorch/pytorch/pull/181001))
 - [BE] Make macos_binary_build_workflow.yml use matrix ([#181153](https://github.com/pytorch/pytorch/pull/181153))
 - [ROCm][CI] Update permissions in rocm-mi200.yml for build-osdc step ([#180755](https://github.com/pytorch/pytorch/pull/180755))
 - [vision hash update] update the pinned vision hash ([#181049](https://github.com/pytorch/pytorch/pull/181049))
@@ -153,7 +185,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add riseproject-dev/pytorch as L1 cross repo CI relay ([#181739](https://github.com/pytorch/pytorch/pull/181739))
 - ci: add torchcomms to distributed CI ([#181662](https://github.com/pytorch/pytorch/pull/181662))
 - [xpu][fix] Skip test_device_capability_supported_dtypes on XPU ([#180660](https://github.com/pytorch/pytorch/pull/180660))
-- ci: add torchcomms to distributed CI ([#181662](https://github.com/pytorch/pytorch/pull/181662))
 - [vllm hash update] update the pinned vllm hash ([#181679](https://github.com/pytorch/pytorch/pull/181679))
 - Use container: directive for linux binary build/test workflows ([#181599](https://github.com/pytorch/pytorch/pull/181599))
 - [OSDC]Migrate slow.yml jobs to OSDC (ARC) via dial-up pattern ([#181799](https://github.com/pytorch/pytorch/pull/181799))
@@ -161,7 +192,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Update assigntome-docathon.yml for 2026 Docathon ([#181264](https://github.com/pytorch/pytorch/pull/181264))
 - [MergeRules] Make Metamates group explicit ([#176303](https://github.com/pytorch/pytorch/pull/176303))
 - Fix NumPy 2.0 `np.string_` removal in test_monitor and test_tensorboard and unskip test_writer ([#168252](https://github.com/pytorch/pytorch/pull/168252))
-- Move NCCL pin to 2.30 ([#181313](https://github.com/pytorch/pytorch/pull/181313))
 - Update label check for docathon-2026 ([#182128](https://github.com/pytorch/pytorch/pull/182128))
 - [OSDC]Migrate nightly.yml docs-build to OSDC (ARC) via dial-up pattern ([#181802](https://github.com/pytorch/pytorch/pull/181802))
 - Reset .ci/docker tree to known good Docker configuration ([#182305](https://github.com/pytorch/pytorch/pull/182305))
@@ -199,16 +229,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix TD changed file detection for ghstack PRs ([#182957](https://github.com/pytorch/pytorch/pull/182957))
 - [OSDC] Migrate nightly inductor H100 perf workflow to OSDC via dial-up pattern ([#182591](https://github.com/pytorch/pytorch/pull/182591))
 - Bump gitpython from 3.1.47 to 3.1.50 in /.ci/lumen_cli (6a7d27c182c)
-- Replace deprecated distutils usage ([#182120](https://github.com/pytorch/pytorch/pull/182120))
-- [CD] Add CPython-3.15b1 ([#182954](https://github.com/pytorch/pytorch/pull/182954))
 - Auto-label .ci/docker changes with no-runner-experiments ([#183244](https://github.com/pytorch/pytorch/pull/183244))
 - [CD] [BE] Trim build_env_setup.py OS-package install to zip+openssl ([#183320](https://github.com/pytorch/pytorch/pull/183320))
 - Always run EC2 route on pull requests in _linux-build/_linux-test ([#183243](https://github.com/pytorch/pytorch/pull/183243))
 - [OSDC] Migrate dtensor.yml to OSDC (ARC) via dial-up pattern ([#182581](https://github.com/pytorch/pytorch/pull/182581))
 - Upgrade numba to 0.64.0 ([#182081](https://github.com/pytorch/pytorch/pull/182081))
 - Cpython dynamo test org ([#169856](https://github.com/pytorch/pytorch/pull/169856))
-- Drop setuptools concat_license_files; adopt PEP 639 license-files ([#180237](https://github.com/pytorch/pytorch/pull/180237))
-- Drop setuptools concat_license_files; adopt PEP 639 license-files ([#180237](https://github.com/pytorch/pytorch/pull/180237))
 - [CI] Plumb ci-docker-hash through OSDC-migrated workflows ([#183492](https://github.com/pytorch/pytorch/pull/183492))
 - AArch64 inductor benchmark: revert benchmarking on 16 cores ([#183467](https://github.com/pytorch/pytorch/pull/183467))
 - [CI] Migrate periodic workflow to OSDC ([#183493](https://github.com/pytorch/pytorch/pull/183493))
@@ -222,7 +248,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [OSDC] Migrate operator_benchmark.yml to OSDC (ARC) via dial-up pattern ([#182886](https://github.com/pytorch/pytorch/pull/182886))
 - Make docs preview upload faster ([#183380](https://github.com/pytorch/pytorch/pull/183380))
 - [OSDC] Migrate torchtitan.yml to OSDC (ARC) via dial-up pattern ([#182899](https://github.com/pytorch/pytorch/pull/182899))
-- Drop setuptools concat_license_files; adopt PEP 639 license-files ([#180237](https://github.com/pytorch/pytorch/pull/180237))
 - [ROCm][CI] Remove sandbox distributed jobs; restore periodic-rocm-mi200 cron schedule ([#183914](https://github.com/pytorch/pytorch/pull/183914))
 - Remove pins for deprecated multipy and torchtext ([#183872](https://github.com/pytorch/pytorch/pull/183872))
 - [BE] Build all aarch64 + x86 CPU wheels on a single runner ([#183931](https://github.com/pytorch/pytorch/pull/183931))
@@ -239,12 +264,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Bump pytorch_sphinx_theme to 0.4.11 ([#184425](https://github.com/pytorch/pytorch/pull/184425))
 - [OSDC] Point linux.arm64.m7g.metal at the Graviton3 bare-metal pool ([#184291](https://github.com/pytorch/pytorch/pull/184291))
 - Add @rtimpe to Dynamo merge rules ([#184594](https://github.com/pytorch/pytorch/pull/184594))
-- Linux py 3.15 wheel builds ([#184600](https://github.com/pytorch/pytorch/pull/184600))
 - [ROCm][CI] Remove test-matrix from pull workflow ROCm build ([#184557](https://github.com/pytorch/pytorch/pull/184557))
 - Use shutil instead of rsync in reuse_old_whl to fix OSDC builds ([#184834](https://github.com/pytorch/pytorch/pull/184834))
-- Add 3.15 triton wheel build ([#184829](https://github.com/pytorch/pytorch/pull/184829))
-- Drop cuda-bindings dependency for Python 3.15 wheel builds ([#184891](https://github.com/pytorch/pytorch/pull/184891))
-- Skip XPU manywheel builds for Python 3.15 ([#184906](https://github.com/pytorch/pytorch/pull/184906))
 - Use dtensor-build's docker-image output in dtensor-test ([#185158](https://github.com/pytorch/pytorch/pull/185158))
 - Cancel in-progress docker-builds on new commits to a ciflow PR ([#185188](https://github.com/pytorch/pytorch/pull/185188))
 - [BE] Stop running mem_leak_check on CI ([#185265](https://github.com/pytorch/pytorch/pull/185265))
@@ -265,7 +286,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Publish docs preview from a standalone docs-build workflow ([#185688](https://github.com/pytorch/pytorch/pull/185688))
 - Generalize flex flash vectorization config for mask mods ([#185020](https://github.com/pytorch/pytorch/pull/185020))
 - Update torch_tpu.txt ([#185679](https://github.com/pytorch/pytorch/pull/185679))
-- Re-enable triton XPU Python 3.15 Linux build ([#185094](https://github.com/pytorch/pytorch/pull/185094))
 - [vllm hash update] update the pinned vllm hash ([#183068](https://github.com/pytorch/pytorch/pull/183068))
 - add spmd_types==0.2.0 to pytorch ([#180880](https://github.com/pytorch/pytorch/pull/180880))
 - Enable CuTeDSL op overrides in CI: accept cutlass-dsl 4.5.2, install tvm-ffi ([#186081](https://github.com/pytorch/pytorch/pull/186081))
@@ -277,12 +297,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [CI] Use a shared registry build cache for docker-builds ([#186297](https://github.com/pytorch/pytorch/pull/186297))
 - Update torch-xpu-ops commit pin ([#186208](https://github.com/pytorch/pytorch/pull/186208))
 - [vllm hash update] update the pinned vllm hash ([#186165](https://github.com/pytorch/pytorch/pull/186165))
-- [ROCm] Bump ROCm CI images to 7.2.3 ([#181288](https://github.com/pytorch/pytorch/pull/181288))
 - [ROCm][CI] Decrease ROCm shards of trunk.yml & remove triggers from extraneous workflows ([#186401](https://github.com/pytorch/pytorch/pull/186401))
 - Update merge_rules.yaml to include `torch._C._dynamo.*` ([#186628](https://github.com/pytorch/pytorch/pull/186628))
 - [XPU] Add pyzes==0.1.1 to XPU nightly wheel extra install requirements ([#185969](https://github.com/pytorch/pytorch/pull/185969))
 - Don't skip linux cpu/cuda binary tests when ROCm/XPU builds fail ([#186651](https://github.com/pytorch/pytorch/pull/186651))
-- Advance triton pin to 3.7.1 ([#186792](https://github.com/pytorch/pytorch/pull/186792))
 - Make TORCH_TRACE fork-safe and preserve tlparse logs ([#184772](https://github.com/pytorch/pytorch/pull/184772))
 - [Windows CI] Pin openssl=3.5.6 to fix Windows cert-store ASN.1 failure ([#186846](https://github.com/pytorch/pytorch/pull/186846))
 - Update torch-xpu-ops commit pin ([#186768](https://github.com/pytorch/pytorch/pull/186768))
