@@ -87,8 +87,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 - Add Python 3.15 wheel builds across Linux (CPU/CUDA), Triton, ROCm, and XPU ([#182954](https://github.com/pytorch/pytorch/pull/182954), [#184600](https://github.com/pytorch/pytorch/pull/184600), [#185409](https://github.com/pytorch/pytorch/pull/185409), [#184829](https://github.com/pytorch/pytorch/pull/184829), [#184891](https://github.com/pytorch/pytorch/pull/184891), [#184906](https://github.com/pytorch/pytorch/pull/184906), [#185094](https://github.com/pytorch/pytorch/pull/185094))
 ### improvements
-- CUDA Linux wheels are now always built as "small wheels" that depend on the NVIDIA CUDA pip packages instead of bundling the CUDA shared libraries, and the unused CUDA 12.8/12.9 build paths were removed ([#180612](https://github.com/pytorch/pytorch/pull/180612))
-- Remove the bundled `ptxas` from CUDA 13 binaries now that the upstream Triton fix has landed, reducing wheel size ([#174716](https://github.com/pytorch/pytorch/pull/174716))
 - Upgrade ROCm CI/CD images to 7.2.3 ([#181288](https://github.com/pytorch/pytorch/pull/181288))
 - Move the NCCL pin to 2.30 ([#181313](https://github.com/pytorch/pytorch/pull/181313))
 - Advance the Triton pin to 3.7.1 ([#181001](https://github.com/pytorch/pytorch/pull/181001), [#186792](https://github.com/pytorch/pytorch/pull/186792))
@@ -105,6 +103,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Install `libaotriton_v2.so` via cmake install for wheel packaging ([#180242](https://github.com/pytorch/pytorch/pull/180242))
 - Embed the macOS OpenMP runtime in `PostBuildSteps` ([#180239](https://github.com/pytorch/pytorch/pull/180239))
 ### not user facing
+- CUDA Linux wheels are now always built as "small wheels" that depend on the NVIDIA CUDA pip packages instead of bundling the CUDA shared libraries, and the unused CUDA 12.8/12.9 build paths were removed ([#180612](https://github.com/pytorch/pytorch/pull/180612))
+- Remove the bundled `ptxas` from CUDA 13 binaries now that the upstream Triton fix has landed, reducing wheel size ([#174716](https://github.com/pytorch/pytorch/pull/174716))
 - Remove unused noqa directives in non-torch/, batch 1 ([#180140](https://github.com/pytorch/pytorch/pull/180140))
 - [CI] Remove runtime Chocolatey installs from Windows CI (3a893377d9a)
 - Bump lxml from 6.0.2 to 6.1.0 in /.ci/docker (75b947d3fc8)
