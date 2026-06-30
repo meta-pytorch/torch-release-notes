@@ -91,14 +91,22 @@ Now process the remaining PRs (the ones staying in this worksheet) **in batches 
 
 **Edit the worksheet after every batch** — do NOT accumulate all categorizations in memory and write once at the end. Incremental edits are faster, reduce risk of errors, and make progress visible.
 
-**Important:** Also review PRs pre-sorted into `### not user facing` — some may actually be user-facing (bug fixes, improvements, performance) and should be moved to the correct category.
+**Important — do not skip `### not user facing`.** Pre-sorting (and the GitHub `topic: not user facing` label) reflects the *author's* judgment, which is sometimes wrong. Give every entry in `### not user facing` the **same body-level review** as the other sections — do not let the section title or the `topic: not user facing` label cause you to skim past it. For each entry, fetch the PR body (`gh pr view <NUM> --repo pytorch/pytorch --json title,body,labels`) when its user impact is not obvious from the title, and **promote it to the correct category** if any of these are true:
+- It fixes a bug/crash/hang/assert a user could hit, or links a closed issue (`Fixes #NNNNN` / `Closes #NNNNN`) → `### bug fixes`.
+- It delivers a measurable performance improvement (e.g. the body shows benchmark/MFU/latency gains) → `### performance`.
+- It adds or changes a user-visible capability, API, or behavior → `### new features` / `### improvements`.
+
+Only genuinely internal changes stay in `### not user facing`: test-only changes, CI/lint/formatting, internal refactors with no behavior change, typo fixes in comments, and changes whose `release notes:` label points at a *different* area (those go to `miscategorized.md`). When unsure whether something is user-facing, read the body rather than trusting the label.
 
 #### When to fetch PR details
 
 For most PRs, the title is sufficient to categorize. Only fetch additional detail when needed:
 - For potential BC-breaking changes or deprecations, always read the full PR body and diff to write a proper migration guide.
+  - Verify concrete behavioral claims against the merged diff, do not trust the PR description for them. Whenever an entry would state a specific, checkable detail, confirm it exists in `gh pr diff <NUM> --repo pytorch/pytorch` before writing it. This applies to config flags, env vars, warnings, or error messages.
 - For new features, read the PR body to write a clear description.
 - For ambiguous titles, fetch the PR body to determine the correct category.
+
+If the diff doesn't back up the claim, describe what actually merged (and recategorize accordingly — e.g. a "deprecation" with no warning in the diff is not a deprecation).
 
 ```bash
 gh pr view <NUMBER> --repo pytorch/pytorch --json title,body,labels
@@ -164,8 +172,8 @@ All category headings must be present even if empty.
 - **bug fixes**: Can be condensed.
 - **performance**: Can be condensed.
 - **docs**: Can be condensed.
-- **devs**: Developer-facing changes, can be condensed.
-- **not user facing**: List items here so reviewers can verify, but these will be dropped from the final merged release notes.
+- **devs**: Changes that affect people who build PyTorch from source, develop in it, or extend it, can be condensed.
+- **not user facing**: List items here so reviewers can verify, but these will be dropped from the final merged release notes. Usually this includes refactors with no behavior change, dead-code or duplicate-code removal with no user-visible effect, test/CI/lint-only changes, and changes confined to private APIs (names with a leading underscore).
 - **security**: Security-related fixes.
 
 Format each entry as:
@@ -174,6 +182,17 @@ Format each entry as:
 ```
 
 For bc breaking, deprecation, and new features, each entry MUST be polished and clear for end users. For the other sections, you do NOT need to polish every entry — summarize and group related changes where it makes sense.
+
+#### Formatting standards
+
+- **Release notes are not commit messages.** A commit title usually does not have enough context for an OSS user. Use the commit/PR title as a *starting point*, but rewrite it so that **someone who has used the feature in question can understand the change** from the release note alone. Expand cryptic or insider phrasing.
+- **Remove component/feature "tags."** Do NOT keep or reintroduce tags that indicate the component or feature — e.g. `[dataloader]`, `[autograd]`, `[fx]`, `[nnc]`, `[c10d]`, `[FSDP2]`, `[DTensor]`, `[Docathon]`, `[BE]`, `[ROCm]`, `[reland]`. The notes are already placed under tagged *categories* (and, here, per-area worksheet files), so a tag in the title/text is **redundant**. This also means **do NOT convert a tag into a prefix** like `c10d:`, `FSDP:`, `DTensor:`, `DDP:`, `SymmMem:`, `Pipelining:`, etc. — just remove it and fold any genuinely useful context into the sentence itself.
+- **Format programming elements in fixed-width.** Surround functions, methods, classes, arguments, etc. with backticks (`` `method` ``).
+- **Only reference concepts that exist in public PyTorch.** The audience is OSS users, so an entry must be understandable in terms of the public `torch` API. Strip any internal/company-specific terms that leak in from a PR title or body — e.g. `MAST`, `APF`/`APS`, `justknobs`/`JK`, `thrift`, `fbcode`/`buck`, `Differential Revision`/`D1234567`, internal cluster/job/oncall names. If such a term names the *motivation* for the change, drop it and describe the **public-facing effect** instead (the API/behavior an OSS user sees). If after removing the internal terms there is no public-facing change left, the PR is internal-only and belongs in `### not user facing` (or `miscategorized.md` if it's another area).
+- Write each entry as a **plain, self-contained sentence** in present tense (e.g. "Add a health check endpoint to the distributed debug server", "Fix gather on non-destination ranks for the TorchComms backend"). If the component matters for clarity, mention it naturally inside the sentence rather than as a leading label.
+- Use the published PyTorch release notes (e.g. the v2.x.0 GitHub release pages) as the style reference, not the raw PR titles.
+- **Do not trust the title's verb, and do not trust the pre-sorted category.** Many bug fixes are titled with a verb that describes *what the change does* (`Add`, `Support`, `Handle`, `Prevent`, `Make`, `Avoid`, ...) rather than the word "Fix", which makes them masquerade as features or improvements. Check the body: if it fixes a bug/crash/hang or links a closed issue (`Fixes #NNNNN`/`Closes #NNNNN`), **move it to `### bug fixes`** and **reword the entry around the symptom** (what was broken / the error the user saw), not the mechanism of the fix.
+
 
 ### Step 4: Verify
 

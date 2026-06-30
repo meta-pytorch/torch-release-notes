@@ -14,6 +14,8 @@ The file structure is as follows:
 - LICENSE
 - README.md   (this file)
 
-The scripts to generate relevant artifacts are in https://github.com/pytorch/pytorch/tree/main/scripts/release_notes.
+For those editing release notes, you can use the Claude skill `gen-release-notes` to complete an individual worksheet.
+
+For the release manager, the runbook is located [here](https://docs.google.com/document/d/1sb1XuMOUf5gj-7GEp_bId5VP47pqHXCw796iogPFuGM/edit?tab=t.0). The scripts for generating all the relevant artifacts are in https://github.com/pytorch/pytorch/tree/main/scripts/release_notes, or you can try using the `gen-commitlist` Claude skill.
 
 This repo is BSD-3 licensed, see LICENSE for details.
