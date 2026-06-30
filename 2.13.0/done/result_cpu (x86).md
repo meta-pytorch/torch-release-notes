@@ -50,7 +50,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 ### bug fixes
 ### performance
-- Use AVX2/VSX for bfloat16 and half in randn kernel ([#179834](https://github.com/pytorch/pytorch/pull/179834))
+- Speed up random number generation for `bfloat16` and `half` tensors on x86 (roughly 2x faster) by using AVX2/VSX vectorized instructions in the `normal_`/`randn` kernel ([#179834](https://github.com/pytorch/pytorch/pull/179834))
 ### docs
 ### devs
 ### Untopiced
