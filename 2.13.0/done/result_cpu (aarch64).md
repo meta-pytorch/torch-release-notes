@@ -49,8 +49,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- [Re-apply][AArch64][SVE][BF16]: Add vectorized BF16 transpose_mxn specialization ([#174097](https://github.com/pytorch/pytorch/pull/174097))
 ### performance
+- Improve `bfloat16` transpose performance on AArch64 by adding a dedicated SVE-vectorized `transpose_mxn` implementation ([#174097](https://github.com/pytorch/pytorch/pull/174097))
 ### docs
 ### devs
 ### Untopiced
