@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (dtensor)
+# Release Notes worksheet distributed (checkpoint)
 
 You should:
 
@@ -43,20 +43,20 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (dtensor)
+## distributed (checkpoint)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
+- Fix optimizer state-dict save/load using the wrong process group for FSDP models initialized with a non-default process group, by forwarding the FSDP process group to `FSDP.optim_state_dict` and `FSDP.optim_state_dict_to_load` ([#181261](https://github.com/pytorch/pytorch/pull/181261))
+- Fix `DefaultStager` crash when reused ([#183424](https://github.com/pytorch/pytorch/pull/183424))
 ### performance
 ### docs
+- Document previously undocumented functions in the `torch.distributed.checkpoint` API reference ([#182887](https://github.com/pytorch/pytorch/pull/182887))
 ### devs
-### Untopiced
-- [dtensor] Avoid native sharding cache for symbolic IValue args ([#183246](https://github.com/pytorch/pytorch/pull/183246))
 ### not user facing
-- [dtensor][instructions count] Fix instruction count regression for dtensor_dispatch_collectives ([#181397](https://github.com/pytorch/pytorch/pull/181397))
-- [DTensor] Fix upsample backward crashes when sharded ([#182595](https://github.com/pytorch/pytorch/pull/182595))
-- [DTensor] Use explicit hints for unbacked sharding ([#183545](https://github.com/pytorch/pytorch/pull/183545))
-- [DTensor] Use explicit hints for unbacked sharding ([#183545](https://github.com/pytorch/pytorch/pull/183545))
+- Add tearDown checks for torch function state leaks ([#182326](https://github.com/pytorch/pytorch/pull/182326))
+- Fix article typos: "an" before consonant sounds -> "a" ([#182302](https://github.com/pytorch/pytorch/pull/182302))
+- Port distributed checkpoint test cases on Intel GPU ([#182425](https://github.com/pytorch/pytorch/pull/182425))
 ### security
