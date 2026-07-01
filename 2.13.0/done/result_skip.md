@@ -1040,7 +1040,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Adjust tolerances in test_two_local_buffers_in_outer_loop_fusion and ([#183932](https://github.com/pytorch/pytorch/pull/183932))
 - scope __ubsan_ignore_undefined__ to the only UB path in TypeCast ([#185112](https://github.com/pytorch/pytorch/pull/185112))
 - Keep broadcast expand reuse from forcing realization ([#184182](https://github.com/pytorch/pytorch/pull/184182))
-- [Reland] Port D104346887/PR 182675 for index_add fast path (#184824) ([#184824](https://github.com/pytorch/pytorch/pull/184824))
 - [Test] Add distributed_backend() hook to DeviceTypeTestBase ([#184181](https://github.com/pytorch/pytorch/pull/184181))
 - [Test]Refactor test/dynamo/test_compiler_bisector.py to be device generic ([#185131](https://github.com/pytorch/pytorch/pull/185131))
 - [OpenReg] Add Minimal torch.compile Backend to Validate PrivateUse1 Integration ([#181254](https://github.com/pytorch/pytorch/pull/181254))
@@ -1188,7 +1187,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [BE] Align Tensor to_ivalue with Generator and others, no need for RAIITensorHandle ([#186424](https://github.com/pytorch/pytorch/pull/186424))
 - Fix TestCuda: test_host_memory_stats ([#179070](https://github.com/pytorch/pytorch/pull/179070))
 - Use context managers to cleanup instead of try/finally ([#186550](https://github.com/pytorch/pytorch/pull/186550))
-- [HOP][Dynamic Shapes] Ignore discarded unbacked symbols in fake traces ([#183837](https://github.com/pytorch/pytorch/pull/183837))
 - [inductor][cutlass] Fold decomposed gelu back into native CUTLASS GELU functor ([#185824](https://github.com/pytorch/pytorch/pull/185824))
 - Remove unused c10/util/AlignOf.h ([#186576](https://github.com/pytorch/pytorch/pull/186576))
 - Add XPU dispatch for _fused_adagrad_ operator ([#185577](https://github.com/pytorch/pytorch/pull/185577))
@@ -1200,7 +1198,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Ensure trunk test results are properly uploaded to test_run_s3 ([#186769](https://github.com/pytorch/pytorch/pull/186769))
 - Stabilize jacobian helper FX graphs ([#183756](https://github.com/pytorch/pytorch/pull/183756))
 - Move HOP test skips out of hop_db ([#185817](https://github.com/pytorch/pytorch/pull/185817))
-- Skip cudagraphs for kernel-free inductor graphs ([#185760](https://github.com/pytorch/pytorch/pull/185760))
 - wording tweaks for alban ([#186810](https://github.com/pytorch/pytorch/pull/186810))
 - [TEST][CUDA] Clean environment for `test_allocator_backend` ([#186783](https://github.com/pytorch/pytorch/pull/186783))
 ### security
