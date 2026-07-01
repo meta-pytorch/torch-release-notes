@@ -142,9 +142,20 @@ Give each reviewer these rules:
 - Internal codenames/systems (e.g. "Optimus" is the internal name for the pre-grad batch-fusion passes; "APS", "IGCTR", "AFOC", "MAST" are internal). Replace with the public concept or remove.
 - Phabricator/Diff/task IDs (`D#######`, `P#######`, `T######`), `fbcode`, `Differential Revision`, internal URLs.
 
+**Goal 4 — drop private-API-only entries.** PRs whose subject is a private API — an op/function/attribute whose name begins with `_` should generally **not** appear in the notes. Exceptions to KEEP:
+- the entry describes a **user-visible bug fix** that merely *mentions* a private symbol as implementation detail (keep — reword to foreground the user-visible effect if needed);
+- the private op **backs a public feature** named in the same entry (e.g. `_fused_adagrad_` backing `Adagrad(fused=True)`, `_sample_dirichlet`/`_dirichlet_grad` backing `torch.distributions.Dirichlet`);
+- semi-public families in common use (e.g. `_foreach_*`).
+Present the removal candidates to the user before deleting.
+
+**Goal 5 — BC-breaking / deprecation completeness & ordering.** Each BC-breaking entry needs a summary + rationale + before/after code (or clear migration); each deprecation needs before/after and should **name the full replacement API path** (e.g. not just "use `export`" but `torch.onnx.export(..., dynamo=True)`). Flag any bare one-liner in these two sections. Order the entries **most-impactful first** (within each module/section), not alphabetically — these are the highest-scrutiny sections.
+
+**Goal 6 — group related PRs & clarify scope.** Combine several PRs that build out one feature/area (e.g. a family of stable-ABI ops, or one op across multiple PRs) into a single bullet with all PR links, rather than many near-duplicate lines. If a bullet's scope isn't clear from its module heading (a reviewer's "is this ONNX/export specific?"), reword so the reader can tell what it applies to.
+
 **Strict rules for every reviewer:**
 - Only touch bullet text under the published category sections. Never touch PR/issue links or numbers, section/module headings, the TOC, the Highlights block, or anything inside existing backticks or fenced code blocks.
 - Copy-editing only — do not reword/summarize substance (except when removing an internal tag requires a light reword). When unsure, leave as-is.
+- Goals 4–6 are judgment-heavy (removing/merging/reordering entries) — **flag those changes to the user** rather than doing them silently.
 
 > Note: most internal-looking commits already lived under `not user facing` in the worksheets and never reached `final.md`, so you generally won't see Diff IDs or `[Dependabot]`/`[CI]` bumps here. Only fix internal refs that actually appear in `final.md`.
 

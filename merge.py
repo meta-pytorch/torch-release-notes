@@ -158,6 +158,49 @@ def write_output(per_category_commits, output_filename, version="X.x.x"):
         'nested tensor_frontend': 'Nested Tensor (NJT)',
     }
 
+    # General order in which modules are written within each section. Modules
+    # not listed here are appended, sorted alphabetically, after these.
+    module_order = [
+        'python_frontend',
+        'dataloader_frontend',
+        'nn_frontend',
+        'optim',
+        'optimizer_frontend',
+        'autograd_frontend',
+        # distributed family, keeping their internal ordering
+        'distributed',
+        'distributed (checkpoint)',
+        'distributed (dtensor)',
+        'distributed (fsdp)',
+        'distributed (fsdp2)',
+        'distributed (miscellaneous)',
+        'linalg_frontend',
+        'profiler',
+        'fx',
+        'dynamo',
+        'inductor',
+        'inductor (aoti)',
+        'export',
+        'aotdispatcher',
+        'aot autograd',
+        'composability',
+        'quantization',
+        'nested tensor_frontend',
+        'foreach_frontend',
+        'onnx',
+        'cpp_frontend',
+        'build_frontend',
+        'releng',
+        'cuda',
+        'cudnn',
+        'cpu (x86)',
+        'cpu (aarch64)',
+        'mps',
+        'rocm',
+        'xpu',
+    ]
+    module_rank = {name: i for i, name in enumerate(module_order)}
+
     with open(output_filename, 'w') as f:
         # title + table of contents + highlights placeholder (matches prior releases)
         f.write(f"# PyTorch {version} Release Notes\n\n")
@@ -183,7 +226,11 @@ def write_output(per_category_commits, output_filename, version="X.x.x"):
                 print(f'Found no commits for category {cat_short_name}; skipping')
                 continue
             cat_commits = per_category_commits[cat_short_name]
-            module_names = sorted(cat_commits.keys())
+            # order by the maintainer-preferred module order; anything not listed
+            # falls to the end, sorted alphabetically
+            module_names = sorted(
+                cat_commits.keys(),
+                key=lambda m: (module_rank.get(m, len(module_rank)), m))
             for module_name in module_names:
                 assert module_name in module_name_mapping, f"no nice name for {module_name} found; mapping needs to be updated"
                 nice_module_name = module_name_mapping[module_name]
