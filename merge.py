@@ -2,6 +2,7 @@ import argparse
 import glob
 import marko
 import os
+import re
 
 from marko.md_renderer import MarkdownRenderer
 
@@ -12,6 +13,8 @@ def get_arg_parser():
         description='Merges a directory of results .md files into a single .md file')
     parser.add_argument('-d', '--dir', required=True)
     parser.add_argument('-o', '--output', required=True)
+    parser.add_argument('-v', '--version', default=None,
+                        help='release version for the title (default: inferred from --dir)')
     return parser
 
 
@@ -20,9 +23,12 @@ def parse_result_md(md_text):
     m = marko.Markdown(parser=marko.parser.Parser, renderer=MarkdownRenderer)
     ast = m.parse(md_text)
 
-    # pull out the module name; it should be in a single level 2 heading
+    # pull out the module name; it should be in a single level 2 heading.
+    # the worksheet preamble also uses level 2 headings for numbered instructions
+    # ("## 1. ...", "## 2. ...", etc.), so filter those out.
     module_name_heading = [c for c in ast.children
-                           if isinstance(c, marko.block.Heading) and c.level == 2]
+                           if isinstance(c, marko.block.Heading) and c.level == 2
+                           and not re.match(r'^\d+\.', c.children[0].children)]
     assert len(module_name_heading) == 1
     module_name = module_name_heading[0].children[0].children
 
@@ -75,7 +81,19 @@ def sort_commits_by_category(per_module_commits):
     return per_category_commits
 
 
-def write_output(per_category_commits, output_filename):
+def render_commit(commit):
+    # `commit` is the rendered markdown for a single list item. Emit it as a
+    # bullet, indenting every continuation line by 2 spaces so nested paragraphs
+    # and fenced code blocks stay part of the list item (otherwise lines like
+    # "# comment" inside a code fence get parsed as top-level headings).
+    lines = commit.rstrip("\n").split("\n")
+    rendered = [f"- {lines[0]}"]
+    for line in lines[1:]:
+        rendered.append(f"  {line}" if line.strip() else "")
+    return "\n".join(rendered)
+
+
+def write_output(per_category_commits, output_filename, version="X.x.x"):
     # defines the order in which these are written in the output file + nicely formatted name
     # note that "not user facing" is intentionally left out
     category_order = [
@@ -112,6 +130,11 @@ def write_output(per_category_commits, output_filename):
         'distributed (checkpoint)': 'Distributed Checkpointing',
         'distributed (fsdp)': 'Distributed FSDP',
         'distributed (fsdp2)': 'Distributed FSDP2',
+        'distributed (dtensor)': 'DTensor',
+        'distributed (miscellaneous)': 'Distributed (Miscellaneous)',
+        'benchmark': 'Benchmark',
+        'aotdispatcher': 'AOTDispatcher',
+        'aot autograd': 'AOTAutograd',
         'dataloader_frontend': 'Dataloader Frontend',
         'jit': 'JIT',
         'linalg_frontend': 'Linear Algebra Frontend',
@@ -136,8 +159,26 @@ def write_output(per_category_commits, output_filename):
     }
 
     with open(output_filename, 'w') as f:
+        # title + table of contents + highlights placeholder (matches prior releases)
+        f.write(f"# PyTorch {version} Release Notes\n\n")
+        f.write("- [Highlights](#highlights)\n")
+        f.write("- [Backwards Incompatible Changes](#backwards-incompatible-changes)\n")
+        f.write("- [Deprecations](#deprecations)\n")
+        f.write("- [New Features](#new-features)\n")
+        f.write("- [Improvements](#improvements)\n")
+        f.write("- [Bug fixes](#bug-fixes)\n")
+        f.write("- [Performance](#performance)\n")
+        f.write("- [Documentation](#documentation)\n")
+        f.write("- [Developers](#developers)\n")
+        f.write("- [Security](#security)\n\n")
+        f.write("# Highlights\n\n")
+        f.write("TODO\n\n")
+        f.write("For more details about these highlighted features, you can look "
+                "at the release blogpost. Below are the full release notes for this "
+                "release.\n\n")
+
         for cat_short_name, cat_nice_name in category_order:
-            f.write(f"# {cat_nice_name}\n")
+            f.write(f"# {cat_nice_name}\n\n")
             if cat_short_name not in per_category_commits:
                 print(f'Found no commits for category {cat_short_name}; skipping')
                 continue
@@ -146,10 +187,13 @@ def write_output(per_category_commits, output_filename):
             for module_name in module_names:
                 assert module_name in module_name_mapping, f"no nice name for {module_name} found; mapping needs to be updated"
                 nice_module_name = module_name_mapping[module_name]
-                f.write(f"## {nice_module_name}\n")
-                module_commits = cat_commits[module_name]
-                for commit in module_commits:
-                    f.write(f"- {commit}\n")
+                f.write(f"## {nice_module_name}\n\n")
+                rendered = [render_commit(c) for c in cat_commits[module_name]]
+                # if any entry spans multiple lines, render a "loose" list with a
+                # blank line between every item so markdown stays well-formed
+                loose = any("\n" in r for r in rendered)
+                f.write(("\n\n" if loose else "\n").join(rendered))
+                f.write("\n\n")
 
 
 def main(args):
@@ -162,7 +206,12 @@ def main(args):
         module_name, commit_info = parse_result_md(md_text)
         per_module_commits[module_name] = commit_info
     per_category_commits = sort_commits_by_category(per_module_commits)
-    write_output(per_category_commits, args.output)
+    # infer the version (e.g. "2.13.0") from the parent dir of the worksheets,
+    # unless overridden explicitly
+    version = args.version
+    if version is None:
+        version = os.path.basename(os.path.dirname(os.path.normpath(args.dir))) or "X.x.x"
+    write_output(per_category_commits, args.output, version)
 
 
 if __name__ == "__main__":
