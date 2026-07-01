@@ -87,6 +87,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Raise `IndexError` in compile mode matching eager mode ([#184856](https://github.com/pytorch/pytorch/pull/184856))
 - Don't error on a skipped frame when `fullgraph=True` and a non-default stance is set ([#183623](https://github.com/pytorch/pytorch/pull/183623))
 - Set the `is_compiling` flag for the whole `torch.compile` session ([#184614](https://github.com/pytorch/pytorch/pull/184614))
+- Fix FxGraphCache pickling of opaque types with cyclic references ([#180422](https://github.com/pytorch/pytorch/pull/180422))
+- Handle missing Windows C++ compiler in shape guard fallback ([#185447](https://github.com/pytorch/pytorch/pull/185447))
 ### performance
 - Fast path guardless cache hits ([#184683](https://github.com/pytorch/pytorch/pull/184683))
 - Optimize jagged NestedTensor compile guards ([#184053](https://github.com/pytorch/pytorch/pull/184053))

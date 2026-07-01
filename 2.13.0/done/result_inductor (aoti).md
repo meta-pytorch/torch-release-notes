@@ -56,6 +56,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Support mixed-device constants in `update_constant_buffer` ([#181114](https://github.com/pytorch/pytorch/pull/181114))
 - Add FP8 header files in the AOTI `shim.h` ([#178120](https://github.com/pytorch/pytorch/pull/178120))
 - Add throttled `cudaMemcpy` for AOTI constant loading to reduce peak memory usage ([#184823](https://github.com/pytorch/pytorch/pull/184823))
+- Preserve AOTI proxy_executor error messages ([#180884](https://github.com/pytorch/pytorch/pull/180884))
+- Enable Triton kernels in AOTI C++ wrapper on CPU ([#181068](https://github.com/pytorch/pytorch/pull/181068))
+- Skip CPU vec ISA setup for device-only cpp_wrapper ([#182089](https://github.com/pytorch/pytorch/pull/182089))
+- Expose torchbind constants from AOTIModelPackageLoader ([#182149](https://github.com/pytorch/pytorch/pull/182149))
+- Improve AOTI error for Python custom ops ([#186305](https://github.com/pytorch/pytorch/pull/186305))
 ### bug fixes
 - Fix undefined identifier error in CppWrapper due to false-positive caching ([#178147](https://github.com/pytorch/pytorch/pull/178147))
 - Scale lazy TMA scratch by grid in cpp_wrapper ([#182825](https://github.com/pytorch/pytorch/pull/182825))
@@ -67,11 +72,28 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Use `c10::make_scope_exit` to avoid exception leaks ([#184520](https://github.com/pytorch/pytorch/pull/184520))
 - Fix deadlock in `AOTInductorModelContainer::run()` during concurrent constant folding ([#181941](https://github.com/pytorch/pytorch/pull/181941))
 - Track and unload `CUmodule` handles to prevent GPU code object leaks ([#184860](https://github.com/pytorch/pytorch/pull/184860))
+- Fix MSVC const pointer emission in cpp wrapper temporary arrays ([#179846](https://github.com/pytorch/pytorch/pull/179846))
+- Fix MSVC path append in kernel context stack compression ([#179857](https://github.com/pytorch/pytorch/pull/179857))
+- Add explicit headers for CPP wrapper to fix MSVC compilation ([#180120](https://github.com/pytorch/pytorch/pull/180120))
+- Fix inductor AOTI codegen for float('inf')/float('-inf') kernel args ([#180297](https://github.com/pytorch/pytorch/pull/180297))
+- Fix cond subgraph arrayref dispatch with generic lambda ([#180558](https://github.com/pytorch/pytorch/pull/180558))
+- Fix arrayref proxy executor tensor args ([#182751](https://github.com/pytorch/pytorch/pull/182751))
+- Defer Triton compile kickoff out of static init ([#182824](https://github.com/pytorch/pytorch/pull/182824))
+- Fix cpp wrapper while loop carried mutations ([#183657](https://github.com/pytorch/pytorch/pull/183657))
+- Fix AOTI CUDA device copy allocation ([#185634](https://github.com/pytorch/pytorch/pull/185634))
+- Resolve relative TORCHINDUCTOR_CACHE_DIR ([#185723](https://github.com/pytorch/pytorch/pull/185723))
 ### performance
 - Parallelize tensor-to-bytes conversion for AOTI weight serialization ([#181280](https://github.com/pytorch/pytorch/pull/181280))
 - Enable shared model loading from a directory to avoid redundant unzipping ([#172436](https://github.com/pytorch/pytorch/pull/172436))
 ### docs
 ### devs
+- Add C-ABI-safe V2 interface for MinimalArrayref ([#179483](https://github.com/pytorch/pytorch/pull/179483))
+- Add C-ABI-safe V2 interface for UpdateConstantsMap ([#180533](https://github.com/pytorch/pytorch/pull/180533))
+- Add C-ABI-safe ExtractConstantsMapForEach ([#183030](https://github.com/pytorch/pytorch/pull/183030))
+- Add C-ABI-safe UpdateConstantBufferPairs ([#183031](https://github.com/pytorch/pytorch/pull/183031))
+- Add C-ABI-safe UpdateConstantBufferFromCpuPairs ([#183032](https://github.com/pytorch/pytorch/pull/183032))
+- Add C-ABI-safe UpdateInactiveConstantBufferPairs ([#183033](https://github.com/pytorch/pytorch/pull/183033))
+- Add C-ABI-safe AOTInductorModelCreateV2 ([#185729](https://github.com/pytorch/pytorch/pull/185729))
 ### Untopiced
 ### not user facing
 - [AOTI] Rename secondary_cpu_* to aux_cpu_* in model container ([#181152](https://github.com/pytorch/pytorch/pull/181152))
@@ -96,4 +118,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - use reserve, move, and simplify vector construction in inductor ([#180940](https://github.com/pytorch/pytorch/pull/180940))
 - Use std::move and c10::irange in Inductor ([#181055](https://github.com/pytorch/pytorch/pull/181055))
 - [export] Simplify wrapper-library detection in model_package_loader ([#183027](https://github.com/pytorch/pytorch/pull/183027))
+- Remove del statement to fix RUFF F821 lint in combo kernel benchmark cleanup ([#182321](https://github.com/pytorch/pytorch/pull/182321))
+- Extract lazy scratch allocation as a util function ([#184731](https://github.com/pytorch/pytorch/pull/184731))
+- Introduce AssertDivByZeroLine WrapperLine ([#184732](https://github.com/pytorch/pytorch/pull/184732))
 ### security

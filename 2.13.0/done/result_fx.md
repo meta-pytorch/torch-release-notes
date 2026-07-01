@@ -51,12 +51,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - `split_module` now supports `torch.Size` crossing graph split boundaries by decomposing `size()` calls into per-dimension `sym_size` nodes, and builds submodules lazily for faster inference graph splitting ([#179839](https://github.com/pytorch/pytorch/pull/179839))
 - `CapabilityBasedPartitioner` can now opt out of horizontal fusion via `skip_horizontal_fusion=True`, partitioning only through direct data dependencies ([#184904](https://github.com/pytorch/pytorch/pull/184904))
 ### bug fixes
+- Preserve user runtime asserts in FX pass ([#184608](https://github.com/pytorch/pytorch/pull/184608))
 ### performance
 - Skip `GraphModule` reconstruction in `CSEPass` when no common subexpressions were eliminated ([#185479](https://github.com/pytorch/pytorch/pull/185479))
 ### docs
 ### devs
 - Add fast-path in GraphPickler.reducer_override for primitive types ([#181602](https://github.com/pytorch/pytorch/pull/181602))
 ### not user facing
+- Plumb `ProcessGroup` through `standalone_compile` ([#181964](https://github.com/pytorch/pytorch/pull/181964))
 - [pyrefly] Add type annotations to torch/fx/experimental/unification ([#180357](https://github.com/pytorch/pytorch/pull/180357))
 - [pyrefly] Add type annotations to remaining torch/fx/experimental files ([#180393](https://github.com/pytorch/pytorch/pull/180393))
 - [Oncall][AutoFix] Fix TestFxSplitNodeFinder testMode2/testMode3 expectations ([#180574](https://github.com/pytorch/pytorch/pull/180574))
@@ -68,4 +70,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Docathon]: documented coverage_ignored_functions ([#182547](https://github.com/pytorch/pytorch/pull/182547))
 - Replace __args__ with typing.get_args() and TensorType.dims ([#183006](https://github.com/pytorch/pytorch/pull/183006))
 - [Test] Make test_fx_annotate.py device-agnostic for out-of-tree backends ([#185226](https://github.com/pytorch/pytorch/pull/185226))
+- Add type annotations to torch/fx graph and graph_module ([#180994](https://github.com/pytorch/pytorch/pull/180994))
+- Fix typos in comments and docstrings ([#181967](https://github.com/pytorch/pytorch/pull/181967))
+- Support dynamic shapes in sort lowering and symbolic floor/ceil in FX wrapper ([#182786](https://github.com/pytorch/pytorch/pull/182786))
+- Fix indefinite article typos: "a" -> "an" before vowels ([#184216](https://github.com/pytorch/pytorch/pull/184216))
 ### security

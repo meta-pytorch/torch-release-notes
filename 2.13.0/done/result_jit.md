@@ -103,4 +103,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Avoid unnecessary std::string construction in JIT object copy ([#183011](https://github.com/pytorch/pytorch/pull/183011))
 - [Regional AOTI] Mutate root ScriptModule in place in `_replace_submodule_with_typecheck_pybind` ([#185321](https://github.com/pytorch/pytorch/pull/185321))
 - Add LLVM 23+ branch for `ObjectLinkingLayerCreator` in tensorexpr ([#180746](https://github.com/pytorch/pytorch/pull/180746))
+- Fix duplicated article "the the" typos in comments ([#181672](https://github.com/pytorch/pytorch/pull/181672))
+- Fix typos across torch codebase ([#181813](https://github.com/pytorch/pytorch/pull/181813))
+- Fix duplicate-word typos and a misspelling in comments and docs ([#181934](https://github.com/pytorch/pytorch/pull/181934))
+- Fix typos in comments, docstrings, and documentation ([#181966](https://github.com/pytorch/pytorch/pull/181966))
+- Fix typos in comments and docstrings across torch ([#181978](https://github.com/pytorch/pytorch/pull/181978))
+- Fix typos in comments and documentation ([#185241](https://github.com/pytorch/pytorch/pull/185241))
 ### security

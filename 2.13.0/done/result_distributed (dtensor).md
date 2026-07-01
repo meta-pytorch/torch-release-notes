@@ -79,6 +79,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Remove unused noqa directives in `torch/`, batch 4 ([#180138](https://github.com/pytorch/pytorch/pull/180138))
 - Make DTensor `OpStrategy` stringification handle a missing mesh ([#182371](https://github.com/pytorch/pytorch/pull/182371))
 - Add backward gradient verification to `test_single_dim_strategy` ([#182558](https://github.com/pytorch/pytorch/pull/182558))
-- Skip `test_compile_multiple_random_ops` on ROCm ([#185522](https://github.com/pytorch/pytorch/pull/185522))
 - Fix missing `stride()` call in `test_redistribute` `TensorMeta` ([#186170](https://github.com/pytorch/pytorch/pull/186170))
+- Update CK pin and build wheel alongside PyTorch ([#178181](https://github.com/pytorch/pytorch/pull/178181))
 ### security

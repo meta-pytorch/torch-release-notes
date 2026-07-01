@@ -86,4 +86,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [reland][Inductor][X86] Remove deprecated fusion patterns ([#178466](https://github.com/pytorch/pytorch/pull/178466))
 - Disable XNNPACK by default in CMake ([#185297](https://github.com/pytorch/pytorch/pull/185297))
 - [BE][Ez]: More semi-automated edits to move return values ([#186480](https://github.com/pytorch/pytorch/pull/186480))
+- Remove unused noqa directives in torch/, batch 2 ([#180136](https://github.com/pytorch/pytorch/pull/180136))
 ### security

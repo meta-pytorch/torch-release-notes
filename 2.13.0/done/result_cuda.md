@@ -60,6 +60,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Support bfloat16 in `_embedding_bag_per_sample_weights_backward` on CUDA ([#185889](https://github.com/pytorch/pytorch/pull/185889))
 - Align `parsePerProcessMemoryFraction`'s return type with other parsers ([#185139](https://github.com/pytorch/pytorch/pull/185139))
 - Improve error message when cuda-bindings version is too old ([#185990](https://github.com/pytorch/pytorch/pull/185990))
+- Expose torch.cuda.current_solver_handle for cuSOLVER handle sharing ([#176705](https://github.com/pytorch/pytorch/pull/176705))
 ### bug fixes
 - Workaround for `nvrtcCompileProgram` changing locale in CUDA < 12.6.2 ([#180569](https://github.com/pytorch/pytorch/pull/180569))
 - Zero `total_weight` before accumulating in `nll_loss2d` ([#182082](https://github.com/pytorch/pytorch/pull/182082))
