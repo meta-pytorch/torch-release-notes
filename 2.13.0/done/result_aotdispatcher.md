@@ -52,9 +52,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Preserve linalg error checks in AOT graphs ([#184111](https://github.com/pytorch/pytorch/pull/184111))
-- [aot_autograd] Use FX node names in merge_view_inputs error messages ([#180424](https://github.com/pytorch/pytorch/pull/180424))
 ### not user facing
-- Make `AOTConfig` immutable in AOT stage 2 ([#184070](https://github.com/pytorch/pytorch/pull/184070))
 ### security
