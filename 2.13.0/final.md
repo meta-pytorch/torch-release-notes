@@ -1,7 +1,6 @@
 # PyTorch 2.13.0 Release Notes
 
 - [Highlights](#highlights)
-- [Tracked Regressions](#tracked-regressions)
 - [Backwards Incompatible Changes](#backwards-incompatible-changes)
 - [Deprecations](#deprecations)
 - [New Features](#new-features)
@@ -25,16 +24,6 @@
 </table>
 
 For more details about these highlighted features, you can look at the release blogpost. Below are the full release notes for this release.
-
-# Tracked Regressions
-
-### Convolution failures on CUDA 13 builds when a mismatched system cuDNN is on the loader path
-
-On CUDA 13 builds, a convolution can fail on the first call with `CUDNN_STATUS_SUBLIBRARY_VERSION_MISMATCH` ([#188892](https://github.com/pytorch/pytorch/issues/188892)). This only affects systems that also have a *different* system-wide cuDNN 9.x (e.g. an apt-installed cuDNN >= 9.23) visible to the dynamic loader. Clean pip-only installs and standard CI environments are unaffected and do not reproduce it.
-
-Cause: CUDA 13 builds bundle `nvidia-cudnn-cu13==9.20.0.48`, whose `libcudnn_graph.so.9` `dlopen`s the engine sub-library `libcudnn_engines_tensor_ir.so` by bare soname, but that library is not shipped in the 9.20 wheel (it was introduced in cuDNN >= 9.23). If no other cuDNN installation is present, the failed `dlopen()` is harmless and cuDNN falls back to another implementation. However, if a different cuDNN 9.x installation is visible on the loader search path, the loader resolves `libcudnn_engines_tensor_ir.so` from that installation instead, mixing libraries from different cuDNN versions and resulting in `CUDNN_STATUS_SUBLIBRARY_VERSION_MISMATCH`.
-
-Workaround: Ensure that a different system cuDNN installation is not visible on the loader search path (e.g. remove it or clear it from `LD_LIBRARY_PATH`/`ldconfig`), or use a self-consistent cuDNN installation. A fix (preloading the bundled cuDNN libraries so they take precedence over system copies) is planned for the 2.13.1 patch release.
 
 # Backwards Incompatible Changes
 
