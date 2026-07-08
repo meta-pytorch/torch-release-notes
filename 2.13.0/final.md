@@ -9,7 +9,6 @@
 - [Performance](#performance)
 - [Documentation](#documentation)
 - [Developers](#developers)
-- [Security](#security)
 
 # Highlights
 
@@ -24,6 +23,14 @@
 </table>
 
 For more details about these highlighted features, you can look at the release blogpost. Below are the full release notes for this release.
+
+# Tracked Regressions
+
+### ROCm wheels break `torch.compile` on CPU in environments without a GPU
+
+Running a `torch==2.13.0+rocm7.2` wheel in an environment where no GPU is available (`torch.cuda.is_available()` is `False`) breaks `torch.compile` on the CPU path: the first compile raises `RuntimeError: Can't detect vectorized ISA for CPU` ([#189194](https://github.com/pytorch/pytorch/issues/189194)). This is a regression from `torch==2.12.1+rocm7.2`, which compiles CPU code fine (detecting e.g. `VecAVX2`) in the same setup. The 2.13 ROCm wheel appears to rely on something present in the ROCm builder image to detect the CPU vectorized ISA, so it works when run on a ROCm image but fails on a plain CPU-only image.
+
+Workaround: run the `+rocm` wheel on a ROCm image, or install a standard CPU/CUDA build for GPU-less environments.
 
 # Backwards Incompatible Changes
 
@@ -1203,8 +1210,6 @@ For more details about these highlighted features, you can look at the release b
 ## C++ Frontend
 
 - Fix typos in export wrapper docstring and transformer module comment ([#181972](https://github.com/pytorch/pytorch/pull/181972))
-
-# Security
 
 # Developers
 
