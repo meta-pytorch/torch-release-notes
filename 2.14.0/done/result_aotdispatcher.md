@@ -49,15 +49,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- [aot] Fix wrong-slice alias output when inductor clones a misaligned input ([#191002](https://github.com/pytorch/pytorch/pull/191002))
-- [invoke_subgraph] Move inference mutations to AOT epilogue ([#191672](https://github.com/pytorch/pytorch/pull/191672))
+- Fix a wrong-slice alias output when Inductor clones a misaligned input ([#191002](https://github.com/pytorch/pytorch/pull/191002))
+- Move `invoke_subgraph` inference-mode input mutations to the AOT epilogue so they are applied correctly ([#191672](https://github.com/pytorch/pytorch/pull/191672))
+- Fix `control_deps` handling in the partitioner during forward/backward extraction ([#187695](https://github.com/pytorch/pytorch/pull/187695))
+- Support mutable (`Tensor!`) custom ops in input-mutating `invoke_subgraph` regions by routing them through Python functionalization ([#189543](https://github.com/pytorch/pytorch/pull/189543))
+- Fix common subexpression elimination (CSE) to correctly deduplicate NaN constant tensors by normalizing float/complex hashing and comparison ([#191173](https://github.com/pytorch/pytorch/pull/191173))
 ### performance
+- Avoid an expensive `Tensor.detach()` when saving graph-input views for backward at AOTAutograd runtime ([#189759](https://github.com/pytorch/pytorch/pull/189759))
 ### docs
 ### devs
-### Untopiced
-- Fix control_deps handling in partitioner for forward/backward extraction ([#187695](https://github.com/pytorch/pytorch/pull/187695))
-- Avoid detaching input views at AOTAutograd runtime ([#189759](https://github.com/pytorch/pytorch/pull/189759))
-- fix(invoke_subgraph): Support Tensor! custom ops in input-mutating regions ([#189543](https://github.com/pytorch/pytorch/pull/189543))
-- [AOTAutograd] Fix CSE to deduplicate NaN constant tensors by normalizing float/complex hashing and comparison ([#191173](https://github.com/pytorch/pytorch/pull/191173))
 ### not user facing
 ### security
