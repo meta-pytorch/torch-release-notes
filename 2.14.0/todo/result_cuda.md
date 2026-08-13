@@ -72,6 +72,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [ROCm] fix wait instructions ([#188067](https://github.com/pytorch/pytorch/pull/188067))
 - [cudaMallocAsync] Count graph-mem pool in memory_reserved() ([#186809](https://github.com/pytorch/pytorch/pull/186809))
 - Fix 32-bit shift in Bitfield<uint64_t> non-PTX path ([#190410](https://github.com/pytorch/pytorch/pull/190410))
+- [CUDA] Use 64-bit sample offsets in NLLLoss2d backward ([#190144](https://github.com/pytorch/pytorch/pull/190144))
 - Add 32-bit indexed kernel for CUDA FFT conjugate-symmetry fill ([#190269](https://github.com/pytorch/pytorch/pull/190269))
 - Add destroy-callbacks and object retention to torch.cuda.CUDAGraph ([#190582](https://github.com/pytorch/pytorch/pull/190582))
 - Add replay start/end hooks to torch.cuda.CUDAGraph ([#190602](https://github.com/pytorch/pytorch/pull/190602))

@@ -61,7 +61,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### Untopiced
 - Fix incorrect rank in torch.linalg.lstsq(driver='gelsy') due to stale JPVT values ([#187436](https://github.com/pytorch/pytorch/pull/187436))
 - [ROCm] Split CK SDPA vs CK GEMM arch gating ([#187267](https://github.com/pytorch/pytorch/pull/187267))
-- [ROCm] hipify: map CUBLAS_COMPUTE_16F and the cublasMath_t enum ([#187752](https://github.com/pytorch/pytorch/pull/187752))
 - Add `torch.linalg.matrix_sqrth` for Symmetric/Hermitian Positive-Definite Matrices ([#187987](https://github.com/pytorch/pytorch/pull/187987))
 - [CUDA] Add TunableOp support for cublasLt ([#186270](https://github.com/pytorch/pytorch/pull/186270))
 - Fix misleading error for complex order in torch.linalg.cond ([#188591](https://github.com/pytorch/pytorch/pull/188591))

@@ -59,15 +59,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix gaussian_nll_loss eps docstring: it clamps var, not adds ([#190058](https://github.com/pytorch/pytorch/pull/190058))
 ### devs
 ### Untopiced
-- [ROCm] Workaround for UpSamplingNearest2D Fwd due to HIP UINT32_MAX limit ([#180310](https://github.com/pytorch/pytorch/pull/180310))
-- [ROCm] Fix layer_norm fallback launch limit ([#186956](https://github.com/pytorch/pytorch/pull/186956))
 - linear_cross_entropy: support probability targets on the chunked path ([#187053](https://github.com/pytorch/pytorch/pull/187053))
 - linear_cross_entropy: remove the `balanced` acc_policy ([#188283](https://github.com/pytorch/pytorch/pull/188283))
 - Fix avg_pool2d CUDA backward for channels_last inputs with padding ([#188345](https://github.com/pytorch/pytorch/pull/188345))
 - Fix output mismtach for F.softshrink with bfloat16 and float scalar ([#186358](https://github.com/pytorch/pytorch/pull/186358))
 - Fix segfault in replication_pad{1d,2d}_backward on channel mismatch ([#189463](https://github.com/pytorch/pytorch/pull/189463))
 - Show example output in nn.Tanh docstring ([#189390](https://github.com/pytorch/pytorch/pull/189390))
-- [CUDA] Use 64-bit sample offsets in NLLLoss2d backward ([#190144](https://github.com/pytorch/pytorch/pull/190144))
 - Fix 64-bit indexing in avg_pool3d backward atomic kernel ([#188229](https://github.com/pytorch/pytorch/pull/188229))
 - [ATen] Reject non-positive kernel_size in fractional_max_pool ([#190480](https://github.com/pytorch/pytorch/pull/190480))
 - [native dsl] Add Helion backend integration ([#190636](https://github.com/pytorch/pytorch/pull/190636))

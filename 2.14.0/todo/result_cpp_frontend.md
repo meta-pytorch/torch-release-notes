@@ -49,6 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 - Adding conversion from PyObject to torch::stable::tensor ([#183323](https://github.com/pytorch/pytorch/pull/183323))
 ### improvements
+- [Stable C Shim] Use error message retrieval shim if available at runtime ([#183823](https://github.com/pytorch/pytorch/pull/183823))
 - [BE] Do not include <windows.h> directly ([#187673](https://github.com/pytorch/pytorch/pull/187673))
 - Simplify waiting using std::latch + fix iOS PACKAGE modifier (#188279) ([#188281](https://github.com/pytorch/pytorch/pull/188281))
 - [c++20] Simplify waiting using std::latch in ParallelNative.cpp (#188981) ([#188981](https://github.com/pytorch/pytorch/pull/188981))

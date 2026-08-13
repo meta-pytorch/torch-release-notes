@@ -59,6 +59,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Bump aiohttp from 3.13.4 to 3.14.1 in /.ci/docker (4101bfbd081)
 - Bump uv from 0.11.6 to 0.11.15 in /.ci/lumen_cli (acb162c48a9)
 - [CD] Refactor Windows wheel build scripts (Python pipeline) ([#184407](https://github.com/pytorch/pytorch/pull/184407))
+- [XPU][CI] Add BMG client target and expand smoke tests ([#187421](https://github.com/pytorch/pytorch/pull/187421))
 - [BE] Detect MKL via pip instead of conda in build.sh ([#187623](https://github.com/pytorch/pytorch/pull/187623))
 - [CI] Rename RISC-V cross-compilation image to include "cross" suffix ([#187821](https://github.com/pytorch/pytorch/pull/187821))
 - [ROCm][CI] Fail fast on gfx950 pods with broken KFD topology ([#188024](https://github.com/pytorch/pytorch/pull/188024))
