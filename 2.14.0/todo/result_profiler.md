@@ -48,7 +48,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 - Support memory snapshot for CPU pinned memory ([#182407](https://github.com/pytorch/pytorch/pull/182407))
-- Support memory snapshot for CPU pinned memory ([#182407](https://github.com/pytorch/pytorch/pull/182407))
 ### improvements
 ### bug fixes
 ### performance
@@ -62,6 +61,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Profiler] Clamp overrun python events ([#190950](https://github.com/pytorch/pytorch/pull/190950))
 - [profiler][cupti] Add generic CUDA-graph lifecycle hooks ([#191299](https://github.com/pytorch/pytorch/pull/191299))
 - [Profiler] Add a path to build typed metadata events straight from Kineto ([#191756](https://github.com/pytorch/pytorch/pull/191756))
+- Remove the deprecated use_cuda option from the profiler ([#192543](https://github.com/pytorch/pytorch/pull/192543))
+- Deprecate the profiler's with_modules option ([#192808](https://github.com/pytorch/pytorch/pull/192808))
 ### not user facing
 - [Profiler] Fix a set of profiler tests ([#186970](https://github.com/pytorch/pytorch/pull/186970))
 - [Profiler] Reduce wait time for profiler test ([#187363](https://github.com/pytorch/pytorch/pull/187363))

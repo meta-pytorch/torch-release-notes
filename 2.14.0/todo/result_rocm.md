@@ -54,8 +54,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
+- [ROCm] Workaround for UpSamplingNearest2D Fwd due to HIP UINT32_MAX limit ([#180310](https://github.com/pytorch/pytorch/pull/180310))
+- [ROCm] Fix layer_norm fallback launch limit ([#186956](https://github.com/pytorch/pytorch/pull/186956))
 - [ROCm] Register .hip with MSVCCompiler for HIP extensions on Windows ([#187665](https://github.com/pytorch/pytorch/pull/187665))
+- [ROCm] hipify: map CUBLAS_COMPUTE_16F and the cublasMath_t enum ([#187752](https://github.com/pytorch/pytorch/pull/187752))
 - [ROCm] reuse one stream for warmup and captures in make_graphed_callables ([#187745](https://github.com/pytorch/pytorch/pull/187745))
+- [ROCm] Enable miopen convolution to handle zero-sized spatial outputs ([#187431](https://github.com/pytorch/pytorch/pull/187431))
 - [ROCm] Update ck aiter submodule for gfx1250 ([#187548](https://github.com/pytorch/pytorch/pull/187548))
 ### not user facing
 ### security

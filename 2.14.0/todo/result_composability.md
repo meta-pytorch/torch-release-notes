@@ -55,7 +55,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### Untopiced
 - Fix typos in comments, docstrings, and strings across torch ([#187076](https://github.com/pytorch/pytorch/pull/187076))
 - Preserve no-op dropout identity in decomposition ([#185335](https://github.com/pytorch/pytorch/pull/185335))
-- [ROCm] Enable miopen convolution to handle zero-sized spatial outputs ([#187431](https://github.com/pytorch/pytorch/pull/187431))
 - These are all trivial typo fixes in comments and docstrings. ([#187730](https://github.com/pytorch/pytorch/pull/187730))
 - Rename "reference type" to "symbolic type" for custom classes ([#188457](https://github.com/pytorch/pytorch/pull/188457))
 - Fix typos in docstrings and comments across torch modules ([#188977](https://github.com/pytorch/pytorch/pull/188977))
