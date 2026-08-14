@@ -1,165 +1,212 @@
 # PyTorch Release Blog — Output Template & Examples
 
-Use this template when drafting a release blog. It mirrors the structure
-of recent posts on pytorch.org/blog (2.9, 2.10, 2.11).
+Use this template when drafting a release blog. It mirrors the
+structure of <https://pytorch.org/blog/pytorch-2-13-release-blog/>.
+
+**Verify against the latest published post before drafting.** The
+format drifts between releases; this file records it as of 2.13.
 
 ## Template
 
 ```markdown
-# PyTorch <VERSION> Release Blog
-
 We are excited to announce the release of PyTorch® <VERSION>
 ([release notes](https://github.com/pytorch/pytorch/releases/tag/v<VERSION>.0))!
-This release features <N> commits from <M> contributors since PyTorch
-<PREV_VERSION>.
 
-## Highlights
+The PyTorch <VERSION> release features the following changes:
 
-- <Feature 1 — one line>
-- <Feature 2 — one line>
-- <Feature 3 — one line>
+- **<Headline feature>,** <one clause on what it does or how much faster>
+- **<Headline feature>,** <...>
 - ...
+- **Broader platform support**: <ROCm / Arm / XPU one-liners>
 
-Along with <VERSION>, we are also releasing updates to the PyTorch
-domain libraries. See the blog posts for [TorchAudio](#), [TorchVision](#),
-and [ExecuTorch](#).
+This release is composed of <N> commits from <M> contributors since
+PyTorch <PREV>. We want to sincerely thank our dedicated community for
+your contributions. As always, we encourage you to try these out and
+report any issues as we improve <VERSION>. More information about how
+to get started with the PyTorch 2-series can be found at our
+[Getting Started](https://pytorch.org/get-started/locally/) page.
 
----
+Have questions? Join us on <DATE> for a live Q&A with panelists
+<NAMES> and moderator <NAME>. We will provide a brief overview of the
+release and answer your questions live. [Register today.](<URL>)
 
-## Beta Features
+Throughout the 2.x series, PyTorch has been evolving from a
+research-first framework into a unified, hardware-agnostic platform for
+production training and inference at scale. [PyTorch <N-2>](<URL>)
+<what it added>. [PyTorch <N-1>](<URL>) <what it added>.
 
-### [Beta] <Feature name> — <component>
-
-<1-3 sentences describing what it does, who should care, and what
-changed vs. the previous release.>
-
-See [#<PR>](https://github.com/pytorch/pytorch/pull/<PR>) and the
-[documentation](<link>).
-
-### [Beta] <Feature name> — <component>
-...
-
----
-
-## Prototype Features
-
-### [Prototype] <Feature name> — <component>
-<description>
-
-### [Prototype] <Feature name> — <component>
-...
-
----
+PyTorch <VERSION> <one paragraph on how this release extends those
+threads>.
 
 ## Performance Improvements
 
-### <component> — <short title>
-<description, with any benchmark numbers lifted directly from the PR>
+### <Entry title>
 
----
+<Paragraph 1: the problem with the status quo.>
+
+<Paragraph 2: what changed, and what it means for the user.>
+
+API Unstable
+
+(PR [#<PR>](https://github.com/pytorch/pytorch/pull/<PR>) by <Name>, <Company>)
+
+## Core Features
+
+### <Entry title>
+...
+
+## Distributed Training
+
+### <Entry title>
+...
+
+## Compilation and Export
+
+### <Entry title>
+...
+
+## Platform Features and Updates
+
+### CUDA
+
+#### <Entry title>
+...
+
+### ROCm
+
+#### <Entry title>
+...
+
+### Arm
+
+#### <Entry title>
+...
+
+### XPU (Intel GPUs)
+
+#### <Entry title>
+...
+
+### C++ ABI
+
+#### <Entry title>
+...
+
+## Profiling and Debugging
+
+### <Entry title>
+...
 
 ## Deprecations and Backwards-Incompatible Changes
 
-- <Change + migration path>. See [#<PR>](...).
-
----
+- **<Change>.** <What to do instead.> See [#<PR>](...).
 
 ## Non-Feature Updates
 
-- **CUDA default**: <old> → <new>
-- **Python support**: <range>
-- **Release cadence**: <note if it changed>
+- **Python support**: <changes>. See [#<PR>](...).
+- **CUDA**: <default build, versions added/removed>. See [#<PR>](...).
+- **Triton**: pin advanced to <version>. See [#<PR>](...).
+- **oneDNN**: submodule upgraded to <version>. See [#<PR>](...).
 ```
 
-## Example (filled in, abbreviated — based on the 2.11 blog)
+## Worked example (from the 2.13 blog)
+
+Note the shape of an entry: problem first, then the fix, then the
+designation on its own line, then attribution.
 
 ```markdown
-# PyTorch 2.11 Release Blog
+### Deterministic Backward for FlexAttention Flash Backend
 
-We are excited to announce the release of PyTorch® 2.11
-([release notes](https://github.com/pytorch/pytorch/releases/tag/v2.11.0))!
-This release features 2,723 commits from 432 contributors since PyTorch 2.10.
+This improvement focuses on correctness and debugging for the existing
+CUDA implementation of FlexAttention by making gradient computation
+reproducible. By default, the FlexAttention flash backend uses atomic
+operations in the backward pass for dQ accumulation, which introduces
+non-determinism — repeated runs on the same input can produce slightly
+different gradients. This makes debugging, regression testing, and
+reproducible research difficult.
 
-## Highlights
+The new deterministic backward path (compute_dq_write_order) replaces
+atomics with a pre-computed write ordering that guarantees bit-for-bit
+reproducible gradients without meaningful performance penalty. The
+measured end-to-end overhead on create_block_mask is well under 1% at
+longer sequence lengths (e.g., +0.2% at S=32768), making determinism
+effectively free for most production workloads. Users can opt in via
+the existing torch.use_deterministic_algorithms(True) setting with no
+additional code changes.
 
-- Differentiable collectives enable backprop through distributed ops.
-- FlexAttention gets a FlashAttention-4 backend on Hopper/Blackwell
-  with 1.2×-3.2× speedups over Triton.
-- MPS adds async error reporting and new distributions.
-- RNN/LSTM export to GPU via `torch.export`.
-- ROCm gains device-side asserts and TopK wins.
-- XPU adds CUDA-graph-style capture/replay.
-- FP16 half-precision GEMM on CPU via OpenBLAS.
-- CUDA 13 is now the default build; TorchScript is deprecated.
+API Unstable
 
-## API-Unstable Features
-
-### [API-Unstable] Differentiable Collectives for Distributed Training
-
-Collective operations (all_reduce, all_gather, reduce_scatter) now
-support backpropagation, enabling new distributed-training research
-patterns that previously required manual gradient plumbing.
-
-See [#<TODO>] and the [distributed docs](...).
-
-### [API-Unstable] FlexAttention with FlashAttention-4 Backend
-
-FlexAttention now targets FlashAttention-4 on Hopper and Blackwell GPUs,
-with auto-generated CuTeDSL score/mask functions. Reported speedups are
-1.2×-3.2× over the Triton backend.
-
-...
-
-## Non-Feature Updates
-
-- **CUDA default**: CUDA 12.x → CUDA 13 (x86_64 and ARM). CPU-only and
-  CUDA 12.8 builds remain available.
-- **TorchScript**: deprecated since 2.10 — migrate to `torch.export` or
-  ExecuTorch.
-- **Release cadence**: moving to one release every 2 months in 2026.
+(PR [#174813](https://github.com/pytorch/pytorch/pull/174813) by Driss Guessous, Meta)
 ```
 
-## Stability tags — how to pick
+And a highlight bullet, for tone:
 
-| Tag                | When to use                                                                  |
-|--------------------|------------------------------------------------------------------------------|
-| `[Stable]`         | API is public, documented, covered by BC policy. Rarely tagged explicitly.   |
-| `[Beta]`           | Public API, usable in production, minor signature changes still possible.    |
-| `[Prototype]`      | Public API, but the team reserves the right to remove or redesign it.        |
-| `[API-Unstable]`   | Equivalent to Prototype in recent (2.9+) blogs — use this for consistency.   |
+```markdown
+- **FlexAttention lands on Apple Silicon (MPS),** with up to ~12x
+  speedup over SDPA on sparse patterns, and gains a deterministic
+  backward path on CUDA for reproducible gradient computation
+```
 
-When in doubt, match the tag the PR author used in the PR body. If the
-PR body has no tag, default to `[Prototype]` for new features and flag it
-for the release manager.
+## Designations — how to pick
 
-## Component names — canonical list
+| Designation      | When to use                                                                   |
+|------------------|-------------------------------------------------------------------------------|
+| `API Unstable`   | The default for anything new. Placed on its own line before the attribution.   |
+| *(omitted)*      | Long-standing stable surfaces. When unsure, omit and add a `TODO`.             |
 
-Use these exactly when they apply (matches recent blog posts):
+**Stable, Beta and Prototype are retired.** The 2.13 post's own
+changelog reads: *"Removed two instances of prototype which is a
+designation that we no longer use."*
 
-- Dynamo / torch.compile
-- Inductor
-- Distributed
-- Export / AOTInductor
-- Quantization
-- Profiler
-- ONNX
-- NN / Frontend
-- MPS
-- ROCm
-- XPU
-- CPU / Arm
-- CUDA
-- libtorch / C++ ABI
-- Release Engineering
+Do not render designations as heading prefixes (`### [Beta] Foo`) —
+they are body text on a line of their own.
+
+## Section names — canonical list
+
+Top-level sections, in the order 2.13 used them:
+
+1. Performance Improvements
+2. Core Features
+3. Distributed Training
+4. Compilation and Export
+5. Platform Features and Updates
+6. Profiling and Debugging
+7. Deprecations and Backwards-Incompatible Changes
+8. Non-Feature Updates
+
+Backend subsections under Platform Features and Updates: CUDA, ROCm,
+Arm, XPU (Intel GPUs), C++ ABI. Use `###` for the backend and `####`
+for entries beneath it.
+
+Placement notes worth remembering:
+
+- A large backend rewrite goes under **Performance Improvements**, not
+  its platform section. 2.13 filed "Large MPS Op Migration to Native
+  Metal" there.
+- A backend-specific compiler feature goes under its **platform**, not
+  Compilation and Export. 2.13 filed the CuTeDSL Inductor backend
+  under CUDA.
+- Release-engineering items that ship a feature (e.g. Python 3.15
+  wheels) can be a **Core Features** entry; pure version bumps belong
+  in Non-Feature Updates.
 
 ## Things to avoid
 
-- **Don't invent speedup numbers.** Only cite numbers that appear in the
-  PR body or on a linked dashboard.
+- **Don't use retired designations.** No Stable, Beta or Prototype.
+- **Don't put designations in headings.** They are body text.
+- **Don't skip attribution.** Every entry ends with `(PR #NNN by Name,
+  Company)`. Worksheets have no author data, so fetch it from the API
+  and leave a TODO to convert handles to names.
+- **Don't invent speedup numbers.** Only cite numbers that appear in
+  the PR body or on a linked dashboard. If a number comes from a PR
+  title, say so.
 - **Don't list ghstack sub-PRs.** Collapse a stack to one entry.
 - **Don't include reverts.** If `#A` was reverted by `#B` before the
-  branch cut, neither belongs in the blog.
-- **Don't include internal refactors.** If a PR only moves code around
-  without changing a user-visible API or perf number, skip it.
+  branch cut, neither belongs in the blog. Check the release branch
+  for reverts too, not just main.
 - **Don't write commit-style descriptions.** "Fix segfault in foo when
-  bar" belongs in release notes, not the blog.
+  bar" belongs in release notes, not the blog. Lead with the problem
+  the reader has.
+- **Don't infer the support matrix.** Read CUDA, ROCm and Python
+  versions off `generate_binary_build_matrix.py` on both release
+  branches and diff them.
