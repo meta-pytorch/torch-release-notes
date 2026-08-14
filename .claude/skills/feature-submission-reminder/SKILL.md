@@ -51,13 +51,22 @@ The skill does not post it, so the draft must survive a copy-paste.
 - **Keep links inline** as `[text](url)`. A bare URL on its own line
   becomes an onebox preview card in Discourse, which is not wanted
   mid-paragraph.
+- **Avoid `**bold**` emphasis, and tell the user to paste as plain
+  text.** Discourse converts pasted *HTML* to Markdown, and most
+  sources put HTML on the clipboard: copying from a syntax-highlighting
+  editor or a rendered file view yields `<strong>**IMPORTANT**</strong>`,
+  which Discourse turns into `**\*\*IMPORTANT\*\***`. Plain-text paste
+  (Cmd+Shift+V / Ctrl+Shift+V) avoids it, but emphasis markers are the
+  first thing to break if the user forgets, so prefer plain wording and
+  lean on headings and lists for structure. Put the plain-text-paste
+  instruction in the file itself, above the separator.
 - **Wrap identifiers containing underscores in backticks.** Discourse
   treats `_word_` as italics, so `_set_pg_timeout` renders wrong
   unbackticked.
 - **Avoid bare `@handle`.** Discourse turns it into a user mention.
   Backtick it or use the person's name.
 - Standard Discourse markdown is otherwise fine: `##` headings, `-`
-  bullets, `**bold**`, numbered lists, `>` blockquotes, tables.
+  bullets, numbered lists, `>` blockquotes, tables.
 
 ## Workflow
 
