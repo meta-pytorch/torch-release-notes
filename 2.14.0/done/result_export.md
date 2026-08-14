@@ -48,22 +48,21 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-### bug fixes
+- Support serializing nested integer and floating-point list arguments, including empty nested lists, for custom operators in exported programs. ([#189424](https://github.com/pytorch/pytorch/pull/189424))
 ### performance
+- Reduce decomposition-time complexity for large exported graphs from super-linear to linear growth by avoiding repeated scans of graph-signature and module metadata. ([#177927](https://github.com/pytorch/pytorch/pull/177927))
 ### docs
 ### devs
-### Untopiced
-- [export] avoid RecursionError in guards-fn codegen for deeply nested guards (#186993) ([#186993](https://github.com/pytorch/pytorch/pull/186993))
-- Improve non-strict export error for raw Triton kernels ([#185827](https://github.com/pytorch/pytorch/pull/185827))
-- Addresses O(N^2) complexities in Dynamo export during decomposition ([#177927](https://github.com/pytorch/pytorch/pull/177927))
-- Improve draft export report color contrast ([#186070](https://github.com/pytorch/pytorch/pull/186070))
-- [export] unflatten: collect non-contiguous @N module copies via _is_call_name ([#188185](https://github.com/pytorch/pytorch/pull/188185))
-- Fix strict export of unregistered parameters ([#185728](https://github.com/pytorch/pytorch/pull/185728))
-- Infra primers for torch.export CFR inference preproc (#189424) ([#189424](https://github.com/pytorch/pytorch/pull/189424))
-- [HOP] Adding length parameter to scan ([#188349](https://github.com/pytorch/pytorch/pull/188349))
-- Fix non-strict export of vmap tensor indexing ([#186894](https://github.com/pytorch/pytorch/pull/186894))
+- Improve raw Triton kernel errors during non-strict export with guidance to define the kernel through `torch.library.triton_op` and launch it through `torch.library.wrap_triton` or `torch._library.capture_triton`. ([#185827](https://github.com/pytorch/pytorch/pull/185827))
+- Improve the readability of draft-export reports on light terminal backgrounds by using red for warning banners, green for success banners, and the terminal's default color for failure details. ([#186070](https://github.com/pytorch/pytorch/pull/186070))
+### bug fixes
+- Prevent `ExportedProgram.module()` from raising `RecursionError` while generating guard messages for deeply nested symbolic-shape expressions. ([#186993](https://github.com/pytorch/pytorch/pull/186993))
+- Fix `torch.export.unflatten` failing to restore parameters, buffers, and constants for non-contiguously numbered repeated module calls. ([#188185](https://github.com/pytorch/pytorch/pull/188185))
+- Fix strict export of parameters from modules stored in unregistered Python containers by treating the traced-only parameters as constants instead of attempting to restore them from the eager module's state. ([#185728](https://github.com/pytorch/pytorch/pull/185728))
+- Fix non-strict export of tensor indexing under `vmap` when the index is a batched scalar tensor. ([#186894](https://github.com/pytorch/pytorch/pull/186894))
 ### not user facing
-- [ShapesSpec] Support containers types in export shape_specs integration. ([#186167](https://github.com/pytorch/pytorch/pull/186167))
-- Fix duplicated words in docstrings ([#188884](https://github.com/pytorch/pytorch/pull/188884))
-- Strict pyrefly checking: round 1 (2/N) ([#187711](https://github.com/pytorch/pytorch/pull/187711))
+- Enable stricter static type checking for private export and serialization modules, with no runtime behavior change. ([#187711](https://github.com/pytorch/pytorch/pull/187711))
+- Remove duplicated words from docstrings across export and other PyTorch modules. ([#188884](https://github.com/pytorch/pytorch/pull/188884))
+- Support `ObjectSpec`, `SeqSpec`, and `DictSpec` container types when using shape specifications with strict export. ([#186167](https://github.com/pytorch/pytorch/pull/186167))
+- Add the `torch.fx.experimental.dynamic_spec.dynamic_spec` decorator for attaching a dynamic-shape specification to a function or `nn.Module.forward`. `torch.compile`, `torch.export.export`, and `make_fx` automatically use the attached specification; passing a conflicting call-site specification raises an error. ([#187639](https://github.com/pytorch/pytorch/pull/187639))
 ### security

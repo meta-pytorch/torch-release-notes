@@ -48,8 +48,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Add a `length` argument to `torch.scan`, allowing scans without an `xs` input in the same style as `jax.lax.scan`. ([#188349](https://github.com/pytorch/pytorch/pull/188349))
 ### bug fixes
 ### performance
+- Reduce dynamic-shape tracing overhead by avoiding repeated symbolic-number checks and unnecessary memory-format computation. ([#192677](https://github.com/pytorch/pytorch/pull/192677))
+- Bound the cost of applying wide unbacked-symbol substitution maps in `optimization_hint`, reducing synthetic cases with 300 replacements from several seconds to tens of milliseconds. ([#185884](https://github.com/pytorch/pytorch/pull/185884))
 ### docs
 ### devs
 ### Untopiced
@@ -87,4 +90,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix max_unpool2d channels-last stride mismatch on XPU ([#190189](https://github.com/pytorch/pytorch/pull/190189))
 - BE: Raise NotImplementedError for unsupported bool ops ([#192348](https://github.com/pytorch/pytorch/pull/192348))
 - BE: Use NotImplementedError/TypeError for unsupported FFT dtypes ([#192349](https://github.com/pytorch/pytorch/pull/192349))
+- Provide a targeted dynamic-shape error message when a data-dependent expression conflicts with a `dynamic_spec` specification. ([#187143](https://github.com/pytorch/pytorch/pull/187143))
+- Preserve symbolic tensor and scalar metadata across ProxyTensor and `make_fx` tracing so downstream compilation can consume the traced graphs correctly. ([#187231](https://github.com/pytorch/pytorch/pull/187231))
+- Fix symbolic simplification failures that reported `vr must not be None` by preserving loop-local value ranges through recursive simplification. ([#187350](https://github.com/pytorch/pytorch/pull/187350))
+- Fix proxy tracing failures for symbolic expressions containing natural powers such as `s1**2`. ([#188278](https://github.com/pytorch/pytorch/pull/188278))
+- Use known value ranges to simplify symbolic `Min` and `Max` expressions, avoiding spurious data-dependent guard failures. ([#186248](https://github.com/pytorch/pytorch/pull/186248))
+- Fix `torch.cond` branch-output merging raising an internal error for symbolic contiguous strides of the form `stride * max(size, 1)`. ([#189525](https://github.com/pytorch/pytorch/pull/189525))
+- Fix repeated tracing or lowering of data-dependent operations raising an assertion when equivalent unbacked symbolic values are rebound. ([#190083](https://github.com/pytorch/pytorch/pull/190083))
+- Decompose `detach` by default during post-dispatch `make_fx` tracing, preventing silently incorrect higher-order gradients. Callers that pass an explicit decomposition table retain the previous behavior. ([#186845](https://github.com/pytorch/pytorch/pull/186845))
 ### security
