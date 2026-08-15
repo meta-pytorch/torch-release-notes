@@ -1,0 +1,1 @@
+- `torch.export` dynamic-shape handling for variadic keyword arguments belongs to the export worksheet, not ONNX ([#185730](https://github.com/pytorch/pytorch/pull/185730))
