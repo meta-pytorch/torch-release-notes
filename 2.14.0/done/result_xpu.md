@@ -49,6 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add FP8 blockwise scaling support for MXFP8/MXFP4/NVFP4 recipes to `scaled_mm`/`_scaled_mm_v2` on XPU ([#181726](https://github.com/pytorch/pytorch/pull/181726), [#181727](https://github.com/pytorch/pytorch/pull/181727), [#187315](https://github.com/pytorch/pytorch/pull/187315))
 - Add symmetric memory ops (async tensor parallelism) support for XPU ([#185102](https://github.com/pytorch/pytorch/pull/185102))
 - Add XPU Graph native recording mode support ([#188874](https://github.com/pytorch/pytorch/pull/188874))
+- Add WSL2 support for XPU ([#192398](https://github.com/pytorch/pytorch/pull/188874))
 - Add `torch.xpu.list_gpu_processes` to query per-process GPU memory usage on XPU ([#185192](https://github.com/pytorch/pytorch/pull/185192))
 - Add `torch.xpu._sleep` support for benchmarking and testing on XPU ([#189527](https://github.com/pytorch/pytorch/pull/189527))
 
