@@ -47,20 +47,19 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add head-dimension 256 support to cuDNN SDPA ([#185553](https://github.com/pytorch/pytorch/pull/185553))
 ### improvements
+- Upgrade the CUDA 12.8, 12.9, and 13.0 wheels to cuDNN 9.23.1.3 ([#187091](https://github.com/pytorch/pytorch/pull/187091))
 ### bug fixes
+- Fix cuDNN variable-length SDPA ([#172108](https://github.com/pytorch/pytorch/pull/172108))
+- Disable cuDNN convolution engines 58 and 63 on `sm120` to prevent illegal memory accesses ([#190112](https://github.com/pytorch/pytorch/pull/190112))
+- Declare the attention-mask dtype to cuDNN instead of inheriting the graph I/O dtype ([#191612](https://github.com/pytorch/pytorch/pull/191612))
+- Update the cuDNN errata filter for `sm120` ([#191701](https://github.com/pytorch/pytorch/pull/191701))
 ### performance
+- Add a fast path for cuDNN heuristics ([#187212](https://github.com/pytorch/pytorch/pull/187212))
 ### docs
 ### devs
 ### Untopiced
-- [cuDNN][varlen] Fixes for cuDNN varlen SDPA ([#172108](https://github.com/pytorch/pytorch/pull/172108))
-- [CUDA] Add cuDNN heuristic fast path ([#187212](https://github.com/pytorch/pytorch/pull/187212))
-- [cuDNN][Convolution] Disable cuDNN Engine 58/63 on sm120 ([#190112](https://github.com/pytorch/pytorch/pull/190112))
-- [cuDNN][SDPA] Declare the attn_mask dtype to cuDNN instead of inheriting the graph io dtype ([#191612](https://github.com/pytorch/pytorch/pull/191612))
-- [cuDNN] Update errata filter for `sm120` ([#191701](https://github.com/pytorch/pytorch/pull/191701))
 ### not user facing
-- [cuDNN][SDPA] d=256 support for cuDNN SDPA ([#185553](https://github.com/pytorch/pytorch/pull/185553))
-- [cuDNN] Upgrade 12.8, 13.0 (and 12.9) wheels to cuDNN 9.23.1.3 ([#187091](https://github.com/pytorch/pytorch/pull/187091))
-- [cuDNN][SDPA] d=256 support for cuDNN SDPA ([#185553](https://github.com/pytorch/pytorch/pull/185553))
-- [cuDNN][Convolution] Disable cuDNN Fwd Engine 5 in backend version 9.23.1 ([#188318](https://github.com/pytorch/pytorch/pull/188318))
+- Disable cuDNN forward engine 5 in backend version 9.23.1 ([#188318](https://github.com/pytorch/pytorch/pull/188318))
 ### security
