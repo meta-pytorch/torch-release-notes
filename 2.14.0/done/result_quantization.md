@@ -49,27 +49,18 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- Fix divide-by-zero in per-channel float_qparams quantize for qint32 ([#186767](https://github.com/pytorch/pytorch/pull/186767))
+- Fix a divide-by-zero crash (`SIGFPE`) in `torch.quantize_per_channel` on the per-channel `float_qparams` path for the `qint32` dtype; whole-byte quantized types now pack correctly instead of underflowing the packing factor to zero ([#186767](https://github.com/pytorch/pytorch/pull/186767))
+- Add the missing overflow check to the FBGEMM build of the ARM `quantize_val` path, fixing incorrect quantized values that showed up as quantization test failures on some hardware ([#187481](https://github.com/pytorch/pytorch/pull/187481))
+- Fix a GPU memory access fault that aborted quantized `embedding_bag` byte and 4-bit rowwise lookups on ROCm, caused by a bitwise-AND typo in the bit-field extraction primitive ([#192571](https://github.com/pytorch/pytorch/pull/192571))
 ### performance
+- Add a bias-add fast path to fp16 dynamic quantized linear (`PackedLinearWeightFp16`), speeding up the bias addition step by 10–49× on representative shapes (roughly a 5% overall CPU reduction) ([#189943](https://github.com/pytorch/pytorch/pull/189943))
 ### docs
 ### devs
+- Update the vendored XNNPACK to github revision f6486e3e1d ([#191206](https://github.com/pytorch/pytorch/pull/191206))
 ### Untopiced
-- [cpp] use std::clamp ([#185490](https://github.com/pytorch/pytorch/pull/185490))
-- Fix typos in comments and docstrings across multiple files ([#187543](https://github.com/pytorch/pytorch/pull/187543))
-- [contd][cpp] use std::clamp ([#185552](https://github.com/pytorch/pytorch/pull/185552))
-- Fix typos in comments and docstrings across ao, distributed, masked, nn, and sparse modules ([#188814](https://github.com/pytorch/pytorch/pull/188814))
-- Fix typos in comments and docstrings across torch modules ([#190374](https://github.com/pytorch/pytorch/pull/190374))
-- Add overflow check to FBGEMM version of quantize_val_arm ([#187481](https://github.com/pytorch/pytorch/pull/187481))
-- Fix typos and grammar in code comments and docstrings ([#190722](https://github.com/pytorch/pytorch/pull/190722))
-- [AI Codemod][PerfAICT-General] Add bias-add fast path to PackedLinearWeightFp16::apply_dynamic_impl ([#189943](https://github.com/pytorch/pytorch/pull/189943))
-- Fix typos in comments and docstrings across torch ([#190827](https://github.com/pytorch/pytorch/pull/190827))
-- Fix stale 404 links caught by URL lint ([#189619](https://github.com/pytorch/pytorch/pull/189619))
-- Migrate deprecated torch.norm calls to torch.linalg.* ([#185097](https://github.com/pytorch/pytorch/pull/185097))
-- (Re-re-re-land) Update XNNPACK to github revision f6486e3e1d"" (#191206) ([#191206](https://github.com/pytorch/pytorch/pull/191206))
-- [ROCm] Fix bfe() bit-field extraction in the quantized CUDA EmbeddingBag kernel (#192571) ([#192571](https://github.com/pytorch/pytorch/pull/192571))
 ### not user facing
-- [inductor] fix remainder for fp16/bf16 tensors and scalar inputs ([#185168](https://github.com/pytorch/pytorch/pull/185168))
-- [reland][Inductor][X86] Remove deprecated fusion patterns ([#178466](https://github.com/pytorch/pytorch/pull/178466))
+- Use `std::clamp` in the quantizer CPU kernels ([#185490](https://github.com/pytorch/pytorch/pull/185490), [#185552](https://github.com/pytorch/pytorch/pull/185552))
+- Fix typos in comments and docstrings ([#187543](https://github.com/pytorch/pytorch/pull/187543), [#188814](https://github.com/pytorch/pytorch/pull/188814), [#190374](https://github.com/pytorch/pytorch/pull/190374), [#190722](https://github.com/pytorch/pytorch/pull/190722))
 - Use const_data_ptr for read-only weight_norm and qnnpack sites ([#187819](https://github.com/pytorch/pytorch/pull/187819))
 - Use const_data_ptr for read-only quantized sites ([#187817](https://github.com/pytorch/pytorch/pull/187817))
 - [BE][Ez]: Apply missing std::move calls via clang-tidy ([#189583](https://github.com/pytorch/pytorch/pull/189583))
