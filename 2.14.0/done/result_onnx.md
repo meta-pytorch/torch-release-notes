@@ -48,20 +48,19 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Preserve constants introduced during export decompositions so `ExportedProgram` remains valid when ONNX symbolic operations are inserted during retracing ([#185090](https://github.com/pytorch/pytorch/pull/185090))
 ### bug fixes
-- [ONNX] Fix signed right shift export in the TorchScript exporter ([#191226](https://github.com/pytorch/pytorch/pull/191226))
+- Fix signed right-shift export in the TorchScript exporter so negative values round toward negative infinity as they do in PyTorch ([#191226](https://github.com/pytorch/pytorch/pull/191226))
+- Fix quantized `gather` export by unpacking quantized tensor inputs before lowering ([#188272](https://github.com/pytorch/pytorch/pull/188272))
 ### performance
 ### docs
-- [onnx] Clarify that output_names labels outputs but does not reorder them ([#175796](https://github.com/pytorch/pytorch/pull/175796))
+- Clarify that `output_names` labels outputs but does not reorder them ([#175796](https://github.com/pytorch/pytorch/pull/175796))
 ### devs
 ### Untopiced
-- Preserve constants added during export decompositions ([#185090](https://github.com/pytorch/pytorch/pull/185090))
-- Fix typos in ONNX exporter comments ([#188817](https://github.com/pytorch/pytorch/pull/188817))
-- Use torch.rsqrt() instead of 1 / torch.sqrt() ([#184960](https://github.com/pytorch/pytorch/pull/184960))
-- Fix quantized ONNX gather export ([#188272](https://github.com/pytorch/pytorch/pull/188272))
-- Fix dynamic shapes for variadic kwargs ([#185730](https://github.com/pytorch/pytorch/pull/185730))
 ### not user facing
-- [ONNX] Run CUDA export verification tests on CUDAExecutionProvider ([#189734](https://github.com/pytorch/pytorch/pull/189734))
-- [Test] Replaced 'torch.cuda.manual_seed_all' with 'torch.get_device_module(device_type).manual_seed_all' in /test/onnx/pytorch_test_common.py ([#190188](https://github.com/pytorch/pytorch/pull/190188))
-- [Test] Replaced 'torch.cuda.manual_seed_all' with 'torch.get_device_module(device_type).manual_seed_all' in /test/onnx/onnx_test_common.py ([#190172](https://github.com/pytorch/pytorch/pull/190172))
+- Use `torch.rsqrt()` in internal decompositions for LayerNorm JVP and per-sample-gradient InstanceNorm ([#184960](https://github.com/pytorch/pytorch/pull/184960))
+- Fix typos in ONNX exporter comments ([#188817](https://github.com/pytorch/pytorch/pull/188817))
+- Run CUDA export verification tests on `CUDAExecutionProvider` ([#189734](https://github.com/pytorch/pytorch/pull/189734))
+- Make ONNX test seeding device-agnostic in `pytorch_test_common.py` ([#190188](https://github.com/pytorch/pytorch/pull/190188))
+- Make ONNX test seeding device-agnostic in `onnx_test_common.py` ([#190172](https://github.com/pytorch/pytorch/pull/190172))
 ### security

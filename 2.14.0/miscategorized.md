@@ -1,3 +1,4 @@
+- `torch.export` dynamic-shape handling for variadic keyword arguments belongs to the export worksheet, not ONNX ([#185730](https://github.com/pytorch/pytorch/pull/185730))
 - Fix typos in comments and docstrings across torch ([#190827](https://github.com/pytorch/pytorch/pull/190827)) — from quantization; labeled `release notes: distributed (ddp)` / `release notes: distributed (dtensor)`, belongs to distributed.
 - Fix stale 404 links caught by URL lint ([#189619](https://github.com/pytorch/pytorch/pull/189619)) — from quantization; labeled `release notes: dataloader`, belongs to dataloader.
 - [inductor] fix remainder for fp16/bf16 tensors and scalar inputs ([#185168](https://github.com/pytorch/pytorch/pull/185168)) — from quantization; an inductor numerical fix, belongs to inductor.
