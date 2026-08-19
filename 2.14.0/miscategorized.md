@@ -5,3 +5,4 @@
 - Migrate deprecated `torch.norm` calls to `torch.linalg.*` ([#185097](https://github.com/pytorch/pytorch/pull/185097)) — from quantization; cross-cutting internal refactor touching linalg, distributed, nn, and optim, not specifically quantization.
 - Fix ROCm wait instructions ([#188067](https://github.com/pytorch/pytorch/pull/188067)) — from cuda; belongs to ROCm.
 - Delete obsolete branches for ROCm versions earlier than 6.4 ([#192547](https://github.com/pytorch/pytorch/pull/192547)) — from cuda; belongs to ROCm.
+- Fix the AOTAutograd memory-budget partitioner short-circuit so it does not save a non-Tensor tuple node ([#188014](https://github.com/pytorch/pytorch/pull/188014)) — from autograd_frontend; belongs to aotdispatcher.
