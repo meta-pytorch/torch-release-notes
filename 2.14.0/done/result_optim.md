@@ -48,16 +48,16 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Add spectral_unclamped scaling option to adjust_lr_fn in Muon ([#187402](https://github.com/pytorch/pytorch/pull/187402))
 - Add maximize parameter to LBFGS optimizer ([#187309](https://github.com/pytorch/pytorch/pull/187309))
+- Make LBFGS.step a no-op on an empty param group ([#191666](https://github.com/pytorch/pytorch/pull/191666))
 ### bug fixes
+- Fix skipped logic and wrong casts for fp16/bf16 for fused sgd cpu ([#192545](https://github.com/pytorch/pytorch/pull/192545))
 ### performance
 ### docs
+- Fix incorrect LR curves in Chained/Sequential scheduler doc images ([#186468](https://github.com/pytorch/pytorch/pull/186468))
 ### devs
 ### Untopiced
-- Add spectral_unclamped scaling option to adjust_lr_fn in Muon ([#187402](https://github.com/pytorch/pytorch/pull/187402))
-- Make LBFGS.step a no-op on an empty param group ([#191666](https://github.com/pytorch/pytorch/pull/191666))
-- Fix incorrect LR curves in Chained/Sequential scheduler doc images ([#186468](https://github.com/pytorch/pytorch/pull/186468))
-- Fix skipped logic and wrong casts for fp16/bf16 for fused sgd cpu ([#192545](https://github.com/pytorch/pytorch/pull/192545))
 ### not user facing
 - optim: remove redundant Adafactor assert ([#188530](https://github.com/pytorch/pytorch/pull/188530))
 ### security
