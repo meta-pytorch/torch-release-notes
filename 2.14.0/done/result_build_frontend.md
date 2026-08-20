@@ -49,12 +49,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix source-build linker failures on systems where CMake reordered static and shared libraries by linking `libcpuinfo` through the `c10` shared library instead of linking it separately into both `c10` and `torch_cpu` ([#167328](https://github.com/pytorch/pytorch/pull/167328))
+- Fix Windows ARM64 builds failing to register a CPU quantized backend by recognizing the uppercase `ARM64` CMake processor name and enabling oneDNN ([#189346](https://github.com/pytorch/pytorch/pull/189346))
 ### performance
 ### docs
 ### devs
-### Untopiced
 ### not user facing
-- Build cpuinfo into c10 shared library ([#167328](https://github.com/pytorch/pytorch/pull/167328))
-- Collect build time metrics ([#189455](https://github.com/pytorch/pytorch/pull/189455))
-- Enable oneDNN for Windows ARM64 ([#189346](https://github.com/pytorch/pytorch/pull/189346))
 ### security
