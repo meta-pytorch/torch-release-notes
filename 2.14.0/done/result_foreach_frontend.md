@@ -48,13 +48,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- [BE][Ez]: Optimize ForEach map grouping ([#187802](https://github.com/pytorch/pytorch/pull/187802))
+- Gate nvmath _foreach_mm path on cuBLASLt grouped GEMM version ([#189757](https://github.com/pytorch/pytorch/pull/189757))
 ### bug fixes
 - MTA now writes the same len of data as prescribed for complex ([#189915](https://github.com/pytorch/pytorch/pull/189915))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Gate nvmath _foreach_mm path on cuBLASLt grouped GEMM version ([#189757](https://github.com/pytorch/pytorch/pull/189757))
 ### not user facing
+- [BE][Ez]: Optimize ForEach map grouping ([#187802](https://github.com/pytorch/pytorch/pull/187802))
 ### security
