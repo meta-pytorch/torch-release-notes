@@ -49,11 +49,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Release CUDA IPC-backed dataset storage when `DataLoader` workers exit, preventing producer-side IPC reference counts and allocations from remaining in limbo ([#190485](https://github.com/pytorch/pytorch/pull/190485))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Fix typos in comments, docstrings, and strings across torch ([#187627](https://github.com/pytorch/pytorch/pull/187627))
-- Fix CUDA IPC dataset cleanup in DataLoader workers ([#190485](https://github.com/pytorch/pytorch/pull/190485))
 ### not user facing
+- Fix spelling and grammar in comments, docstrings, and strings across PyTorch, including DataPipe documentation ([#187627](https://github.com/pytorch/pytorch/pull/187627))
+- Refresh or remove stale documentation links across PyTorch ([#189619](https://github.com/pytorch/pytorch/pull/189619))
 ### security
