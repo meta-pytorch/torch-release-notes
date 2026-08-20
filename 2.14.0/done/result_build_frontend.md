@@ -1,5 +1,5 @@
 
-# Release Notes worksheet caffe2
+# Release Notes worksheet build_frontend
 
 You should:
 
@@ -43,26 +43,16 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## caffe2
+## build_frontend
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
+- Fix source-build linker failures on systems where CMake reordered static and shared libraries by linking `libcpuinfo` through the `c10` shared library instead of linking it separately into both `c10` and `torch_cpu` ([#167328](https://github.com/pytorch/pytorch/pull/167328))
+- Fix Windows ARM64 builds failing to register a CPU quantized backend by recognizing the uppercase `ARM64` CMake processor name and enabling oneDNN ([#189346](https://github.com/pytorch/pytorch/pull/189346))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [AI Codemod][PerfAICT-General] fbcode/caffe2/torch/csrc/jit/serialization/pickler.cpp (#186127) ([#186127](https://github.com/pytorch/pytorch/pull/186127))
 ### not user facing
-- [caffe2][ovrsource] Build AOTInductor CUDA C-shim into libtorch_cuda_ovrsource ([#187621](https://github.com/pytorch/pytorch/pull/187621))
-- [arch_deps migration] Convert OSS caffe/caffe2 arch_deps/exported_arch_deps to select() ([#187793](https://github.com/pytorch/pytorch/pull/187793))
-- [AI Codemod][AsyncioGetEventLoopMigration] [asyncio-codemod] fbcode/caffe2/test (#188091) ([#188091](https://github.com/pytorch/pytorch/pull/188091))
-- [llvm21] caffe2/test: fix clang21 build + test failures exposed by llvm-fb 21 ([#189717](https://github.com/pytorch/pytorch/pull/189717))
-- xplat/caffe2/c10: add missing <fmt/format.h> include to signal_handler.cpp (#190691) ([#190691](https://github.com/pytorch/pytorch/pull/190691))
-- Remove dead source-list variables from aten and caffe2 CMake ([#190469](https://github.com/pytorch/pytorch/pull/190469))
-- [caffe2][miniz] Guard WIN32_LEAN_AND_MEAN redefinition (clang17 -Wmacro-redefined) (#190929) ([#190929](https://github.com/pytorch/pytorch/pull/190929))
-- [caffe2] Avoid out-of-range float->integral conversions (UB) in test_tensor_creation_ops (#191025) ([#191025](https://github.com/pytorch/pytorch/pull/191025))
-- [caffe2][test] Treat MTIA like CUDA in test_float_to_int_conversion_finite ([#191662](https://github.com/pytorch/pytorch/pull/191662))
-- caffe2/torch/csrc: include fmt/format.h in utils.cpp ([#192376](https://github.com/pytorch/pytorch/pull/192376))
 ### security

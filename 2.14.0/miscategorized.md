@@ -7,4 +7,4 @@
 - Delete obsolete branches for ROCm versions earlier than 6.4 ([#192547](https://github.com/pytorch/pytorch/pull/192547)) — from cuda; belongs to ROCm.
 - Fix efficient-attention log-sum-exp metadata for ROCm's compact layout ([#190723](https://github.com/pytorch/pytorch/pull/190723)) — from composability; belongs to ROCm.
 - Fix `multi_margin_loss` decomposition lowering on XPU by using one-dimensional weight indexing ([#188770](https://github.com/pytorch/pytorch/pull/188770)) — from composability; belongs to XPU.
-- Preserve channels-last strides for `max_unpool2d` decomposition on XPU ([#190189](https://github.com/pytorch/pytorch/pull/190189)) — from composability; belongs to XPU.
+- Fix the AOTAutograd memory-budget partitioner short-circuit so it does not save a non-Tensor tuple node ([#188014](https://github.com/pytorch/pytorch/pull/188014)) — from autograd_frontend; belongs to aotdispatcher.

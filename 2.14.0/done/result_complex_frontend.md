@@ -1,5 +1,5 @@
 
-# Release Notes worksheet build_frontend
+# Release Notes worksheet complex_frontend
 
 You should:
 
@@ -43,7 +43,7 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## build_frontend
+## complex_frontend
 ### bc breaking
 ### deprecation
 ### new features
@@ -52,9 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
 ### not user facing
-- Build cpuinfo into c10 shared library ([#167328](https://github.com/pytorch/pytorch/pull/167328))
-- Collect build time metrics ([#189455](https://github.com/pytorch/pytorch/pull/189455))
-- Enable oneDNN for Windows ARM64 ([#189346](https://github.com/pytorch/pytorch/pull/189346))
+- Fix private `ComplexTensor.mul_` in-place identity and result semantics, and support real left-hand operands in `torch.ne` for `ComplexTensor` values ([#188839](https://github.com/pytorch/pytorch/pull/188839))
 ### security

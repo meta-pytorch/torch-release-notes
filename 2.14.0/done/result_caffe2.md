@@ -1,5 +1,5 @@
 
-# Release Notes worksheet autograd_frontend
+# Release Notes worksheet caffe2
 
 You should:
 
@@ -43,38 +43,24 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## autograd_frontend
+## caffe2
 ### bc breaking
 ### deprecation
 ### new features
-- Add torch.autograd.graph.node_creation_hook ([#189284](https://github.com/pytorch/pytorch/pull/189284))
-- autograd: add ctx.set_output_grad_dtype ([#189634](https://github.com/pytorch/pytorch/pull/189634))
 ### improvements
 ### bug fixes
-- Fix pow backward crash when base is a bool scalar ([#182564](https://github.com/pytorch/pytorch/pull/182564))
-- [partitioner] Fix memory-budget short-circuit emitting non-saveable tuple node ([#188014](https://github.com/pytorch/pytorch/pull/188014))
-- Fix ldexp gradient for negative integer exponents ([#186566](https://github.com/pytorch/pytorch/pull/186566))
-- Fix max_pool double backward under vmap for channels_last inputs ([#191678](https://github.com/pytorch/pytorch/pull/191678))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Implement Double Backward for `cdist` and `pdist` ([#188901](https://github.com/pytorch/pytorch/pull/188901))
-- Stop copying at::Tensor when profiler is off ([#189582](https://github.com/pytorch/pytorch/pull/189582))
-- Use `ArrayRef<const Variable*> in autograd.Function.apply ([#189788](https://github.com/pytorch/pytorch/pull/189788))
-- Move autograd.Function output instead of copying it ([#189800](https://github.com/pytorch/pytorch/pull/189800))
-- Fix misleading full-backward-hook warning for pre-hook-only modules ([#190685](https://github.com/pytorch/pytorch/pull/190685))
-- native_group_norm_backward: Fix precision errors ([#190245](https://github.com/pytorch/pytorch/pull/190245))
-- [autograd] Guard end-of-backward leaf syncs that cross a CUDA graph capture boundary ([#189591](https://github.com/pytorch/pytorch/pull/189591))
-- Error on unsupported batch norm third derivatives ([#186779](https://github.com/pytorch/pytorch/pull/186779))
-- [autograd] Align clamp and min/max subgradients with dispatcher schemas ([#191142](https://github.com/pytorch/pytorch/pull/191142))
-- [BE][Ez]: Improve constant folding backwards in derivatives.yaml ([#192611](https://github.com/pytorch/pytorch/pull/192611))
+- Fix C10 and Python binding source builds with fmt 12.2 by including `<fmt/format.h>` directly where `fmt::format` is used ([#190691](https://github.com/pytorch/pytorch/pull/190691), [#192376](https://github.com/pytorch/pytorch/pull/192376))
+- Fix Windows Clang 17 builds of the vendored miniz library when `WIN32_LEAN_AND_MEAN` is already defined by the compiler command line ([#190929](https://github.com/pytorch/pytorch/pull/190929))
 ### not user facing
-- Fix DeviceContext mode leaks from checkpoint recompute and set_default_device restore ([#189286](https://github.com/pytorch/pytorch/pull/189286))
-- [autograd] Fall back to tensor backward for symbolic pow exponent ([#185851](https://github.com/pytorch/pytorch/pull/185851))
-- native_group_norm: Handle non-contiguous tensors, rather than throwing ([#186414](https://github.com/pytorch/pytorch/pull/186414))
-- [autograd] Expose wrapped node on CopySlices ([#190806](https://github.com/pytorch/pytorch/pull/190806))
-- [autograd] Preserve dynamic content in THPFunction error messages ([#191748](https://github.com/pytorch/pytorch/pull/191748))
-- Don't leak objects returned by users setup_context ([#191966](https://github.com/pytorch/pytorch/pull/191966))
-- [BE][Ez]: Improve readability and accuracy of log2/log10 backwards ([#192613](https://github.com/pytorch/pytorch/pull/192613))
+- Avoid an unnecessary tuple ownership copy in the JIT serializer's pickler ([#186127](https://github.com/pytorch/pytorch/pull/186127))
+- Add the generated AOTInductor CUDA C shim to the alternate LibTorch CUDA build ([#187621](https://github.com/pytorch/pytorch/pull/187621))
+- Migrate Caffe and Caffe2 Buck architecture dependencies to `select()` without changing resolved dependencies or flags ([#187793](https://github.com/pytorch/pytorch/pull/187793))
+- Migrate a Caffe2 CUDA memory-check test script away from deprecated asyncio event-loop access ([#188091](https://github.com/pytorch/pytorch/pull/188091))
+- Fix Caffe2 tests under Clang 21 by adding the required pybind include and avoiding undefined out-of-range float-to-integer reference values ([#189717](https://github.com/pytorch/pytorch/pull/189717))
+- Remove unused source-list variables from ATen and Caffe2 CMake files ([#190469](https://github.com/pytorch/pytorch/pull/190469))
+- Restrict float-to-integer conversion tests to values with defined C++ conversion behavior ([#191025](https://github.com/pytorch/pytorch/pull/191025))
+- Align MTIA float-to-integer conversion test inputs with the existing CUDA test path ([#191662](https://github.com/pytorch/pytorch/pull/191662))
 ### security
