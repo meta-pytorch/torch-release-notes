@@ -52,7 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Fix ComplexTensor mul_ in-place semantics and ne with real lhs ([#188839](https://github.com/pytorch/pytorch/pull/188839))
 ### not user facing
+- Fix private `ComplexTensor.mul_` in-place identity and result semantics, and support real left-hand operands in `torch.ne` for `ComplexTensor` values ([#188839](https://github.com/pytorch/pytorch/pull/188839))
 ### security
