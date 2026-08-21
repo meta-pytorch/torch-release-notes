@@ -53,7 +53,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add backward support for `torch.linalg.polar` on CPU, CUDA, and MPS ([#189732](https://github.com/pytorch/pytorch/pull/189732))
 - Allow `torch.backends.cuda.preferred_blas_library("ck")` to select the CK GEMM backend on ROCm `gfx90a` devices by separating GEMM support from CK attention support ([#187267](https://github.com/pytorch/pytorch/pull/187267))
 - Expand ROCm backend coverage for `torch.linalg.eig`, `torch.linalg.ldl_solve`, `torch.linalg.solve`, and `torch.linalg.solve_triangular` through hipSOLVER and hipBLAS paths ([#185557](https://github.com/pytorch/pytorch/pull/185557))
-- Enable `torch.linalg.eig` and `torch.linalg.cholesky_ex` to use hipSOLVER's newer 64-bit APIs on ROCm 7.14 and later, further reducing their MAGMA dependency ([#188720](https://github.com/pytorch/pytorch/pull/188720))
 ### bug fixes
 - Fix `torch.lu_unpack` segfaulting when `LU_pivots` has a shape inconsistent with `LU_data`; invalid shapes now raise a clear error ([#187660](https://github.com/pytorch/pytorch/pull/187660))
 - Fix `torch.linalg.lstsq(driver="gelsy")` returning an incorrect rank on CPU when stale pivot values leaked between batched LAPACK calls ([#187436](https://github.com/pytorch/pytorch/pull/187436))

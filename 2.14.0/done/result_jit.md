@@ -1,5 +1,5 @@
 
-# Release Notes worksheet rocm
+# Release Notes worksheet jit
 
 You should:
 
@@ -43,23 +43,21 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## rocm
+## jit
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
-- [ROCM][inductor][UT] Enable Inductor-Triton debug asserts on ROCm ([#186422](https://github.com/pytorch/pytorch/pull/186422))
 ### bug fixes
+- Make TorchScript reject bare `list` and `tuple` value annotations consistently with `Attempted to use list without a contained type` or the equivalent tuple error; specify an element type such as `list[int]` instead ([#188779](https://github.com/pytorch/pytorch/pull/188779))
+- Fix runtime compilation of JIT fuser kernels on ROCm 7 when HIPRTC's `bfloat16` conversion symbols collide with PyTorch's embedded definitions ([#185656](https://github.com/pytorch/pytorch/pull/185656))
+- Fix `torch.jit.script` failing with `Cannot re-assign modules in a ScriptModule with non-scripted module` when a wrapper contains an already-scripted child with a `__jit_ignored_attributes__` submodule ([#187863](https://github.com/pytorch/pytorch/pull/187863))
 ### performance
+- Reduce JIT startup and compilation overhead by replacing lexer static hash maps with switch-based lookups, preallocating dead-code-elimination memoization storage, and reserving tuple type-parser storage ([#181118](https://github.com/pytorch/pytorch/pull/181118), [#188121](https://github.com/pytorch/pytorch/pull/188121), [#183813](https://github.com/pytorch/pytorch/pull/183813))
 ### docs
 ### devs
-### Untopiced
-- [ROCm] Workaround for UpSamplingNearest2D Fwd due to HIP UINT32_MAX limit ([#180310](https://github.com/pytorch/pytorch/pull/180310))
-- [ROCm] Fix layer_norm fallback launch limit ([#186956](https://github.com/pytorch/pytorch/pull/186956))
-- [ROCm] Register .hip with MSVCCompiler for HIP extensions on Windows ([#187665](https://github.com/pytorch/pytorch/pull/187665))
-- [ROCm] hipify: map CUBLAS_COMPUTE_16F and the cublasMath_t enum ([#187752](https://github.com/pytorch/pytorch/pull/187752))
-- [ROCm] reuse one stream for warmup and captures in make_graphed_callables ([#187745](https://github.com/pytorch/pytorch/pull/187745))
-- [ROCm] Enable miopen convolution to handle zero-sized spatial outputs ([#187431](https://github.com/pytorch/pytorch/pull/187431))
-- [ROCm] Update ck aiter submodule for gfx1250 ([#187548](https://github.com/pytorch/pytorch/pull/187548))
+- Restore TensorExpr source-build compatibility with LLVM 24 after removal of legacy typed-pointer APIs ([#192381](https://github.com/pytorch/pytorch/pull/192381))
 ### not user facing
+- Add an internal-only pluggable node-execution registry to Static Runtime; the OSS execution path is unchanged ([#187538](https://github.com/pytorch/pytorch/pull/187538))
+- Fix spelling in comments and docstrings across PyTorch, including JIT internals ([#190198](https://github.com/pytorch/pytorch/pull/190198))
 ### security
