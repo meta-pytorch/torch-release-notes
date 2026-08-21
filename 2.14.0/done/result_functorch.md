@@ -49,15 +49,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix a crash in `torch.func.vmap` when `out_dims=-1` and the mapped function returns an output that is independent of its vmapped input ([#178495](https://github.com/pytorch/pytorch/pull/178495))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [functorch] Fix vmap out_dims=-1 crash with input-independent output ([#178495](https://github.com/pytorch/pytorch/pull/178495))
-- [functorch] Add source_emit: reconstruct live values as standalone source ([#188376](https://github.com/pytorch/pytorch/pull/188376))
 ### not user facing
-- [test][functorch] Fix JVP ref function to handle None-tangents ([#186413](https://github.com/pytorch/pytorch/pull/186413))
-- [functorch] Rename codegen_utils to codegen ([#188367](https://github.com/pytorch/pytorch/pull/188367))
-- [functorch] Inline codegen'd epilogue fns directly into the runtime wrapper ([#188366](https://github.com/pytorch/pytorch/pull/188366))
-- [functorch] Fix flaky test_concurrent_compile_to_python_smoke (#189665) ([#189884](https://github.com/pytorch/pytorch/pull/189884))
+- Add an internal source emitter for reconstructing AOTAutograd runtime-wrapper metadata as readable Python expressions ([#188376](https://github.com/pytorch/pytorch/pull/188376))
+- Update the JVP reference test helper to replace `None` tangents with zero-like tensors ([#186413](https://github.com/pytorch/pytorch/pull/186413))
+- Rename the private AOTAutograd `codegen_utils` module to `codegen` ([#188367](https://github.com/pytorch/pytorch/pull/188367))
+- Simplify generated AOTAutograd runtime wrappers by binding epilogue functions directly instead of through temporary bound-method shims ([#188366](https://github.com/pytorch/pytorch/pull/188366))
+- Remove concurrent `make_fx` tracing from the `compile_to_python` concurrency test to eliminate a test-only race ([#189884](https://github.com/pytorch/pytorch/pull/189884))
 ### security
