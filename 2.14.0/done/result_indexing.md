@@ -1,5 +1,5 @@
 
-# Release Notes worksheet functorch
+# Release Notes worksheet indexing
 
 You should:
 
@@ -43,21 +43,15 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## functorch
+## indexing
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
+- Fix an illegal CUDA memory access in `torch.nn.functional.adaptive_avg_pool2d` backward for very large contiguous tensors whose element offsets exceed 32-bit indexing limits ([#189082](https://github.com/pytorch/pytorch/pull/189082))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [functorch] Fix vmap out_dims=-1 crash with input-independent output ([#178495](https://github.com/pytorch/pytorch/pull/178495))
-- [functorch] Add source_emit: reconstruct live values as standalone source ([#188376](https://github.com/pytorch/pytorch/pull/188376))
 ### not user facing
-- [test][functorch] Fix JVP ref function to handle None-tangents ([#186413](https://github.com/pytorch/pytorch/pull/186413))
-- [functorch] Rename codegen_utils to codegen ([#188367](https://github.com/pytorch/pytorch/pull/188367))
-- [functorch] Inline codegen'd epilogue fns directly into the runtime wrapper ([#188366](https://github.com/pytorch/pytorch/pull/188366))
-- [functorch] Fix flaky test_concurrent_compile_to_python_smoke (#189665) ([#189884](https://github.com/pytorch/pytorch/pull/189884))
 ### security

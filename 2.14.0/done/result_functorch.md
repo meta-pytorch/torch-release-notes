@@ -1,5 +1,5 @@
 
-# Release Notes worksheet indexing
+# Release Notes worksheet functorch
 
 You should:
 
@@ -43,16 +43,20 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## indexing
+## functorch
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
+- Fix a crash in `torch.func.vmap` when `out_dims=-1` and the mapped function returns an output that is independent of its vmapped input ([#178495](https://github.com/pytorch/pytorch/pull/178495))
 ### performance
 ### docs
 ### devs
-### Untopiced
 ### not user facing
-- Fix #188957 ([#189082](https://github.com/pytorch/pytorch/pull/189082))
+- Add an internal source emitter for reconstructing AOTAutograd runtime-wrapper metadata as readable Python expressions ([#188376](https://github.com/pytorch/pytorch/pull/188376))
+- Update the JVP reference test helper to replace `None` tangents with zero-like tensors ([#186413](https://github.com/pytorch/pytorch/pull/186413))
+- Rename the private AOTAutograd `codegen_utils` module to `codegen` ([#188367](https://github.com/pytorch/pytorch/pull/188367))
+- Simplify generated AOTAutograd runtime wrappers by binding epilogue functions directly instead of through temporary bound-method shims ([#188366](https://github.com/pytorch/pytorch/pull/188366))
+- Remove concurrent `make_fx` tracing from the `compile_to_python` concurrency test to eliminate a test-only race ([#189884](https://github.com/pytorch/pytorch/pull/189884))
 ### security
