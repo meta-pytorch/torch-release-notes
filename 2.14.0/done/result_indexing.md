@@ -49,10 +49,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix an illegal CUDA memory access in `torch.nn.functional.adaptive_avg_pool2d` backward for very large contiguous tensors whose element offsets exceed 32-bit indexing limits ([#189082](https://github.com/pytorch/pytorch/pull/189082))
 ### performance
 ### docs
 ### devs
-### Untopiced
 ### not user facing
-- Fix #188957 ([#189082](https://github.com/pytorch/pytorch/pull/189082))
 ### security
