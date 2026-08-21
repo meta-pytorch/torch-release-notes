@@ -57,7 +57,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add float16/bfloat16 support to sparse CSR sampled_addmm ([#187681](https://github.com/pytorch/pytorch/pull/187681))
 - [sparse] Add size validation in _convert_indices_from_coo_to_csr ([#188540](https://github.com/pytorch/pytorch/pull/188540))
 - [OC][sparsity][4/n] Refactor cusparselt handle creation (#189048) ([#189048](https://github.com/pytorch/pytorch/pull/189048))
-- [ROCm][Windows] Add missing native header includes for more ATen ops ([#191680](https://github.com/pytorch/pytorch/pull/191680))
 - Add sparse COO dispatch for linalg.vector_norm ([#185309](https://github.com/pytorch/pytorch/pull/185309))
 ### not user facing
 - [BE][Ez]: Add missing moves to std::get from std::tuple ([#191107](https://github.com/pytorch/pytorch/pull/191107))

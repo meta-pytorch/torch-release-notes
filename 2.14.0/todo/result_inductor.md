@@ -422,4 +422,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [PrismNet][inductor] addmm autotune: handle a bias example input with 0 rows (#192553) ([#192553](https://github.com/pytorch/pytorch/pull/192553))
 - [inductor] Only build the fx_graph_runnable repro when something logs it ([#192818](https://github.com/pytorch/pytorch/pull/192818))
 - [inductor] Cache per-node tiling memory across the fusion pair search ([#192675](https://github.com/pytorch/pytorch/pull/192675))
+- [ROCm][Inductor] Make missing GPU warp-size metadata explicit ([#183014](https://github.com/pytorch/pytorch/pull/183014))
 ### security
