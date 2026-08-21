@@ -16,3 +16,4 @@
 - Group deferred input size asserts ([#184752](https://github.com/pytorch/pytorch/pull/184752)) — from inductor (aoti); `codegen_deferred_input_asserts` lives in the shared `torch/_inductor/codegen/wrapper.py` base, belongs to inductor.
 - Fix Inductor dropping the ordering dependency between effectful ops with different kernel types ([#188301](https://github.com/pytorch/pytorch/pull/188301)) — from inductor (aoti); a general scheduler fix, belongs to inductor. (Was listed twice in the aoti worksheet.)
 - Add an Inductor lowering for the `switch` higher-order operator ([#188976](https://github.com/pytorch/pytorch/pull/188976)) — from inductor (aoti); registered in the general `torch/_inductor/lowering.py`, belongs to inductor.
+- Remove the deprecated C++ `c10::Scalar::isIntegral()` and `c10::isIntegralType(ScalarType)` overloads that omit `includeBool` ([#187115](https://github.com/pytorch/pytorch/pull/187115)) — from JIT; belongs to C++ frontend.
