@@ -45,24 +45,19 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## jit
 ### bc breaking
-- Remove deprecated isIntegral overloads ([#187115](https://github.com/pytorch/pytorch/pull/187115))
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
-- [JIT] Reject bare `list`/`tuple` value annotations ([#188779](https://github.com/pytorch/pytorch/pull/188779))
+- Make TorchScript reject bare `list` and `tuple` value annotations consistently with `Attempted to use list without a contained type` or the equivalent tuple error; specify an element type such as `list[int]` instead ([#188779](https://github.com/pytorch/pytorch/pull/188779))
+- Fix runtime compilation of JIT fuser kernels on ROCm 7 when HIPRTC's `bfloat16` conversion symbols collide with PyTorch's embedded definitions ([#185656](https://github.com/pytorch/pytorch/pull/185656))
+- Fix `torch.jit.script` failing with `Cannot re-assign modules in a ScriptModule with non-scripted module` when a wrapper contains an already-scripted child with a `__jit_ignored_attributes__` submodule ([#187863](https://github.com/pytorch/pytorch/pull/187863))
 ### performance
+- Reduce JIT startup and compilation overhead by replacing lexer static hash maps with switch-based lookups, preallocating dead-code-elimination memoization storage, and reserving tuple type-parser storage ([#181118](https://github.com/pytorch/pytorch/pull/181118), [#188121](https://github.com/pytorch/pytorch/pull/188121), [#183813](https://github.com/pytorch/pytorch/pull/183813))
 ### docs
 ### devs
-### Untopiced
-- [ROCm] Rename duplicate hiprtc names for jit to avoid symbol collision ([#185656](https://github.com/pytorch/pytorch/pull/185656))
-- [SR] Node executor registry in SR ([#187538](https://github.com/pytorch/pytorch/pull/187538))
-- Remove static initializers from lexer.cpp (#181118) ([#181118](https://github.com/pytorch/pytorch/pull/181118))
-- [JIT] Skip re-walking already-scripted modules in the prepare pass (#187863) ([#187863](https://github.com/pytorch/pytorch/pull/187863))
-- [AI Codemod][PerfAICT-MapSetRehash] Pre-reserve memo_ map to avoid rehashing during DCE side-effect analysis ([#188121](https://github.com/pytorch/pytorch/pull/188121))
-- [AI Codemod][PerfAICT-VecRealloc] perf: call reserve() on vector to avoid unnecessary re-allocation (#183813) ([#183813](https://github.com/pytorch/pytorch/pull/183813))
-- Fix spelling errors in comments and docstrings ([#190198](https://github.com/pytorch/pytorch/pull/190198))
-- [torch] Fix deprecated getPointerTo to be compatible with LLVM 24 (#192381) ([#192381](https://github.com/pytorch/pytorch/pull/192381))
+- Restore TensorExpr source-build compatibility with LLVM 24 after removal of legacy typed-pointer APIs ([#192381](https://github.com/pytorch/pytorch/pull/192381))
 ### not user facing
-- Use C++20 concepts where it improves readability ([#179286](https://github.com/pytorch/pytorch/pull/179286))
+- Add an internal-only pluggable node-execution registry to Static Runtime; the OSS execution path is unchanged ([#187538](https://github.com/pytorch/pytorch/pull/187538))
+- Fix spelling in comments and docstrings across PyTorch, including JIT internals ([#190198](https://github.com/pytorch/pytorch/pull/190198))
 ### security
