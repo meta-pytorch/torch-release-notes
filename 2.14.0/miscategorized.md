@@ -1,7 +1,6 @@
 - `torch.export` dynamic-shape handling for variadic keyword arguments belongs to the export worksheet, not ONNX ([#185730](https://github.com/pytorch/pytorch/pull/185730))
 - Fix typos in comments and docstrings across torch ([#190827](https://github.com/pytorch/pytorch/pull/190827)) — from quantization; labeled `release notes: distributed (ddp)` / `release notes: distributed (dtensor)`, belongs to distributed.
 - [inductor] fix remainder for fp16/bf16 tensors and scalar inputs ([#185168](https://github.com/pytorch/pytorch/pull/185168)) — from quantization; an inductor numerical fix, belongs to inductor.
-- Migrate deprecated `torch.norm` calls to `torch.linalg.*` ([#185097](https://github.com/pytorch/pytorch/pull/185097)) — from quantization; cross-cutting internal refactor touching linalg, distributed, nn, and optim, not specifically quantization.
 - Fix `multi_margin_loss` decomposition lowering on XPU by using one-dimensional weight indexing ([#188770](https://github.com/pytorch/pytorch/pull/188770)) — from composability; belongs to XPU.
 - Fix the AOTAutograd memory-budget partitioner short-circuit so it does not save a non-Tensor tuple node ([#188014](https://github.com/pytorch/pytorch/pull/188014)) — from autograd_frontend; belongs to aotdispatcher.
 - Add `C10_LIFETIMEBOUND` to the borrowing constructors of `c10::OptionalArrayRef` ([#190076](https://github.com/pytorch/pytorch/pull/190076)) — from inductor (aoti); the change is confined to `c10/util/OptionalArrayRef.h` and has no AOTInductor content, belongs to cpp_frontend.
@@ -14,3 +13,6 @@
 - Fix Inductor dropping the ordering dependency between effectful ops with different kernel types ([#188301](https://github.com/pytorch/pytorch/pull/188301)) — from inductor (aoti); a general scheduler fix, belongs to inductor. (Was listed twice in the aoti worksheet.)
 - Add an Inductor lowering for the `switch` higher-order operator ([#188976](https://github.com/pytorch/pytorch/pull/188976)) — from inductor (aoti); registered in the general `torch/_inductor/lowering.py`, belongs to inductor.
 - Remove the deprecated C++ `c10::Scalar::isIntegral()` and `c10::isIntegralType(ScalarType)` overloads that omit `includeBool` ([#187115](https://github.com/pytorch/pytorch/pull/187115)) — from JIT; belongs to C++ frontend.
+- Remove the deprecated `torch.cholesky` API in favor of `torch.linalg.cholesky` ([#186817](https://github.com/pytorch/pytorch/pull/186817)) — from mobile; BC-breaking change that belongs to linalg frontend.
+- Remove the deprecated `torch.qr` API in favor of `torch.linalg.qr` ([#186815](https://github.com/pytorch/pytorch/pull/186815)) — from mobile; BC-breaking change that belongs to linalg frontend.
+- Fix Dynamo reconstruction of empty `torch.nn.Module` hook dictionaries across nested graph breaks ([#187088](https://github.com/pytorch/pytorch/pull/187088)) — from nn_frontend; belongs to dynamo.

@@ -1,5 +1,5 @@
 
-# Release Notes worksheet linalg_frontend
+# Release Notes worksheet mobile
 
 You should:
 
@@ -43,38 +43,18 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## linalg_frontend
+## mobile
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
-- Fix segfault in torch.lu_unpack with mismatched LU_pivots shape ([#187660](https://github.com/pytorch/pytorch/pull/187660))
-- Add linalg polar backward for CPU/MPS/CUDA ([#189732](https://github.com/pytorch/pytorch/pull/189732))
 ### bug fixes
 ### performance
-- Avoid D2D copy for addmm with distinct C and D ([#191706](https://github.com/pytorch/pytorch/pull/191706))
-- Avoid D2D copy for addmm with distinct C and D ([#191706](https://github.com/pytorch/pytorch/pull/191706))
-- Avoid D2D copy for addmm with distinct C and D ([#191706](https://github.com/pytorch/pytorch/pull/191706))
 ### docs
-- [Docs] Clarify norm docs for complex inputs ([#190381](https://github.com/pytorch/pytorch/pull/190381))
 ### devs
-### Untopiced
-- Fix incorrect rank in torch.linalg.lstsq(driver='gelsy') due to stale JPVT values ([#187436](https://github.com/pytorch/pytorch/pull/187436))
-- [ROCm] Split CK SDPA vs CK GEMM arch gating ([#187267](https://github.com/pytorch/pytorch/pull/187267))
-- Add `torch.linalg.matrix_sqrth` for Symmetric/Hermitian Positive-Definite Matrices ([#187987](https://github.com/pytorch/pytorch/pull/187987))
-- [CUDA] Add TunableOp support for cublasLt ([#186270](https://github.com/pytorch/pytorch/pull/186270))
-- Fix misleading error for complex order in torch.linalg.cond ([#188591](https://github.com/pytorch/pytorch/pull/188591))
-- Use sym_numel in linalg_cond string overload ([#187614](https://github.com/pytorch/pytorch/pull/187614))
-- [TunableOp] Fix offline sub-matrix detection when a leading dimension aliases a GEMM dim ([#189355](https://github.com/pytorch/pytorch/pull/189355))
-- [BE][Ez]: Add c10::SmallVector reserve calls and simplify log func calls ([#185821](https://github.com/pytorch/pytorch/pull/185821))
 ### not user facing
-- CUDA linalg: hoist cuSOLVER GETRF workspace allocation out of lu_factor_looped_cusolver batch loop ([#181998](https://github.com/pytorch/pytorch/pull/181998))
-- [ROCm] Re-enable test_preferred_linalg_library test for ROCm ([#187703](https://github.com/pytorch/pytorch/pull/187703))
-- Fix linalg.vector_norm docstring: ord does not accept 'fro'/'nuc' ([#188204](https://github.com/pytorch/pytorch/pull/188204))
-- [ROCm] Enable linalg tests for eig, ldl_solve operator (hipsolver) & enable test_linalg_solve, test_triangular_solve linalg tests with cuBLAS path ([#185557](https://github.com/pytorch/pytorch/pull/185557))
-- [ROCm] Merge test_norm_matrix_degenerate_shapes_old_numpy & test_norm_matrix_degenerate_shapes to run for older & newer Numpy versions ([#187011](https://github.com/pytorch/pytorch/pull/187011))
-- [CUDA][cuBLAS] Change cuBLAS default workspace size for SM 11.0 to 32 MiB  ([#189312](https://github.com/pytorch/pytorch/pull/189312))
-- [Test] [CUDA] Refactor test_cublaslt_candidate_tunableop ([#189459](https://github.com/pytorch/pytorch/pull/189459))
-- Skip test_polar_matches_svd when cuSOLVER lacks Xpolar ([#189875](https://github.com/pytorch/pytorch/pull/189875))
-- Fix matmul folding when an inner folded dim has size 1 ([#186178](https://github.com/pytorch/pytorch/pull/186178))
+- Fix nullable Objective-C string conversions in MPSCNN tests when building with Xcode 26.6 ([#187979](https://github.com/pytorch/pytorch/pull/187979))
+- Use the C++20 rvalue `std::ostringstream::str()` overload throughout internal C++ code to avoid unnecessary string copies ([#187208](https://github.com/pytorch/pytorch/pull/187208))
+- Add hardware-classification metadata to NNAPI and other test cases ([#192501](https://github.com/pytorch/pytorch/pull/192501))
 ### security
+- Reject malformed mobile FlatBuffer modules whose function class-type index is out of range, preventing an out-of-bounds access and crash during loading ([#186672](https://github.com/pytorch/pytorch/pull/186672))
