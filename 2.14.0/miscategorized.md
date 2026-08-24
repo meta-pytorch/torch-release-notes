@@ -1,6 +1,7 @@
 - `torch.export` dynamic-shape handling for variadic keyword arguments belongs to the export worksheet, not ONNX ([#185730](https://github.com/pytorch/pytorch/pull/185730))
 - Fix typos in comments and docstrings across torch ([#190827](https://github.com/pytorch/pytorch/pull/190827)) — from quantization; labeled `release notes: distributed (ddp)` / `release notes: distributed (dtensor)`, belongs to distributed.
 - [inductor] fix remainder for fp16/bf16 tensors and scalar inputs ([#185168](https://github.com/pytorch/pytorch/pull/185168)) — from quantization; an inductor numerical fix, belongs to inductor.
+- Fix Dynamo benchmark loading for timm models that do not accept dropout keyword arguments ([#187302](https://github.com/pytorch/pytorch/pull/187302)) — from distributed (checkpoint); this only changes the Dynamo benchmark harness and belongs to inductor.
 - Fix `multi_margin_loss` decomposition lowering on XPU by using one-dimensional weight indexing ([#188770](https://github.com/pytorch/pytorch/pull/188770)) — from composability; belongs to XPU.
 - Fix the AOTAutograd memory-budget partitioner short-circuit so it does not save a non-Tensor tuple node ([#188014](https://github.com/pytorch/pytorch/pull/188014)) — from autograd_frontend; belongs to aotdispatcher.
 - Add `C10_LIFETIMEBOUND` to the borrowing constructors of `c10::OptionalArrayRef` ([#190076](https://github.com/pytorch/pytorch/pull/190076)) — from inductor (aoti); the change is confined to `c10/util/OptionalArrayRef.h` and has no AOTInductor content, belongs to cpp_frontend.
