@@ -49,17 +49,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- [jit][mobile] Bounds-check Function.class_type in flatbuffer loader ([#186672](https://github.com/pytorch/pytorch/pull/186672))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Remove deprecated torch.cholesky ([#186817](https://github.com/pytorch/pytorch/pull/186817))
-- Fix nullable-to-nonnull conversions for Xcode 26.6 (#187979) ([#187979](https://github.com/pytorch/pytorch/pull/187979))
-- Remove deprecated torch.qr ([#186815](https://github.com/pytorch/pytorch/pull/186815))
 ### not user facing
-- [BE][Ez]: Use CPP20 rvalue overload for ostringstream ([#187208](https://github.com/pytorch/pytorch/pull/187208))
-- [BE][Ez]: Use CPP20 rvalue overload for ostringstream ([#187208](https://github.com/pytorch/pytorch/pull/187208))
-- [BE][Ez]: Use CPP20 rvalue overload for ostringstream ([#187208](https://github.com/pytorch/pytorch/pull/187208))
-- [Test] Add HardwareClassification to various test cases for improved device handling [1/N] ([#192501](https://github.com/pytorch/pytorch/pull/192501))
+- Fix nullable Objective-C string conversions in MPSCNN tests when building with Xcode 26.6 ([#187979](https://github.com/pytorch/pytorch/pull/187979))
+- Use the C++20 rvalue `std::ostringstream::str()` overload throughout internal C++ code to avoid unnecessary string copies ([#187208](https://github.com/pytorch/pytorch/pull/187208))
+- Add hardware-classification metadata to NNAPI and other test cases ([#192501](https://github.com/pytorch/pytorch/pull/192501))
 ### security
+- Reject malformed mobile FlatBuffer modules whose function class-type index is out of range, preventing an out-of-bounds access and crash during loading ([#186672](https://github.com/pytorch/pytorch/pull/186672))

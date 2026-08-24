@@ -14,3 +14,5 @@
 - Fix Inductor dropping the ordering dependency between effectful ops with different kernel types ([#188301](https://github.com/pytorch/pytorch/pull/188301)) — from inductor (aoti); a general scheduler fix, belongs to inductor. (Was listed twice in the aoti worksheet.)
 - Add an Inductor lowering for the `switch` higher-order operator ([#188976](https://github.com/pytorch/pytorch/pull/188976)) — from inductor (aoti); registered in the general `torch/_inductor/lowering.py`, belongs to inductor.
 - Remove the deprecated C++ `c10::Scalar::isIntegral()` and `c10::isIntegralType(ScalarType)` overloads that omit `includeBool` ([#187115](https://github.com/pytorch/pytorch/pull/187115)) — from JIT; belongs to C++ frontend.
+- Remove the deprecated `torch.cholesky` API in favor of `torch.linalg.cholesky` ([#186817](https://github.com/pytorch/pytorch/pull/186817)) — from mobile; BC-breaking change that belongs to linalg frontend.
+- Remove the deprecated `torch.qr` API in favor of `torch.linalg.qr` ([#186815](https://github.com/pytorch/pytorch/pull/186815)) — from mobile; BC-breaking change that belongs to linalg frontend.
