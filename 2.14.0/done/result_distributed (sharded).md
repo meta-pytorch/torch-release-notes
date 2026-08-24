@@ -52,7 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
 ### not user facing
-- [xpu][test][1/N] Port 3 distributed/_shared test cases to Intel GPU  ([#161771](https://github.com/pytorch/pytorch/pull/161771))
+- Expand sharded-tensor and sharding-plan tests to Intel GPU/XCCL environments ([#161771](https://github.com/pytorch/pytorch/pull/161771))
 ### security
