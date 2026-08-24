@@ -49,12 +49,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- [DTensor] Answer as_strided when it is a permutation of the base dims ([#191784](https://github.com/pytorch/pytorch/pull/191784))
+- Fix compiled functions failing when they return DTensor permutation views such as `transpose`, `permute`, or `movedim` ([#191784](https://github.com/pytorch/pytorch/pull/191784))
+- Fix deferred `local_map` export failing inside nested compile regions ([#186647](https://github.com/pytorch/pytorch/pull/186647))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Fix local_map deferred export in nested regions ([#186647](https://github.com/pytorch/pytorch/pull/186647))
 ### not user facing
-- [DTensor] Support _StridedShard to Shard through all-to-all ([#170915](https://github.com/pytorch/pytorch/pull/170915))
+- Support internal `_StridedShard`-to-`Shard` redistribution through all-to-all collectives ([#170915](https://github.com/pytorch/pytorch/pull/170915))
 ### security
