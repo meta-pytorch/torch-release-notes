@@ -47,16 +47,68 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - The `tvm` backend now uses TVM's relax frontend exclusively; the relay path has been removed ([#190766](https://github.com/pytorch/pytorch/pull/190766), [#189639](https://github.com/pytorch/pytorch/pull/189639))
 
-  Relay was removed in TVM 0.20, so the backend now requires a TVM providing `tvm.relax.frontend.torch`, and the relay-only `scheduler` / `trials` options are gone.
+  Relay was removed in TVM 0.20, so the backend now requires a TVM providing `tvm.relax.frontend.torch`. Two things are gone with it: the relay-only `scheduler` / `trials` options, replaced by a TVM pipeline passed as `options={"pipeline": ...}`; and the `tvm_meta_schedule` / `tvm_auto_scheduler` backend entry points, which no longer exist in `torch._dynamo.backends.tvm`. With an older TVM installed, `torch.compile(..., backend="tvm")` now raises `ImportError: Please install apache-tvm to use the tvm backend.`
 
   Version 2.13:
   ```python
   opt = torch.compile(model, backend="tvm", options={"scheduler": "meta_schedule", "trials": 20000})
+
+  # or through the relay-only entry points
+  from torch._dynamo.backends.tvm import tvm_meta_schedule, tvm_auto_scheduler
   ```
 
   Version 2.14:
   ```python
-  opt = torch.compile(model, backend="tvm", options={"pipeline": "zero"})
+  import tvm
+
+  pipeline = tvm.relax.get_pipeline("static_shape_tuning", target="llvm", total_trials=2000)
+  opt = torch.compile(model, backend="tvm", options={"pipeline": pipeline})
+
+  # tvm_meta_schedule / tvm_auto_scheduler no longer exist:
+  # ImportError: cannot import name 'tvm_meta_schedule'
+  ```
+- `next()` on a non-iterator now raises `TypeError` instead of silently returning the first element ([#190624](https://github.com/pytorch/pytorch/pull/190624))
+
+  Dynamo's `next()` handling skipped CPython's iterator check and, for a list, returned its first item rather than raising. Compiled code that relied on this now sees the same `TypeError: 'list' object is not an iterator` that eager Python raises. Wrap the argument in `iter()` to keep the old result.
+
+  Version 2.13:
+  ```python
+  >>> @torch.compile(fullgraph=True)
+  ... def f(xs):
+  ...     return next(xs)
+  >>> f([1, 2, 3])
+  1
+  ```
+
+  Version 2.14:
+  ```python
+  >>> f([1, 2, 3])
+  TypeError: 'list' object is not an iterator
+
+  >>> # workaround: match eager semantics explicitly
+  >>> @torch.compile(fullgraph=True)
+  ... def f(xs):
+  ...     return next(iter(xs))
+  >>> f([1, 2, 3])
+  1
+  ```
+- `set()` and `frozenset()` now reject keyword arguments ([#189051](https://github.com/pytorch/pytorch/pull/189051))
+
+  `set(a=1)` and `set().__init__(a=1)` silently produced an empty set inside a compiled region, because the keyword check ran only after a zero-positional-argument early return. Dynamo now raises `TypeError: set() takes no keyword arguments` (and the `frozenset()` equivalent), matching CPython. Such calls were already an error in eager, so drop the keyword arguments.
+
+  Version 2.13:
+  ```python
+  >>> @torch.compile(fullgraph=True)
+  ... def f():
+  ...     return set(a=1)
+  >>> f()
+  set()
+  ```
+
+  Version 2.14:
+  ```python
+  >>> f()
+  TypeError: set() takes no keyword arguments
   ```
 ### deprecation
 - `torch._dynamo.config.enable_faithful_generator_behavior` is deprecated and is now a no-op ([#189894](https://github.com/pytorch/pytorch/pull/189894))
@@ -77,7 +129,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 ### new features
 - Add `torch.compiler.nonstrict_trace` as a public API ([#187737](https://github.com/pytorch/pytorch/pull/187737))
-- Add `torch.switch`, a higher-order op that selects between N branches by index, mirroring `jax.lax.switch` ([#182902](https://github.com/pytorch/pytorch/pull/182902), [#188374](https://github.com/pytorch/pytorch/pull/188374), [#189028](https://github.com/pytorch/pytorch/pull/189028))
+- Add `switch`, a higher-order op that selects between N branches by index, mirroring `jax.lax.switch`. It is available as `from torch._higher_order_ops.switch import switch` and lowers to `torch.ops.higher_order.switch` ([#182902](https://github.com/pytorch/pytorch/pull/182902), [#188374](https://github.com/pytorch/pytorch/pull/188374), [#189028](https://github.com/pytorch/pytorch/pull/189028))
 - Declare dynamic shapes explicitly with `ShapesSpec` / `ParamsSpec`, now accepted by strict and non-strict `torch.export.export`, `make_fx(tracing_mode="fake")`, and `torch.compile` through a shared `dynamic_shapes=` keyword ([#185982](https://github.com/pytorch/pytorch/pull/185982), [#186751](https://github.com/pytorch/pytorch/pull/186751), [#187602](https://github.com/pytorch/pytorch/pull/187602), [#187010](https://github.com/pytorch/pytorch/pull/187010))
 - Support input mutation inside the `scan`, `map`, and `switch` higher-order ops ([#186474](https://github.com/pytorch/pytorch/pull/186474), [#187568](https://github.com/pytorch/pytorch/pull/187568), [#188903](https://github.com/pytorch/pytorch/pull/188903))
 - Support `torch.cuda.use_mem_pool` inside a compiled region, so allocations in the context - including fallback and extern kernels - are routed to the pool ([#185057](https://github.com/pytorch/pytorch/pull/185057))
@@ -112,7 +164,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Support `__length_hint__` on set and dict-view iterators ([#188081](https://github.com/pytorch/pytorch/pull/188081))
 - Improve `collections.deque` fidelity: re-initialization through `__init__`, `copy()` / `copy.copy()` preserving `maxlen`, `rotate()`, iterators that detect mutation during iteration, and `AttributeError` on attribute writes ([#187128](https://github.com/pytorch/pytorch/pull/187128), [#188220](https://github.com/pytorch/pytorch/pull/188220), [#191403](https://github.com/pytorch/pytorch/pull/191403), [#189052](https://github.com/pytorch/pytorch/pull/189052), [#191405](https://github.com/pytorch/pytorch/pull/191405))
 - Support `range_iterator.__setstate__` / `__length_hint__`, and fall back to `==` comparison for non-integer operands of `x in range(...)` ([#188221](https://github.com/pytorch/pytorch/pull/188221), [#189575](https://github.com/pytorch/pytorch/pull/189575))
-- Improve dict and set fidelity: do not re-hash keys when building from an existing dict/set, use per-element rich comparison for sequence membership, run a user-defined `__eq__` for dict/set key comparison, normalize `set.remove`/`set.discard` keys, read set subclasses through the base `set` APIs, reject keyword arguments to `set()`/`frozenset()`, and report the concrete set type from `hasattr` ([#186759](https://github.com/pytorch/pytorch/pull/186759), [#186760](https://github.com/pytorch/pytorch/pull/186760), [#186669](https://github.com/pytorch/pytorch/pull/186669), [#186761](https://github.com/pytorch/pytorch/pull/186761), [#186763](https://github.com/pytorch/pytorch/pull/186763), [#189051](https://github.com/pytorch/pytorch/pull/189051), [#188908](https://github.com/pytorch/pytorch/pull/188908))
+- Improve dict and set fidelity: do not re-hash keys when building from an existing dict/set, use per-element rich comparison for sequence membership, run a user-defined `__eq__` for dict/set key comparison, normalize `set.remove`/`set.discard` keys, read set subclasses through the base `set` APIs, and report the concrete set type from `hasattr` ([#186759](https://github.com/pytorch/pytorch/pull/186759), [#186760](https://github.com/pytorch/pytorch/pull/186760), [#186669](https://github.com/pytorch/pytorch/pull/186669), [#186761](https://github.com/pytorch/pytorch/pull/186761), [#186763](https://github.com/pytorch/pytorch/pull/186763), [#188908](https://github.com/pytorch/pytorch/pull/188908))
 - Support the dict-view `.mapping` attribute, non-`str` keys assigned through an instance `__dict__`, CPython's clear-then-extend `list.__init__`, and CPython's `__dict__` re-insertion order after a `pop` ([#187586](https://github.com/pytorch/pytorch/pull/187586), [#187587](https://github.com/pytorch/pytorch/pull/187587), [#187583](https://github.com/pytorch/pytorch/pull/187583), [#187584](https://github.com/pytorch/pytorch/pull/187584))
 - `str()` and `repr()` now follow CPython's `tp_str`/`tp_repr` fallbacks, including `repr()` of and integer arithmetic on the `id()`/`hash()` of an object created inside the compiled region ([#187775](https://github.com/pytorch/pytorch/pull/187775), [#188909](https://github.com/pytorch/pytorch/pull/188909), [#189053](https://github.com/pytorch/pytorch/pull/189053))
 - Make the `object.__reduce_ex__` polyfill faithful for objects with `__slots__` or `__getnewargs__`, so `copy.copy`/`copy.deepcopy` of a namedtuple no longer graph breaks ([#189576](https://github.com/pytorch/pytorch/pull/189576))
@@ -140,7 +192,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Reinstall the compiled-function globals required by guarded bytecode on a warm precompile package load ([#184562](https://github.com/pytorch/pytorch/pull/184562))
 - Skip storage memo for wrapper subclasses in `MetaConverter`, fixing `RuntimeError: Attempted to set the storage of a tensor on device "cuda:0" to a storage on different device "meta"` when a `_make_wrapper_subclass` tensor is a non-batched `torch.vmap` input inside `torch.compile` ([#176977](https://github.com/pytorch/pytorch/pull/176977))
 - Fix class definitions inside a compiled region that close over a non-constant object, which raised `Invalid call to __build_class__` ([#185998](https://github.com/pytorch/pytorch/pull/185998))
-- Fix scalar tensor indexing under export ([#184625](https://github.com/pytorch/pytorch/pull/184625))
+- Use symbolic scalar extraction for 0-d integral tensor indices, so indexing a tensor with a scalar tensor stays on the `select` path under `torch.export` ([#184625](https://github.com/pytorch/pytorch/pull/184625))
 - Fix globals modeling for functions whose globals dict is not owned by a registered module ([#184653](https://github.com/pytorch/pytorch/pull/184653))
 - Fix `hasattr` on user objects so tracing does not materialize an existing `RemovableHandle` stored by conditional hook registration ([#184712](https://github.com/pytorch/pytorch/pull/184712))
 - Run `torch.compile` wrappers eagerly when re-entered from compiler-internal fake or functional tracing, fixing fake-mode mismatch and fake tensor data pointer errors from tensor subclass hooks ([#185732](https://github.com/pytorch/pytorch/pull/185732))
@@ -165,7 +217,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Propagate signature mismatch errors up correctly ([#190797](https://github.com/pytorch/pytorch/pull/190797))
 - Check that a traced `__int__`/`__float__` actually returns an `int`/`float` ([#190257](https://github.com/pytorch/pytorch/pull/190257))
 - Validate the bound object's type in the `__get__` of C descriptors, which could otherwise bind a descriptor to an incompatible object and produce wrong control flow ([#190776](https://github.com/pytorch/pytorch/pull/190776))
-- Reject non-iterators passed to `next()` instead of returning a list's first element ([#190624](https://github.com/pytorch/pytorch/pull/190624))
 - Graph break on `isinstance` checks of a tensor against a classinfo with a custom `__instancecheck__` (e.g. jaxtyping annotations) instead of compiling the wrong branch ([#186491](https://github.com/pytorch/pytorch/pull/186491))
 - Fix `deque.__init__` truncating items against the pre-init `maxlen` when re-initializing ([#188171](https://github.com/pytorch/pytorch/pull/188171))
 - Route `list`/`tuple` `__add__` through the sequence-concat slot, and let explicit set / dict-view `__and__`, `__xor__`, `__sub__` calls return `NotImplemented` for an unsupported operand as CPython does ([#189554](https://github.com/pytorch/pytorch/pull/189554), [#189274](https://github.com/pytorch/pytorch/pull/189274))
@@ -182,7 +233,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add meta kernels for `torch._grid_sampler_2d_cpu_fallback` and its backward so the op can be captured instead of hard-erroring on unallocated storage ([#191664](https://github.com/pytorch/pytorch/pull/191664))
 - Infer a graph's input device and dtype only from tensors, and classify registered backends with `isinstance` checks instead of attribute probing ([#190425](https://github.com/pytorch/pytorch/pull/190425), [#190426](https://github.com/pytorch/pytorch/pull/190426))
 - Fix gradients for a directly-captured 0-D score-mod tensor in FlexAttention ([#188869](https://github.com/pytorch/pytorch/pull/188869))
-- Fix the `tvm` backend: pass the scheduler through `options` in the `tvm_meta_schedule` / `tvm_auto_scheduler` partials, bind rank-0 tensor inputs instead of silently using zeros, and raise an actionable error for `dynamic=True` on the relay path ([#188811](https://github.com/pytorch/pytorch/pull/188811), [#189699](https://github.com/pytorch/pytorch/pull/189699), [#189125](https://github.com/pytorch/pytorch/pull/189125))
 ### performance
 - Trim the fixed per-call overhead of a compiled function: avoid per-call `DispatchKeySet` pybind churn in `compile_wrapper`, gate the pregraph profiler marker on an active profiler, default the guard TLS attributes so `TracingContext.try_get()` avoids a `getattr` miss, and slim the `torch._dynamo.disable` prologue ([#190390](https://github.com/pytorch/pytorch/pull/190390), [#190623](https://github.com/pytorch/pytorch/pull/190623), [#190571](https://github.com/pytorch/pytorch/pull/190571), [#190392](https://github.com/pytorch/pytorch/pull/190392))
 - Speed up `unwrap_dead_wrappers` on the `autograd.Function.apply` fast path ([#189577](https://github.com/pytorch/pytorch/pull/189577))
@@ -208,6 +258,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Rename the opaque-object type predicates, keeping deprecated aliases ([#188459](https://github.com/pytorch/pytorch/pull/188459))
 - Typing sweeps across Dynamo: translator parameters, compiler config accessors, `Literal` vocabularies, `TypedDict` payloads, protocols for fixed-interface objects, repro CLI options, and `object` instead of `Any` on opaque surfaces ([#184800](https://github.com/pytorch/pytorch/pull/184800), [#185278](https://github.com/pytorch/pytorch/pull/185278), [#188486](https://github.com/pytorch/pytorch/pull/188486), [#188527](https://github.com/pytorch/pytorch/pull/188527), [#188574](https://github.com/pytorch/pytorch/pull/188574), [#188737](https://github.com/pytorch/pytorch/pull/188737), [#188749](https://github.com/pytorch/pytorch/pull/188749), [#190599](https://github.com/pytorch/pytorch/pull/190599), [#192142](https://github.com/pytorch/pytorch/pull/192142), [#192567](https://github.com/pytorch/pytorch/pull/192567), [#186318](https://github.com/pytorch/pytorch/pull/186318))
 - Clean up the backends: store backend tags in the registry, check TVM availability with `find_spec`, and remove dead code in the `tvm` and common backends ([#189251](https://github.com/pytorch/pytorch/pull/189251), [#189013](https://github.com/pytorch/pytorch/pull/189013), [#189249](https://github.com/pytorch/pytorch/pull/189249))
+- Fixes to the TVM relay path that were superseded by its removal in the same release: passing the scheduler through `options` in the `tvm_meta_schedule` / `tvm_auto_scheduler` partials, binding rank-0 tensor inputs, and raising an actionable error for `dynamic=True` ([#188811](https://github.com/pytorch/pytorch/pull/188811), [#189699](https://github.com/pytorch/pytorch/pull/189699), [#189125](https://github.com/pytorch/pytorch/pull/189125))
 - Reverted changes that landed and were backed out within this release ([#185280](https://github.com/pytorch/pytorch/pull/185280), [#191024](https://github.com/pytorch/pytorch/pull/191024), [#192868](https://github.com/pytorch/pytorch/pull/192868))
 - Internal configuration changes: turn `capture_sparse_compute` on by default internally and flip the default of `use_lambda_guard_for_object_aliasing` ([#190617](https://github.com/pytorch/pytorch/pull/190617), [#191043](https://github.com/pytorch/pytorch/pull/191043))
 - Always reset Dynamo in tests when it has been imported ([#184568](https://github.com/pytorch/pytorch/pull/184568))
