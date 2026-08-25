@@ -11,6 +11,14 @@
 - Remove the deprecated C++ `c10::Scalar::isIntegral()` and `c10::isIntegralType(ScalarType)` overloads that omit `includeBool` ([#187115](https://github.com/pytorch/pytorch/pull/187115)) — from JIT; belongs to C++ frontend.
 - Remove the deprecated `torch.cholesky` API in favor of `torch.linalg.cholesky` ([#186817](https://github.com/pytorch/pytorch/pull/186817)) — from mobile; BC-breaking change that belongs to linalg frontend.
 - Remove the deprecated `torch.qr` API in favor of `torch.linalg.qr` ([#186815](https://github.com/pytorch/pytorch/pull/186815)) — from mobile; BC-breaking change that belongs to linalg frontend.
+- Add post-allocation CUDA memory annotations to allocator snapshots and memory visualizations ([#190575](https://github.com/pytorch/pytorch/pull/190575)) — from python_frontend; belongs to CUDA.
+- Remove an extra clone from compiled stateless RNG operations ([#188495](https://github.com/pytorch/pytorch/pull/188495)) — from python_frontend; belongs to inductor.
+- Skip the copy-on-write `histogramdd` test on XPU where its prerequisite operator is unavailable ([#174670](https://github.com/pytorch/pytorch/pull/174670)) — from python_frontend; belongs to XPU.
+- Fix assignment of Python integers larger than `INT64_MAX` into `torch.uint64` tensors ([#191604](https://github.com/pytorch/pytorch/pull/191604)) — from python_frontend; belongs to indexing.
+- Relax tolerances for nondeterministic XPU convolution and histogram tests ([#177069](https://github.com/pytorch/pytorch/pull/177069)) — from python_frontend; belongs to XPU.
+- Use unique values in CUDA/CuteDSL `topk` OpInfo samples to avoid ambiguous tie ordering ([#188838](https://github.com/pytorch/pytorch/pull/188838)) — from python_frontend; belongs to CUDA.
+- Add a curried decorator calling convention for eager `torch.utils.checkpoint.checkpoint()` ([#189411](https://github.com/pytorch/pytorch/pull/189411)) — from python_frontend; checkpointing is an autograd feature and belongs to autograd_frontend.
+- Add `respect_saved_tensors_hooks` to selective activation checkpointing and warn before its default behavior changes ([#190581](https://github.com/pytorch/pytorch/pull/190581)) — from python_frontend; checkpointing is an autograd feature and belongs to autograd_frontend.
 - Fix Dynamo reconstruction of empty `torch.nn.Module` hook dictionaries across nested graph breaks ([#187088](https://github.com/pytorch/pytorch/pull/187088)) — from nn_frontend; belongs to dynamo.
 - Generalize distributed test utilities to run on Intel GPUs ([#178468](https://github.com/pytorch/pytorch/pull/178468)) — from inductor; the production and test changes primarily exercise sharded distributed code, so route to distributed (sharded).
 - Correct grammatical errors in distributed comments, docstrings, and documentation ([#187361](https://github.com/pytorch/pytorch/pull/187361)) — from inductor; the release-note label and substantive files are distributed (c10d).
