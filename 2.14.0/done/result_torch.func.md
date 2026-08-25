@@ -47,16 +47,15 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- [BE][Ez]: Add missing functorch searchsorted scalar overload ([#188974](https://github.com/pytorch/pytorch/pull/188974))
 ### improvements
+- Allow `torch.vmap` to handle the scalar overload of `torch.searchsorted` ([#188974](https://github.com/pytorch/pytorch/pull/188974))
+- Expand `torch.vmap` coverage for copy-view operations by routing them through existing batching rules ([#187256](https://github.com/pytorch/pytorch/pull/187256))
+- Add a batching rule for `torch.repeat_interleave` when `repeats` is batched; callers must provide a common `output_size` because per-example output lengths are data-dependent ([#187702](https://github.com/pytorch/pytorch/pull/187702))
+- Add a native batching rule for in-place `Tensor.masked_fill_()`, avoiding the slow fallback and its performance warning under `torch.vmap` ([#175513](https://github.com/pytorch/pytorch/pull/175513))
+- Expand scalar fill and comparison support under `torch.vmap`, including accelerator placement for scalar operands ([#189176](https://github.com/pytorch/pytorch/pull/189176))
 ### bug fixes
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [BE][Ez]: Add missing functorch batch rules for copy views ([#187256](https://github.com/pytorch/pytorch/pull/187256))
-- Add vmap batching rule for repeat_interleave.Tensor (#135424) ([#187702](https://github.com/pytorch/pytorch/pull/187702))
-- Implement batching rule for masked_fill_ ([#175513](https://github.com/pytorch/pytorch/pull/175513))
-- [BE][Ez]: Clean up some scalar functorch xfails ([#189176](https://github.com/pytorch/pytorch/pull/189176))
 ### not user facing
 ### security
