@@ -52,7 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
-- vulkan: use c10::overflows in safe_downcast; drop the duplicate copy ([#190653](https://github.com/pytorch/pytorch/pull/190653))
 ### not user facing
+- Replace Vulkan's duplicate narrowing-conversion checks with the shared internal `c10::overflows` utility ([#190653](https://github.com/pytorch/pytorch/pull/190653))
 ### security
