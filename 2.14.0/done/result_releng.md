@@ -45,27 +45,34 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## releng
 ### bc breaking
-### deprecation
-- Invoking `setup.py` directly to build PyTorch from source is deprecated ([#180248](https://github.com/pytorch/pytorch/pull/180248))
+- Most `python setup.py <command>` invocations now fail; the build is driven by scikit-build-core ([#180248](https://github.com/pytorch/pytorch/pull/180248))
 
-  The build system moved to scikit-build-core, and `setup.py` is now a
-  thin deprecation shim that warns and forwards to the PEP 517 frontend. Direct
-  invocations still work in this release but will be removed. Use `pip` (or any
-  PEP 517 build frontend) instead.
+  With the build fully migrated to scikit-build-core, the setuptools
+  build path is gone and `setup.py` is a small shim. `install` and `develop`
+  still forward to pip, but every other command -- `build`, `bdist_wheel`,
+  `clean`, `sdist` and friends -- fails immediately and prints the replacement
+  command instead of falling through to setuptools. Scripts that build wheels or
+  sdists by calling `setup.py` directly will break; use pip or `python -m build`.
+  Note that pip and `python -m build` never executed `setup.py`, so builds that
+  already went through a PEP 517 frontend are unaffected.
+
+  The shim prints the sunset schedule on every invocation: in 2.14-2.15
+  `install`/`develop` still forward to pip and all other commands fail; in
+  2.16-2.17 all commands fail; after that `setup.py` goes away.
 
   Version 2.13:
   ```bash
-  python setup.py develop
   python setup.py bdist_wheel
+  python setup.py develop
   ```
 
   Version 2.14:
   ```bash
-  pip install --no-build-isolation -e .
-  python -m build --wheel --no-isolation
+  python -m build --wheel --no-isolation   # setup.py bdist_wheel now fails
+  pip install --no-build-isolation -e .    # setup.py develop still works, deprecated
   ```
+### deprecation
 ### new features
-- Added CUDA 13.4 binaries for x86 and SBSA (aarch64) ([#192256](https://github.com/pytorch/pytorch/pull/192256))
 - Added nightly wheels for Python 3.15 and 3.15t on Windows ([#190360](https://github.com/pytorch/pytorch/pull/190360))
 - Added nightly wheels for Python 3.15 and 3.15t on macOS (arm64) ([#190361](https://github.com/pytorch/pytorch/pull/190361))
 - Added Triton XPU Windows wheels for Python 3.15 and 3.15t ([#186033](https://github.com/pytorch/pytorch/pull/186033))
@@ -84,6 +91,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 - Migrated the build system from setuptools to scikit-build-core ([#180247](https://github.com/pytorch/pytorch/pull/180247))
 ### not user facing
+- [CD] Add CUDA 13.4rc1 x86 and sbsa binaries ([#192256](https://github.com/pytorch/pytorch/pull/192256))
 - Stop building/publishing Windows libtorch debug binaries ([#187352](https://github.com/pytorch/pytorch/pull/187352))
 - Update the Triton CPU pin and migrate CPU block-pointer coverage to tensor descriptors ([#188794](https://github.com/pytorch/pytorch/pull/188794))
 - Add Ascend/pytorch to L2 in CRCR allowlist ([#187932](https://github.com/pytorch/pytorch/pull/187932))
