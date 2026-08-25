@@ -48,14 +48,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Added `Half` support to the eager `torch.polar` kernel ([#192311](https://github.com/pytorch/pytorch/pull/192311))
+- `xeon/run_cpu.py` now accepts multiple ncores-per-instance settings ([#169916](https://github.com/pytorch/pytorch/pull/169916))
 ### bug fixes
-- fix: initialize r to prevent uninitialized memory return in Laguerre and Legendre polynomials ([#188027](https://github.com/pytorch/pytorch/pull/188027))
+- Fixed incorrect results from CPU flash SDPA when the innermost dimension of the inputs is not contiguous ([#187506](https://github.com/pytorch/pytorch/pull/187506))
+- Fixed uninitialized memory being returned by the Laguerre and Legendre polynomial kernels ([#188027](https://github.com/pytorch/pytorch/pull/188027))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Fix cpu flash sdpa incorrect results when inputs' innermost dim is not contiguous ([#187506](https://github.com/pytorch/pytorch/pull/187506))
-- [CPU] Support multiple ncores-per-instance settings in xeon/run_cpu.py ([#169916](https://github.com/pytorch/pytorch/pull/169916))
-- Add Half support to the eager torch.polar kernel, pytorch/pytorch PR #192311 (#192311) ([#192311](https://github.com/pytorch/pytorch/pull/192311))
 ### not user facing
 ### security
