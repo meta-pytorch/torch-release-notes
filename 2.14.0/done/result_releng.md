@@ -45,23 +45,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## releng
 ### bc breaking
-- Windows libtorch debug binaries are no longer built or published ([#187352](https://github.com/pytorch/pytorch/pull/187352))
-
-  The debug-variant Windows libtorch archives (`libtorch-win-shared-with-deps-debug-*.zip`)
-  are no longer produced for nightly or release channels. Download URLs that
-  previously served them now return 404, so any script pinning the `-debug-`
-  artifact will fail to fetch. Use the release-variant archive instead, or build
-  libtorch from source with `CMAKE_BUILD_TYPE=Debug` if debug symbols are required.
-
-  Version 2.13:
-  ```
-  https://download.pytorch.org/libtorch/cu126/libtorch-win-shared-with-deps-debug-latest.zip
-  ```
-
-  Version 2.14:
-  ```
-  https://download.pytorch.org/libtorch/cu126/libtorch-win-shared-with-deps-latest.zip
-  ```
 ### deprecation
 - Invoking `setup.py` directly to build PyTorch from source is deprecated ([#180248](https://github.com/pytorch/pytorch/pull/180248))
 
@@ -101,6 +84,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 - Migrated the build system from setuptools to scikit-build-core ([#180247](https://github.com/pytorch/pytorch/pull/180247))
 ### not user facing
+- Stop building/publishing Windows libtorch debug binaries ([#187352](https://github.com/pytorch/pytorch/pull/187352))
 - Update the Triton CPU pin and migrate CPU block-pointer coverage to tensor descriptors ([#188794](https://github.com/pytorch/pytorch/pull/188794))
 - Add Ascend/pytorch to L2 in CRCR allowlist ([#187932](https://github.com/pytorch/pytorch/pull/187932))
 - Add CUDA 13.2 B200 smoke tests ([#191705](https://github.com/pytorch/pytorch/pull/191705))
