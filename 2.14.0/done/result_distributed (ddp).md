@@ -52,7 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
 ### not user facing
-- [Test] Fix race condition in ddp_under_dist_autograd_test ([#186788](https://github.com/pytorch/pytorch/pull/186788))
+- Stabilize the DDP-under-distributed-autograd test by synchronizing process-group initialization across workers ([#186788](https://github.com/pytorch/pytorch/pull/186788))
 ### security
