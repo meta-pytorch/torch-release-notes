@@ -22,7 +22,6 @@
 - Generalize distributed test utilities to run on Intel GPUs ([#178468](https://github.com/pytorch/pytorch/pull/178468)) — from inductor; the production and test changes primarily exercise sharded distributed code, so route to distributed (sharded).
 - Correct grammatical errors in distributed comments, docstrings, and documentation ([#187361](https://github.com/pytorch/pytorch/pull/187361)) — from inductor; the release-note label and substantive files are distributed (c10d).
 - Preserve third-party backend configuration and extra Triton imports in generated minifier repros ([#187855](https://github.com/pytorch/pytorch/pull/187855)) — from inductor; all production changes are in Dynamo repro generation, so route to dynamo.
-- Update the Triton CPU pin and migrate CPU block-pointer coverage to tensor descriptors ([#188794](https://github.com/pytorch/pytorch/pull/188794)) — from inductor; the dependency pin and backend migration are release-engineering work, so route to releng.
 - Register installed `target_code` with Dynamo's package input tracker so `torch._dynamo.reset()` clears stale precompiled entries ([#189206](https://github.com/pytorch/pytorch/pull/189206)) — from inductor; the implementation is confined to Dynamo packaging, so route to dynamo.
 - Correct duplicated words in distributed comments and a warning string ([#190035](https://github.com/pytorch/pytorch/pull/190035)) — from inductor; the release-note label and relevant runtime text belong to distributed (c10d).
 - Restore ROCm Inductor OpInfo coverage for reverse power and interpolation ([#191534](https://github.com/pytorch/pytorch/pull/191534)) — from inductor; this is Python-frontend test coverage and is labeled for python_frontend.
@@ -60,3 +59,10 @@
 - Correct comments and docstrings across quantization and distributed checkpoint code ([#190831](https://github.com/pytorch/pytorch/pull/190831)) — from inductor; the release-note labels route this internal-only change to quantization and distributed (checkpoint).
 - Emit portable array pointers in AOTInductor CPU wrappers ([#191240](https://github.com/pytorch/pytorch/pull/191240)) — from inductor; the generated C++ portability fix belongs in inductor (aoti).
 - Fix lint violations in Inductor and FX unification code ([#191866](https://github.com/pytorch/pytorch/pull/191866)) — from inductor; this internal-only cleanup is labeled for fx.
+
+## From releng (2.14.0)
+
+- Add torch.linalg.polar (polar decomposition) via cuSOLVER QDWH ([#185837](https://github.com/pytorch/pytorch/pull/185837)) — from `releng`, belongs to `linalg_frontend`
+- [cuDNN] Upgrade cuDNN to 9.24 and renable conv engine 5 ([#189483](https://github.com/pytorch/pytorch/pull/189483)) — from `releng`, belongs to `cudnn`
+- [c10d] Add reusable backend test suites ([#190133](https://github.com/pytorch/pytorch/pull/190133)) — from `releng`, belongs to `distributed (c10d)`
+- [Build] Throttle FlashAttention compilation with a Ninja job pool ([#192305](https://github.com/pytorch/pytorch/pull/192305)) — from `releng`, belongs to `build`
