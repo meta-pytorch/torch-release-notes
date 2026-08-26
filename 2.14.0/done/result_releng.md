@@ -73,6 +73,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 ### deprecation
 ### new features
+- Full CUDA 13.2 CI coverage: the stable-version configs ([#190641](https://github.com/pytorch/pytorch/pull/190641)), inductor, H100, B200 and DTensor ([#190948](https://github.com/pytorch/pytorch/pull/190948)), plus B200 smoke tests ([#191705](https://github.com/pytorch/pytorch/pull/191705))
+- ROCm 7.14 enablement: nightly manywheel builds via TheRock wheels ([#190276](https://github.com/pytorch/pytorch/pull/190276)) and libatomic in the manywheel builder image ([#192254](https://github.com/pytorch/pytorch/pull/192254))
 - Python 3.15 and 3.15t (free-threaded) enablement: nightly wheels on Windows ([#190360](https://github.com/pytorch/pytorch/pull/190360)) and macOS arm64 ([#190361](https://github.com/pytorch/pytorch/pull/190361)), ROCm manywheel builds ([#189722](https://github.com/pytorch/pytorch/pull/189722)), and Triton XPU Windows wheels ([#186033](https://github.com/pytorch/pytorch/pull/186033))
 ### improvements
 - Upgraded the XPU support package to 2026.1 ([#189593](https://github.com/pytorch/pytorch/pull/189593))
@@ -93,7 +95,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Stop building/publishing Windows libtorch debug binaries ([#187352](https://github.com/pytorch/pytorch/pull/187352))
 - Update the Triton CPU pin and migrate CPU block-pointer coverage to tensor descriptors ([#188794](https://github.com/pytorch/pytorch/pull/188794))
 - Add Ascend/pytorch to L2 in CRCR allowlist ([#187932](https://github.com/pytorch/pytorch/pull/187932))
-- Add CUDA 13.2 B200 smoke tests ([#191705](https://github.com/pytorch/pytorch/pull/191705))
 - Add PyTorch AI policy ([#189178](https://github.com/pytorch/pytorch/pull/189178))
 - Add PyTorch QuACK GEMM epilogue adapter e.g FlexGemm ([#186483](https://github.com/pytorch/pytorch/pull/186483))
 - Add TorchedHat/pytorch-redhat-ci to CRCR allowlist (L2) for testing CRCR outside PyTorch ecosystem ([#187412](https://github.com/pytorch/pytorch/pull/187412))
@@ -224,8 +225,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [CD] Use compatible-release (~=) triton pins for release builds ([#191941](https://github.com/pytorch/pytorch/pull/191941))
 - [CI/CD] Copy newer CUPTI headers into manywheel binary-build images ([#189307](https://github.com/pytorch/pytorch/pull/189307))
 - [CI/CD] Install newer CUPTI headers for CUDA-13 containers ([#189214](https://github.com/pytorch/pytorch/pull/189214))
-- [CI] Add CUDA 13.2 CI coverage for inductor, H100, B200, and dtensor ([#190948](https://github.com/pytorch/pytorch/pull/190948))
-- [CI] Add CUDA 13.2 CI coverage for stable version  ([#190641](https://github.com/pytorch/pytorch/pull/190641))
 - [CI] Add configurable Claude effort ([#191655](https://github.com/pytorch/pytorch/pull/191655))
 - [CI] Add native build image for linux-riscv64 ([#190887](https://github.com/pytorch/pytorch/pull/190887))
 - [CI] Advisor: pass github_token to skip the OIDC app-token exchange ([#192022](https://github.com/pytorch/pytorch/pull/192022))
@@ -258,7 +257,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Dependabot] Update(deps): Bump transformers from 5.10.1 to 5.13.0 in /.ci/docker/ci_commit_pins ([#189026](https://github.com/pytorch/pytorch/pull/189026))
 - [GHF] Add ability to actually merge PRs ([#191487](https://github.com/pytorch/pytorch/pull/191487))
 - [Metal] Mark read-only pointers for scalar params in binary_dense_scalar kernels as `const` ([#188560](https://github.com/pytorch/pytorch/pull/188560))
-- [ROCm 7.14] Install libatomic in the manywheel builder image ([#192254](https://github.com/pytorch/pytorch/pull/192254))
 - [ROCm] Bump fbgemm to 1.7.0 ([#190601](https://github.com/pytorch/pytorch/pull/190601))
 - [ROCm] Move rocm-nightly workflow from MI300 (gfx942) to MI350 (gfx950) runners ([#190263](https://github.com/pytorch/pytorch/pull/190263))
 - [ROCm] Updated mi300 runners to have 8 shards ([#188662](https://github.com/pytorch/pytorch/pull/188662))
