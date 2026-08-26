@@ -73,9 +73,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 ### deprecation
 ### new features
-- Added nightly wheels for Python 3.15 and 3.15t on Windows ([#190360](https://github.com/pytorch/pytorch/pull/190360))
-- Added nightly wheels for Python 3.15 and 3.15t on macOS (arm64) ([#190361](https://github.com/pytorch/pytorch/pull/190361))
-- Added Triton XPU Windows wheels for Python 3.15 and 3.15t ([#186033](https://github.com/pytorch/pytorch/pull/186033))
+- Python 3.15 and 3.15t (free-threaded) enablement: nightly wheels on Windows ([#190360](https://github.com/pytorch/pytorch/pull/190360)) and macOS arm64 ([#190361](https://github.com/pytorch/pytorch/pull/190361)), ROCm manywheel builds ([#189722](https://github.com/pytorch/pytorch/pull/189722)), and Triton XPU Windows wheels ([#186033](https://github.com/pytorch/pytorch/pull/186033))
 ### improvements
 - Upgraded the XPU support package to 2026.1 ([#189593](https://github.com/pytorch/pytorch/pull/189593))
 - Updated OpenBLAS to v0.3.34 ([#190314](https://github.com/pytorch/pytorch/pull/190314))
@@ -262,7 +260,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Metal] Mark read-only pointers for scalar params in binary_dense_scalar kernels as `const` ([#188560](https://github.com/pytorch/pytorch/pull/188560))
 - [ROCm 7.14] Install libatomic in the manywheel builder image ([#192254](https://github.com/pytorch/pytorch/pull/192254))
 - [ROCm] Bump fbgemm to 1.7.0 ([#190601](https://github.com/pytorch/pytorch/pull/190601))
-- [ROCm] Fix Python 3.15 manywheel build: redirect pkg-config to target Python (ROCm cp315 only) ([#189722](https://github.com/pytorch/pytorch/pull/189722))
 - [ROCm] Move rocm-nightly workflow from MI300 (gfx942) to MI350 (gfx950) runners ([#190263](https://github.com/pytorch/pytorch/pull/190263))
 - [ROCm] Updated mi300 runners to have 8 shards ([#188662](https://github.com/pytorch/pytorch/pull/188662))
 - [ROCm][CI] Configure Runner-Determinator on MI350s ([#186141](https://github.com/pytorch/pytorch/pull/186141))
