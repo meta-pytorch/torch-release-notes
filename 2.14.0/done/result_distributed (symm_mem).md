@@ -50,10 +50,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 ### bug fixes
 ### performance
-- Fuse the final reduction in matmul_reduce_scatter into one Triton kernel ([#191803](https://github.com/pytorch/pytorch/pull/191803))
+- Speed up captured `fused_matmul_reduce_scatter` workloads by fusing their final reduction into a dedicated Triton kernel ([#191803](https://github.com/pytorch/pytorch/pull/191803))
 ### docs
 ### devs
-### Untopiced
-- cmake: add USE_NCCL_EP build option for NCCL EP contrib library ([#177437](https://github.com/pytorch/pytorch/pull/177437))
+- Add the `USE_NCCL_EP` source-build option for compiling and statically linking NCCL's expert-parallelism library ([#177437](https://github.com/pytorch/pytorch/pull/177437))
 ### not user facing
 ### security
