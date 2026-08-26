@@ -52,7 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Add `spin docs` command wrapping `make -C docs` ([#182814](https://github.com/pytorch/pytorch/pull/182814))
+- Add `spin docs` as a contributor-facing wrapper around the documentation Makefile, with `html` as the default target, pass-through support for other targets and options, and clearer dependency checks ([#182814](https://github.com/pytorch/pytorch/pull/182814))
 ### not user facing
 ### security
