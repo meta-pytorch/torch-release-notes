@@ -66,6 +66,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 ### deprecation
 ### new features
+- Updated the bundled Triton to 3.8.0 ([#188251](https://github.com/pytorch/pytorch/pull/188251), [#190349](https://github.com/pytorch/pytorch/pull/190349))
 - Full CUDA 13.2 CI coverage: the stable-version configs ([#190641](https://github.com/pytorch/pytorch/pull/190641)), inductor, H100, B200 and DTensor ([#190948](https://github.com/pytorch/pytorch/pull/190948)), plus B200 smoke tests ([#191705](https://github.com/pytorch/pytorch/pull/191705))
 - ROCm 7.14 enablement: nightly manywheel builds via TheRock wheels ([#190276](https://github.com/pytorch/pytorch/pull/190276)) and libatomic in the manywheel builder image ([#192254](https://github.com/pytorch/pytorch/pull/192254))
 - Python 3.15 and 3.15t (free-threaded) enablement: nightly wheels on Windows ([#190360](https://github.com/pytorch/pytorch/pull/190360)) and macOS arm64 ([#190361](https://github.com/pytorch/pytorch/pull/190361)), ROCm manywheel builds ([#189722](https://github.com/pytorch/pytorch/pull/189722)), and Triton XPU Windows wheels ([#186033](https://github.com/pytorch/pytorch/pull/186033))
@@ -261,8 +262,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [ROCm][CI] Set Inductor compile threads to 16 on ROCm test jobs ([#191385](https://github.com/pytorch/pytorch/pull/191385))
 - [ROCm][CI] Skip S3 upload on ROCm CI and drop invalid ecr-login aws-region input ([#187680](https://github.com/pytorch/pytorch/pull/187680))
 - [ROCm][CI] trunk-rocm-sandbox: gfx942 default/inductor/distributed on amd-sandbox runners ([#191031](https://github.com/pytorch/pytorch/pull/191031))
-- [Triton 3.8] Update Triton hash (re-land of #185453) ([#188251](https://github.com/pytorch/pytorch/pull/188251))
-- [Triton 3.8] Update Triton hash to 4774139f ([#190349](https://github.com/pytorch/pytorch/pull/190349))
 - [XPU][CI] Add BMG client target and expand smoke tests ([#187421](https://github.com/pytorch/pytorch/pull/187421))
 - [audio hash update] update the pinned audio hash ([#191882](https://github.com/pytorch/pytorch/pull/191882))
 - [autorevert advisor] Treat a missing baseline as unknown, not green ([#188313](https://github.com/pytorch/pytorch/pull/188313))
