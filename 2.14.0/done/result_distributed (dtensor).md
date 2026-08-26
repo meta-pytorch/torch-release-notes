@@ -1,5 +1,5 @@
 
-# Release Notes worksheet devx
+# Release Notes worksheet distributed (dtensor)
 
 You should:
 
@@ -43,16 +43,17 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## devx
+## distributed (dtensor)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
+- Fix compiled functions failing when they return DTensor permutation views such as `transpose`, `permute`, or `movedim` ([#191784](https://github.com/pytorch/pytorch/pull/191784))
+- Fix deferred `local_map` export failing inside nested compile regions ([#186647](https://github.com/pytorch/pytorch/pull/186647))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Add `spin docs` command wrapping `make -C docs` ([#182814](https://github.com/pytorch/pytorch/pull/182814))
 ### not user facing
+- Support internal `_StridedShard`-to-`Shard` redistribution through all-to-all collectives ([#170915](https://github.com/pytorch/pytorch/pull/170915))
 ### security

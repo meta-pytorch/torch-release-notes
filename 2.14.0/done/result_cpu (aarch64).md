@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (dtensor)
+# Release Notes worksheet cpu (aarch64)
 
 You should:
 
@@ -43,18 +43,17 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (dtensor)
+## cpu (aarch64)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
-- [DTensor] Answer as_strided when it is a permutation of the base dims ([#191784](https://github.com/pytorch/pytorch/pull/191784))
+- Fixed an integer overflow in the bf16/fp16 GEMM staging buffer size calculation, which could corrupt results or crash on large matmuls ([#191096](https://github.com/pytorch/pytorch/pull/191096))
+- Fixed `embedding_bag` on CPU using the wrong index count for `scale_grad_by_freq`, producing incorrect gradients ([#190264](https://github.com/pytorch/pytorch/pull/190264))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Fix local_map deferred export in nested regions ([#186647](https://github.com/pytorch/pytorch/pull/186647))
 ### not user facing
-- [DTensor] Support _StridedShard to Shard through all-to-all ([#170915](https://github.com/pytorch/pytorch/pull/170915))
+- Extend test coverage for uint16/uint32/uint64 and complex32 dtypes ([#183473](https://github.com/pytorch/pytorch/pull/183473))
 ### security

@@ -1,5 +1,5 @@
 
-# Release Notes worksheet cpu (aarch64)
+# Release Notes worksheet distributed (sharded)
 
 You should:
 
@@ -43,18 +43,15 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## cpu (aarch64)
+## distributed (sharded)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
-- Extend test coverage for uint16/uint32/uint64 and complex32 dtypes ([#183473](https://github.com/pytorch/pytorch/pull/183473))
 ### bug fixes
-- [CPU][BLAS] Fix int overflow in bf16/fp16 gemm staging buffer size ([#191096](https://github.com/pytorch/pytorch/pull/191096))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Fix embedding_bag CPU scale_grad_by_freq using wrong index count ([#190264](https://github.com/pytorch/pytorch/pull/190264))
 ### not user facing
+- Expand sharded-tensor and sharding-plan tests to Intel GPU/XCCL environments ([#161771](https://github.com/pytorch/pytorch/pull/161771))
 ### security
