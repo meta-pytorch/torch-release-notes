@@ -66,11 +66,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 ### deprecation
 ### new features
+- Python 3.15 and 3.15t (free-threaded) enablement: nightly wheels on Windows ([#190360](https://github.com/pytorch/pytorch/pull/190360)) and macOS arm64 ([#190361](https://github.com/pytorch/pytorch/pull/190361)), ROCm manywheel builds ([#189722](https://github.com/pytorch/pytorch/pull/189722)), and Triton XPU Windows wheels ([#186033](https://github.com/pytorch/pytorch/pull/186033))
+- ROCm 7.14 enablement: nightly manywheel builds via TheRock wheels ([#190276](https://github.com/pytorch/pytorch/pull/190276)) and libatomic in the manywheel builder image ([#192254](https://github.com/pytorch/pytorch/pull/192254))
+### improvements
 - Updated the bundled Triton to 3.8.0 ([#188251](https://github.com/pytorch/pytorch/pull/188251), [#190349](https://github.com/pytorch/pytorch/pull/190349))
 - Full CUDA 13.2 CI coverage: the stable-version configs ([#190641](https://github.com/pytorch/pytorch/pull/190641)), inductor, H100, B200 and DTensor ([#190948](https://github.com/pytorch/pytorch/pull/190948)), plus B200 smoke tests ([#191705](https://github.com/pytorch/pytorch/pull/191705))
-- ROCm 7.14 enablement: nightly manywheel builds via TheRock wheels ([#190276](https://github.com/pytorch/pytorch/pull/190276)) and libatomic in the manywheel builder image ([#192254](https://github.com/pytorch/pytorch/pull/192254))
-- Python 3.15 and 3.15t (free-threaded) enablement: nightly wheels on Windows ([#190360](https://github.com/pytorch/pytorch/pull/190360)) and macOS arm64 ([#190361](https://github.com/pytorch/pytorch/pull/190361)), ROCm manywheel builds ([#189722](https://github.com/pytorch/pytorch/pull/189722)), and Triton XPU Windows wheels ([#186033](https://github.com/pytorch/pytorch/pull/186033))
-### improvements
 - Upgraded the XPU support package to 2026.1 ([#189593](https://github.com/pytorch/pytorch/pull/189593))
 - Updated OpenBLAS to v0.3.34 ([#190314](https://github.com/pytorch/pytorch/pull/190314))
 - Updated the Arm Compute Library (ACL) version used by aarch64 builds ([#191316](https://github.com/pytorch/pytorch/pull/191316))
