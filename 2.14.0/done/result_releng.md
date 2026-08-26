@@ -45,31 +45,24 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## releng
 ### bc breaking
-- Most `python setup.py <command>` invocations now fail; the build is driven by scikit-build-core ([#180248](https://github.com/pytorch/pytorch/pull/180248))
+- PyTorch now builds from source with scikit-build-core: build it through pip or `python -m build` ([#180248](https://github.com/pytorch/pytorch/pull/180248))
 
-  With the build fully migrated to scikit-build-core, the setuptools
-  build path is gone and `setup.py` is a small shim. `install` and `develop`
-  still forward to pip, but every other command -- `build`, `bdist_wheel`,
-  `clean`, `sdist` and friends -- fails immediately and prints the replacement
-  command instead of falling through to setuptools. Scripts that build wheels or
-  sdists by calling `setup.py` directly will break; use pip or `python -m build`.
-  Note that pip and `python -m build` never executed `setup.py`, so builds that
-  already went through a PEP 517 frontend are unaffected.
-
-  The shim prints the sunset schedule on every invocation: in 2.14-2.15
-  `install`/`develop` still forward to pip and all other commands fail; in
-  2.16-2.17 all commands fail; after that `setup.py` goes away.
+  `setup.py` is now a thin shim. `install` and `develop` still forward to pip, but
+  `build`, `bdist_wheel`, `clean`, `sdist` and the rest print the replacement
+  command instead of falling through to setuptools. Builds that already go through
+  a PEP 517 frontend are unaffected, since pip and `python -m build` never ran
+  `setup.py`. The shim prints the schedule: `install`/`develop` keep forwarding
+  through 2.15, every command stops working in 2.16, and `setup.py` is removed
+  after that.
 
   Version 2.13:
   ```bash
   python setup.py bdist_wheel
-  python setup.py develop
   ```
 
   Version 2.14:
   ```bash
-  python -m build --wheel --no-isolation   # setup.py bdist_wheel now fails
-  pip install --no-build-isolation -e .    # setup.py develop still works, deprecated
+  python -m build --wheel --no-isolation
   ```
 ### deprecation
 ### new features
