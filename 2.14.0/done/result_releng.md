@@ -75,7 +75,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Updated OpenBLAS to v0.3.34 ([#190314](https://github.com/pytorch/pytorch/pull/190314))
 - Updated the Arm Compute Library (ACL) version used by aarch64 builds ([#191316](https://github.com/pytorch/pytorch/pull/191316))
 - Relaxed the `nvidia-nvjitlink-cu12` runtime dependency of CUDA 12 wheels, so it no longer forces an exact version ([#186958](https://github.com/pytorch/pytorch/pull/186958))
-- Bundled `librocm_smi64.so` in ROCm <= 7.2 wheels ([#191450](https://github.com/pytorch/pytorch/pull/191450))
 ### bug fixes
 - Fixed ROCm wheels larger than 4 GB producing an invalid ZIP64 archive that some tools could not install; wheels are now repackaged with auditwheel ([#189903](https://github.com/pytorch/pytorch/pull/189903))
 - Fixed an intermittent deadlock on `import torch` with ROCm wheels by shipping a bare `.so` alias ([#189114](https://github.com/pytorch/pytorch/pull/189114))
@@ -85,6 +84,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 - Migrated the build system from setuptools to scikit-build-core ([#180247](https://github.com/pytorch/pytorch/pull/180247))
 ### not user facing
+- [ROCm] Bundle librocm_smi64.so for ROCm <= 7.2 wheels ([#191450](https://github.com/pytorch/pytorch/pull/191450))
 - [CD] Add CUDA 13.4rc1 x86 and sbsa binaries ([#192256](https://github.com/pytorch/pytorch/pull/192256))
 - Stop building/publishing Windows libtorch debug binaries ([#187352](https://github.com/pytorch/pytorch/pull/187352))
 - Update the Triton CPU pin and migrate CPU block-pointer coverage to tensor descriptors ([#188794](https://github.com/pytorch/pytorch/pull/188794))
