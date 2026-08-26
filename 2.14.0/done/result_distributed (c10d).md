@@ -47,17 +47,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Support split_group on the fake process group backend ([#186290](https://github.com/pytorch/pytorch/pull/186290))
 ### improvements
+- Upgrade NCCL to 2.30.7 for CUDA 13.0 and CUDA 13.2 builds ([#187528](https://github.com/pytorch/pytorch/pull/187528))
 ### bug fixes
+- Fix `destroy_process_group()` hanging after collectives run on partially split process groups by keeping group names consistent across ranks ([#190431](https://github.com/pytorch/pytorch/pull/190431))
 ### performance
 ### docs
 ### devs
-### Untopiced
+- Add `split_group` support to the fake process-group backend used for distributed testing ([#186290](https://github.com/pytorch/pytorch/pull/186290))
+- Correct `_distributed_c10d.pyi` type stubs for `_create_work_from_future` and the optional `ProcessGroupGloo` timeout argument ([#191633](https://github.com/pytorch/pytorch/pull/191633))
 ### not user facing
-- Upgrade NCCL to 2.30.7 (CUDA 13) ([#187528](https://github.com/pytorch/pytorch/pull/187528))
-- Remove obsolete CUTLASS compatibility versioning ([#190568](https://github.com/pytorch/pytorch/pull/190568))
-- [distributed] fix destroy_process_group hang after partial split_group collectives ([#190431](https://github.com/pytorch/pytorch/pull/190431))
-- Remove obsolete CUTLASS compatibility versioning ([#190568](https://github.com/pytorch/pytorch/pull/190568))
-- Fix two stale stubs in _distributed_c10d.pyi ([#191633](https://github.com/pytorch/pytorch/pull/191633))
 ### security

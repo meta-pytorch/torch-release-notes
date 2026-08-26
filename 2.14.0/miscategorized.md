@@ -11,6 +11,7 @@
 - Remove the deprecated C++ `c10::Scalar::isIntegral()` and `c10::isIntegralType(ScalarType)` overloads that omit `includeBool` ([#187115](https://github.com/pytorch/pytorch/pull/187115)) — from JIT; belongs to C++ frontend.
 - Remove the deprecated `torch.cholesky` API in favor of `torch.linalg.cholesky` ([#186817](https://github.com/pytorch/pytorch/pull/186817)) — from mobile; BC-breaking change that belongs to linalg frontend.
 - Remove the deprecated `torch.qr` API in favor of `torch.linalg.qr` ([#186815](https://github.com/pytorch/pytorch/pull/186815)) — from mobile; BC-breaking change that belongs to linalg frontend.
+- Remove obsolete CUTLASS compatibility versioning ([#190568](https://github.com/pytorch/pytorch/pull/190568)) — from distributed (c10d); this is an Inductor CUDA-kernel compatibility cleanup and belongs to inductor. (Was listed twice in the c10d worksheet.)
 - Add post-allocation CUDA memory annotations to allocator snapshots and memory visualizations ([#190575](https://github.com/pytorch/pytorch/pull/190575)) — from python_frontend; belongs to CUDA.
 - Remove an extra clone from compiled stateless RNG operations ([#188495](https://github.com/pytorch/pytorch/pull/188495)) — from python_frontend; belongs to inductor.
 - Skip the copy-on-write `histogramdd` test on XPU where its prerequisite operator is unavailable ([#174670](https://github.com/pytorch/pytorch/pull/174670)) — from python_frontend; belongs to XPU.
