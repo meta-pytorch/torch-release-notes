@@ -960,7 +960,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Support dataclass comparison in torch.testing assertEqual (#189873) ([#189979](https://github.com/pytorch/pytorch/pull/189979))
 - Document Node.next_functions graph edges ([#190836](https://github.com/pytorch/pytorch/pull/190836))
 - [dynamo, 3.15] Update test_ir_count ([#192149](https://github.com/pytorch/pytorch/pull/192149))
-- [dynamo] Support user-defined object leaves in invoke_subgraph reuse ([#192003](https://github.com/pytorch/pytorch/pull/192003))
 - [xpu] Fix the typo in test_xpu.py ([#192173](https://github.com/pytorch/pytorch/pull/192173))
 - [Test] Refactor test/test_bmm_outer_product.py ([#185797](https://github.com/pytorch/pytorch/pull/185797))
 - [Test] Refactor test/test_ops.py ([#186352](https://github.com/pytorch/pytorch/pull/186352))

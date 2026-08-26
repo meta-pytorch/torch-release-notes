@@ -48,13 +48,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Extend test coverage for uint16/uint32/uint64 and complex32 dtypes ([#183473](https://github.com/pytorch/pytorch/pull/183473))
 ### bug fixes
-- [CPU][BLAS] Fix int overflow in bf16/fp16 gemm staging buffer size ([#191096](https://github.com/pytorch/pytorch/pull/191096))
+- Fixed an integer overflow in the bf16/fp16 GEMM staging buffer size calculation, which could corrupt results or crash on large matmuls ([#191096](https://github.com/pytorch/pytorch/pull/191096))
+- Fixed `embedding_bag` on CPU using the wrong index count for `scale_grad_by_freq`, producing incorrect gradients ([#190264](https://github.com/pytorch/pytorch/pull/190264))
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Fix embedding_bag CPU scale_grad_by_freq using wrong index count ([#190264](https://github.com/pytorch/pytorch/pull/190264))
 ### not user facing
+- Extend test coverage for uint16/uint32/uint64 and complex32 dtypes ([#183473](https://github.com/pytorch/pytorch/pull/183473))
 ### security

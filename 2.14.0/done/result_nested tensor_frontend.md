@@ -1,5 +1,5 @@
 
-# Release Notes worksheet torch.func
+# Release Notes worksheet nested tensor_frontend
 
 You should:
 
@@ -43,20 +43,15 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## torch.func
+## nested tensor_frontend
 ### bc breaking
 ### deprecation
 ### new features
-- [BE][Ez]: Add missing functorch searchsorted scalar overload ([#188974](https://github.com/pytorch/pytorch/pull/188974))
 ### improvements
 ### bug fixes
 ### performance
 ### docs
 ### devs
-### Untopiced
-- [BE][Ez]: Add missing functorch batch rules for copy views ([#187256](https://github.com/pytorch/pytorch/pull/187256))
-- Add vmap batching rule for repeat_interleave.Tensor (#135424) ([#187702](https://github.com/pytorch/pytorch/pull/187702))
-- Implement batching rule for masked_fill_ ([#175513](https://github.com/pytorch/pytorch/pull/175513))
-- [BE][Ez]: Clean up some scalar functorch xfails ([#189176](https://github.com/pytorch/pytorch/pull/189176))
 ### not user facing
+- Widen private nested-tensor sequence-length annotations to include symbolic integers used by dynamic shapes ([#187428](https://github.com/pytorch/pytorch/pull/187428))
 ### security

@@ -1,5 +1,5 @@
 
-# Release Notes worksheet sparse_frontend
+# Release Notes worksheet vulkan
 
 You should:
 
@@ -43,9 +43,8 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## sparse_frontend
+## vulkan
 ### bc breaking
-- Ensure that sparse tensors are consistent if loading with weights_only ([#184750](https://github.com/pytorch/pytorch/pull/184750))
 ### deprecation
 ### new features
 ### improvements
@@ -53,12 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Add float16/bfloat16 support to sparse CSR sampled_addmm ([#187681](https://github.com/pytorch/pytorch/pull/187681))
-- [sparse] Add size validation in _convert_indices_from_coo_to_csr ([#188540](https://github.com/pytorch/pytorch/pull/188540))
-- [OC][sparsity][4/n] Refactor cusparselt handle creation (#189048) ([#189048](https://github.com/pytorch/pytorch/pull/189048))
-- Add sparse COO dispatch for linalg.vector_norm ([#185309](https://github.com/pytorch/pytorch/pull/185309))
 ### not user facing
-- [BE][Ez]: Add missing moves to std::get from std::tuple ([#191107](https://github.com/pytorch/pytorch/pull/191107))
-- [BE][CUDA] Centralize cuda::std compatibility alias ([#191491](https://github.com/pytorch/pytorch/pull/191491))
+- Replace Vulkan's duplicate narrowing-conversion checks with the shared internal `c10::overflows` utility ([#190653](https://github.com/pytorch/pytorch/pull/190653))
 ### security
