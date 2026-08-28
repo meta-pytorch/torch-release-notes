@@ -1,5 +1,5 @@
 
-# Release Notes worksheet vulkan
+# Release Notes worksheet devx
 
 You should:
 
@@ -43,7 +43,7 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## vulkan
+## devx
 ### bc breaking
 ### deprecation
 ### new features
@@ -52,7 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
-- vulkan: use c10::overflows in safe_downcast; drop the duplicate copy ([#190653](https://github.com/pytorch/pytorch/pull/190653))
+- Add `spin docs` as a contributor-facing wrapper around the documentation Makefile, with `html` as the default target, pass-through support for other targets and options, and clearer dependency checks ([#182814](https://github.com/pytorch/pytorch/pull/182814))
 ### not user facing
 ### security

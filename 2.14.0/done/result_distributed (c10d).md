@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (sharded)
+# Release Notes worksheet distributed (c10d)
 
 You should:
 
@@ -43,16 +43,18 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (sharded)
+## distributed (c10d)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+- Upgrade NCCL to 2.30.7 for CUDA 13.0 and CUDA 13.2 builds ([#187528](https://github.com/pytorch/pytorch/pull/187528))
 ### bug fixes
+- Fix `destroy_process_group()` hanging after collectives run on partially split process groups by keeping group names consistent across ranks ([#190431](https://github.com/pytorch/pytorch/pull/190431))
 ### performance
 ### docs
 ### devs
-### Untopiced
+- Add `split_group` support to the fake process-group backend used for distributed testing ([#186290](https://github.com/pytorch/pytorch/pull/186290))
+- Correct `_distributed_c10d.pyi` type stubs for `_create_work_from_future` and the optional `ProcessGroupGloo` timeout argument ([#191633](https://github.com/pytorch/pytorch/pull/191633))
 ### not user facing
-- [xpu][test][1/N] Port 3 distributed/_shared test cases to Intel GPU  ([#161771](https://github.com/pytorch/pytorch/pull/161771))
 ### security

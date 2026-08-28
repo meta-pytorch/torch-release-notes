@@ -52,7 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
-- Bump `_maybe_max_seqlen`/`_maybe_min_seqlen` return types to allow SymInt ([#187428](https://github.com/pytorch/pytorch/pull/187428))
 ### not user facing
+- Widen private nested-tensor sequence-length annotations to include symbolic integers used by dynamic shapes ([#187428](https://github.com/pytorch/pytorch/pull/187428))
 ### security

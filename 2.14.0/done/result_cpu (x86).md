@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (ddp)
+# Release Notes worksheet cpu (x86)
 
 You should:
 
@@ -43,16 +43,18 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (ddp)
+## cpu (x86)
 ### bc breaking
 ### deprecation
 ### new features
 ### improvements
+- Added `Half` support to the eager `torch.polar` kernel ([#192311](https://github.com/pytorch/pytorch/pull/192311))
+- `xeon/run_cpu.py` now accepts multiple ncores-per-instance settings ([#169916](https://github.com/pytorch/pytorch/pull/169916))
 ### bug fixes
+- Fixed incorrect results from CPU flash SDPA when the innermost dimension of the inputs is not contiguous ([#187506](https://github.com/pytorch/pytorch/pull/187506))
+- Fixed uninitialized memory being returned by the Laguerre and Legendre polynomial kernels ([#188027](https://github.com/pytorch/pytorch/pull/188027))
 ### performance
 ### docs
 ### devs
-### Untopiced
 ### not user facing
-- [Test] Fix race condition in ddp_under_dist_autograd_test ([#186788](https://github.com/pytorch/pytorch/pull/186788))
 ### security
