@@ -133,7 +133,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-- Add documented CUDA graph instantiate and destroy hooks so profiling and tooling integrations can observe graph lifecycles without modifying graph execution code ([#191299](https://github.com/pytorch/pytorch/pull/191299))
+- Add documented CUDA graph instantiate and destroy hooks for the experimental CUPTI monitor, allowing it to observe graph lifecycles without modifying graph execution code ([#191299](https://github.com/pytorch/pytorch/pull/191299))
 
 ### Untopiced
 ### not user facing
