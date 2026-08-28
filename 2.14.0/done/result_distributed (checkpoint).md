@@ -52,13 +52,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-### Untopiced
 ### not user facing
-- Fix typos in comments, docstrings, and documentation across torch/ ([#185683](https://github.com/pytorch/pytorch/pull/185683))
-- Lazily build error messages for assertEqual() calls across tests to reduce overhead ([#188098](https://github.com/pytorch/pytorch/pull/188098))
-- benchmarks/dynamo: fix timm model load for models without drop_rate support ([#187302](https://github.com/pytorch/pytorch/pull/187302))
-- Fix inconsistent accelerator guard in checkpoint staging test ([#188980](https://github.com/pytorch/pytorch/pull/188980))
-- Lazily build error messages for assert*() calls across tests to reduce overhead ([#188299](https://github.com/pytorch/pytorch/pull/188299))
-- [distributed][checkpoint] Bind per-rank devices for all accelerator  ([#189992](https://github.com/pytorch/pytorch/pull/189992))
-- [Test] Relax os.sync assertion in test_fsspec_without_fileno_support ([#190540](https://github.com/pytorch/pytorch/pull/190540))
+- Fix typos in comments, docstrings, and documentation without changing runtime behavior ([#185683](https://github.com/pytorch/pytorch/pull/185683))
+- Build test assertion messages lazily to reduce test-suite overhead ([#188098](https://github.com/pytorch/pytorch/pull/188098), [#188299](https://github.com/pytorch/pytorch/pull/188299))
+- Expand distributed-checkpoint staging and process-group transport tests across accelerator backends ([#188980](https://github.com/pytorch/pytorch/pull/188980), [#189992](https://github.com/pytorch/pytorch/pull/189992))
+- Relax a filesystem-checkpoint test to permit `os.sync()` fallbacks when per-file `fsync()` is unavailable ([#190540](https://github.com/pytorch/pytorch/pull/190540))
 ### security

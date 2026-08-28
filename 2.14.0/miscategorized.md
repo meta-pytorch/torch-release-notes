@@ -1,5 +1,6 @@
 - `torch.export` dynamic-shape handling for variadic keyword arguments belongs to the export worksheet, not ONNX ([#185730](https://github.com/pytorch/pytorch/pull/185730))
 - [inductor] fix remainder for fp16/bf16 tensors and scalar inputs ([#185168](https://github.com/pytorch/pytorch/pull/185168)) — from quantization; an inductor numerical fix, belongs to inductor.
+- Fix Dynamo benchmark loading for timm models that do not accept dropout keyword arguments ([#187302](https://github.com/pytorch/pytorch/pull/187302)) — from distributed (checkpoint); this only changes the Dynamo benchmark harness and belongs to inductor.
 - Remove a CUDA synchronization from `torch.combinations` to improve compilation support ([#189305](https://github.com/pytorch/pytorch/pull/189305)) — from distributed; this is an Inductor/compiler change and belongs to inductor.
 - Migrate deprecated `torch.norm` calls to `torch.linalg.*` ([#185097](https://github.com/pytorch/pytorch/pull/185097)) — from quantization; cross-cutting internal refactor touching linalg, distributed, nn, and optim, not specifically quantization.
 - Fix `multi_margin_loss` decomposition lowering on XPU by using one-dimensional weight indexing ([#188770](https://github.com/pytorch/pytorch/pull/188770)) — from composability; belongs to XPU.
