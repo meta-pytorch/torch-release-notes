@@ -53,6 +53,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
-- Fix typos in comments, docstrings, and warning messages across torch/utils and related modules ([#187511](https://github.com/pytorch/pytorch/pull/187511))
 ### not user facing
+- Correct spelling in comments, docstrings, warnings, and error messages across `torch.utils` and related modules without changing behavior ([#187511](https://github.com/pytorch/pytorch/pull/187511))
 ### security
