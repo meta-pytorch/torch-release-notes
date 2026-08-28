@@ -1,5 +1,5 @@
 
-# Release Notes worksheet torch.func
+# Release Notes worksheet distributed (symm_mem)
 
 You should:
 
@@ -43,20 +43,16 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## torch.func
+## distributed (symm_mem)
 ### bc breaking
 ### deprecation
 ### new features
-- [BE][Ez]: Add missing functorch searchsorted scalar overload ([#188974](https://github.com/pytorch/pytorch/pull/188974))
 ### improvements
 ### bug fixes
 ### performance
+- Speed up captured `fused_matmul_reduce_scatter` workloads by fusing their final reduction into a dedicated Triton kernel ([#191803](https://github.com/pytorch/pytorch/pull/191803))
 ### docs
 ### devs
-### Untopiced
-- [BE][Ez]: Add missing functorch batch rules for copy views ([#187256](https://github.com/pytorch/pytorch/pull/187256))
-- Add vmap batching rule for repeat_interleave.Tensor (#135424) ([#187702](https://github.com/pytorch/pytorch/pull/187702))
-- Implement batching rule for masked_fill_ ([#175513](https://github.com/pytorch/pytorch/pull/175513))
-- [BE][Ez]: Clean up some scalar functorch xfails ([#189176](https://github.com/pytorch/pytorch/pull/189176))
+- Add the `USE_NCCL_EP` source-build option for compiling and statically linking NCCL's expert-parallelism library ([#177437](https://github.com/pytorch/pytorch/pull/177437))
 ### not user facing
 ### security

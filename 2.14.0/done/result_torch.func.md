@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (c10d)
+# Release Notes worksheet torch.func
 
 You should:
 
@@ -43,21 +43,19 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (c10d)
+## torch.func
 ### bc breaking
 ### deprecation
 ### new features
-- Support split_group on the fake process group backend ([#186290](https://github.com/pytorch/pytorch/pull/186290))
 ### improvements
+- Allow `torch.vmap` to handle the scalar overload of `torch.searchsorted` ([#188974](https://github.com/pytorch/pytorch/pull/188974))
+- Expand `torch.vmap` coverage for copy-view operations by routing them through existing batching rules ([#187256](https://github.com/pytorch/pytorch/pull/187256))
+- Add a batching rule for `torch.repeat_interleave` when `repeats` is batched; callers must provide a common `output_size` because per-example output lengths are data-dependent ([#187702](https://github.com/pytorch/pytorch/pull/187702))
+- Add a native batching rule for in-place `Tensor.masked_fill_()`, avoiding the slow fallback and its performance warning under `torch.vmap` ([#175513](https://github.com/pytorch/pytorch/pull/175513))
+- Expand scalar fill and comparison support under `torch.vmap`, including accelerator placement for scalar operands ([#189176](https://github.com/pytorch/pytorch/pull/189176))
 ### bug fixes
 ### performance
 ### docs
 ### devs
-### Untopiced
 ### not user facing
-- Upgrade NCCL to 2.30.7 (CUDA 13) ([#187528](https://github.com/pytorch/pytorch/pull/187528))
-- Remove obsolete CUTLASS compatibility versioning ([#190568](https://github.com/pytorch/pytorch/pull/190568))
-- [distributed] fix destroy_process_group hang after partial split_group collectives ([#190431](https://github.com/pytorch/pytorch/pull/190431))
-- Remove obsolete CUTLASS compatibility versioning ([#190568](https://github.com/pytorch/pytorch/pull/190568))
-- Fix two stale stubs in _distributed_c10d.pyi ([#191633](https://github.com/pytorch/pytorch/pull/191633))
 ### security

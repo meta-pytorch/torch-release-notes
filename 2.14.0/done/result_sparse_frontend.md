@@ -1,5 +1,5 @@
 
-# Release Notes worksheet distributed (symm_mem)
+# Release Notes worksheet sparse_frontend
 
 You should:
 
@@ -43,17 +43,38 @@ Once you are finished, move this very file from `todo/` to `done/` and submit a 
 
 Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an example.
 
-## distributed (symm_mem)
+## sparse_frontend
 ### bc breaking
+- `torch.load(..., weights_only=True)` now always validates sparse-tensor invariants ([#184750](https://github.com/pytorch/pytorch/pull/184750))
+
+  Sparse tensors loaded in restricted `weights_only` mode now undergo an O(nnz) validation scan regardless of the global `torch.sparse.check_sparse_tensor_invariants` setting. Valid sparse checkpoints emit a warning explaining the scan. Malformed checkpoints whose indices are inconsistent with the tensor size now raise an error such as `RuntimeError: size is inconsistent with indices` instead of creating an invalid tensor that could later read out of bounds.
+
+  Before, disabling global invariant checks also disabled validation during a restricted load:
+
+  ```python
+  with torch.sparse.check_sparse_tensor_invariants(False):
+      tensor = torch.load("sparse.pt", weights_only=True)
+  ```
+
+  In PyTorch 2.14, fix or regenerate malformed sparse checkpoints and continue using the safe restricted loader:
+
+  ```python
+  tensor = torch.load("sparse.pt", weights_only=True)
+  ```
+
+  Trusted checkpoints can retain the old no-validation behavior by using `weights_only=False` while global invariant checks are disabled, but this invokes the unrestricted pickle loader and must not be used with untrusted files.
 ### deprecation
 ### new features
 ### improvements
+- Add CUDA `float16` and `bfloat16` support to `torch.sparse.sampled_addmm`, including supported sparse-CSR backward paths ([#187681](https://github.com/pytorch/pytorch/pull/187681))
+- Add sparse COO dispatch for `torch.linalg.vector_norm`, allowing it to replace deprecated `torch.norm` calls on sparse COO tensors ([#185309](https://github.com/pytorch/pytorch/pull/185309))
 ### bug fixes
+- Create cuSPARSELt handles per device so sparse operations remain valid when a thread switches between CUDA devices ([#189048](https://github.com/pytorch/pytorch/pull/189048))
 ### performance
-- Fuse the final reduction in matmul_reduce_scatter into one Triton kernel ([#191803](https://github.com/pytorch/pytorch/pull/191803))
 ### docs
 ### devs
-### Untopiced
-- cmake: add USE_NCCL_EP build option for NCCL EP contrib library ([#177437](https://github.com/pytorch/pytorch/pull/177437))
 ### not user facing
+- Avoid unnecessary tuple-element and vector copies in sparse and other internal kernels ([#191107](https://github.com/pytorch/pytorch/pull/191107))
+- Centralize the internal CUDA/ROCm standard-library compatibility alias used by sparse CUDA kernels ([#191491](https://github.com/pytorch/pytorch/pull/191491))
 ### security
+- Reject negative `size` values in the private COO-to-CSR index conversion operator before CPU or CUDA kernels can write out of bounds ([#188540](https://github.com/pytorch/pytorch/pull/188540))
