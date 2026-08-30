@@ -802,7 +802,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Make step ordering hooks more robust for optim ([#190577](https://github.com/pytorch/pytorch/pull/190577))
 - Enable eager tests for inductor-unittest - enable test_dtypes and align XPU op dyptes with OpInfo ([#176688](https://github.com/pytorch/pytorch/pull/176688))
 - [AI Codemod][PerfAICT-General] Use SymDimVector to avoid heap allocs in select_symint (#188827) ([#188827](https://github.com/pytorch/pytorch/pull/188827))
-- [cuBLAS][cuBLASLt] Thread-local cuBLAS(Lt) workspace maps ([#180283](https://github.com/pytorch/pytorch/pull/180283))
 - Fix CODEOWNERS: drop departed owners ([#189416](https://github.com/pytorch/pytorch/pull/189416))
 - [precompile] Author the artifact driver as real code, emit via getsource ([#190226](https://github.com/pytorch/pytorch/pull/190226))
 - [Test]Refactor test/nn/test_lazy_modules.py to be device- generic by replacing hardcoded device selection with torch.accelerator API ([#184192](https://github.com/pytorch/pytorch/pull/184192))
