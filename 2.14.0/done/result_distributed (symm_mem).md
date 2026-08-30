@@ -47,6 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add XPU support for symmetric-memory operations used by asynchronous tensor parallelism, enabling communication/computation overlap on Intel GPUs ([#185102](https://github.com/pytorch/pytorch/pull/185102))
 ### improvements
 ### bug fixes
 ### performance

@@ -45,6 +45,24 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## cpp_frontend
 ### bc breaking
+- Remove the deprecated zero-argument C++ overloads `c10::Scalar::isIntegral()` and `c10::isIntegralType(ScalarType)` ([#187115](https://github.com/pytorch/pytorch/pull/187115))
+
+  Code that calls either overload without specifying whether Boolean values count as integral will no longer compile. Pass `includeBool` explicitly; use `false` to preserve the removed overloads' behavior.
+
+  Version 2.13:
+
+  ```cpp
+  bool scalar_is_integer = scalar.isIntegral();
+  bool dtype_is_integer = c10::isIntegralType(dtype);
+  ```
+
+  Version 2.14:
+
+  ```cpp
+  bool scalar_is_integer = scalar.isIntegral(/*includeBool=*/false);
+  bool dtype_is_integer =
+      c10::isIntegralType(dtype, /*includeBool=*/false);
+  ```
 ### deprecation
 ### new features
 - Adding conversion from PyObject to torch::stable::tensor ([#183323](https://github.com/pytorch/pytorch/pull/183323))
@@ -68,6 +86,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
+- Add `C10_LIFETIMEBOUND` annotations to borrowing `c10::OptionalArrayRef` constructors so Clang can diagnose dangling references to temporary buffers ([#190076](https://github.com/pytorch/pytorch/pull/190076))
 - Enforce C++20 minimum in header guards (#178150) ([#178150](https://github.com/pytorch/pytorch/pull/178150))
 - c10 HeaderOnlyArrayRef: add C10_LIFETIMEBOUND to borrowing constructors (#190078) ([#190078](https://github.com/pytorch/pytorch/pull/190078))
 - Add c10::safe_conv (strict, integer-only) and c10::unsafe_wrapping_convert (#190092) ([#190092](https://github.com/pytorch/pytorch/pull/190092))
@@ -79,6 +98,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - c10/util/ArrayRef.h: specialize std::ranges::enable_borrowed_range ([#186635](https://github.com/pytorch/pytorch/pull/186635))
 ### Untopiced
 ### not user facing
+- Correct spelling in C++ frontend and DTensor comments and docstrings without changing behavior ([#190434](https://github.com/pytorch/pytorch/pull/190434))
 - Fix "a/an" article typos in code comments ([#190600](https://github.com/pytorch/pytorch/pull/190600))
 - torch/headeronly/core/TensorAccessor.h: replace typedef with using ([#185956](https://github.com/pytorch/pytorch/pull/185956))
 - c10/util/intrusive_ptr.h: replace hand-written comparison operators with operator<=> ([#186634](https://github.com/pytorch/pytorch/pull/186634))

@@ -45,8 +45,44 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## linalg_frontend
 ### bc breaking
+- Remove the deprecated `torch.cholesky()` and `Tensor.cholesky()` APIs ([#186817](https://github.com/pytorch/pytorch/pull/186817))
+
+  Calls now raise a `RuntimeError` directing users to `torch.linalg.cholesky()`. The replacement returns a lower-triangular factor; callers that previously requested `upper=True` should take the conjugate transpose with `.mH`.
+
+  Version 2.13:
+
+  ```python
+  lower = torch.cholesky(a)
+  upper = torch.cholesky(a, upper=True)
+  ```
+
+  Version 2.14:
+
+  ```python
+  lower = torch.linalg.cholesky(a)
+  upper = torch.linalg.cholesky(a).mH
+  ```
+
+- Remove the deprecated `torch.qr()` and `Tensor.qr()` APIs ([#186815](https://github.com/pytorch/pytorch/pull/186815))
+
+  Calls now raise a `RuntimeError` directing users to `torch.linalg.qr()`. Replace the Boolean `some` argument with `mode="reduced"` or `mode="complete"`.
+
+  Version 2.13:
+
+  ```python
+  q, r = torch.qr(a)
+  q_full, r_full = torch.qr(a, some=False)
+  ```
+
+  Version 2.14:
+
+  ```python
+  q, r = torch.linalg.qr(a, mode="reduced")
+  q_full, r_full = torch.linalg.qr(a, mode="complete")
+  ```
 ### deprecation
 ### new features
+- Add `torch.linalg.polar()` for computing the polar decomposition `A = U @ H`, with an SVD-based implementation across devices and cuSOLVER QDWH acceleration for eligible CUDA matrices ([#185837](https://github.com/pytorch/pytorch/pull/185837))
 - Add `torch.linalg.matrix_sqrth` for computing the principal square root of symmetric or Hermitian positive-definite matrices, with support for batched inputs, autograd, `vmap`, and `torch.compile` ([#187987](https://github.com/pytorch/pytorch/pull/187987))
 - Add CUDA cuBLASLt support to TunableOp, including controls for the number of heuristic candidates through `torch.cuda.tunable.set_cublaslt_requested_algo_count()` and `PYTORCH_TUNABLEOP_CUBLASLT_REQUESTED_ALGO_COUNT` ([#186270](https://github.com/pytorch/pytorch/pull/186270))
 ### improvements

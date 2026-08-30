@@ -47,7 +47,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 - Add FP8 blockwise scaling support for MXFP8/MXFP4/NVFP4 recipes to `scaled_mm`/`_scaled_mm_v2` on XPU ([#181726](https://github.com/pytorch/pytorch/pull/181726), [#181727](https://github.com/pytorch/pytorch/pull/181727), [#187315](https://github.com/pytorch/pytorch/pull/187315))
-- Add symmetric memory ops (async tensor parallelism) support for XPU ([#185102](https://github.com/pytorch/pytorch/pull/185102))
 - Add XPU Graph native recording mode support ([#188874](https://github.com/pytorch/pytorch/pull/188874))
 - Add WSL2 support for XPU ([#192398](https://github.com/pytorch/pytorch/pull/192398))
 - Add `torch.xpu.list_gpu_processes` to query per-process GPU memory usage on XPU ([#185192](https://github.com/pytorch/pytorch/pull/185192))
@@ -74,6 +73,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Allow all memory-type pointers known by the driver in the Inductor static launcher for XPU ([#188240](https://github.com/pytorch/pytorch/pull/188240))
 
 ### bug fixes
+- Fix compiled `torch.signbit` for `float64` inputs on XPU by avoiding an incorrect Triton XPU signature ([#188818](https://github.com/pytorch/pytorch/pull/188818))
+- Fix compiled `multi_margin_loss` with weights on XPU by using one-dimensional indexing in its decomposition ([#188770](https://github.com/pytorch/pytorch/pull/188770))
 - Fix empty tensors in `addmv` on XPU ([#174193](https://github.com/pytorch/pytorch/pull/174193))
 - Fix OneDNN SDPA with GQA and a broadcasted mask on XPU ([#190503](https://github.com/pytorch/pytorch/pull/190503))
 - Fix LSTM oneDNN integration to support bf16 bias and cell state on XPU ([#187334](https://github.com/pytorch/pytorch/pull/187334))
@@ -100,4 +101,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Enable Triton XPU Windows wheel builds for Python 3.15 & 3.15t ([#186033](https://github.com/pytorch/pytorch/pull/186033))
 
 ### not user facing
+- Skip the copy-on-write `histogramdd` test on XPU because its prerequisite operator is unavailable ([#174670](https://github.com/pytorch/pytorch/pull/174670))
+- Relax tolerances for nondeterministic XPU convolution and histogram tests without changing operator behavior ([#177069](https://github.com/pytorch/pytorch/pull/177069))
 ### security

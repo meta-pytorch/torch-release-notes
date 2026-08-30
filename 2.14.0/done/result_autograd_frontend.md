@@ -108,7 +108,45 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 
 ### deprecation
+- Selective activation checkpointing will change to honor surrounding `saved_tensors_hooks` by default; use the new `respect_saved_tensors_hooks` argument to choose the behavior explicitly ([#190581](https://github.com/pytorch/pytorch/pull/190581))
+
+  The current default, `None`, preserves the legacy behavior in which tensors retained by selective activation checkpointing bypass user hooks, but now emits a `FutureWarning` when hooks are active. Pass `True` to opt into the future behavior or `False` to preserve the legacy behavior without a warning. This option requires `use_reentrant=False`.
+
+  Before:
+
+  ```python
+  with torch.autograd.graph.saved_tensors_hooks(pack, unpack):
+      output = torch.utils.checkpoint.checkpoint(
+          function,
+          input,
+          use_reentrant=False,
+          context_fn=sac_context_fn,
+      )
+  ```
+
+  After:
+
+  ```python
+  with torch.autograd.graph.saved_tensors_hooks(pack, unpack):
+      output = torch.utils.checkpoint.checkpoint(
+          function,
+          input,
+          use_reentrant=False,
+          context_fn=sac_context_fn,
+          respect_saved_tensors_hooks=True,
+      )
+  ```
 ### new features
+- `torch.utils.checkpoint.checkpoint()` can now be called without a function to create an eager-mode decorator with checkpoint configuration separated from the wrapped function's arguments ([#189411](https://github.com/pytorch/pytorch/pull/189411))
+
+  ```python
+  checkpointed_function = torch.utils.checkpoint.checkpoint(
+      use_reentrant=False
+  )(function)
+  output = checkpointed_function(*args, **kwargs)
+  ```
+
+  The curried form is initially supported in eager mode; existing direct calls remain the compatible form under `torch.compile`.
 - Add `torch.autograd.graph.node_creation_hook`, a thread-local context manager whose callback receives every fully populated autograd graph node created within its scope. The callback can inspect nodes, store metadata, or register backward pre-hooks and post-hooks, including for nodes created during higher-order differentiation and checkpoint recomputation ([#189284](https://github.com/pytorch/pytorch/pull/189284))
 - Add `ctx.set_output_grad_dtype(*dtypes)` for custom `torch.autograd.Function` implementations. Called once from `forward` or `setup_context`, it declares the gradient dtype expected for each output independently of the output's storage dtype; a concrete dtype converts incoming gradients, while `None` leaves their dtype unchanged ([#189634](https://github.com/pytorch/pytorch/pull/189634))
 - Add second-order gradient support for `torch.cdist` and `torch.nn.functional.pdist`, so grad-grad computations no longer fail because `_cdist_backward` or `_pdist_backward` lacks a derivative ([#188901](https://github.com/pytorch/pytorch/pull/188901))

@@ -63,6 +63,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add complex MPS support to `torch.nan_to_num` and correctly resize empty `out=` tensors ([#189489](https://github.com/pytorch/pytorch/pull/189489))
 - Add MPS `torch.geqrf` support and align the MPS `torch.linalg.qr` implementation with other backends ([#189192](https://github.com/pytorch/pytorch/pull/189192))
 ### bug fixes
+- Fix compiled MPS operations such as `torch.eye(256)` failing with `KeyError` when Inductor generates unsigned 16-, 32-, or 64-bit index expressions ([#192020](https://github.com/pytorch/pytorch/pull/192020))
 - Preserve the MPS dispatch key through `torch.func` transforms so MPS autocast and autograd work under transforms such as `vmap` and `grad` ([#187282](https://github.com/pytorch/pytorch/pull/187282))
 - Reject complex MPS average-pooling inputs with `NotImplementedError` instead of an internal MPSGraph error ([#187671](https://github.com/pytorch/pytorch/pull/187671))
 - Propagate NaNs correctly through MPS scaled dot-product attention kernels ([#188147](https://github.com/pytorch/pytorch/pull/188147))

@@ -56,11 +56,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Improve raw Triton kernel errors during non-strict export with guidance to define the kernel through `torch.library.triton_op` and launch it through `torch.library.wrap_triton` or `torch._library.capture_triton`. ([#185827](https://github.com/pytorch/pytorch/pull/185827))
 - Improve the readability of draft-export reports on light terminal backgrounds by using red for warning banners, green for success banners, and the terminal's default color for failure details. ([#186070](https://github.com/pytorch/pytorch/pull/186070))
 ### bug fixes
+- Fix `torch.export` dynamic-shape specifications for functions with `**kwargs`, accepting both call-like keys and specs nested under the variadic parameter while reporting ambiguous name collisions as `UserError` ([#185730](https://github.com/pytorch/pytorch/pull/185730))
 - Prevent `ExportedProgram.module()` from raising `RecursionError` while generating guard messages for deeply nested symbolic-shape expressions. ([#186993](https://github.com/pytorch/pytorch/pull/186993))
 - Fix `torch.export.unflatten` failing to restore parameters, buffers, and constants for non-contiguously numbered repeated module calls. ([#188185](https://github.com/pytorch/pytorch/pull/188185))
 - Fix strict export of parameters from modules stored in unregistered Python containers by treating the traced-only parameters as constants instead of attempting to restore them from the eager module's state. ([#185728](https://github.com/pytorch/pytorch/pull/185728))
 - Fix non-strict export of tensor indexing under `vmap` when the index is a batched scalar tensor. ([#186894](https://github.com/pytorch/pytorch/pull/186894))
 ### not user facing
+- Add internal helpers for retrieving fake tensors, real tensors, and devices from `FakeTensor` values ([#188975](https://github.com/pytorch/pytorch/pull/188975))
+- Correct spelling in export serialization comments and docstrings without changing behavior ([#190569](https://github.com/pytorch/pytorch/pull/190569))
 - Enable stricter static type checking for private export and serialization modules, with no runtime behavior change. ([#187711](https://github.com/pytorch/pytorch/pull/187711))
 - Remove duplicated words from docstrings across export and other PyTorch modules. ([#188884](https://github.com/pytorch/pytorch/pull/188884))
 - Support `ObjectSpec`, `SeqSpec`, and `DictSpec` container types when using shape specifications with strict export. ([#186167](https://github.com/pytorch/pytorch/pull/186167))

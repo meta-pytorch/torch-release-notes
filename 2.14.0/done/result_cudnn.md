@@ -49,7 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 - Add head-dimension 256 support to cuDNN SDPA ([#185553](https://github.com/pytorch/pytorch/pull/185553))
 ### improvements
-- Upgrade the CUDA 12.8, 12.9, and 13.0 wheels to cuDNN 9.23.1.3 ([#187091](https://github.com/pytorch/pytorch/pull/187091))
+- Upgrade the CUDA 12.8, 12.9, and 13.x wheels to cuDNN 9.24 and re-enable convolution engine 5 after its nondeterminism issue was fixed ([#187091](https://github.com/pytorch/pytorch/pull/187091), [#189483](https://github.com/pytorch/pytorch/pull/189483))
 ### bug fixes
 - Fix cuDNN variable-length SDPA ([#172108](https://github.com/pytorch/pytorch/pull/172108))
 - Disable cuDNN convolution engines 58 and 63 on `sm120` to prevent illegal memory accesses ([#190112](https://github.com/pytorch/pytorch/pull/190112))

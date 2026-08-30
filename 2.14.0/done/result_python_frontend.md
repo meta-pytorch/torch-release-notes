@@ -68,6 +68,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add docstrings for top-level in-place functions that have out-of-place equivalents ([#189571](https://github.com/pytorch/pytorch/pull/189571))
 ### devs
 ### not user facing
+- Restore ROCm OpInfo test coverage for reverse power and interpolation without changing Python API behavior ([#191534](https://github.com/pytorch/pytorch/pull/191534))
 - Expose private, mutex-protected environment-variable helpers to Python for internal native/Python coordination ([#191015](https://github.com/pytorch/pytorch/pull/191015))
 - Refactor accelerator memory-statistics traversal helpers to avoid temporary Python closure cycles ([#191441](https://github.com/pytorch/pytorch/pull/191441))
 - Skip a flaky `conv_transpose3d` redispatch test on Windows CI ([#188828](https://github.com/pytorch/pytorch/pull/188828))

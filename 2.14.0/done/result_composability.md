@@ -116,6 +116,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### not user facing
+- Add hinted symbolic storage-size metadata to internal `FakeTensor` trace serialization without changing runtime shape semantics ([#183839](https://github.com/pytorch/pytorch/pull/183839))
+- Rename private custom-class bases, registration helpers, type names, and predicates while retaining deprecated compatibility aliases ([#188455](https://github.com/pytorch/pytorch/pull/188455), [#188456](https://github.com/pytorch/pytorch/pull/188456), [#188458](https://github.com/pytorch/pytorch/pull/188458), [#188461](https://github.com/pytorch/pytorch/pull/188461))
 - Fix spelling and grammar in comments, docstrings, and user-facing strings across PyTorch without changing behavior ([#187076](https://github.com/pytorch/pytorch/pull/187076), [#187730](https://github.com/pytorch/pytorch/pull/187730), [#188977](https://github.com/pytorch/pytorch/pull/188977), [#190249](https://github.com/pytorch/pytorch/pull/190249))
 - Rename the private opaque-custom-class type value from `reference` to `symbolic`, while continuing to accept the old value with a warning ([#188457](https://github.com/pytorch/pytorch/pull/188457))
 - Centralize private `_scaled_mm_v2` recipe validation in C++ while preserving symbolic shape inference in the Python meta path ([#185273](https://github.com/pytorch/pytorch/pull/185273))

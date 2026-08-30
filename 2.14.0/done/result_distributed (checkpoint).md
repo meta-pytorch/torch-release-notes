@@ -53,6 +53,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### not user facing
+- Correct spelling and grammar in quantization and distributed-checkpoint comments and docstrings without changing behavior ([#190831](https://github.com/pytorch/pytorch/pull/190831))
 - Fix typos in comments, docstrings, and documentation without changing runtime behavior ([#185683](https://github.com/pytorch/pytorch/pull/185683))
 - Build test assertion messages lazily to reduce test-suite overhead ([#188098](https://github.com/pytorch/pytorch/pull/188098), [#188299](https://github.com/pytorch/pytorch/pull/188299))
 - Expand distributed-checkpoint staging and process-group transport tests across accelerator backends ([#188980](https://github.com/pytorch/pytorch/pull/188980), [#189992](https://github.com/pytorch/pytorch/pull/189992))

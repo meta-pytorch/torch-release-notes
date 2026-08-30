@@ -51,6 +51,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Allow `split_const_subgraphs()` callers to supply an `is_impure_node` callback so destination-passing operations and other side-effecting nodes are preserved during dead-code elimination. ([#190716](https://github.com/pytorch/pytorch/pull/190716))
 - Make `get_source_partitions()` return input nodes, output nodes, and parameters in deterministic graph order. ([#188965](https://github.com/pytorch/pytorch/pull/188965))
 ### bug fixes
+- Respect deferred runtime-assert bounds when deriving optimization hints for unbacked symbolic sizes, preventing negative storage sizes and downstream CUDA indexing failures ([#190589](https://github.com/pytorch/pytorch/pull/190589))
+- Make selected Dynamo, Inductor, and FX tracing state thread-local to prevent race conditions when `torch.compile` is invoked concurrently from multiple threads ([#168999](https://github.com/pytorch/pytorch/pull/168999))
 - Fix FX `GraphModule` serialization when generated code contains string type annotations. ([#185051](https://github.com/pytorch/pytorch/pull/185051))
 - Fix scripting FX-generated modules with nested `Optional[Dict[...]]` annotations on Python 3.14. ([#190580](https://github.com/pytorch/pytorch/pull/190580))
 - Skip constant folding for `get_attr` nodes whose targets cannot be resolved or refer to modules. ([#191939](https://github.com/pytorch/pytorch/pull/191939))
@@ -65,8 +67,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Release inputs to boxed FX calls before dispatch when they have no other uses, reducing peak memory in compiled backward graphs. ([#187186](https://github.com/pytorch/pytorch/pull/187186))
 ### docs
 ### devs
+- Allow exported profiler timelines to include source-stack provenance for Inductor-generated kernels when `TORCH_COMPILE_DEBUG_EXTEND=1` ([#186230](https://github.com/pytorch/pytorch/pull/186230))
 - Preserve device indices such as `cuda:7` in functorch minifier repro inputs so generated repros run on the original device. ([#186547](https://github.com/pytorch/pytorch/pull/186547))
 ### not user facing
+- Fix internal lint violations in Inductor communication lowering and FX unification code without changing runtime behavior ([#191866](https://github.com/pytorch/pytorch/pull/191866))
+- Correct typos in FX comments, docstrings, and diagnostics without changing behavior ([#188870](https://github.com/pytorch/pytorch/pull/188870))
 - Restore the previous internal generalized-scatter graph representation. ([#188219](https://github.com/pytorch/pytorch/pull/188219))
 - Make TorchFuzz-generated `gather` and `index_select` indices deterministic across devices and runs. ([#189553](https://github.com/pytorch/pytorch/pull/189553))
 - Make the profiler stack-trace augmentation test account for Windows using cuBLAS instead of cuBLASLt. ([#188491](https://github.com/pytorch/pytorch/pull/188491))
