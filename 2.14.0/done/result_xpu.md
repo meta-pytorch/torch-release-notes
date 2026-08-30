@@ -48,7 +48,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 - Add FP8 blockwise scaling support for MXFP8/MXFP4/NVFP4 recipes to `scaled_mm`/`_scaled_mm_v2` on XPU ([#181726](https://github.com/pytorch/pytorch/pull/181726), [#181727](https://github.com/pytorch/pytorch/pull/181727), [#187315](https://github.com/pytorch/pytorch/pull/187315))
 - Add XPU Graph native recording mode support ([#188874](https://github.com/pytorch/pytorch/pull/188874))
-- Add WSL2 support for XPU ([#192398](https://github.com/pytorch/pytorch/pull/192398))
 - Add `torch.xpu.list_gpu_processes` to query per-process GPU memory usage on XPU ([#185192](https://github.com/pytorch/pytorch/pull/185192))
 - Add `torch.xpu._sleep` support for benchmarking and testing on XPU ([#189527](https://github.com/pytorch/pytorch/pull/189527))
 
@@ -82,7 +81,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix a SIGSEGV in AOTInductor's `run_const_fold` when the XPU stream is null ([#189517](https://github.com/pytorch/pytorch/pull/189517))
 - Fix CUTLASS `cpp_wrapper` compilation on XPU to use the correct code cache ([#186791](https://github.com/pytorch/pytorch/pull/186791))
 - Fix a missing header include causing AOTI XPU compile failures ([#187137](https://github.com/pytorch/pytorch/pull/187137))
-- Fix Inductor codegen for `current_device_idx_expr` on XPU ([#193083](https://github.com/pytorch/pytorch/pull/193083))
 - Route `GPU_USER_ANNOTATION` kineto profiler events to `DeviceType::XPU` ([#191841](https://github.com/pytorch/pytorch/pull/191841))
 - Fix `max_pool2d_backward` to correctly fall back to eager execution on XPU instead of a slower fused Triton kernel ([#187940](https://github.com/pytorch/pytorch/pull/187940))
 - Fix the Inductor combo-kernel no-bench carve-out gate for XPU so eligible kernels fuse instead of being split out ([#187147](https://github.com/pytorch/pytorch/pull/187147))

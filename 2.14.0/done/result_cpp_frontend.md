@@ -66,7 +66,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 - Adding conversion from PyObject to torch::stable::tensor ([#183323](https://github.com/pytorch/pytorch/pull/183323))
-- Migrate fastAtomicAdd, c10/util/complex_utils.h, ATen/NumericUtils.h isinf and isnan  to headeronly ([#192552](https://github.com/pytorch/pytorch/pull/192552), [#192557](https://github.com/pytorch/pytorch/pull/192557), [#192844](https://github.com/pytorch/pytorch/pull/192844))
+- Move `c10/util/complex_utils.h` and the `ATen/NumericUtils.h` `isinf` and `isnan` implementations to header-only support ([#192552](https://github.com/pytorch/pytorch/pull/192552), [#192557](https://github.com/pytorch/pytorch/pull/192557))
 - Add stable permute and view_dtype ([#192083](https://github.com/pytorch/pytorch/pull/192083))
 - Add stable Tensor overloads for bitwise_and/or/left_shift/right_shift, index_select, floor_divide, and is_pinned ([#191973](https://github.com/pytorch/pytorch/pull/191973), [#192097](https://github.com/pytorch/pytorch/pull/192097))
 - Add stable::Tensor has_storage ([#189877](https://github.com/pytorch/pytorch/pull/189877))
