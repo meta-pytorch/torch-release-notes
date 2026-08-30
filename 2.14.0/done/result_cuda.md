@@ -77,9 +77,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add a cuBLASLt backend for grouped GEMM on Hopper and Blackwell GPUs with CUDA 13.3 or newer ([#177037](https://github.com/pytorch/pytorch/pull/177037), [#190372](https://github.com/pytorch/pytorch/pull/190372))
 
   The backend supports `float16` and `bfloat16`, works with `torch.compile` and CUDA Graphs, and is selected by default for eligible `float16` workloads. Set `torch.backends.cuda.matmul.prefer_cublaslt_grouped_gemm = True` to opt into it for `bfloat16`. Matrices and leading dimensions must be 16-byte aligned, so some shapes may require padding and slicing.
-- Add `torch.cuda.memory._annotate_memory()` and `_annotate_tensor()` for attaching metadata to live allocations after they are created ([#190575](https://github.com/pytorch/pytorch/pull/190575))
+- Add `torch.cuda.memory._annotate_tensor()` for attaching metadata to a live CUDA tensor allocation after it is created ([#190575](https://github.com/pytorch/pytorch/pull/190575))
 
-  Each annotation is recorded as a timestamped memory-history event, multiple annotations accumulate without replacing allocation-time metadata, and memory snapshot tools display the annotations alongside the affected allocation.
+  Each annotation is recorded as a timestamped memory-history event, multiple annotations accumulate without replacing allocation-time metadata, and memory snapshot tools display the annotations alongside the affected allocation. Memory history must be enabled with `torch.cuda.memory._record_memory_history()` for annotations to be observable. Only the native CUDA caching allocator supports annotations.
 - Add the public `torch.cuda.graph_annotations` module ([#189417](https://github.com/pytorch/pytorch/pull/189417))
 - Annotate backward kernels in `mark_kernels` via `node_creation_hook` ([#191563](https://github.com/pytorch/pytorch/pull/191563))
 - Allow multiple memory pools in a single `CUDAGraph` ([#187929](https://github.com/pytorch/pytorch/pull/187929))
@@ -88,7 +88,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add replay start/end hooks to `torch.cuda.CUDAGraph` ([#190602](https://github.com/pytorch/pytorch/pull/190602))
 - Add CUDA graph lifecycle hooks for capture and replay ([#192162](https://github.com/pytorch/pytorch/pull/192162))
 ### improvements
-- Add CUDA compute capability 10.7 (`sm_107`) awareness for NVIDIA Rubin GPUs in extension builds and Inductor code generation ([#190654](https://github.com/pytorch/pytorch/pull/190654))
+- Add CUDA compute capability 10.7 (`sm_107`) awareness for NVIDIA Rubin GPUs with CUDA 13.4 or newer in extension builds and Inductor code generation ([#190654](https://github.com/pytorch/pytorch/pull/190654))
 - Update CUDA compatibility checks for Jetson devices using SBSA binaries with CUDA 13.2 or newer ([#186285](https://github.com/pytorch/pytorch/pull/186285))
 - Move green contexts to cuda-python bindings ([#185527](https://github.com/pytorch/pytorch/pull/185527))
 - Unify the `CUDAGraph` debug flag, move `debug_dump` to Python, and add capture hooks ([#187749](https://github.com/pytorch/pytorch/pull/187749))
