@@ -73,6 +73,28 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
       output = torch.rand(16, device="cuda", generator=generator)
   ```
 - Deprecate `GreenContext.set_context()` and `GreenContext.pop_context()`; use custom streams to activate a green context instead ([#188419](https://github.com/pytorch/pytorch/pull/188419))
+
+  These methods now emit a `FutureWarning`. Create a stream from the green context and use it with `torch.cuda.stream()` instead. Synchronization with streams outside the green context remains the caller's responsibility and should use CUDA events when needed.
+
+  Before:
+
+  ```python
+  ctx = torch.cuda.green_contexts.GreenContext(num_sms=1)
+  ctx.set_context()
+  try:
+      output = model(input)
+  finally:
+      ctx.pop_context()
+  ```
+
+  After:
+
+  ```python
+  ctx = torch.cuda.green_contexts.GreenContext(num_sms=1)
+  stream = ctx.Stream()
+  with torch.cuda.stream(stream):
+      output = model(input)
+  ```
 ### new features
 - Add a cuBLASLt backend for grouped GEMM on Hopper and Blackwell GPUs with CUDA 13.3 or newer ([#177037](https://github.com/pytorch/pytorch/pull/177037), [#190372](https://github.com/pytorch/pytorch/pull/190372))
 
@@ -98,7 +120,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bug fixes
 - Annotate kernels across CUDA graphs captured in sequence ([#186638](https://github.com/pytorch/pytorch/pull/186638))
 - Fix CUDA graph kernel-annotation remapping for `keep_graph=True` ([#187741](https://github.com/pytorch/pytorch/pull/187741))
-- Fix `AvgPool2d` backward handling of zero padding ([#188494](https://github.com/pytorch/pytorch/pull/188494))
 - Fix a heap overflow in `CachingHostAllocator` when rounding is disabled ([#192722](https://github.com/pytorch/pytorch/pull/192722))
 - Keep `_use_uvm` allocator callbacks alive for the allocator's lifetime ([#188170](https://github.com/pytorch/pytorch/pull/188170))
 - Preserve signed zero in `relu` and `clamp` ([#185354](https://github.com/pytorch/pytorch/pull/185354))
