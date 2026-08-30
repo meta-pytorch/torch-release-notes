@@ -54,5 +54,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
+- Limit concurrent compilation of vendored FlashAttention CUDA sources with a target-specific Ninja job pool, reducing compiler out-of-memory failures on smaller build machines ([#192305](https://github.com/pytorch/pytorch/pull/192305))
+- Update clang-tidy to 21.1.0 and temporarily suppress checks newly enabled by that release ([#191111](https://github.com/pytorch/pytorch/pull/191111))
 ### not user facing
 ### security

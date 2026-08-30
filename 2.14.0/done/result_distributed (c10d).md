@@ -49,6 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 - Upgrade NCCL to 2.30.7 for CUDA 13.0 and CUDA 13.2 builds ([#187528](https://github.com/pytorch/pytorch/pull/187528))
+- Enable Inductor's `simple_overlap` scheduler pass by default for compiled distributed workloads, moving collective starts earlier and waits later without reordering collectives or increasing peak memory ([#184235](https://github.com/pytorch/pytorch/pull/184235), [#184240](https://github.com/pytorch/pytorch/pull/184240))
 ### bug fixes
 - Fix `destroy_process_group()` hanging after collectives run on partially split process groups by keeping group names consistent across ranks ([#190431](https://github.com/pytorch/pytorch/pull/190431))
 ### performance
@@ -57,4 +58,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add `split_group` support to the fake process-group backend used for distributed testing ([#186290](https://github.com/pytorch/pytorch/pull/186290))
 - Correct `_distributed_c10d.pyi` type stubs for `_create_work_from_future` and the optional `ProcessGroupGloo` timeout argument ([#191633](https://github.com/pytorch/pytorch/pull/191633))
 ### not user facing
+- Add reusable collective, point-to-point, CUDA Graph, and process-group backend test suites ([#190133](https://github.com/pytorch/pytorch/pull/190133))
+- Correct spelling and grammar in distributed comments, docstrings, documentation, warnings, and log strings without changing behavior ([#187361](https://github.com/pytorch/pytorch/pull/187361), [#190035](https://github.com/pytorch/pytorch/pull/190035), [#190039](https://github.com/pytorch/pytorch/pull/190039))
 ### security

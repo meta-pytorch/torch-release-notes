@@ -46,6 +46,23 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ## jit
 ### bc breaking
 ### deprecation
+- TorchScript APIs now emit visible `FutureWarning`s instead of normally hidden `DeprecationWarning`s ([#189914](https://github.com/pytorch/pytorch/pull/189914))
+
+  Calls such as `torch.jit.script`, `torch.jit.trace`, `torch.jit.save`, and `torch.jit.load` now visibly direct users toward `torch.compile` or `torch.export`. Imports of `torch.utils.mkldnn` and `torch.distributed.optim` also avoid eagerly compiling TorchScript when those modules are merely imported.
+
+  Before:
+
+  ```python
+  scripted = torch.jit.script(model)
+  torch.jit.save(scripted, "model.pt")
+  ```
+
+  After:
+
+  ```python
+  exported = torch.export.export(model, example_inputs)
+  torch.export.save(exported, "model.pt2")
+  ```
 ### new features
 ### improvements
 ### bug fixes

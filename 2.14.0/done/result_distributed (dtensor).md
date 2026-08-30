@@ -55,5 +55,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### not user facing
+- Correct spelling in C++ frontend, export, and DTensor comments and docstrings without changing behavior ([#190434](https://github.com/pytorch/pytorch/pull/190434), [#190569](https://github.com/pytorch/pytorch/pull/190569))
 - Support internal `_StridedShard`-to-`Shard` redistribution through all-to-all collectives ([#170915](https://github.com/pytorch/pytorch/pull/170915))
 ### security

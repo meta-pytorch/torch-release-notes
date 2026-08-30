@@ -49,6 +49,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Resolve nested `AsyncCollectiveTensor` inputs before AOTAutograd tracing so compiled forward execution waits for in-flight data and backward metadata expects the correct local-tensor cotangents ([#186442](https://github.com/pytorch/pytorch/pull/186442))
+- Fix activation-memory-budget partitioning crashing with `expected all tensors_saved_with_vc_check to be Tensors, got [Tensor, tuple]` when a required multi-output node is marked `MUST_SAVE` ([#188014](https://github.com/pytorch/pytorch/pull/188014))
+- Prevent AOTAutograd common-subexpression elimination from merging forward-only values with nodes required by backward, preserving correct partitioning and reduction fusion ([#184044](https://github.com/pytorch/pytorch/pull/184044))
+- Fix backward graphs missing raw symbolic-integer bindings when ShapeEnv replacements differ from the placeholder expressions ([#185473](https://github.com/pytorch/pytorch/pull/185473))
 - Fix a wrong-slice alias output when Inductor clones a misaligned input ([#191002](https://github.com/pytorch/pytorch/pull/191002))
 - Move `invoke_subgraph` inference-mode input mutations to the AOT epilogue so they are applied correctly ([#191672](https://github.com/pytorch/pytorch/pull/191672))
 - Fix `control_deps` handling in the partitioner during forward/backward extraction ([#187695](https://github.com/pytorch/pytorch/pull/187695))
@@ -59,4 +63,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### not user facing
+- Add a debug log when the AOTAutograd partitioner skips cross-rank decision synchronization ([#187699](https://github.com/pytorch/pytorch/pull/187699))
 ### security

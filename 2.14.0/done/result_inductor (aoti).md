@@ -47,13 +47,27 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add `AOTInductorModelContainerCreateWithExternalConstants`, allowing callers to construct an AOTInductor model container from caller-owned weight tensors for zero-copy sharing such as CUDA IPC ([#188643](https://github.com/pytorch/pytorch/pull/188643))
+
+  The new C API skips loading constants from the package and leaves ownership with the caller. Existing model-container creation and constant-loading paths are unchanged unless external constants are explicitly provided.
 - Support explicit user-defined streams in the AOTInductor C++ wrapper. A compiled region that selects a stream with `torch.cuda.stream(...)` now emits stream-guard code so its kernels run on the requested stream, instead of always running on the default stream ([#182971](https://github.com/pytorch/pytorch/pull/182971))
 ### improvements
+- Support `int[]`, `SymInt[]`, and optional integer-list arguments in AOTI eager cache keys, enabling cached compilation for operators such as `new_zeros`, `mean.dim`, and `count_nonzero.dim_IntList` ([#187360](https://github.com/pytorch/pytorch/pull/187360))
 - Support lazy autotuning when compiling with the AOTInductor dual-wrapper, so Triton autotuning is deferred to a first JIT pass rather than being done during ahead-of-time compilation ([#184735](https://github.com/pytorch/pytorch/pull/184735))
 - Support `torch.cond` and `torch.while_loop` when compiling with the AOTInductor dual-wrapper ([#184736](https://github.com/pytorch/pytorch/pull/184736))
 - Add an `AOTI_LOG_LOADING` environment variable. When it is set, AOTInductor prints timing and diagnostic messages for each stage of constant loading, prefixed with `[AOTI_LOAD]`, without requiring a rebuild ([#186309](https://github.com/pytorch/pytorch/pull/186309))
 - Check the error codes returned by the generated `scatter`, `index_put`, `clone`, and tensor-handle shim calls, so a failure inside one of these fallbacks raises an error instead of being silently ignored ([#190909](https://github.com/pytorch/pytorch/pull/190909), [#190910](https://github.com/pytorch/pytorch/pull/190910))
 ### bug fixes
+- Fix C++ wrapper fallback operators with `Any` arguments, including distributed operators such as `all_gather_into_tensor`, failing to compile or dispatch ([#188124](https://github.com/pytorch/pytorch/pull/188124))
+- Route custom operators with `SymInt`, `SymBool`, or `SymFloat` arguments through boxed C++ wrapper dispatch, avoiding runtime `API call failed` errors ([#188154](https://github.com/pytorch/pytorch/pull/188154))
+- Box `None` passed to non-optional tensor arguments as an undefined tensor in C++ wrappers, matching eager custom-operator behavior ([#188485](https://github.com/pytorch/pytorch/pull/188485))
+- Fix C++ wrappers dereferencing a null tensor handle when a Python fallback operator returns a one-element `Tensor[]` ([#190551](https://github.com/pytorch/pytorch/pull/190551))
+- Emit portable `std::array::data()` pointers in generated CPU wrappers instead of relying on iterator-to-pointer conversion ([#191240](https://github.com/pytorch/pytorch/pull/191240))
+- Package AOTInductor CUDA multi-architecture kernels for the requested deployment architecture instead of the physical compilation GPU ([#185328](https://github.com/pytorch/pytorch/pull/185328))
+- Fix AOTInductor C++ wrappers recovering integer symbols from composed dynamic sizes through floating-point division, which could truncate valid runtime dimensions ([#185841](https://github.com/pytorch/pytorch/pull/185841))
+- Fail fast with a clear error when loading a CUDA AOTInductor package in a process without CUDA or ROCm available ([#186943](https://github.com/pytorch/pytorch/pull/186943))
+- Fix C++ wrapper fallback output indexing for mutable custom operators and remove invalid 16-byte alignment assumptions for misaligned tensor views ([#187331](https://github.com/pytorch/pytorch/pull/187331))
+- Preserve C++ wrapper input slots when graphs contain Python-only custom-class inputs ([#188030](https://github.com/pytorch/pytorch/pull/188030))
 - Pass the device the model was actually loaded on to custom operator fallbacks, instead of the device recorded when the model was compiled. Previously a model compiled for one GPU and then loaded on another would hand the wrong device to its custom ops ([#184741](https://github.com/pytorch/pytorch/pull/184741))
 - Synchronize the default stream after copying model constants on AMD GPUs, fixing a race in which inference could read constants before the copy had completed ([#186963](https://github.com/pytorch/pytorch/pull/186963))
 - Fix a 32-bit integer overflow when computing the SYCL global launch range in the AOTInductor runtime, which produced incorrect launch dimensions for large grids on XPU ([#187307](https://github.com/pytorch/pytorch/pull/187307))
@@ -64,9 +78,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix a missing CUDA header in the generated constant graph when compiling with the dual-wrapper, which made the generated code fail to compile ([#191050](https://github.com/pytorch/pytorch/pull/191050))
 - Skip CUDA stream event code generation in the AOTInductor C++ wrapper on XPU, where those APIs do not apply ([#190637](https://github.com/pytorch/pytorch/pull/190637))
 ### performance
+- Add an opt-in pinned, asynchronous host-to-device path for AOTInductor constant loading through `AOTI_COPY_USE_PINNED_ASYNC=1`, avoiding the device-wide synchronization caused by pageable-memory copies ([#186258](https://github.com/pytorch/pytorch/pull/186258))
 ### docs
 ### devs
+- Add `TORCHINDUCTOR_CPP_ENABLE_KERNEL_CONTEXT_GUARD` to opt into kernel-context metadata when profiling generated C++ wrappers ([#184513](https://github.com/pytorch/pytorch/pull/184513))
 ### not user facing
+- Correct spelling and grammar in internal Inductor and distributed comments and log strings without changing behavior ([#190039](https://github.com/pytorch/pytorch/pull/190039))
 - Move `win32-headers.h` from `c10/util` to `torch/headeronly` and update the AOTInductor use of it; the old header now forwards to the new location ([#186962](https://github.com/pytorch/pytorch/pull/186962))
 - Refactor and refine `sycl_runtime_wrappers.h` and `xpu.cpp` ([#190143](https://github.com/pytorch/pytorch/pull/190143))
 - Include the manually written AOTInductor shims in the shim linter ([#191266](https://github.com/pytorch/pytorch/pull/191266))

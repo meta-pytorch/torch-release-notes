@@ -81,6 +81,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Expand NVGEMM epilogue fusion to pointwise operations, multiple outputs, and grouped reductions, including scaled and centered outputs ([#190643](https://github.com/pytorch/pytorch/pull/190643), [#190808](https://github.com/pytorch/pytorch/pull/190808), [#190809](https://github.com/pytorch/pytorch/pull/190809), [#190810](https://github.com/pytorch/pytorch/pull/190810), [#190813](https://github.com/pytorch/pytorch/pull/190813), [#190817](https://github.com/pytorch/pytorch/pull/190817), [#190823](https://github.com/pytorch/pytorch/pull/190823))
 - Suppress empty generated-code dumps from `TORCH_LOGS=output_code` during autotuning ([#191381](https://github.com/pytorch/pytorch/pull/191381))
 ### bug fixes
+- Fix `torch.compile` support for `torch.combinations` by removing a CUDA synchronization from argument validation ([#189305](https://github.com/pytorch/pytorch/pull/189305))
 - Match eager CUDA behavior for `torch.addmm(..., beta=0)` by ignoring a non-broadcastable bias while retaining dtype and device validation ([#183511](https://github.com/pytorch/pytorch/pull/183511))
 - Fix ordering, dependency, and stream-state races in compiled multi-stream graphs that use events or the `control_deps` operator ([#183803](https://github.com/pytorch/pytorch/pull/183803), [#183804](https://github.com/pytorch/pytorch/pull/183804), [#186022](https://github.com/pytorch/pytorch/pull/186022), [#186023](https://github.com/pytorch/pytorch/pull/186023), [#186025](https://github.com/pytorch/pytorch/pull/186025))
 - Fix `_scaled_mm` compilation when tensorwise scales mix scalar and singleton two-dimensional shapes ([#183964](https://github.com/pytorch/pytorch/pull/183964))
@@ -211,6 +212,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `addmm` autotuning failing with an out-of-bounds `IndexError` when a symbolic row count is hinted as zero ([#192553](https://github.com/pytorch/pytorch/pull/192553))
 - Avoid races while loading saved compiler-cache artifacts by populating bundled Triton kernels on demand through the JIT path instead of eagerly; cold cache loads may compile kernels on first use ([#192526](https://github.com/pytorch/pytorch/pull/192526))
 ### performance
+- Eliminate an extra clone from compiled stateless RNG operations by allowing Inductor to reinplace their functional variants ([#188495](https://github.com/pytorch/pytorch/pull/188495))
 - Select FlexAttention tile sizes by query sequence length on RDNA3 GPUs ([#177840](https://github.com/pytorch/pytorch/pull/177840))
 - Enable shared-input linear fusion by default for XPU inference, combining compatible linear layers into one wider GEMM ([#181854](https://github.com/pytorch/pytorch/pull/181854))
 - Improve small ROCm reductions by adding a one-thread x-dimension candidate when the non-reduction dimension has at most 64 elements ([#183364](https://github.com/pytorch/pytorch/pull/183364))
@@ -250,6 +252,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add optional integration with an externally packaged TLX Inductor backend through `torch._inductor.config.triton.tlx_mode` ([#189094](https://github.com/pytorch/pytorch/pull/189094))
 - Serialize top-level `functools.partial` configuration values into valid compiler-repro preambles ([#190728](https://github.com/pytorch/pytorch/pull/190728))
 ### not user facing
+- Remove compatibility code for obsolete CUTLASS versions after all supported pins moved to CUTLASS 4.5.3 ([#190568](https://github.com/pytorch/pytorch/pull/190568))
+- Fix the internal Dynamo benchmark harness for timm models that do not accept a `drop_rate` argument ([#187302](https://github.com/pytorch/pytorch/pull/187302))
 - Remove plain assertions in torch/_inductor subfolders (analysis, compile_worker, runtime, template_heuristics) ([#182436](https://github.com/pytorch/pytorch/pull/182436))
 - Remove more plain assertions in inductor (kernel, graph, top level files) ([#182698](https://github.com/pytorch/pytorch/pull/182698))
 - Fix AOTInductor autotune int64 Triton kernel test on ROCm ([#182794](https://github.com/pytorch/pytorch/pull/182794))
