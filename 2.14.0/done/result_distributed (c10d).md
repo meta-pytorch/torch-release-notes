@@ -46,6 +46,25 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ## distributed (c10d)
 ### bc breaking
 ### deprecation
+- Use `torch.distributed.gather_single()` instead of `torch.distributed.gather_into_tensor()` ([#191073](https://github.com/pytorch/pytorch/pull/191073))
+
+  `gather_into_tensor()` remains as a forwarding alias with the same arguments, but now emits a `FutureWarning`. The corresponding C++ `Backend` and `ProcessGroup` collective is also named `gather_single`; custom backends should implement the new name.
+
+  Before:
+
+  ```python
+  torch.distributed.gather_into_tensor(
+      input_tensor, output_tensor, dst=0
+  )
+  ```
+
+  After:
+
+  ```python
+  torch.distributed.gather_single(
+      input_tensor, output_tensor, dst=0
+  )
+  ```
 ### new features
 ### improvements
 - Upgrade NCCL to 2.30.7 for CUDA 13.0 and CUDA 13.2 builds ([#187528](https://github.com/pytorch/pytorch/pull/187528))

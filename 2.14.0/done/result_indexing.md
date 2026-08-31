@@ -45,31 +45,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## indexing
 ### bc breaking
-- `torch.unravel_index()` now raises `ValueError` for a nonempty index tensor when `shape` contains a zero-sized dimension ([#191092](https://github.com/pytorch/pytorch/pull/191092))
-
-  This invalid combination previously failed during modulo with a `RuntimeError` whose message contained `ZeroDivisionError`. Validate that every shape dimension is positive, or update exact exception handlers; code supporting both PyTorch 2.13 and 2.14 can catch `(RuntimeError, ValueError)`. Empty index tensors remain valid with zero-sized dimensions and now return empty coordinate tensors.
-
-  Version 2.13:
-
-  ```python
-  try:
-      torch.unravel_index(torch.tensor([0]), (2, 0, 3))
-  except RuntimeError:
-      handle_invalid_shape()
-  ```
-
-  Version 2.14:
-
-  ```python
-  try:
-      torch.unravel_index(torch.tensor([0]), (2, 0, 3))
-  except ValueError:
-      handle_invalid_shape()
-  ```
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
+- Reject nonempty `torch.unravel_index()` inputs whose `shape` contains a zero-sized dimension with a clear `ValueError` instead of an uncaught division-by-zero `RuntimeError`; empty indices remain supported ([#191092](https://github.com/pytorch/pytorch/pull/191092))
 - Fix assigning Python integers greater than `INT64_MAX` into `torch.uint64` tensors, which previously raised `Overflow when unpacking long long` ([#191604](https://github.com/pytorch/pytorch/pull/191604))
 - Fix an illegal CUDA memory access in `torch.nn.functional.adaptive_avg_pool2d` backward for very large contiguous tensors whose element offsets exceed 32-bit indexing limits ([#189082](https://github.com/pytorch/pytorch/pull/189082))
 ### performance

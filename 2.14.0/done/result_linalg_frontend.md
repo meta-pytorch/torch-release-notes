@@ -80,27 +80,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   q, r = torch.linalg.qr(a, mode="reduced")
   q_full, r_full = torch.linalg.qr(a, mode="complete")
   ```
-- Invalid `torch.linalg.cond()` norm orders now raise `ValueError` instead of `RuntimeError` ([#188591](https://github.com/pytorch/pytorch/pull/188591))
-
-  Invalid numeric and string norm orders, including complex values, are still rejected, but their exception class has changed to match NumPy. Update exception handlers that specifically catch `RuntimeError`; code supporting both PyTorch 2.13 and 2.14 can catch both classes during migration.
-
-  Version 2.13:
-
-  ```python
-  try:
-      torch.linalg.cond(a, p="invalid")
-  except RuntimeError:
-      handle_invalid_order()
-  ```
-
-  Version 2.14:
-
-  ```python
-  try:
-      torch.linalg.cond(a, p="invalid")
-  except ValueError:
-      handle_invalid_order()
-  ```
 ### deprecation
 ### new features
 - Add `torch.linalg.polar()` for computing the polar decomposition `A = U @ H`, with an SVD-based implementation across devices and cuSOLVER QDWH acceleration for eligible CUDA matrices ([#185837](https://github.com/pytorch/pytorch/pull/185837))
@@ -112,6 +91,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Allow `torch.backends.cuda.preferred_blas_library("ck")` to select the CK GEMM backend on ROCm `gfx90a` devices by separating GEMM support from CK attention support ([#187267](https://github.com/pytorch/pytorch/pull/187267))
 - Expand ROCm backend coverage for `torch.linalg.eig`, `torch.linalg.ldl_solve`, `torch.linalg.solve`, and `torch.linalg.solve_triangular` through hipSOLVER and hipBLAS paths ([#185557](https://github.com/pytorch/pytorch/pull/185557))
 ### bug fixes
+- Fix `torch.linalg.cond()` reporting a misleading overflow error for a complex norm order; invalid orders now raise `ValueError` with a clear message ([#188591](https://github.com/pytorch/pytorch/pull/188591))
 - Fix `torch.lu_unpack` segfaulting when `LU_pivots` has a shape inconsistent with `LU_data`; invalid shapes now raise a clear error ([#187660](https://github.com/pytorch/pytorch/pull/187660))
 - Fix `torch.linalg.lstsq(driver="gelsy")` returning an incorrect rank on CPU when stale pivot values leaked between batched LAPACK calls ([#187436](https://github.com/pytorch/pytorch/pull/187436))
 - Fix `torch.compile(dynamic=True)` failing on `torch.linalg.cond` with `p="fro"` or `p="nuc"` because symbolic tensor sizes were queried as concrete values ([#187614](https://github.com/pytorch/pytorch/pull/187614))

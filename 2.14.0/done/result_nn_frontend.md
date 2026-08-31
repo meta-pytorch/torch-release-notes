@@ -66,18 +66,16 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
       input, linear_weight, target, options=options
   )
   ```
-- Dense rank-3 scaled dot-product attention can now select a fused backend instead of always using the math backend ([#192271](https://github.com/pytorch/pytorch/pull/192271))
+### deprecation
+### new features
+### improvements
+- Allow the chunked path of `torch.nn.functional.linear_cross_entropy` to handle probability targets for `reduction="mean"` and `reduction="sum"` when the target dtype matches the input and the target does not require gradients ([#187053](https://github.com/pytorch/pytorch/pull/187053))
+- Improve static typing for `torch.nn.Sequential` indexing so integer keys resolve to `Module` and slices resolve to `Sequential` ([#187758](https://github.com/pytorch/pytorch/pull/187758))
+- Add the documented `memory_format` overload to `torch.nn.Module.to()` so static type checkers accept calls such as `module.to(memory_format=torch.channels_last)` ([#185117](https://github.com/pytorch/pytorch/pull/185117))
+### bug fixes
+- Enable eligible fused scaled dot-product attention backends for dense rank-3 inputs on CPU, CUDA/ROCm, and XPU instead of always falling back to the math implementation ([#192271](https://github.com/pytorch/pytorch/pull/192271))
 
-  Eligible CPU, CUDA/ROCm, and XPU calls are normalized to rank 4 with a singleton batch dimension before backend selection. This can change floating-point numerics, dropout RNG consumption, whether the result is a view, and higher-order-gradient support; fused CUDA backends do not support the second derivatives that the math backend provides. Code that depends on the previous behavior should explicitly select the math backend.
-
-  Version 2.13:
-
-  ```python
-  # Rank-3 inputs selected the math backend automatically.
-  output = torch.nn.functional.scaled_dot_product_attention(query, key, value)
-  ```
-
-  Version 2.14:
+  Rank-3 inputs are normalized to rank 4 with a singleton batch dimension before backend selection. This fixes fused execution for rank-3 and vmapped inputs, but automatic backend selection can change floating-point numerics, dropout RNG consumption, whether the result is a view, and higher-order-gradient support. Fused CUDA backends do not support the second derivatives provided by the math backend; code that depends on those semantics should explicitly select the math backend.
 
   ```python
   from torch.nn.attention import SDPBackend, sdpa_kernel
@@ -87,34 +85,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
           query, key, value
       )
   ```
-- Lp pooling with `norm_type=0` now raises `ValueError`, and module forms validate it during construction ([#187861](https://github.com/pytorch/pytorch/pull/187861))
-
-  `torch.nn.functional.lp_pool1d`, `lp_pool2d`, and `lp_pool3d` previously failed later with `ZeroDivisionError`. `torch.nn.LPPool1d`, `LPPool2d`, and `LPPool3d` also accepted the invalid value at construction and failed only during `forward()`. Use a nonzero norm type; exception-handling code that supports both releases can catch `(ZeroDivisionError, ValueError)` during migration.
-
-  Version 2.13:
-
-  ```python
-  try:
-      torch.nn.functional.lp_pool2d(x, norm_type=0, kernel_size=2)
-  except ZeroDivisionError:
-      handle_invalid_norm_type()
-  ```
-
-  Version 2.14:
-
-  ```python
-  try:
-      torch.nn.functional.lp_pool2d(x, norm_type=0, kernel_size=2)
-  except ValueError:
-      handle_invalid_norm_type()
-  ```
-### deprecation
-### new features
-### improvements
-- Allow the chunked path of `torch.nn.functional.linear_cross_entropy` to handle probability targets for `reduction="mean"` and `reduction="sum"` when the target dtype matches the input and the target does not require gradients ([#187053](https://github.com/pytorch/pytorch/pull/187053))
-- Improve static typing for `torch.nn.Sequential` indexing so integer keys resolve to `Module` and slices resolve to `Sequential` ([#187758](https://github.com/pytorch/pytorch/pull/187758))
-- Add the documented `memory_format` overload to `torch.nn.Module.to()` so static type checkers accept calls such as `module.to(memory_format=torch.channels_last)` ([#185117](https://github.com/pytorch/pytorch/pull/185117))
-### bug fixes
+- Reject `norm_type=0` in functional and module Lp pooling APIs with a descriptive `ValueError` instead of a deferred `ZeroDivisionError` ([#187861](https://github.com/pytorch/pytorch/pull/187861))
 - Fix memory-efficient scaled dot-product attention backward failing after `torch.autograd.graph.save_on_cpu()` changes an attention mask's aligned strides ([#188246](https://github.com/pytorch/pytorch/pull/188246))
 - Fix a CUDA illegal memory access in memory-efficient scaled dot-product attention backward when only the floating-point attention mask requires gradients ([#188302](https://github.com/pytorch/pytorch/pull/188302))
 - Make the cuDNN CTC loss backend correctly zero infinite losses and their gradients when `zero_infinity=True` ([#176911](https://github.com/pytorch/pytorch/pull/176911))

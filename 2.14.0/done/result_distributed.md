@@ -94,15 +94,15 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   backend.deregister_mem_pool(pool)
   backend.register_mem_pool(pool, symm=True)
   ```
-- Nonmember ranks now receive `GroupMember.NON_GROUP_MEMBER` instead of `None` from locally synchronized subgroup creation ([#190588](https://github.com/pytorch/pytorch/pull/190588), [#190725](https://github.com/pytorch/pytorch/pull/190725))
+- Nonmember ranks now receive `GroupMember.NON_GROUP_MEMBER` instead of `None` from experimental `torch.distributed.split_group()` ([#190725](https://github.com/pytorch/pytorch/pull/190725))
 
-  When `torch.distributed.new_group(..., use_local_synchronization=True)` excludes the calling rank, it now returns the same nonmember sentinel as other `new_group` paths. The experimental `torch.distributed.split_group()` likewise returns the sentinel when the calling rank is absent from every requested split. Code that identifies nonmembers with `is None` must compare against `torch.distributed.GroupMember.NON_GROUP_MEMBER` instead.
+  When the calling rank is absent from every requested split, `split_group()` now returns the same nonmember sentinel as `new_group()`. Code that identifies nonmembers with `is None` must compare against `torch.distributed.GroupMember.NON_GROUP_MEMBER` instead.
 
   Before:
 
   ```python
-  group = torch.distributed.new_group(
-      ranks=[0, 1], use_local_synchronization=True
+  group = torch.distributed.split_group(
+      split_ranks=[[0, 1], [2, 3]]
   )
   if group is None:
       return
@@ -111,8 +111,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   After:
 
   ```python
-  group = torch.distributed.new_group(
-      ranks=[0, 1], use_local_synchronization=True
+  group = torch.distributed.split_group(
+      split_ranks=[[0, 1], [2, 3]]
   )
   if group == torch.distributed.GroupMember.NON_GROUP_MEMBER:
       return
@@ -135,48 +135,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   import torch.compiler.config
   torch.compiler.config.compile_on_one_rank = True
   ```
-- Use `torch.distributed.gather_single()` instead of `torch.distributed.gather_into_tensor()` ([#191073](https://github.com/pytorch/pytorch/pull/191073))
-
-  `gather_into_tensor()` remains as a forwarding alias with the same arguments, but now emits a `FutureWarning`. The corresponding C++ `Backend` and `ProcessGroup` collective is also named `gather_single`; custom backends should implement the new name.
-
-  Before:
-
-  ```python
-  torch.distributed.gather_into_tensor(
-      input_tensor, output_tensor, dst=0
-  )
-  ```
-
-  After:
-
-  ```python
-  torch.distributed.gather_single(
-      input_tensor, output_tensor, dst=0
-  )
-  ```
-- Use `torch.distributed.set_timeout()` instead of the private `_set_pg_timeout()` helper ([#187387](https://github.com/pytorch/pytorch/pull/187387))
-
-  `_set_pg_timeout()` remains as a forwarding alias but now emits a `FutureWarning`. The public replacement has the same `timeout, group=None` signature and updates every backend registered with the process group.
-
-  Before:
-
-  ```python
-  from datetime import timedelta
-  from torch.distributed.distributed_c10d import _set_pg_timeout
-
-  _set_pg_timeout(timedelta(seconds=30), group)
-  ```
-
-  After:
-
-  ```python
-  from datetime import timedelta
-  import torch.distributed as dist
-
-  dist.set_timeout(timedelta(seconds=30), group)
-  ```
 ### new features
 - Add portable JSON serialization through `DebugMode.save_logs()` and `DebugMode.load_logs()` so distributed execution logs can be compared across separate processes or model configurations ([#185010](https://github.com/pytorch/pytorch/pull/185010))
+- Add the public `torch.distributed.set_timeout()` API; the private `_set_pg_timeout()` alias remains available with a deprecation warning ([#187387](https://github.com/pytorch/pytorch/pull/187387))
 - Add `torch.distributed.tensor.logspace` for constructing distributed logarithmically spaced tensors ([#186398](https://github.com/pytorch/pytorch/pull/186398))
 - Add experimental `torch.distributed.get_backend_impl()` and `ProcessGroup.get_backend()` accessors for custom backend development ([#187494](https://github.com/pytorch/pytorch/pull/187494))
 - Add `torch.distributed.tensor.linspace` for constructing distributed linearly spaced tensors ([#187933](https://github.com/pytorch/pytorch/pull/187933))
@@ -235,6 +196,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `torch.distributed.nn.functional.broadcast` producing a zero source gradient for subgroups whose local and global source ranks differ ([#190583](https://github.com/pytorch/pytorch/pull/190583))
 - Create TorchComms subgroups on the calling rank's actual device, including under launchers that do not set TorchComms rank variables ([#189072](https://github.com/pytorch/pytorch/pull/189072))
 - Fix work-object and expandable-segment allocator lifetimes in the experimental `nccl2` backend ([#190370](https://github.com/pytorch/pytorch/pull/190370))
+- Return `GroupMember.NON_GROUP_MEMBER` consistently from locally synchronized `new_group` calls on nonmember ranks ([#190588](https://github.com/pytorch/pytorch/pull/190588))
 - Support the linear `avg` reduction in functional `all_reduce` backward instead of rejecting it after a successful forward pass ([#190224](https://github.com/pytorch/pytorch/pull/190224))
 - Prevent subgroup creation hangs and duplicate-finalization crashes by making subgroup-name salts rank-consistent and finalizing each communicator once ([#189073](https://github.com/pytorch/pytorch/pull/189073), [#189074](https://github.com/pytorch/pytorch/pull/189074))
 - Fix single-operation point-to-point completion ordering and synchronous barrier semantics in the experimental `nccl2` backend ([#190622](https://github.com/pytorch/pytorch/pull/190622), [#190682](https://github.com/pytorch/pytorch/pull/190682))
