@@ -45,6 +45,37 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## releng
 ### bc breaking
+- Source builds with CUDA now require CUDA 12.6 or newer ([#192257](https://github.com/pytorch/pytorch/pull/192257))
+
+  The minimum supported CUDA toolkit for building PyTorch has increased from 12.1 to 12.6. Configuring a source build with CUDA 12.1 through 12.5 now fails with `PyTorch requires CUDA 12.6 or above.` Upgrade the selected toolkit, or build without CUDA.
+
+  Version 2.13:
+
+  ```bash
+  CUDA_HOME=/usr/local/cuda-12.1 python -m pip install . --no-build-isolation
+  ```
+
+  Version 2.14:
+
+  ```bash
+  CUDA_HOME=/usr/local/cuda-12.6 python -m pip install . --no-build-isolation
+  ```
+- Prebuilt Windows LibTorch debug binaries are no longer published ([#187352](https://github.com/pytorch/pytorch/pull/187352))
+
+  The separately built Debug archives for Windows x86-64 and Windows Arm64 have been discontinued. Windows wheels and release-mode LibTorch binaries remain available. Projects that require a Debug LibTorch build must build it from a PyTorch source checkout.
+
+  Version 2.13:
+
+  ```powershell
+  # A prebuilt Windows LibTorch Debug archive was available.
+  ```
+
+  Version 2.14:
+
+  ```powershell
+  $env:DEBUG = "1"
+  python tools/build_libtorch.py
+  ```
 - PyTorch now builds from source with scikit-build-core: build it through pip or `python -m build` ([#180248](https://github.com/pytorch/pytorch/pull/180248))
 
   `setup.py` is now a thin shim. `install` and `develop` still forward to pip, but
@@ -53,7 +84,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   a PEP 517 frontend are unaffected, since pip and `python -m build` never ran
   `setup.py`. The shim prints the schedule: `install`/`develop` keep forwarding
   through 2.15, every command stops working in 2.16, and `setup.py` is removed
-  after that.
+  in 2.18.
 
   Version 2.13:
   ```bash
@@ -87,7 +118,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Update GitPython used by `.ci/lumen_cli` from 3.1.54 to 3.1.58 ([#192537](https://github.com/pytorch/pytorch/pull/192537))
 - [ROCm] Bundle librocm_smi64.so for ROCm <= 7.2 wheels ([#191450](https://github.com/pytorch/pytorch/pull/191450))
 - [CD] Add CUDA 13.4rc1 x86 and sbsa binaries ([#192256](https://github.com/pytorch/pytorch/pull/192256))
-- Stop building/publishing Windows libtorch debug binaries ([#187352](https://github.com/pytorch/pytorch/pull/187352))
 - Update the Triton CPU pin and migrate CPU block-pointer coverage to tensor descriptors ([#188794](https://github.com/pytorch/pytorch/pull/188794))
 - Add Ascend/pytorch to L2 in CRCR allowlist ([#187932](https://github.com/pytorch/pytorch/pull/187932))
 - Add PyTorch AI policy ([#189178](https://github.com/pytorch/pytorch/pull/189178))

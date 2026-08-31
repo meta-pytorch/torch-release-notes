@@ -73,6 +73,19 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Improve static typing for `torch.nn.Sequential` indexing so integer keys resolve to `Module` and slices resolve to `Sequential` ([#187758](https://github.com/pytorch/pytorch/pull/187758))
 - Add the documented `memory_format` overload to `torch.nn.Module.to()` so static type checkers accept calls such as `module.to(memory_format=torch.channels_last)` ([#185117](https://github.com/pytorch/pytorch/pull/185117))
 ### bug fixes
+- Enable eligible fused scaled dot-product attention backends for dense rank-3 inputs on CPU, CUDA/ROCm, and XPU instead of always falling back to the math implementation ([#192271](https://github.com/pytorch/pytorch/pull/192271))
+
+  Rank-3 inputs are normalized to rank 4 with a singleton batch dimension before backend selection. This fixes fused execution for rank-3 and vmapped inputs, but automatic backend selection can change floating-point numerics, dropout RNG consumption, whether the result is a view, and higher-order-gradient support. Fused CUDA backends do not support the second derivatives provided by the math backend; code that depends on those semantics should explicitly select the math backend.
+
+  ```python
+  from torch.nn.attention import SDPBackend, sdpa_kernel
+
+  with sdpa_kernel(backends=[SDPBackend.MATH]):
+      output = torch.nn.functional.scaled_dot_product_attention(
+          query, key, value
+      )
+  ```
+- Reject `norm_type=0` in functional and module Lp pooling APIs with a descriptive `ValueError` instead of a deferred `ZeroDivisionError` ([#187861](https://github.com/pytorch/pytorch/pull/187861))
 - Fix memory-efficient scaled dot-product attention backward failing after `torch.autograd.graph.save_on_cpu()` changes an attention mask's aligned strides ([#188246](https://github.com/pytorch/pytorch/pull/188246))
 - Fix a CUDA illegal memory access in memory-efficient scaled dot-product attention backward when only the floating-point attention mask requires gradients ([#188302](https://github.com/pytorch/pytorch/pull/188302))
 - Make the cuDNN CTC loss backend correctly zero infinite losses and their gradients when `zero_infinity=True` ([#176911](https://github.com/pytorch/pytorch/pull/176911))
@@ -85,10 +98,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fall back to the ATen CUDA implementation when the fused RMSNorm override's normalized dimension exceeds the device's shared-memory capacity, avoiding compiler hangs or crashes ([#186941](https://github.com/pytorch/pytorch/pull/186941))
 - Reject invalid `dim` types when constructing `torch.nn.Softmax` or `torch.nn.LogSoftmax` instead of failing later during the forward pass with a confusing overload error ([#185055](https://github.com/pytorch/pytorch/pull/185055))
 - Handle misaligned input and weight storage in the fused RMSNorm override instead of raising `Misaligned Tensor data on argument #0` ([#186235](https://github.com/pytorch/pytorch/pull/186235))
-- Reject `norm_type=0` in functional and module Lp pooling APIs with a descriptive `ValueError` instead of a deferred `ZeroDivisionError` ([#187861](https://github.com/pytorch/pytorch/pull/187861))
 - Make CUDA fp16 softmax with `dtype=torch.float32` use the same persistent-kernel range as the fp16-output path, fixing rounding inconsistencies for dimensions between 1025 and 2048 ([#188247](https://github.com/pytorch/pytorch/pull/188247))
 ### performance
-- Enable eligible fused scaled dot-product attention backends for dense rank-3 inputs on CPU, CUDA/ROCm, and XPU instead of falling back to the math implementation ([#192271](https://github.com/pytorch/pytorch/pull/192271))
 - Avoid materializing zero-filled gradients for unused outputs of chunked `linear_cross_entropy`, substantially reducing backward peak memory ([#187219](https://github.com/pytorch/pytorch/pull/187219))
 - Use faster factor-one automatic chunking for `linear_cross_entropy` while capping chunk size so peak memory stays at or below the unchunked implementation ([#187838](https://github.com/pytorch/pytorch/pull/187838))
 - Avoid materializing copy-on-write tensors while the fused RMSNorm override checks input and weight alignment ([#189202](https://github.com/pytorch/pytorch/pull/189202))

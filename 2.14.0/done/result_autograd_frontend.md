@@ -45,36 +45,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## autograd_frontend
 ### bc breaking
-- Training-mode batch normalization now raises an error when a third-order derivative is requested ([#186779](https://github.com/pytorch/pytorch/pull/186779))
-
-  Second-order derivatives remain supported. Previously, differentiating a training-mode batch-normalization backward pass again silently treated the saved batch statistics as constants and returned an invalid third-order derivative. In PyTorch 2.14, this case raises `RuntimeError: batch_norm does not support 3rd+ order derivatives.` Evaluation-mode batch normalization is unchanged. There is no equivalent workaround that preserves correct training-mode third derivatives; avoid requesting them, use evaluation mode when its running-statistics semantics are appropriate, or provide a custom differentiable implementation.
-
-  Version 2.13:
-  ```python
-  import torch
-  import torch.nn.functional as F
-
-  x = torch.randn(8, 3, requires_grad=True)
-  y = F.batch_norm(x, None, None, training=True)
-  (grad1,) = torch.autograd.grad(y.sum(), x, create_graph=True)
-  (grad2,) = torch.autograd.grad(grad1.sum(), x, create_graph=True)
-  (grad3,) = torch.autograd.grad(grad2.sum(), x)
-  # Returns a tensor, but the result is not a valid third-order derivative.
-  ```
-
-  Version 2.14:
-  ```python
-  import torch
-  import torch.nn.functional as F
-
-  x = torch.randn(8, 3, requires_grad=True)
-  y = F.batch_norm(x, None, None, training=True)
-  (grad1,) = torch.autograd.grad(y.sum(), x, create_graph=True)
-  (grad2,) = torch.autograd.grad(grad1.sum(), x, create_graph=True)
-  torch.autograd.grad(grad2.sum(), x)
-  # RuntimeError: batch_norm does not support 3rd+ order derivatives.
-  ```
-
 - Clamp and min/max boundary subgradients now follow the selected dispatcher schema's input space ([#191142](https://github.com/pytorch/pytorch/pull/191142))
 
   This affects gradients exactly at nondifferentiable bounds or ties. A scalar clamp bound is a fixed parameter, so the input gradient at equality changes from `1` to the minimum-norm subgradient `0`. A Tensor bound is part of the differentiable input space, so `clamp`, `clamp_min`, and `clamp_max` now split the gradient evenly between the input and bound at an ordinary tie instead of assigning it entirely to the input. `fmin` and `fmax` use the same even tie split, and forward-mode AD for the min/max family is aligned with these rules. Code that intentionally depends on the old tie-breaking behavior can express it explicitly with `torch.where`, such as `torch.where(value >= bound, value, bound)`.
@@ -152,6 +122,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add second-order gradient support for `torch.cdist` and `torch.nn.functional.pdist`, so grad-grad computations no longer fail because `_cdist_backward` or `_pdist_backward` lacks a derivative ([#188901](https://github.com/pytorch/pytorch/pull/188901))
 ### improvements
 ### bug fixes
+- Training-mode batch normalization now rejects unsupported third-order derivatives instead of silently returning an invalid result; second-order derivatives and evaluation mode are unchanged ([#186779](https://github.com/pytorch/pytorch/pull/186779))
 - Fix `torch.pow` backward when the base is a Boolean scalar by promoting the scalar before computing its logarithm, avoiding an internal assertion failure ([#182564](https://github.com/pytorch/pytorch/pull/182564))
 - Fix `torch.pow` backward under `torch.compile(dynamic=True)` when a Python integer exponent becomes symbolic, avoiding the `NYI SymInt equality` crash without specializing on the exponent ([#185851](https://github.com/pytorch/pytorch/pull/185851))
 - Make `native_group_norm` and `native_group_norm_backward` safely handle non-contiguous tensors, fixing `vmap` failures and possible out-of-bounds memory accesses ([#186414](https://github.com/pytorch/pytorch/pull/186414))

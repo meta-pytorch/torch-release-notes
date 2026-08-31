@@ -45,24 +45,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## sparse_frontend
 ### bc breaking
-- `torch.load(..., weights_only=True)` now always validates sparse-tensor invariants ([#184750](https://github.com/pytorch/pytorch/pull/184750))
-
-  Sparse tensors loaded in restricted `weights_only` mode now undergo an O(nnz) validation scan regardless of the global `torch.sparse.check_sparse_tensor_invariants` setting. Valid sparse checkpoints emit a warning explaining the scan. Malformed checkpoints whose indices are inconsistent with the tensor size now raise an error such as `RuntimeError: size is inconsistent with indices` instead of creating an invalid tensor that could later read out of bounds.
-
-  Before, disabling global invariant checks also disabled validation during a restricted load:
-
-  ```python
-  with torch.sparse.check_sparse_tensor_invariants(False):
-      tensor = torch.load("sparse.pt", weights_only=True)
-  ```
-
-  In PyTorch 2.14, fix or regenerate malformed sparse checkpoints and continue using the safe restricted loader:
-
-  ```python
-  tensor = torch.load("sparse.pt", weights_only=True)
-  ```
-
-  Trusted checkpoints can retain the old no-validation behavior by using `weights_only=False` while global invariant checks are disabled, but this invokes the unrestricted pickle loader and must not be used with untrusted files.
 ### deprecation
 ### new features
 ### improvements
@@ -78,4 +60,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Avoid unnecessary tuple-element and vector copies in sparse and other internal kernels ([#191107](https://github.com/pytorch/pytorch/pull/191107))
 - Centralize the internal CUDA/ROCm standard-library compatibility alias used by sparse CUDA kernels ([#191491](https://github.com/pytorch/pytorch/pull/191491))
 ### security
+- Always validate sparse-tensor invariants when loading with `torch.load(..., weights_only=True)` so malformed checkpoints cannot create tensors whose indices cause out-of-bounds reads ([#184750](https://github.com/pytorch/pytorch/pull/184750))
+
+  Validation is an O(nnz) scan and applies regardless of the global `torch.sparse.check_sparse_tensor_invariants` setting. Fix or regenerate malformed sparse checkpoints that now raise errors such as `RuntimeError: size is inconsistent with indices`. Do not use `weights_only=False` as a workaround for untrusted files.
 - Reject negative `size` values in the private COO-to-CSR index conversion operator before CPU or CUDA kernels can write out of bounds ([#188540](https://github.com/pytorch/pytorch/pull/188540))

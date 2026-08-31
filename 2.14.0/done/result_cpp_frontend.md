@@ -45,6 +45,60 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## cpp_frontend
 ### bc breaking
+- C++ extensions and LibTorch applications must now compile as C++20 or newer ([#178150](https://github.com/pytorch/pytorch/pull/178150))
+
+  PyTorch's public ATen and C++ frontend headers now reject pre-C++20 language modes. On non-MSVC compilers, including `<ATen/ATen.h>` or `<torch/torch.h>` with C++17 produces `C++20 or later compatible compiler is required to use ATen.` or the equivalent PyTorch message. Update the consuming build to request C++20.
+
+  Version 2.13:
+
+  ```cmake
+  set(CMAKE_CXX_STANDARD 17)
+  find_package(Torch REQUIRED)
+  ```
+
+  Version 2.14:
+
+  ```cmake
+  set(CMAKE_CXX_STANDARD 20)
+  find_package(Torch REQUIRED)
+  ```
+- Remove the deprecated C++ method `at::Tensor::is_variable()` ([#187136](https://github.com/pytorch/pytorch/pull/187136))
+
+  All tensors have used Variable semantics for several releases, so callers should remove checks of `tensor.is_variable()`. Code that was specifically checking whether Variable dispatch had already been excluded can query `at::impl::variable_excluded_from_dispatch()` instead.
+
+  Version 2.13:
+
+  ```cpp
+  if (tensor.is_variable()) {
+    use_tensor(tensor);
+  }
+  ```
+
+  Version 2.14:
+
+  ```cpp
+  // Every Tensor has Variable semantics.
+  use_tensor(tensor);
+  ```
+- Remove the `c10/util/Array.h` header and `c10::array_of()` helper ([#186790](https://github.com/pytorch/pytorch/pull/186790))
+
+  C++ extensions that include this header or call `c10::array_of()` will no longer compile. Since PyTorch now requires C++20, use the standard `<array>` header and `std::to_array()` instead.
+
+  Version 2.13:
+
+  ```cpp
+  #include <c10/util/Array.h>
+
+  constexpr auto values = c10::array_of<int>(1, 2, 3);
+  ```
+
+  Version 2.14:
+
+  ```cpp
+  #include <array>
+
+  constexpr auto values = std::to_array<int>({1, 2, 3});
+  ```
 - Remove the deprecated zero-argument C++ overloads `c10::Scalar::isIntegral()` and `c10::isIntegralType(ScalarType)` ([#187115](https://github.com/pytorch/pytorch/pull/187115))
 
   Code that calls either overload without specifying whether Boolean values count as integral will no longer compile. Pass `includeBool` explicitly; use `false` to preserve the removed overloads' behavior.
@@ -86,7 +140,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 - Add `C10_LIFETIMEBOUND` annotations to borrowing `c10::OptionalArrayRef` constructors so Clang can diagnose dangling references to temporary buffers ([#190076](https://github.com/pytorch/pytorch/pull/190076))
-- Enforce C++20 minimum in header guards (#178150) ([#178150](https://github.com/pytorch/pytorch/pull/178150))
 - Add c10::safe_conv (strict, integer-only) and c10::unsafe_wrapping_convert (#190092) ([#190092](https://github.com/pytorch/pytorch/pull/190092))
 - c10 MaybeOwned: add C10_LIFETIMEBOUND to borrow entry points ([#190077](https://github.com/pytorch/pytorch/pull/190077))
 - c10 TensorAccessor: add C10_LIFETIMEBOUND to borrowed sizes_/strides_ ([#190075](https://github.com/pytorch/pytorch/pull/190075))

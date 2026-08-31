@@ -45,6 +45,23 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## mps
 ### bc breaking
+- The C++ MPS macOS-version helper and its enum members have been renamed ([#188645](https://github.com/pytorch/pytorch/pull/188645))
+
+  Downstream C++ code that includes `<ATen/mps/MPSDevice.h>` must replace the exported `at::mps::is_macos_13_or_newer()` function with `at::mps::is_macos_at_least()`. The associated `MacOSVersion` members also drop the `VER` and `PLUS` portions of their names. No compatibility aliases are provided, so code using the old names will no longer compile.
+
+  Version 2.13:
+
+  ```cpp
+  const bool supported = at::mps::is_macos_13_or_newer(
+      at::mps::MacOSVersion::MACOS_VER_15_0_PLUS);
+  ```
+
+  Version 2.14:
+
+  ```cpp
+  const bool supported = at::mps::is_macos_at_least(
+      at::mps::MacOSVersion::MACOS_15_0);
+  ```
 ### deprecation
 ### new features
 - Add native MPS support for binomial sampling ([#187078](https://github.com/pytorch/pytorch/pull/187078))
@@ -145,7 +162,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Expand distribution tests to run on MPS and clean up obsolete MPS test exceptions ([#186153](https://github.com/pytorch/pytorch/pull/186153), [#186046](https://github.com/pytorch/pytorch/pull/186046))
 - Correct an unused internal Metal vector-type specialization for 64-bit integers ([#187542](https://github.com/pytorch/pytorch/pull/187542))
 - Simplify internal MPS operation utilities and Metal-header generation code ([#188342](https://github.com/pytorch/pytorch/pull/188342), [#188414](https://github.com/pytorch/pytorch/pull/188414))
-- Update MPS code ownership and internal macOS/GPU-family helper names ([#188620](https://github.com/pytorch/pytorch/pull/188620), [#188645](https://github.com/pytorch/pytorch/pull/188645), [#189867](https://github.com/pytorch/pytorch/pull/189867))
+- Update MPS code ownership and internal GPU-family helper names ([#188620](https://github.com/pytorch/pytorch/pull/188620), [#189867](https://github.com/pytorch/pytorch/pull/189867))
 - Stabilize the large MPS group-normalization backward test on memory-constrained runners ([#188855](https://github.com/pytorch/pytorch/pull/188855), [#189215](https://github.com/pytorch/pytorch/pull/189215))
 - Consolidate internal host-buffer wrapping for CPU-to-MPS and MPS-to-CPU copies ([#189256](https://github.com/pytorch/pytorch/pull/189256))
 - Use shared utility types and avoid unnecessary string and tensor-input copies in internal MPS kernel dispatch ([#189869](https://github.com/pytorch/pytorch/pull/189869), [#189981](https://github.com/pytorch/pytorch/pull/189981), [#191358](https://github.com/pytorch/pytorch/pull/191358))

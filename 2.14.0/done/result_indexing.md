@@ -49,6 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Reject nonempty `torch.unravel_index()` inputs whose `shape` contains a zero-sized dimension with a clear `ValueError` instead of an uncaught division-by-zero `RuntimeError`; empty indices remain supported ([#191092](https://github.com/pytorch/pytorch/pull/191092))
 - Fix assigning Python integers greater than `INT64_MAX` into `torch.uint64` tensors, which previously raised `Overflow when unpacking long long` ([#191604](https://github.com/pytorch/pytorch/pull/191604))
 - Fix an illegal CUDA memory access in `torch.nn.functional.adaptive_avg_pool2d` backward for very large contiguous tensors whose element offsets exceed 32-bit indexing limits ([#189082](https://github.com/pytorch/pytorch/pull/189082))
 ### performance

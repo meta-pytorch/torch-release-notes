@@ -91,9 +91,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Allow `torch.backends.cuda.preferred_blas_library("ck")` to select the CK GEMM backend on ROCm `gfx90a` devices by separating GEMM support from CK attention support ([#187267](https://github.com/pytorch/pytorch/pull/187267))
 - Expand ROCm backend coverage for `torch.linalg.eig`, `torch.linalg.ldl_solve`, `torch.linalg.solve`, and `torch.linalg.solve_triangular` through hipSOLVER and hipBLAS paths ([#185557](https://github.com/pytorch/pytorch/pull/185557))
 ### bug fixes
+- Fix `torch.linalg.cond()` reporting a misleading overflow error for a complex norm order; invalid orders now raise `ValueError` with a clear message ([#188591](https://github.com/pytorch/pytorch/pull/188591))
 - Fix `torch.lu_unpack` segfaulting when `LU_pivots` has a shape inconsistent with `LU_data`; invalid shapes now raise a clear error ([#187660](https://github.com/pytorch/pytorch/pull/187660))
 - Fix `torch.linalg.lstsq(driver="gelsy")` returning an incorrect rank on CPU when stale pivot values leaked between batched LAPACK calls ([#187436](https://github.com/pytorch/pytorch/pull/187436))
-- Fix `torch.linalg.cond` reporting a misleading overflow error for a complex norm order; invalid orders now raise `ValueError` with a clear message ([#188591](https://github.com/pytorch/pytorch/pull/188591))
 - Fix `torch.compile(dynamic=True)` failing on `torch.linalg.cond` with `p="fro"` or `p="nuc"` because symbolic tensor sizes were queried as concrete values ([#187614](https://github.com/pytorch/pytorch/pull/187614))
 - Fix offline TunableOp tuning silently using the wrong GEMM shape when a padded leading dimension matches another matrix dimension ([#189355](https://github.com/pytorch/pytorch/pull/189355))
 - Fix `CUBLAS_STATUS_NOT_SUPPORTED` failures in matrix multiplication on CUDA compute capability 11.0 by increasing the default cuBLAS workspace to 32 MiB ([#189312](https://github.com/pytorch/pytorch/pull/189312))

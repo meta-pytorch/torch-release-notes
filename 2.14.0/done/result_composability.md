@@ -45,42 +45,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## composability
 ### bc breaking
-- Unsupported Boolean operations and FFT dtype/domain combinations now raise more specific exception classes instead of a plain `RuntimeError` ([#192348](https://github.com/pytorch/pytorch/pull/192348), [#192349](https://github.com/pytorch/pytorch/pull/192349))
-
-  Boolean inputs to unsupported operations such as subtraction, negation, covariance, trapezoidal integration, `hardtanh`, and `relu` now raise `NotImplementedError`. FFT calls now distinguish unimplemented dtypes with `NotImplementedError` and invalid real/complex domains with `TypeError`; for example, complex input to `torch.fft.rfft` raises `TypeError`. This affects code that checks exact exception classes. To support both PyTorch 2.13 and 2.14, validate input dtypes before calling or catch `(RuntimeError, TypeError)`; `NotImplementedError` is a subclass of `RuntimeError`.
-
-  Version 2.13:
-  ```python
-  import torch
-
-  def show_error(fn):
-      try:
-          fn()
-      except Exception as exc:
-          print(type(exc).__name__)
-
-  show_error(lambda: torch.neg(torch.tensor([True])))
-  show_error(lambda: torch.fft.rfft(torch.ones(4, dtype=torch.complex64)))
-  # RuntimeError
-  # RuntimeError
-  ```
-
-  Version 2.14:
-  ```python
-  import torch
-
-  def show_error(fn):
-      try:
-          fn()
-      except Exception as exc:
-          print(type(exc).__name__)
-
-  show_error(lambda: torch.neg(torch.tensor([True])))
-  show_error(lambda: torch.fft.rfft(torch.ones(4, dtype=torch.complex64)))
-  # NotImplementedError
-  # TypeError
-  ```
-
 ### deprecation
 ### new features
 - Add a `length` argument to `torch.scan`, allowing a scan to run for a fixed number of steps when `xs=None`, matching the corresponding `jax.lax.scan` usage pattern ([#188349](https://github.com/pytorch/pytorch/pull/188349))
@@ -90,6 +54,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Allow out-of-tree backends to define additional `out_dtype` combinations for `torch.mm`, `torch.bmm`, and `torch.baddbmm` under fake/meta tracing; CUDA and XPU restrictions remain unchanged ([#187096](https://github.com/pytorch/pytorch/pull/187096))
 - Provide a targeted dynamic-shape error when a data-dependent expression conflicts with a `dynamic_spec` constraint ([#187143](https://github.com/pytorch/pytorch/pull/187143))
 ### bug fixes
+- Raise `NotImplementedError` for unsupported Boolean operations and distinguish unsupported FFT dtypes from invalid real/complex domains with `NotImplementedError` and `TypeError` ([#192348](https://github.com/pytorch/pytorch/pull/192348), [#192349](https://github.com/pytorch/pytorch/pull/192349))
 - Preserve eager identity semantics for no-op dropout decompositions, preventing `torch.compile` and `torch.export` from replacing a `Parameter` with a cloned fake tensor when dropout is disabled ([#185335](https://github.com/pytorch/pytorch/pull/185335))
 - Fix compiled `torch.nn.functional.multilabel_margin_loss` values and gradients when targets use `-1` padding ([#189552](https://github.com/pytorch/pytorch/pull/189552))
 - Fix `torch.nansum` meta output shapes when `dim=()` should reduce all dimensions ([#191530](https://github.com/pytorch/pytorch/pull/191530))

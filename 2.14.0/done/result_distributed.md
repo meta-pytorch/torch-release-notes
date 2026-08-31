@@ -94,6 +94,29 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   backend.deregister_mem_pool(pool)
   backend.register_mem_pool(pool, symm=True)
   ```
+- Nonmember ranks now receive `GroupMember.NON_GROUP_MEMBER` instead of `None` from experimental `torch.distributed.split_group()` ([#190725](https://github.com/pytorch/pytorch/pull/190725))
+
+  When the calling rank is absent from every requested split, `split_group()` now returns the same nonmember sentinel as `new_group()`. Code that identifies nonmembers with `is None` must compare against `torch.distributed.GroupMember.NON_GROUP_MEMBER` instead.
+
+  Before:
+
+  ```python
+  group = torch.distributed.split_group(
+      split_ranks=[[0, 1], [2, 3]]
+  )
+  if group is None:
+      return
+  ```
+
+  After:
+
+  ```python
+  group = torch.distributed.split_group(
+      split_ranks=[[0, 1], [2, 3]]
+  )
+  if group == torch.distributed.GroupMember.NON_GROUP_MEMBER:
+      return
+  ```
 ### deprecation
 - Use `torch.compiler.config.compile_on_one_rank` instead of `torch.distributed.config.compile_on_one_rank` ([#187869](https://github.com/pytorch/pytorch/pull/187869))
 

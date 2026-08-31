@@ -67,49 +67,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   # tvm_meta_schedule / tvm_auto_scheduler no longer exist:
   # ImportError: cannot import name 'tvm_meta_schedule'
   ```
-- `next()` on a non-iterator now raises `TypeError` instead of silently returning the first element ([#190624](https://github.com/pytorch/pytorch/pull/190624))
-
-  Dynamo's `next()` handling skipped CPython's iterator check and, for a list, returned its first item rather than raising. Compiled code that relied on this now sees the same `TypeError: 'list' object is not an iterator` that eager Python raises. Wrap the argument in `iter()` to keep the old result.
-
-  Version 2.13:
-  ```python
-  >>> @torch.compile(fullgraph=True)
-  ... def f(xs):
-  ...     return next(xs)
-  >>> f([1, 2, 3])
-  1
-  ```
-
-  Version 2.14:
-  ```python
-  >>> f([1, 2, 3])
-  TypeError: 'list' object is not an iterator
-
-  >>> # workaround: match eager semantics explicitly
-  >>> @torch.compile(fullgraph=True)
-  ... def f(xs):
-  ...     return next(iter(xs))
-  >>> f([1, 2, 3])
-  1
-  ```
-- `set()` and `frozenset()` now reject keyword arguments ([#189051](https://github.com/pytorch/pytorch/pull/189051))
-
-  `set(a=1)` and `set().__init__(a=1)` silently produced an empty set inside a compiled region, because the keyword check ran only after a zero-positional-argument early return. Dynamo now raises `TypeError: set() takes no keyword arguments` (and the `frozenset()` equivalent), matching CPython. Such calls were already an error in eager, so drop the keyword arguments.
-
-  Version 2.13:
-  ```python
-  >>> @torch.compile(fullgraph=True)
-  ... def f():
-  ...     return set(a=1)
-  >>> f()
-  set()
-  ```
-
-  Version 2.14:
-  ```python
-  >>> f()
-  TypeError: set() takes no keyword arguments
-  ```
 ### deprecation
 - `torch._dynamo.config.enable_faithful_generator_behavior` is deprecated and is now a no-op ([#189894](https://github.com/pytorch/pytorch/pull/189894))
 
@@ -176,6 +133,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Improve diagnostics: dedicated graph-break messages for direct `torch._dynamo.disable`/`torch.compiler.disable` calls, clearer `Parameter`-vs-`Tensor` guard mismatch text in recompilation logs, an actionable hint for in-place views on graph inputs, closest-match suggestions for a mistyped backend name, graph breaks on exceptions based on whether user code would catch them, and observed-exception stacks preserved across a bare `raise` ([#185763](https://github.com/pytorch/pytorch/pull/185763), [#185083](https://github.com/pytorch/pytorch/pull/185083), [#185903](https://github.com/pytorch/pytorch/pull/185903), [#189333](https://github.com/pytorch/pytorch/pull/189333), [#182972](https://github.com/pytorch/pytorch/pull/182972), [#185508](https://github.com/pytorch/pytorch/pull/185508))
 - Support TVM's relax frontend in the `tvm` backend, with tuning selected via `options={"pipeline": ...}` ([#189010](https://github.com/pytorch/pytorch/pull/189010), [#189638](https://github.com/pytorch/pytorch/pull/189638))
 ### bug fixes
+- Make compiled `next()` reject non-iterators with the same `TypeError` as CPython instead of silently returning the first element ([#190624](https://github.com/pytorch/pytorch/pull/190624))
+- Make compiled `set()` and `frozenset()` reject keyword arguments instead of silently constructing an empty set, matching CPython ([#189051](https://github.com/pytorch/pytorch/pull/189051))
 - Ensure `torch._dynamo.reset()` clears stale precompiled package entries by registering installed `target_code` with the package input tracker ([#189206](https://github.com/pytorch/pytorch/pull/189206))
 - Preserve registered third-party backend configuration and extra Triton imports in generated minifier reproductions ([#187855](https://github.com/pytorch/pytorch/pull/187855))
 - Fix `torch.compiler.nested_compile_region` reuse across regions that read a global rebound between calls, which reused a stale graph ([#192006](https://github.com/pytorch/pytorch/pull/192006))
