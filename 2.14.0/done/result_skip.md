@@ -685,7 +685,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Compute libnvrtc shorthash with CMake file(SHA256) instead of Python ([#189386](https://github.com/pytorch/pytorch/pull/189386))
 - [generator] Close all open generators in compile_subgraph ([#157149](https://github.com/pytorch/pytorch/pull/157149))
 - Port doctest tests from cpython test_generators.py ([#188824](https://github.com/pytorch/pytorch/pull/188824))
-- Fix partitioner backward SymInt bindings for replaced symbols ([#189783](https://github.com/pytorch/pytorch/pull/189783))
 - [llvm21] test_float_to_int_conversion_finite: fold int8 into int16 branch ([#189802](https://github.com/pytorch/pytorch/pull/189802))
 - [TEST][cuDNN] Exercise cuDNN in more varlen attention tests where available ([#189763](https://github.com/pytorch/pytorch/pull/189763))
 - Add XPU to externalId ([#184358](https://github.com/pytorch/pytorch/pull/184358))

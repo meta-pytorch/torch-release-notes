@@ -72,7 +72,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add stable::Tensor has_storage ([#189877](https://github.com/pytorch/pytorch/pull/189877))
 ### improvements
 - Dynamically enable error message retrieval if available at runtime for stable ABI usage ([#183823](https://github.com/pytorch/pytorch/pull/183823))
-- Simplify waiting using std::latch + fix iOS PACKAGE modifier (#188279) ([#188281](https://github.com/pytorch/pytorch/pull/188281))
 - Let deprecated-declarations warn (not error) in c10/ATen/torch builds ([#189948](https://github.com/pytorch/pytorch/pull/189948))
 - Simplify c10 TypeSafeSignMath tag-dispatch with if constexpr ([#190081](https://github.com/pytorch/pytorch/pull/190081))
 - StorageMethods: reject negative requested storage size (don't wrap to size_t) ([#190652](https://github.com/pytorch/pytorch/pull/190652))
@@ -88,12 +87,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 - Add `C10_LIFETIMEBOUND` annotations to borrowing `c10::OptionalArrayRef` constructors so Clang can diagnose dangling references to temporary buffers ([#190076](https://github.com/pytorch/pytorch/pull/190076))
 - Enforce C++20 minimum in header guards (#178150) ([#178150](https://github.com/pytorch/pytorch/pull/178150))
-- c10 HeaderOnlyArrayRef: add C10_LIFETIMEBOUND to borrowing constructors (#190078) ([#190078](https://github.com/pytorch/pytorch/pull/190078))
 - Add c10::safe_conv (strict, integer-only) and c10::unsafe_wrapping_convert (#190092) ([#190092](https://github.com/pytorch/pytorch/pull/190092))
 - c10 MaybeOwned: add C10_LIFETIMEBOUND to borrow entry points ([#190077](https://github.com/pytorch/pytorch/pull/190077))
 - c10 TensorAccessor: add C10_LIFETIMEBOUND to borrowed sizes_/strides_ ([#190075](https://github.com/pytorch/pytorch/pull/190075))
 - aten TensorRef/OptionalTensorRef: add C10_LIFETIMEBOUND ([#190074](https://github.com/pytorch/pytorch/pull/190074))
-([#189204](https://github.com/pytorch/pytorch/pull/189204))
 - c10 macros: add C10_LIFETIMEBOUND ([#189912](https://github.com/pytorch/pytorch/pull/189912))
 - c10/util/ArrayRef.h: specialize std::ranges::enable_borrowed_range ([#186635](https://github.com/pytorch/pytorch/pull/186635))
 ### Untopiced

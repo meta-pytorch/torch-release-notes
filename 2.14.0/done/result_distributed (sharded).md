@@ -54,5 +54,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 ### not user facing
 - Generalize internal distributed utilities and sharded test infrastructure so they can run on Intel GPUs ([#178468](https://github.com/pytorch/pytorch/pull/178468))
-- Expand sharded-tensor and sharding-plan tests to Intel GPU/XCCL environments ([#161771](https://github.com/pytorch/pytorch/pull/161771))
 ### security

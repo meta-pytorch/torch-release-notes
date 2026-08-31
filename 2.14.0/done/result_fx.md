@@ -62,6 +62,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Preserve signed zero when FX code generation emits complex constants with a zero real or imaginary component. ([#185550](https://github.com/pytorch/pytorch/pull/185550))
 - Apply `skip_folding_node_fn` recursively to `call_module` subgraphs so FX constant folding does not evaluate skipped or symbolic nodes inside them. ([#189487](https://github.com/pytorch/pytorch/pull/189487))
 - Return valid `tuple[...]` annotations from `get_signature_for_torch_op` for operators that return multiple tensors. ([#189142](https://github.com/pytorch/pytorch/pull/189142))
+- Avoid a `linecache` loader warning when executing generated FX `GraphModule` code on Python 3.15 ([#187221](https://github.com/pytorch/pytorch/pull/187221))
 ### performance
 - Speed up `GraphModule.delete_all_unused_submodules()` by using constant-time membership checks while determining submodule liveness. ([#178320](https://github.com/pytorch/pytorch/pull/178320))
 - Release inputs to boxed FX calls before dispatch when they have no other uses, reducing peak memory in compiled backward graphs. ([#187186](https://github.com/pytorch/pytorch/pull/187186))
@@ -75,5 +76,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Restore the previous internal generalized-scatter graph representation. ([#188219](https://github.com/pytorch/pytorch/pull/188219))
 - Make TorchFuzz-generated `gather` and `index_select` indices deterministic across devices and runs. ([#189553](https://github.com/pytorch/pytorch/pull/189553))
 - Make the profiler stack-trace augmentation test account for Windows using cuBLAS instead of cuBLASLt. ([#188491](https://github.com/pytorch/pytorch/pull/188491))
-- Avoid a `linecache` loader warning on Python 3.15. ([#187221](https://github.com/pytorch/pytorch/pull/187221))
 ### security

@@ -87,6 +87,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add CUDA cuBLASLt support to TunableOp, including controls for the number of heuristic candidates through `torch.cuda.tunable.set_cublaslt_requested_algo_count()` and `PYTORCH_TUNABLEOP_CUBLASLT_REQUESTED_ALGO_COUNT` ([#186270](https://github.com/pytorch/pytorch/pull/186270))
 ### improvements
 - Add backward support for `torch.linalg.polar` on CPU, CUDA, and MPS ([#189732](https://github.com/pytorch/pytorch/pull/189732))
+- Enable `torch.linalg.eig` on ROCm 7.14 or newer through hipSOLVER's generic `Xgeev` API, and update generated linear-algebra tests to recognize hipSOLVER implementations that do not require MAGMA ([#188720](https://github.com/pytorch/pytorch/pull/188720))
 - Allow `torch.backends.cuda.preferred_blas_library("ck")` to select the CK GEMM backend on ROCm `gfx90a` devices by separating GEMM support from CK attention support ([#187267](https://github.com/pytorch/pytorch/pull/187267))
 - Expand ROCm backend coverage for `torch.linalg.eig`, `torch.linalg.ldl_solve`, `torch.linalg.solve`, and `torch.linalg.solve_triangular` through hipSOLVER and hipBLAS paths ([#185557](https://github.com/pytorch/pytorch/pull/185557))
 ### bug fixes

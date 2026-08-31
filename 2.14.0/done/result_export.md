@@ -47,8 +47,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add the `torch.fx.experimental.dynamic_spec.dynamic_spec` decorator for attaching a dynamic-shape specification to a function or `nn.Module.forward`. `torch.compile`, `torch.export.export`, and `make_fx` automatically use the attached specification; passing a conflicting call-site specification raises an error ([#187639](https://github.com/pytorch/pytorch/pull/187639))
 ### improvements
 - Support serializing nested integer and floating-point list arguments, including empty nested lists, for custom operators in exported programs. ([#189424](https://github.com/pytorch/pytorch/pull/189424))
+- Support `ObjectSpec`, `SeqSpec`, and `DictSpec` container types when using shape specifications with strict export ([#186167](https://github.com/pytorch/pytorch/pull/186167))
 ### performance
 - Reduce decomposition-time complexity for large exported graphs from super-linear to linear growth by avoiding repeated scans of graph-signature and module metadata. ([#177927](https://github.com/pytorch/pytorch/pull/177927))
 ### docs
@@ -66,6 +68,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Correct spelling in export serialization comments and docstrings without changing behavior ([#190569](https://github.com/pytorch/pytorch/pull/190569))
 - Enable stricter static type checking for private export and serialization modules, with no runtime behavior change. ([#187711](https://github.com/pytorch/pytorch/pull/187711))
 - Remove duplicated words from docstrings across export and other PyTorch modules. ([#188884](https://github.com/pytorch/pytorch/pull/188884))
-- Support `ObjectSpec`, `SeqSpec`, and `DictSpec` container types when using shape specifications with strict export. ([#186167](https://github.com/pytorch/pytorch/pull/186167))
-- Add the `torch.fx.experimental.dynamic_spec.dynamic_spec` decorator for attaching a dynamic-shape specification to a function or `nn.Module.forward`. `torch.compile`, `torch.export.export`, and `make_fx` automatically use the attached specification; passing a conflicting call-site specification raises an error. ([#187639](https://github.com/pytorch/pytorch/pull/187639))
 ### security

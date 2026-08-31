@@ -7,7 +7,7 @@
 ## new features
 
 ### Ahead-Of-Time Inductor (AOTI)
-- Add `aoti_torch_mps_set_arg_bytes` to the stable MPS AOTI shim so custom Metal kernels can pass scalar and structured arguments without temporary tensors ([#190932](https://github.com/pytorch/pytorch/pull/190932))
+- Add `torch_mps_set_arg_bytes` to the stable MPS shim so custom Metal kernels can pass scalar and structured arguments without temporary tensors ([#190932](https://github.com/pytorch/pytorch/pull/190932))
 
 ### C++ Frontend
 - Make `fastAtomicAdd` available from PyTorch's header-only C++ headers ([#193604](https://github.com/pytorch/pytorch/pull/193604))
