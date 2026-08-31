@@ -59,6 +59,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Update the vendored XNNPACK to github revision f6486e3e1d ([#191206](https://github.com/pytorch/pytorch/pull/191206))
 ### Untopiced
 ### not user facing
+- Remove private Inductor quantization fusion patterns after their migration to TorchAO ([#178466](https://github.com/pytorch/pytorch/pull/178466))
 - Correct spelling and grammar in quantization comments, documentation, and related distributed-checkpoint code without changing behavior ([#187367](https://github.com/pytorch/pytorch/pull/187367), [#190398](https://github.com/pytorch/pytorch/pull/190398), [#190831](https://github.com/pytorch/pytorch/pull/190831))
 - Use `std::clamp` in the quantizer CPU kernels ([#185490](https://github.com/pytorch/pytorch/pull/185490), [#185552](https://github.com/pytorch/pytorch/pull/185552))
 - Fix typos in comments and docstrings ([#187543](https://github.com/pytorch/pytorch/pull/187543), [#188814](https://github.com/pytorch/pytorch/pull/188814), [#190374](https://github.com/pytorch/pytorch/pull/190374), [#190722](https://github.com/pytorch/pytorch/pull/190722))

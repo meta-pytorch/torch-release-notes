@@ -70,6 +70,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add sparse COO dispatch for `torch.linalg.vector_norm`, allowing it to replace deprecated `torch.norm` calls on sparse COO tensors ([#185309](https://github.com/pytorch/pytorch/pull/185309))
 ### bug fixes
 - Create cuSPARSELt handles per device so sparse operations remain valid when a thread switches between CUDA devices ([#189048](https://github.com/pytorch/pytorch/pull/189048))
+- Make grouped-matrix, batch-normalization, and sparse-matrix operations on ROCm Windows raise clear unsupported-operation errors instead of crashing with access violation `0xC0000005` when optional libraries are unavailable ([#191680](https://github.com/pytorch/pytorch/pull/191680))
 ### performance
 ### docs
 ### devs
