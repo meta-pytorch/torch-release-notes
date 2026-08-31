@@ -35,6 +35,7 @@
 - Exclude host-side `OVERHEAD` activities from CUDA and XPU device totals so profiler device time is not double-counted ([#193924](https://github.com/pytorch/pytorch/pull/193924))
 
 ### Python Frontend
+- Fix `torch.get_device_module()` so resolving the default device no longer eagerly initializes the accelerator runtime ([#190751](https://github.com/pytorch/pytorch/pull/190751))
 - Respect process CPU affinity and cpuset limits when choosing the default thread count, preventing excessive threads and `libgomp: Thread creation failed` errors in constrained environments ([#194605](https://github.com/pytorch/pytorch/pull/194605))
 
 ### Release Engineering
