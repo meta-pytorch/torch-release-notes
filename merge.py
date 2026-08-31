@@ -128,9 +128,13 @@ def write_output(per_category_commits, output_filename, version="X.x.x"):
         'vulkan': 'Vulkan',
         'python_frontend': 'Python Frontend',
         'distributed (checkpoint)': 'Distributed Checkpointing',
+        'distributed (c10d)': 'Distributed (c10d)',
+        'distributed (ddp)': 'DistributedDataParallel (DDP)',
         'distributed (fsdp)': 'Distributed FSDP',
         'distributed (fsdp2)': 'Distributed FSDP2',
         'distributed (dtensor)': 'DTensor',
+        'distributed (sharded)': 'Distributed Sharded',
+        'distributed (symm_mem)': 'Symmetric Memory',
         'distributed (miscellaneous)': 'Distributed (Miscellaneous)',
         'benchmark': 'Benchmark',
         'aotdispatcher': 'AOTDispatcher',
@@ -156,6 +160,8 @@ def write_output(per_category_commits, output_filename, version="X.x.x"):
         'dynamo': 'Dynamo',
         'torch.func': 'torch.func',
         'nested tensor_frontend': 'Nested Tensor (NJT)',
+        'devx': 'Developer Experience',
+        'indexing': 'Indexing',
     }
 
     # General order in which modules are written within each section. Modules
@@ -169,12 +175,17 @@ def write_output(per_category_commits, output_filename, version="X.x.x"):
         'autograd_frontend',
         # distributed family, keeping their internal ordering
         'distributed',
+        'distributed (c10d)',
         'distributed (checkpoint)',
         'distributed (dtensor)',
+        'distributed (ddp)',
         'distributed (fsdp)',
         'distributed (fsdp2)',
+        'distributed (sharded)',
+        'distributed (symm_mem)',
         'distributed (miscellaneous)',
         'linalg_frontend',
+        'indexing',
         'profiler',
         'fx',
         'dynamo',
@@ -189,6 +200,7 @@ def write_output(per_category_commits, output_filename, version="X.x.x"):
         'foreach_frontend',
         'onnx',
         'cpp_frontend',
+        'devx',
         'build_frontend',
         'releng',
         'cuda',
@@ -241,6 +253,11 @@ def write_output(per_category_commits, output_filename, version="X.x.x"):
                 loose = any("\n" in r for r in rendered)
                 f.write(("\n\n" if loose else "\n").join(rendered))
                 f.write("\n\n")
+
+        # Module blocks are separated by a blank line, but the completed file
+        # should end with one newline rather than an additional blank line.
+        f.seek(f.tell() - 1)
+        f.truncate()
 
 
 def main(args):
