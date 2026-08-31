@@ -95,6 +95,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - c10/util/ArrayRef.h: specialize std::ranges::enable_borrowed_range ([#186635](https://github.com/pytorch/pytorch/pull/186635))
 ### Untopiced
 ### not user facing
+- Update the bundled protobuf dependency to v21.12 and adjust its CMake compatibility patch ([#188927](https://github.com/pytorch/pytorch/pull/188927))
+- Add and subsequently revert a `std::latch` rewrite of native parallel waiting, leaving only its regression-test coverage ([#188981](https://github.com/pytorch/pytorch/pull/188981), [#189204](https://github.com/pytorch/pytorch/pull/189204))
 - Correct spelling in C++ frontend and DTensor comments and docstrings without changing behavior ([#190434](https://github.com/pytorch/pytorch/pull/190434))
 - Fix "a/an" article typos in code comments ([#190600](https://github.com/pytorch/pytorch/pull/190600))
 - torch/headeronly/core/TensorAccessor.h: replace typedef with using ([#185956](https://github.com/pytorch/pytorch/pull/185956))

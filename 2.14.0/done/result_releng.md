@@ -84,6 +84,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 - Migrated the build system from setuptools to scikit-build-core ([#180247](https://github.com/pytorch/pytorch/pull/180247))
 ### not user facing
+- Update GitPython used by `.ci/lumen_cli` from 3.1.54 to 3.1.58 ([#192537](https://github.com/pytorch/pytorch/pull/192537))
 - [ROCm] Bundle librocm_smi64.so for ROCm <= 7.2 wheels ([#191450](https://github.com/pytorch/pytorch/pull/191450))
 - [CD] Add CUDA 13.4rc1 x86 and sbsa binaries ([#192256](https://github.com/pytorch/pytorch/pull/192256))
 - Stop building/publishing Windows libtorch debug binaries ([#187352](https://github.com/pytorch/pytorch/pull/187352))
@@ -142,7 +143,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Drop DistillGPT2 from A100 inductor perf-smoketest warm-start accuracy check ([#188750](https://github.com/pytorch/pytorch/pull/188750))
 - Enable fabric-handle P2P IPC tests on a dedicated H100 fabric CI runner ([#191280](https://github.com/pytorch/pytorch/pull/191280))
 - Extend single-GPU distributed test split (#189232) to ROCm ([#189874](https://github.com/pytorch/pytorch/pull/189874))
-- Fetch tags in unified manywheel build job so release tags are detected (ce9267a4585)
 - Fix H100 FA3 ci ([#189498](https://github.com/pytorch/pytorch/pull/189498))
 - Fix QuACK vendoring source and patch split ([#186944](https://github.com/pytorch/pytorch/pull/186944))
 - Fix TSan concurrency group so new PR pushes cancel in-progress runs ([#189587](https://github.com/pytorch/pytorch/pull/189587))

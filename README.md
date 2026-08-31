@@ -18,4 +18,31 @@ For those editing release notes, you can use the Claude skill `gen-release-notes
 
 For the release manager, the runbook is located [here](https://docs.google.com/document/d/1sb1XuMOUf5gj-7GEp_bId5VP47pqHXCw796iogPFuGM/edit?tab=t.0). The scripts for generating all the relevant artifacts are in https://github.com/pytorch/pytorch/tree/main/scripts/release_notes, or you can try using the `gen-commitlist` Claude skill.
 
+## Audit release-branch coverage
+
+Use `scripts/check_release_branch_coverage.py` to compare the effective commits
+on a PyTorch release branch with the PRs and commit hashes referenced by this
+repository's worksheets, miscategorized list, and cherry-pick file:
+
+```bash
+python3 scripts/check_release_branch_coverage.py 2.14.0 \
+  --pytorch-repo ../pytorch
+```
+
+By default, `2.14.0` compares `v2.13.0` with `origin/release/2.14`. Pass
+`--base-ref` or `--release-ref` to override those refs, and `--fetch` to refresh
+the remote release branch first. Patches already present in the base release
+(for example, changes cherry-picked into 2.13) are identified with `git cherry`
+and canonical PR metadata, then excluded from the 2.14 coverage requirement.
+The PR fallback catches conflict-resolved and combined backports whose patch IDs
+do not match exactly.
+
+The report highlights both sides of the set difference, references to changes
+canceled by reverts, repeated references to base-release changes, and reverts
+whose targets sit outside the comparison range. It exits nonzero for missing
+effective commits or user-facing references to reverted/base-release changes;
+`--strict` also treats note-only PR references as failures.
+
+Use `--json` for machine-readable output.
+
 This repo is BSD-3 licensed, see LICENSE for details.

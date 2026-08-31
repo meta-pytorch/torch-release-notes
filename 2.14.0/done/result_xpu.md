@@ -69,10 +69,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix compiled `multi_margin_loss` with weights on XPU by using one-dimensional indexing in its decomposition ([#188770](https://github.com/pytorch/pytorch/pull/188770))
 - Fix empty tensors in `addmv` on XPU ([#174193](https://github.com/pytorch/pytorch/pull/174193))
 - Fix OneDNN SDPA with GQA and a broadcasted mask on XPU ([#190503](https://github.com/pytorch/pytorch/pull/190503))
-- Fix LSTM oneDNN integration to support bf16 bias and cell state on XPU ([#187334](https://github.com/pytorch/pytorch/pull/187334))
 - Fix `max_unpool2d` channels-last stride mismatch on XPU ([#190189](https://github.com/pytorch/pytorch/pull/190189))
 - Fix `bmm_outer_product` Triton override to support XPU tensors ([#188783](https://github.com/pytorch/pytorch/pull/188783))
-- Fix a missing header include causing AOTI XPU compile failures ([#187137](https://github.com/pytorch/pytorch/pull/187137))
+- Raise `RuntimeError` instead of crashing when XPU cannot allocate a pinned host-memory buffer ([#189681](https://github.com/pytorch/pytorch/pull/189681))
 - Route `GPU_USER_ANNOTATION` kineto profiler events to `DeviceType::XPU` ([#191841](https://github.com/pytorch/pytorch/pull/191841))
 
 ### performance
@@ -83,9 +82,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ### devs
 - Migrate XPU ATen operator registrations into PyTorch's `native_functions.yaml`, consolidating code generation into a single build step ([#181233](https://github.com/pytorch/pytorch/pull/181233))
+- Align XPU internals with the oneAPI 2026 toolchain by removing pre-2026 SYCL compiler fallbacks ([#191470](https://github.com/pytorch/pytorch/pull/191470))
+- Move the XPU C++ memory-pool implementation from `c10::xpu::MemPool` to `at::xpu::MemPool`; the Python `torch.xpu.MemPool` API is unchanged ([#192032](https://github.com/pytorch/pytorch/pull/192032))
 - Upgrade the bundled oneDNN submodule to v3.12.3, enabling SYCL Graph record/replay support on Intel GPUs ([#188785](https://github.com/pytorch/pytorch/pull/188785))
 
 ### not user facing
+- Add defensive virtual-memory alignment and reservation checks to XPU expandable segments ([#188148](https://github.com/pytorch/pytorch/pull/188148))
 - Skip the copy-on-write `histogramdd` test on XPU because its prerequisite operator is unavailable ([#174670](https://github.com/pytorch/pytorch/pull/174670))
 - Relax tolerances for nondeterministic XPU convolution and histogram tests without changing operator behavior ([#177069](https://github.com/pytorch/pytorch/pull/177069))
 ### security

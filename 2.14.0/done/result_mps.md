@@ -75,7 +75,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `mm` and `addmm` with strided output tensors on macOS 14 and 15 ([#187255](https://github.com/pytorch/pytorch/pull/187255))
 - Respect `storage_offset` when an MPS binary operation consumes a zero-dimensional CPU tensor view ([#187229](https://github.com/pytorch/pytorch/pull/187229))
 - Make MPS `baddbmm` follow its documented behavior by not propagating NaN or infinity from the input when `beta=0` ([#187522](https://github.com/pytorch/pytorch/pull/187522))
-- Fix compiled MPS min/max reductions mishandling negative infinity ([#187541](https://github.com/pytorch/pytorch/pull/187541))
 - Fix MPS linear backward for inputs with more than four dimensions and prevent complex high-rank linear operations from aborting on macOS 27 ([#187379](https://github.com/pytorch/pytorch/pull/187379), [#190352](https://github.com/pytorch/pytorch/pull/190352))
 - Fix BatchNorm backward crashing for channels-last MPS tensors ([#188371](https://github.com/pytorch/pytorch/pull/188371))
 - Fix incorrect MPS Conv2d output when a kernel spatial dimension is at least 256 ([#188359](https://github.com/pytorch/pytorch/pull/188359))
@@ -105,7 +104,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Raise clear unsupported-dtype errors for complex `igamma`/`igammac` and boolean `torch.linalg.cross` inputs on MPS ([#188134](https://github.com/pytorch/pytorch/pull/188134), [#187274](https://github.com/pytorch/pytorch/pull/187274))
 - Prevent intermittent crashes when stopping a Metal capture by draining work from all active MPS streams first ([#191362](https://github.com/pytorch/pytorch/pull/191362))
 ### performance
-- Reduce launch overhead and improve strided-input performance by moving nearest-neighbor upsampling, logical not, index operations, argmin/argmax, and Mish to native Metal kernels ([#186989](https://github.com/pytorch/pytorch/pull/186989), [#187324](https://github.com/pytorch/pytorch/pull/187324), [#187109](https://github.com/pytorch/pytorch/pull/187109), [#187304](https://github.com/pytorch/pytorch/pull/187304), [#187906](https://github.com/pytorch/pytorch/pull/187906))
+- Reduce launch overhead and improve strided-input performance by moving nearest-neighbor upsampling, logical not, index operations, and Mish to native Metal kernels ([#186989](https://github.com/pytorch/pytorch/pull/186989), [#187324](https://github.com/pytorch/pytorch/pull/187324), [#187109](https://github.com/pytorch/pytorch/pull/187109), [#187906](https://github.com/pytorch/pytorch/pull/187906))
 - Speed up `median` and `nanmedian` and avoid large intermediate allocations by using native Metal kernels ([#187060](https://github.com/pytorch/pytorch/pull/187060))
 - Speed up Cholesky factorization with panel factorization and matrix-multiplication trailing updates ([#187022](https://github.com/pytorch/pytorch/pull/187022))
 - Speed up reductions on permuted contiguous inputs ([#187313](https://github.com/pytorch/pytorch/pull/187313))
