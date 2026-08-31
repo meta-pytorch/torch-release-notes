@@ -45,6 +45,26 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## complex_frontend
 ### bc breaking
+- Complex type promotion for `bfloat16` now uses the new `torch.bcomplex32` shell dtype instead of `torch.complex64` ([#186928](https://github.com/pytorch/pytorch/pull/186928))
+
+  `torch.bcomplex32` stores real and imaginary components as `bfloat16`. Operations that combine a `bfloat16` tensor with a complex scalar or otherwise request its corresponding complex type can therefore produce `bcomplex32` instead of `complex64`. Because `bcomplex32` is a shell dtype with limited operator support, an operation that previously ran in `complex64` may now raise a not-implemented error. Explicitly cast to `complex64` when the previous precision or operator coverage is required.
+
+  Version 2.13:
+
+  ```python
+  x = torch.ones(4, dtype=torch.bfloat16)
+  assert torch.result_type(x, 1j) == torch.complex64
+  ```
+
+  Version 2.14:
+
+  ```python
+  x = torch.ones(4, dtype=torch.bfloat16)
+  assert torch.result_type(x, 1j) == torch.bcomplex32
+
+  # Preserve the previous complex64 behavior explicitly.
+  y = x.to(torch.complex64) + 1j
+  ```
 ### deprecation
 ### new features
 ### improvements

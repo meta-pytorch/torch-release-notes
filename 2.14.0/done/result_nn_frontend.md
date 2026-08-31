@@ -66,6 +66,48 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
       input, linear_weight, target, options=options
   )
   ```
+- Dense rank-3 scaled dot-product attention can now select a fused backend instead of always using the math backend ([#192271](https://github.com/pytorch/pytorch/pull/192271))
+
+  Eligible CPU, CUDA/ROCm, and XPU calls are normalized to rank 4 with a singleton batch dimension before backend selection. This can change floating-point numerics, dropout RNG consumption, whether the result is a view, and higher-order-gradient support; fused CUDA backends do not support the second derivatives that the math backend provides. Code that depends on the previous behavior should explicitly select the math backend.
+
+  Version 2.13:
+
+  ```python
+  # Rank-3 inputs selected the math backend automatically.
+  output = torch.nn.functional.scaled_dot_product_attention(query, key, value)
+  ```
+
+  Version 2.14:
+
+  ```python
+  from torch.nn.attention import SDPBackend, sdpa_kernel
+
+  with sdpa_kernel(backends=[SDPBackend.MATH]):
+      output = torch.nn.functional.scaled_dot_product_attention(
+          query, key, value
+      )
+  ```
+- Lp pooling with `norm_type=0` now raises `ValueError`, and module forms validate it during construction ([#187861](https://github.com/pytorch/pytorch/pull/187861))
+
+  `torch.nn.functional.lp_pool1d`, `lp_pool2d`, and `lp_pool3d` previously failed later with `ZeroDivisionError`. `torch.nn.LPPool1d`, `LPPool2d`, and `LPPool3d` also accepted the invalid value at construction and failed only during `forward()`. Use a nonzero norm type; exception-handling code that supports both releases can catch `(ZeroDivisionError, ValueError)` during migration.
+
+  Version 2.13:
+
+  ```python
+  try:
+      torch.nn.functional.lp_pool2d(x, norm_type=0, kernel_size=2)
+  except ZeroDivisionError:
+      handle_invalid_norm_type()
+  ```
+
+  Version 2.14:
+
+  ```python
+  try:
+      torch.nn.functional.lp_pool2d(x, norm_type=0, kernel_size=2)
+  except ValueError:
+      handle_invalid_norm_type()
+  ```
 ### deprecation
 ### new features
 ### improvements
@@ -85,10 +127,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fall back to the ATen CUDA implementation when the fused RMSNorm override's normalized dimension exceeds the device's shared-memory capacity, avoiding compiler hangs or crashes ([#186941](https://github.com/pytorch/pytorch/pull/186941))
 - Reject invalid `dim` types when constructing `torch.nn.Softmax` or `torch.nn.LogSoftmax` instead of failing later during the forward pass with a confusing overload error ([#185055](https://github.com/pytorch/pytorch/pull/185055))
 - Handle misaligned input and weight storage in the fused RMSNorm override instead of raising `Misaligned Tensor data on argument #0` ([#186235](https://github.com/pytorch/pytorch/pull/186235))
-- Reject `norm_type=0` in functional and module Lp pooling APIs with a descriptive `ValueError` instead of a deferred `ZeroDivisionError` ([#187861](https://github.com/pytorch/pytorch/pull/187861))
 - Make CUDA fp16 softmax with `dtype=torch.float32` use the same persistent-kernel range as the fp16-output path, fixing rounding inconsistencies for dimensions between 1025 and 2048 ([#188247](https://github.com/pytorch/pytorch/pull/188247))
 ### performance
-- Enable eligible fused scaled dot-product attention backends for dense rank-3 inputs on CPU, CUDA/ROCm, and XPU instead of falling back to the math implementation ([#192271](https://github.com/pytorch/pytorch/pull/192271))
 - Avoid materializing zero-filled gradients for unused outputs of chunked `linear_cross_entropy`, substantially reducing backward peak memory ([#187219](https://github.com/pytorch/pytorch/pull/187219))
 - Use faster factor-one automatic chunking for `linear_cross_entropy` while capping chunk size so peak memory stays at or below the unchunked implementation ([#187838](https://github.com/pytorch/pytorch/pull/187838))
 - Avoid materializing copy-on-write tensors while the fused RMSNorm override checks input and weight alignment ([#189202](https://github.com/pytorch/pytorch/pull/189202))

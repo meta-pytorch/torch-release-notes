@@ -74,6 +74,22 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
         run_workload()
     ```
 
+- `key_averages()` now excludes Python function events by default ([#188631](https://github.com/pytorch/pytorch/pull/188631))
+
+    Calls to `torch.profiler.profile(...).key_averages()` and `torch.autograd.profiler.profile(...).key_averages()` no longer include individual Python frames such as `threading.py: wait` unless requested. Pass `include_python_functions=True` when code that consumes profiler summaries relies on those rows.
+
+    Version 2.13:
+
+    ```python
+    averages = prof.key_averages()  # Included Python function events.
+    ```
+
+    Version 2.14:
+
+    ```python
+    averages = prof.key_averages(include_python_functions=True)
+    ```
+
 ### deprecation
 - The experimental `profiler_metrics` and `profiler_measure_per_kernel` options no longer enable CUPTI range profiling and now emit a `FutureWarning` when supplied ([#187204](https://github.com/pytorch/pytorch/pull/187204))
 
@@ -125,7 +141,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - XPU profiling now records `OVERHEAD` activities, making the profiler's own collection cost visible on a dedicated track in exported traces ([#187835](https://github.com/pytorch/pytorch/pull/187835))
 
 ### bug fixes
-- `key_averages()` now excludes individual Python function events by default so frames such as `threading.py: wait` do not obscure operator-level hotspots; pass `include_python_functions=True` to retain the previous view ([#188631](https://github.com/pytorch/pytorch/pull/188631))
 - Clamp incomplete Python function events to their parent event's end time so exported traces retain correct nesting instead of placing overrunning events on unrelated tracks ([#190950](https://github.com/pytorch/pytorch/pull/190950))
 - Avoid importing the experimental CUPTI monitor during ordinary `record_function` profiling, preventing repeated warnings and tracebacks on systems with incompatible `cupti-python` versions ([#187874](https://github.com/pytorch/pytorch/pull/187874))
 - Fix reference leaks when reading the `layout` and `dtype` properties of profiler tensor metadata ([#187068](https://github.com/pytorch/pytorch/pull/187068))

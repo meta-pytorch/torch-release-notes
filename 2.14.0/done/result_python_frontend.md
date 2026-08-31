@@ -76,4 +76,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Correct boolean `randint` sample generation in OpInfo tests ([#192347](https://github.com/pytorch/pytorch/pull/192347))
 ### security
 - Validate native Sobol-engine tensor shapes and sequence bounds before indexing direction-number tables ([#191198](https://github.com/pytorch/pytorch/pull/191198))
-- Type-check operands in stream comparisons instead of interpreting arbitrary Python objects as stream instances ([#192523](https://github.com/pytorch/pytorch/pull/192523))
+- Make stream comparisons with non-stream objects safe and Python-consistent: equality returns `False`, `stream != None` now returns `True` instead of `False`, and ordering comparisons raise `TypeError` instead of returning `False` ([#192523](https://github.com/pytorch/pytorch/pull/192523))

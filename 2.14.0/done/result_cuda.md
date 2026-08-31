@@ -45,10 +45,54 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## cuda
 ### bc breaking
-### deprecation
-- Deprecate `CUDAGraph.register_generator_state()`; CUDA graphs now register generator state lazily on first RNG use during capture ([#176753](https://github.com/pytorch/pytorch/pull/176753))
+- CUDA Green Contexts now require the `cuda-bindings` package, and the C++ `at::cuda::GreenContext` API has been removed ([#185527](https://github.com/pytorch/pytorch/pull/185527))
 
-  The method is now a no-op and emits a deprecation warning. Remove explicit registration calls; the graph automatically retains the required state when the generator is used during capture.
+  The experimental Python `torch.cuda.green_contexts.GreenContext` API is now implemented with CUDA Python. Constructing or querying a green context without `cuda-bindings` raises `RuntimeError: GreenContext requires the cuda.bindings package`. Install that package before using the Python API; the existing `GreenContext.create()` factory remains available as a compatibility wrapper. C++ code that included `<ATen/cuda/CUDAGreenContext.h>` must instead use the CUDA Driver API directly; there is no replacement LibTorch class.
+
+  Version 2.13:
+
+  ```python
+  ctx = torch.cuda.green_contexts.GreenContext.create(num_sms=8)
+  ```
+
+  Version 2.14:
+
+  ```bash
+  python -m pip install cuda-bindings
+  ```
+
+  ```python
+  ctx = torch.cuda.green_contexts.GreenContext.create(num_sms=8)
+  ```
+- `CUDAGraph` debug mode is now per instance, defers instantiation, and requires `cuda-bindings` for `debug_dump()` ([#187749](https://github.com/pytorch/pytorch/pull/187749))
+
+  Calling `enable_debug_mode()` now retains only that graph's capture template, like constructing it with `keep_graph=True`; it no longer sets a process-wide flag. Because retained graphs are not instantiated at `capture_end()`, call `instantiate()` before accessing `raw_cuda_graph_exec()` if replay has not already instantiated the graph. Direct users of the split capture API must also call `instantiate()` before `capture_end_post()` when `keep_graph=False`, because `capture_end_post()` is now destroy-only. The Python `debug_dump()` implementation now uses `cuda-bindings`, and the C++ `CUDAGraph::debug_dump` method has been removed. For a one-time dump without retaining the template, register `torch.cuda.export_dot(path)` with `register_capture_end_hook()` before capture.
+
+  Version 2.13:
+
+  ```python
+  graph = torch.cuda.CUDAGraph()
+  graph.enable_debug_mode()
+  with torch.cuda.graph(graph):
+      captured_work()
+  exec_handle = graph.raw_cuda_graph_exec()
+  graph.debug_dump("graph.dot")
+  ```
+
+  Version 2.14:
+
+  ```python
+  # Requires: python -m pip install cuda-bindings
+  graph = torch.cuda.CUDAGraph(keep_graph=True)
+  with torch.cuda.graph(graph):
+      captured_work()
+  graph.debug_dump("graph.dot")
+  graph.instantiate()
+  exec_handle = graph.raw_cuda_graph_exec()
+  ```
+- Deprecate Python `CUDAGraph.register_generator_state()` and remove its C++ overload; CUDA graphs now register generator state lazily on first RNG use during capture ([#176753](https://github.com/pytorch/pytorch/pull/176753))
+
+  The Python method is now a no-op and emits a deprecation warning. The C++ `at::cuda::CUDAGraph::register_generator_state(const at::Generator&)` overload has been removed. Remove explicit registration calls in both languages; the graph automatically retains the required state when the generator is first used during capture.
 
   Before:
 
@@ -72,6 +116,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
       generator.graphsafe_set_state(state)
       output = torch.rand(16, device="cuda", generator=generator)
   ```
+### deprecation
 - Deprecate `GreenContext.set_context()` and `GreenContext.pop_context()`; use custom streams to activate a green context instead ([#188419](https://github.com/pytorch/pytorch/pull/188419))
 
   These methods now emit a `FutureWarning`. Create a stream from the green context and use it with `torch.cuda.stream()` instead. Synchronization with streams outside the green context remains the caller's responsibility and should use CUDA events when needed.
@@ -112,8 +157,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 - Add CUDA compute capability 10.7 (`sm_107`) awareness for NVIDIA Rubin GPUs with CUDA 13.4 or newer in extension builds and Inductor code generation ([#190654](https://github.com/pytorch/pytorch/pull/190654))
 - Update CUDA compatibility checks for Jetson devices using SBSA binaries with CUDA 13.2 or newer ([#186285](https://github.com/pytorch/pytorch/pull/186285))
-- Move green contexts to cuda-python bindings ([#185527](https://github.com/pytorch/pytorch/pull/185527))
-- Unify the `CUDAGraph` debug flag, move `debug_dump` to Python, and add capture hooks ([#187749](https://github.com/pytorch/pytorch/pull/187749))
 - Trim the `cudaMallocAsync` pool and retry once before raising an out-of-memory error ([#188110](https://github.com/pytorch/pytorch/pull/188110))
 - Improve CUDA errors by including excerpts from CUDA logs ([#191334](https://github.com/pytorch/pytorch/pull/191334))
 - Add half and bfloat16 support to `torch.angle` on CUDA ([#191301](https://github.com/pytorch/pytorch/pull/191301))
