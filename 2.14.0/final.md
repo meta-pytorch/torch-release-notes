@@ -13,7 +13,16 @@
 
 # Highlights
 
-TODO
+<table>
+  <tr><td>NVGEMM brings CuTeDSL-generated CUTLASS kernels to Inductor, with epilogue fusion, scaled and NVFP4 GEMM, and grouped-reduction epilogues autotuned alongside Triton and ATen</td></tr>
+  <tr><td>A new nccl2 backend for PyTorch Distributed, ported from torchcomms, implementing the full collective contract with nonblocking communicators and eager communicator splitting</td></tr>
+  <tr><td>Fault tolerance becomes a first-class c10d concept, with in-place process-group reconfiguration, one-sided RMA windows, and a Flight Recorder that works for any backend rather than only NCCL</td></tr>
+  <tr><td>Apple Silicon gains native linear algebra, including Jacobi-kernel SVD, eigh, QR and Cholesky, alongside a five-part reduction rewrite and a further MPSGraph to Metal kernel migration</td></tr>
+  <tr><td>torch.switch generalizes torch.cond to multi-way branching, and torch.while_loop can now be captured in a CUDA graph</td></tr>
+  <tr><td>Declarative dynamic shapes via @dynamic_spec, shared across torch.compile, torch.export and make_fx</td></tr>
+  <tr><td>Broader platform support: ROCm 7.14 wheels are produced from the TheRock pip SDK, Intel XPU adds native graph capture, and Inductor targets Rubin (sm_107)</td></tr>
+  <tr><td>Experimental torch.compile support for complex-valued tensors: Opt-in support decomposes supported complex operations into real and imaginary computations, enabling compiler backends to optimize more complex-number workloads.</td></tr>
+</table>
 
 For more details about these highlighted features, you can look at the release blogpost. Below are the full release notes for this release.
 
