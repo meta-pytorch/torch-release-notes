@@ -335,7 +335,7 @@ For more details about these highlighted features, you can look at the release b
       c10::isIntegralType(dtype, /*includeBool=*/false);
   ```
 
-## Release Engineering
+## Build
 
 - Source builds with CUDA now require CUDA 12.6 or newer ([#192257](https://github.com/pytorch/pytorch/pull/192257))
 
