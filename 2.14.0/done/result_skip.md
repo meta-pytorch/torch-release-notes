@@ -323,6 +323,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Dynamo] Skip guards on unused constant ops ([#189642](https://github.com/pytorch/pytorch/pull/189642))
 - [c10d] Add a backend-agnostic NaN check hook ([#191064](https://github.com/pytorch/pytorch/pull/191064))
 - [c10d][nccl2] Add collective timing and work sequence numbers ([#191065](https://github.com/pytorch/pytorch/pull/191065))
+- [c10d] Rename gather_into_tensor to gather_single ([#191073](https://github.com/pytorch/pytorch/pull/191073))
 - [c10d][nccl2] Implement gather_single ([#191067](https://github.com/pytorch/pytorch/pull/191067))
 - [c10d][nccl2] Make NCCL communicator config configurable from Python ([#191068](https://github.com/pytorch/pytorch/pull/191068))
 - Revert "[xpu] Add IPC memory handle sharing support to XPUCachingAllocator (12b544364a5)
