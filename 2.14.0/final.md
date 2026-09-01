@@ -259,63 +259,6 @@ For more details about these highlighted features, you can look at the release b
 
 ## C++ Frontend
 
-- C++ extensions and LibTorch applications must now compile as C++20 or newer ([#178150](https://github.com/pytorch/pytorch/pull/178150))
-
-  PyTorch's public ATen and C++ frontend headers now reject pre-C++20 language modes. On non-MSVC compilers, including `<ATen/ATen.h>` or `<torch/torch.h>` with C++17 produces `C++20 or later compatible compiler is required to use ATen.` or the equivalent PyTorch message. Update the consuming build to request C++20.
-
-  Version 2.13:
-
-  ```cmake
-  set(CMAKE_CXX_STANDARD 17)
-  find_package(Torch REQUIRED)
-  ```
-
-  Version 2.14:
-
-  ```cmake
-  set(CMAKE_CXX_STANDARD 20)
-  find_package(Torch REQUIRED)
-  ```
-
-- Remove the deprecated C++ method `at::Tensor::is_variable()` ([#187136](https://github.com/pytorch/pytorch/pull/187136))
-
-  All tensors have used Variable semantics for several releases, so callers should remove checks of `tensor.is_variable()`. Code that was specifically checking whether Variable dispatch had already been excluded can query `at::impl::variable_excluded_from_dispatch()` instead.
-
-  Version 2.13:
-
-  ```cpp
-  if (tensor.is_variable()) {
-    use_tensor(tensor);
-  }
-  ```
-
-  Version 2.14:
-
-  ```cpp
-  // Every Tensor has Variable semantics.
-  use_tensor(tensor);
-  ```
-
-- Remove the `c10/util/Array.h` header and `c10::array_of()` helper ([#186790](https://github.com/pytorch/pytorch/pull/186790))
-
-  C++ extensions that include this header or call `c10::array_of()` will no longer compile. Since PyTorch now requires C++20, use the standard `<array>` header and `std::to_array()` instead.
-
-  Version 2.13:
-
-  ```cpp
-  #include <c10/util/Array.h>
-
-  constexpr auto values = c10::array_of<int>(1, 2, 3);
-  ```
-
-  Version 2.14:
-
-  ```cpp
-  #include <array>
-
-  constexpr auto values = std::to_array<int>({1, 2, 3});
-  ```
-
 - Remove the deprecated zero-argument C++ overloads `c10::Scalar::isIntegral()` and `c10::isIntegralType(ScalarType)` ([#187115](https://github.com/pytorch/pytorch/pull/187115))
 
   Code that calls either overload without specifying whether Boolean values count as integral will no longer compile. Pass `includeBool` explicitly; use `false` to preserve the removed overloads' behavior.
@@ -390,82 +333,6 @@ For more details about these highlighted features, you can look at the release b
   python -m build --wheel --no-isolation
   ```
 
-## CUDA
-
-- CUDA Green Contexts now require the `cuda-bindings` package, and the C++ `at::cuda::GreenContext` API has been removed ([#185527](https://github.com/pytorch/pytorch/pull/185527))
-
-  The experimental Python `torch.cuda.green_contexts.GreenContext` API is now implemented with CUDA Python. Constructing or querying a green context without `cuda-bindings` raises `RuntimeError: GreenContext requires the cuda.bindings package`. Install that package before using the Python API; the existing `GreenContext.create()` factory remains available as a compatibility wrapper. C++ code that included `<ATen/cuda/CUDAGreenContext.h>` must instead use the CUDA Driver API directly; there is no replacement LibTorch class.
-
-  Version 2.13:
-
-  ```python
-  ctx = torch.cuda.green_contexts.GreenContext.create(num_sms=8)
-  ```
-
-  Version 2.14:
-
-  ```bash
-  python -m pip install cuda-bindings
-  ```
-
-  ```python
-  ctx = torch.cuda.green_contexts.GreenContext.create(num_sms=8)
-  ```
-
-- `CUDAGraph` debug mode is now per instance, defers instantiation, and requires `cuda-bindings` for `debug_dump()` ([#187749](https://github.com/pytorch/pytorch/pull/187749))
-
-  Calling `enable_debug_mode()` now retains only that graph's capture template, like constructing it with `keep_graph=True`; it no longer sets a process-wide flag. Because retained graphs are not instantiated at `capture_end()`, call `instantiate()` before accessing `raw_cuda_graph_exec()` if replay has not already instantiated the graph. Direct users of the split capture API must also call `instantiate()` before `capture_end_post()` when `keep_graph=False`, because `capture_end_post()` is now destroy-only. The Python `debug_dump()` implementation now uses `cuda-bindings`, and the C++ `CUDAGraph::debug_dump` method has been removed. For a one-time dump without retaining the template, register `torch.cuda.export_dot(path)` with `register_capture_end_hook()` before capture.
-
-  Version 2.13:
-
-  ```python
-  graph = torch.cuda.CUDAGraph()
-  graph.enable_debug_mode()
-  with torch.cuda.graph(graph):
-      captured_work()
-  exec_handle = graph.raw_cuda_graph_exec()
-  graph.debug_dump("graph.dot")
-  ```
-
-  Version 2.14:
-
-  ```python
-  # Requires: python -m pip install cuda-bindings
-  graph = torch.cuda.CUDAGraph(keep_graph=True)
-  with torch.cuda.graph(graph):
-      captured_work()
-  graph.debug_dump("graph.dot")
-  graph.instantiate()
-  exec_handle = graph.raw_cuda_graph_exec()
-  ```
-
-- Deprecate Python `CUDAGraph.register_generator_state()` and remove its C++ overload; CUDA graphs now register generator state lazily on first RNG use during capture ([#176753](https://github.com/pytorch/pytorch/pull/176753))
-
-  The Python method is now a no-op and emits a deprecation warning. The C++ `at::cuda::CUDAGraph::register_generator_state(const at::Generator&)` overload has been removed. Remove explicit registration calls in both languages; the graph automatically retains the required state when the generator is first used during capture.
-
-  Before:
-
-  ```python
-  graph = torch.cuda.CUDAGraph()
-  state = generator.graphsafe_get_state()
-  graph.register_generator_state(state)
-
-  with torch.cuda.graph(graph):
-      generator.graphsafe_set_state(state)
-      output = torch.rand(16, device="cuda", generator=generator)
-  ```
-
-  After:
-
-  ```python
-  graph = torch.cuda.CUDAGraph()
-  state = generator.graphsafe_get_state()
-
-  with torch.cuda.graph(graph):
-      generator.graphsafe_set_state(state)
-      output = torch.rand(16, device="cuda", generator=generator)
-  ```
-
 ## MPS
 
 - The C++ MPS macOS-version helper and its enum members have been renamed ([#188645](https://github.com/pytorch/pytorch/pull/188645))
@@ -484,44 +351,6 @@ For more details about these highlighted features, you can look at the release b
   ```cpp
   const bool supported = at::mps::is_macos_at_least(
       at::mps::MacOSVersion::MACOS_15_0);
-  ```
-
-## XPU
-
-- The XPU C++ memory-pool class has moved from `c10::xpu::MemPool` to `at::xpu::MemPool` ([#192032](https://github.com/pytorch/pytorch/pull/192032))
-
-  C++ code that constructs an XPU memory pool must include its new ATen header and use the new namespace. The Python `torch.xpu.MemPool` API is unchanged.
-
-  Version 2.13:
-
-  ```cpp
-  #include <c10/xpu/XPUCachingAllocator.h>
-  c10::xpu::MemPool pool;
-  ```
-
-  Version 2.14:
-
-  ```cpp
-  #include <ATen/xpu/MemPool.h>
-  at::xpu::MemPool pool;
-  ```
-
-- XPU source builds no longer support pre-2026 SYCL compilers ([#191470](https://github.com/pytorch/pytorch/pull/191470))
-
-  PyTorch now uses 2026 SYCL APIs such as `sycl::aspect::ext_oneapi_is_integrated_gpu` without the older compiler fallback. A source build using a 2025.x or earlier oneAPI compiler may therefore fail to compile. Activate a oneAPI 2026.x or newer toolchain before configuring the build; PyTorch's packaged XPU stack uses oneAPI 2026.1.
-
-  Version 2.13 source build:
-
-  ```bash
-  icpx --version  # A pre-2026 compiler could still use fallback code.
-  python -m pip install . --no-build-isolation
-  ```
-
-  Version 2.14 source build:
-
-  ```bash
-  icpx --version  # Must report a 2026.x or newer compiler.
-  python -m pip install . --no-build-isolation
   ```
 
 ## Complex Frontend
@@ -600,28 +429,6 @@ For more details about these highlighted features, you can look at the release b
   torch.compiler.config.compile_on_one_rank = True
   ```
 
-## Distributed (c10d)
-
-- Use `torch.distributed.gather_single()` instead of `torch.distributed.gather_into_tensor()` ([#191073](https://github.com/pytorch/pytorch/pull/191073))
-
-  `gather_into_tensor()` remains as a forwarding alias with the same arguments, but now emits a `FutureWarning`. The corresponding C++ `Backend` and `ProcessGroup` collective is also named `gather_single`; custom backends should implement the new name.
-
-  Before:
-
-  ```python
-  torch.distributed.gather_into_tensor(
-      input_tensor, output_tensor, dst=0
-  )
-  ```
-
-  After:
-
-  ```python
-  torch.distributed.gather_single(
-      input_tensor, output_tensor, dst=0
-  )
-  ```
-
 ## Profiler
 
 - The experimental `profiler_metrics` and `profiler_measure_per_kernel` options no longer enable CUPTI range profiling and now emit a `FutureWarning` when set to a non-default value ([#187204](https://github.com/pytorch/pytorch/pull/187204))
@@ -681,6 +488,33 @@ For more details about these highlighted features, you can look at the release b
   ```
 
 ## CUDA
+
+- Deprecate `CUDAGraph.register_generator_state()`; CUDA graphs now register generator state lazily on first RNG use during capture ([#176753](https://github.com/pytorch/pytorch/pull/176753))
+
+  The method is now a no-op and emits a deprecation warning. Remove explicit registration calls; the graph automatically retains the required state when the generator is used during capture.
+
+  Before:
+
+  ```python
+  graph = torch.cuda.CUDAGraph()
+  state = generator.graphsafe_get_state()
+  graph.register_generator_state(state)
+
+  with torch.cuda.graph(graph):
+      generator.graphsafe_set_state(state)
+      output = torch.rand(16, device="cuda", generator=generator)
+  ```
+
+  After:
+
+  ```python
+  graph = torch.cuda.CUDAGraph()
+  state = generator.graphsafe_get_state()
+
+  with torch.cuda.graph(graph):
+      generator.graphsafe_set_state(state)
+      output = torch.rand(16, device="cuda", generator=generator)
+  ```
 
 - Deprecate `GreenContext.set_context()` and `GreenContext.pop_context()`; use custom streams to activate a green context instead ([#188419](https://github.com/pytorch/pytorch/pull/188419))
 
@@ -1062,6 +896,8 @@ For more details about these highlighted features, you can look at the release b
 
 - Add CUDA compute capability 10.7 (`sm_107`) awareness for NVIDIA Rubin GPUs with CUDA 13.4 or newer in extension builds and Inductor code generation ([#190654](https://github.com/pytorch/pytorch/pull/190654))
 - Update CUDA compatibility checks for Jetson devices using SBSA binaries with CUDA 13.2 or newer ([#186285](https://github.com/pytorch/pytorch/pull/186285))
+- Move green contexts to cuda-python bindings ([#185527](https://github.com/pytorch/pytorch/pull/185527))
+- Unify the `CUDAGraph` debug flag, move `debug_dump` to Python, and add capture hooks ([#187749](https://github.com/pytorch/pytorch/pull/187749))
 - Trim the `cudaMallocAsync` pool and retry once before raising an out-of-memory error ([#188110](https://github.com/pytorch/pytorch/pull/188110))
 - Improve CUDA errors by including excerpts from CUDA logs ([#191334](https://github.com/pytorch/pytorch/pull/191334))
 - Add `torch.float16` and `torch.bfloat16` support to `torch.angle` on CUDA ([#191301](https://github.com/pytorch/pytorch/pull/191301))
@@ -2007,6 +1843,7 @@ For more details about these highlighted features, you can look at the release b
 ## C++ Frontend
 
 - Add the compiler-portable `C10_LIFETIMEBOUND` annotation and apply it to borrowing constructors and accessors in `c10::OptionalArrayRef`, `c10::MaybeOwned`, `c10::TensorAccessor`, `at::TensorRef`, and `at::OptionalTensorRef`, allowing Clang to diagnose dangling references ([#190076](https://github.com/pytorch/pytorch/pull/190076), [#190077](https://github.com/pytorch/pytorch/pull/190077), [#190075](https://github.com/pytorch/pytorch/pull/190075), [#190074](https://github.com/pytorch/pytorch/pull/190074), [#189912](https://github.com/pytorch/pytorch/pull/189912))
+- Enforce C++20 minimum in header guards (#178150) ([#178150](https://github.com/pytorch/pytorch/pull/178150))
 - Add strict, integer-only `c10::safe_conv` and wrapping `c10::unsafe_wrapping_convert` ([#190092](https://github.com/pytorch/pytorch/pull/190092))
 - Specialize `std::ranges::enable_borrowed_range` for `c10::ArrayRef` ([#186635](https://github.com/pytorch/pytorch/pull/186635))
 
@@ -2038,6 +1875,8 @@ For more details about these highlighted features, you can look at the release b
 ## XPU
 
 - Migrate XPU ATen operator registrations into PyTorch's `native_functions.yaml`, consolidating code generation into a single build step ([#181233](https://github.com/pytorch/pytorch/pull/181233))
+- Align XPU internals with the oneAPI 2026 toolchain by removing pre-2026 SYCL compiler fallbacks ([#191470](https://github.com/pytorch/pytorch/pull/191470))
+- Move the XPU C++ memory-pool implementation from `c10::xpu::MemPool` to `at::xpu::MemPool`; the Python `torch.xpu.MemPool` API is unchanged ([#192032](https://github.com/pytorch/pytorch/pull/192032))
 - Upgrade the bundled oneDNN submodule to v3.12.3, enabling SYCL graph record/replay support on Intel GPUs ([#188785](https://github.com/pytorch/pytorch/pull/188785))
 
 ## Caffe2

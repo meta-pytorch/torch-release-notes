@@ -44,40 +44,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## xpu
 ### bc breaking
-- The XPU C++ memory-pool class has moved from `c10::xpu::MemPool` to `at::xpu::MemPool` ([#192032](https://github.com/pytorch/pytorch/pull/192032))
-
-  C++ code that constructs an XPU memory pool must include its new ATen header and use the new namespace. The Python `torch.xpu.MemPool` API is unchanged.
-
-  Version 2.13:
-
-  ```cpp
-  #include <c10/xpu/XPUCachingAllocator.h>
-  c10::xpu::MemPool pool;
-  ```
-
-  Version 2.14:
-
-  ```cpp
-  #include <ATen/xpu/MemPool.h>
-  at::xpu::MemPool pool;
-  ```
-- XPU source builds no longer support pre-2026 SYCL compilers ([#191470](https://github.com/pytorch/pytorch/pull/191470))
-
-  PyTorch now uses 2026 SYCL APIs such as `sycl::aspect::ext_oneapi_is_integrated_gpu` without the older compiler fallback. A source build using a 2025.x or earlier oneAPI compiler may therefore fail to compile. Activate a oneAPI 2026.x toolchain before configuring the build; PyTorch's packaged XPU stack uses oneAPI 2026.1.
-
-  Version 2.13 source build:
-
-  ```bash
-  icpx --version  # A pre-2026 compiler could still use fallback code.
-  python -m pip install . --no-build-isolation
-  ```
-
-  Version 2.14 source build:
-
-  ```bash
-  icpx --version  # Must report a 2026.x compiler.
-  python -m pip install . --no-build-isolation
-  ```
 ### deprecation
 ### new features
 - Add FP8 blockwise scaling support for MXFP8/MXFP4/NVFP4 recipes to `scaled_mm`/`_scaled_mm_v2` on XPU ([#181726](https://github.com/pytorch/pytorch/pull/181726), [#181727](https://github.com/pytorch/pytorch/pull/181727), [#187315](https://github.com/pytorch/pytorch/pull/187315))
@@ -116,6 +82,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ### devs
 - Migrate XPU ATen operator registrations into PyTorch's `native_functions.yaml`, consolidating code generation into a single build step ([#181233](https://github.com/pytorch/pytorch/pull/181233))
+- Align XPU internals with the oneAPI 2026 toolchain by removing pre-2026 SYCL compiler fallbacks ([#191470](https://github.com/pytorch/pytorch/pull/191470))
+- Move the XPU C++ memory-pool implementation from `c10::xpu::MemPool` to `at::xpu::MemPool`; the Python `torch.xpu.MemPool` API is unchanged ([#192032](https://github.com/pytorch/pytorch/pull/192032))
 - Upgrade the bundled oneDNN submodule to v3.12.3, enabling SYCL Graph record/replay support on Intel GPUs ([#188785](https://github.com/pytorch/pytorch/pull/188785))
 
 ### not user facing
