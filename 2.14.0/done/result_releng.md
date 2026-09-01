@@ -45,37 +45,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## releng
 ### bc breaking
-- Source builds with CUDA now require CUDA 12.6 or newer ([#192257](https://github.com/pytorch/pytorch/pull/192257))
-
-  The minimum supported CUDA toolkit for building PyTorch has increased from 12.1 to 12.6. Configuring a source build with CUDA 12.1 through 12.5 now fails with `PyTorch requires CUDA 12.6 or above.` Upgrade the selected toolkit, or build without CUDA.
-
-  Version 2.13:
-
-  ```bash
-  CUDA_HOME=/usr/local/cuda-12.1 python -m pip install . --no-build-isolation
-  ```
-
-  Version 2.14:
-
-  ```bash
-  CUDA_HOME=/usr/local/cuda-12.6 python -m pip install . --no-build-isolation
-  ```
-- Prebuilt Windows LibTorch debug binaries are no longer published ([#187352](https://github.com/pytorch/pytorch/pull/187352))
-
-  The separately built Debug archives for Windows x86-64 and Windows Arm64 have been discontinued. Windows wheels and release-mode LibTorch binaries remain available. Projects that require a Debug LibTorch build must build it from a PyTorch source checkout.
-
-  Version 2.13:
-
-  ```powershell
-  # A prebuilt Windows LibTorch Debug archive was available.
-  ```
-
-  Version 2.14:
-
-  ```powershell
-  $env:DEBUG = "1"
-  python tools/build_libtorch.py
-  ```
 - PyTorch now builds from source with scikit-build-core: build it through pip or `python -m build` ([#180248](https://github.com/pytorch/pytorch/pull/180248))
 
   `setup.py` is now a thin shim. `install` and `develop` still forward to pip, but
@@ -97,7 +66,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 ### deprecation
 ### new features
-- Python 3.15 and 3.15t (free-threaded) enablement: nightly wheels on Windows ([#190360](https://github.com/pytorch/pytorch/pull/190360)) and macOS arm64 ([#190361](https://github.com/pytorch/pytorch/pull/190361)), ROCm manywheel builds ([#189722](https://github.com/pytorch/pytorch/pull/189722)), and Triton XPU Windows wheels ([#186033](https://github.com/pytorch/pytorch/pull/186033))
+- Expand Python 3.15 and free-threaded (no-GIL) Python 3.15t binary coverage to Windows and macOS, completing support across the PyTorch release matrix ([#189722](https://github.com/pytorch/pytorch/pull/189722), [#190360](https://github.com/pytorch/pytorch/pull/190360), [#190361](https://github.com/pytorch/pytorch/pull/190361), [#186033](https://github.com/pytorch/pytorch/pull/186033))
+
+  PyTorch 2.14 publishes Python 3.15 and 3.15t wheels for Linux on x86-64 and aarch64, Windows x86-64, and macOS on Apple silicon, covering the applicable CPU, CUDA, ROCm, and XPU builds. `torchvision` 0.29.0 publishes matching Python 3.15 and 3.15t wheels for the same supported platform and accelerator combinations. This is binary and eager-runtime support; `torch.compile` remains unsupported on Python 3.15 in this release.
 ### improvements
 - Enable ROCm 7.14 nightly manywheel builds through TheRock wheels ([#190276](https://github.com/pytorch/pytorch/pull/190276)) and add `libatomic` to the manywheel builder image ([#192254](https://github.com/pytorch/pytorch/pull/192254))
 - Updated the bundled Triton to 3.8.0 ([#188251](https://github.com/pytorch/pytorch/pull/188251), [#190349](https://github.com/pytorch/pytorch/pull/190349))
