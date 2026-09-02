@@ -1,6 +1,7 @@
 # PyTorch 2.14.0 Release Notes
 
 - [Highlights](#highlights)
+- [Tracked Regressions](#tracked-regressions)
 - [Backwards Incompatible Changes](#backwards-incompatible-changes)
 - [Deprecations](#deprecations)
 - [New Features](#new-features)
@@ -25,6 +26,14 @@
 </table>
 
 For more details about these highlighted features, you can look at the release blogpost. Below are the full release notes for this release.
+
+# Tracked Regressions
+
+### ROCm 7.14 wheels print a rocSHMEM `libnuma` error on every `import torch`
+
+Importing `torch` from a ROCm 7.14 wheel prints `E-001h rocSHMEM Could not open libnuma. Returning` to standard error, including during otherwise successful runs ([#195670](https://github.com/pytorch/pytorch/issues/195670)). This affects both nightly wheels and the PyTorch 2.14 release candidate; the issue has not been observed with ROCm 10.0 wheels.
+
+The ROCm SDK wheel vendors `libnuma` as `librocm_sysdeps_numa.so.1`, while rocSHMEM attempts to load the unprefixed `libnuma.so` name at runtime. That lookup fails and rocSHMEM continues without NUMA support. Binary smoke tests still pass and no functional failures have been reported, but any performance impact is still under investigation. There is currently no confirmed workaround; users whose workloads otherwise run successfully can treat the message as known log noise while following the linked issue for a resolution.
 
 # Backwards Incompatible Changes
 
