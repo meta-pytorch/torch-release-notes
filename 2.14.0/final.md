@@ -1,7 +1,6 @@
 # PyTorch 2.14.0 Release Notes
 
 - [Highlights](#highlights)
-- [Tracked Regressions](#tracked-regressions)
 - [Backwards Incompatible Changes](#backwards-incompatible-changes)
 - [Deprecations](#deprecations)
 - [New Features](#new-features)
@@ -26,12 +25,6 @@
 </table>
 
 For more details about these highlighted features, you can look at the release blogpost. Below are the full release notes for this release.
-
-# Tracked Regressions
-
-### ROCm 7.14 wheels print a rocSHMEM `libnuma` error on every `import torch`
-
-Importing `torch` from a ROCm 7.14 wheel prints `E-001h rocSHMEM Could not open libnuma. Returning` to standard error on every interpreter start ([#195670](https://github.com/pytorch/pytorch/issues/195670)). Imports succeed and no functional failures have been observed; any performance impact from rocSHMEM continuing without NUMA support remains under investigation. Users whose workloads otherwise run successfully can ignore the message.
 
 # Backwards Incompatible Changes
 
@@ -1584,7 +1577,7 @@ Importing `torch` from a ROCm 7.14 wheel prints `E-001h rocSHMEM Could not open 
 ## XPU
 
 - Consolidate XPU operator generation and align internals with oneAPI 2026 (#181233, #191470)
-- Move the XPU C++ memory-pool API to ATen and upgrade oneDNN for SYCL graph replay (#192032, #188785)
+- Move the XPU C++ memory-pool API to ATen (#192032)
 
 ## Caffe2
 
