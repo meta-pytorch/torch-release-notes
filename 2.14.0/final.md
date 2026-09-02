@@ -15,13 +15,13 @@
 
 <table>
   <tr><td><strong>NVGEMM</strong> brings CuTeDSL-generated CUTLASS kernels to Inductor, with epilogue fusion, scaled and NVFP4 GEMM, and grouped-reduction epilogues autotuned alongside Triton and ATen</td></tr>
+  <tr><td><strong><code>torch.switch</code></strong> generalizes <code>torch.cond</code> to multi-way branching, and <code>torch.while_loop</code> can now be captured in a CUDA graph</td></tr>
+  <tr><td><strong>Declarative dynamic shapes via <code>@dynamic_spec</code></strong>, shared across <code>torch.compile</code>, <code>torch.export</code> and <code>make_fx</code></td></tr>
+  <tr><td><strong>Experimental <code>torch.compile</code> support for complex-valued tensors</strong>: Opt-in support decomposes supported complex operations into real and imaginary computations, enabling compiler backends to optimize more complex-number workloads.</td></tr>
   <tr><td><strong>A new <code>nccl2</code> backend for PyTorch Distributed</strong>, ported from torchcomms, implementing the full collective contract with nonblocking communicators and eager communicator splitting</td></tr>
   <tr><td><strong>Fault tolerance becomes a first-class <code>c10d</code> concept</strong>, with in-place process-group reconfiguration, one-sided RMA windows, and a Flight Recorder that works for any backend rather than only NCCL</td></tr>
   <tr><td><strong>Apple Silicon gains native linear algebra</strong>, including Jacobi-kernel SVD, <code>eigh</code>, QR and Cholesky, alongside a five-part reduction rewrite and a further MPSGraph to Metal kernel migration</td></tr>
-  <tr><td><strong><code>torch.switch</code></strong> generalizes <code>torch.cond</code> to multi-way branching, and <code>torch.while_loop</code> can now be captured in a CUDA graph</td></tr>
-  <tr><td><strong>Declarative dynamic shapes via <code>@dynamic_spec</code></strong>, shared across <code>torch.compile</code>, <code>torch.export</code> and <code>make_fx</code></td></tr>
   <tr><td><strong>Broader platform support</strong>: ROCm 7.14 wheels are produced from the TheRock pip SDK, Intel XPU adds native graph capture, and Inductor targets Rubin (<code>sm_107</code>)</td></tr>
-  <tr><td><strong>Experimental <code>torch.compile</code> support for complex-valued tensors</strong>: Opt-in support decomposes supported complex operations into real and imaginary computations, enabling compiler backends to optimize more complex-number workloads.</td></tr>
 </table>
 
 For more details about these highlighted features, you can look at the release blogpost. Below are the full release notes for this release.
