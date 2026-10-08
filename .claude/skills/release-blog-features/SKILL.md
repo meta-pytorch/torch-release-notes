@@ -32,7 +32,13 @@ Always confirm the two refs you'll compare before doing any heavy work.
 its structure. The format changes between releases — designations have
 been retired, sections renamed — and the published post is the only
 authoritative source for the current shape. Everything below describes
-the format as of 2.13; verify it still holds.
+the format as of 2.14; verify it still holds.
+
+Also follow the previous post's **terminology** in prose, not internal
+code names. 2.14 called the torchcomms port "our rewritten NCCL
+backend" and quoted `nccl2` only as the literal backend name, so a 2.15
+entry about it becomes "The Rewritten NCCL Backend Becomes the Default",
+not "nccl2 Becomes the Default".
 
 ## What to produce
 
@@ -89,9 +95,23 @@ curl -s -H "Authorization: Bearer $TOKEN" \
   | jq -r '.user.login, .title'
 ```
 
-That gives you handles, not real names or affiliations. Emit handles
-and leave a `TODO(release-manager)` to convert them, unless the user
-supplies a mapping — do not guess someone's employer.
+That gives you handles, not real names or affiliations. Published entries
+credit `Name, Company`, so resolve each handle from these sources, in order:
+
+1. **The previous published blog.** If the person was credited there
+   (e.g. "Nikita Shulga, Thinking Machines Lab"), reuse that affiliation;
+   it reflects a choice the release manager already made.
+2. **The commit author email** on the landed commit: `git log
+   --format='%an%x09%ae'` over the range, matched to the PR number in the
+   subject. A corporate domain (`meta.com`, `amd.com`, `intel.com`,
+   `nvidia.com`, `redhat.com`, …) gives the affiliation, and `%an` is
+   usually a fuller name than the GitHub profile's.
+3. **The GitHub profile's `company` field** (GraphQL
+   `user(login:) { name company }`).
+
+Personal or noreply emails with no profile company stay unresolved. Write
+`Name, TODO(affiliation)` rather than guessing someone's employer, and list
+the unresolved authors in the draft's open questions.
 
 ### Entry voice
 
@@ -126,6 +146,16 @@ git merge-base origin/release/<base> origin/release/<target>
 Prefer `origin/release/<x>` over bare `release/<x>` when fetching, and
 use the actual tag (e.g. `v2.13.0`) over the branch when it exists,
 because the branch may contain post-release cherry-picks.
+
+If `git merge-base` prints nothing, the checkout is shallow
+(`git rev-parse --is-shallow-repository`) and the two branches share no
+fetched history. Deepen the target branch before going on:
+`git fetch origin release/<target> --deepen=8000`.
+
+The merge-base to `release/<target>` range ("cut to cut") excludes fixes
+cherry-picked into the base release after its cut. `v<base>.0..` counts
+them again, because they reappear on main with new hashes. Confirm with
+the user which range they want.
 
 ### Step 2 — Collect the commit list
 
@@ -172,8 +202,15 @@ git log --pretty=format:'%H %s' \
     > /tmp/release-commits.txt
 ```
 
+Take the PR number from the `Pull Request resolved: …/pull/<N>` trailer,
+falling back to a trailing `(#N)` in the subject. Net out reverts by PR
+number: a PR whose landings do not outnumber its `Revert "… (#N)"`
+commits is out. For 2.15 that was 86 of 2,835 PRs.
+
 Then batch-fetch labels via the REST or GraphQL API. GraphQL supports
-~100 aliases per query, so split into multiple queries.
+~100 aliases per query, so split into multiple queries. Fetch `author`,
+`labels` and a truncated `body` in the same query; the entries need all
+three.
 
 ### Step 3 — Filter to "blog-worthy" changes
 
@@ -198,18 +235,24 @@ blog-worthy; filter them early.
 
 ### Step 4 — Group by topic
 
-Group survivors into the sections the previous blog used. As of 2.13:
+Group survivors into the sections the previous blog used. As of 2.14:
 
 - **Performance Improvements** — including large backend rewrites, e.g.
   the MPS Metal migration lived here, not under MPS.
-- **Core Features** — new ops, frontend APIs, autograd surfaces.
+- **Core Features** — new ops, frontend APIs, autograd surfaces, and
+  release-engineering changes users act on (default CUDA version, new
+  ROCm or Python versions, dropped versions). Give those plain headings
+  such as "CUDA 13.2 by Default and CUDA 13.4 Wheels". Do **not** add a
+  topic suffix like "– Release Engineering"; no other entry carries one.
+  Leave out Installation and packaging/sdist subsections; the 2.15
+  release manager removed both from the draft.
 - **Distributed Training** — c10d, backends, FSDP, DTensor, symmetric
   memory, pipelining.
 - **Compilation and Export** — Dynamo, dynamic shapes, AOTInductor,
   backend registration.
 - **Platform Features and Updates** — `### CUDA`, `### ROCm`,
-  `### Arm`, `### MPS`, `### XPU (Intel GPUs)`, `### C++ ABI`, each
-  with `####` entries.
+  `### Arm`, `### MPS (Apple Silicon)`, `### XPU (Intel GPUs)`,
+  `### C++ ABI`, each with `####` entries.
 - **Profiling and Debugging**.
 
 A backend-specific compiler feature goes under its platform, not under
@@ -220,6 +263,12 @@ Compilation: 2.13 filed the CuTeDSL Inductor backend under CUDA.
 When the user asks for **major features only**, drop any feature backed
 by 3 or fewer PRs — after Step 6, so a collapsed stack counts as its
 full size. Smaller entries belong in the long release notes.
+
+Count a feature's PRs across the **whole** range, not just the
+user-facing pool: ghstack sub-PRs are often labeled `topic: not user
+facing` even when the stack ships a feature. List what the threshold
+dropped in a "Below the Major-Feature Threshold" section of the draft so
+the release manager can promote any of it.
 
 ### Step 6 — Deduplicate ghstack stacks
 
@@ -255,13 +304,23 @@ git show origin/release/<target>:.github/scripts/generate_binary_build_matrix.py
 Diff against the base branch's copy so you can state what was added and
 dropped. Watch for architectures that are built but deliberately not
 advertised — 2.14 built CUDA 13.4 while excluding it from Windows and
-the docker release matrix, so it was not a 2.14 install option.
+the docker release matrix, so it was not a 2.14 install option. 2.15
+kept CUDA 13.0 in `CUDA_ARCHES` as a Linux-only build for vLLM
+(`CUDA_ARCHES_NO_WINDOWS`) but advertised only 13.2 and 13.4. Read the
+matrix comments, and cross-check the RC announcement's install lines;
+mention only the advertised versions anywhere in the post.
 
 ## Output
 
 Save the draft to `<X.Y.Z>/blog-draft.md` in this repo. Do not commit
 automatically — the release manager will review and move the polished
 version into the pytorch.org blog repo.
+
+If the release manager wants a Google Doc, convert the Markdown to ghtml
+and create it with `meta google.docs create`. Any `@word` in the text
+becomes a person mention, matched by unixname, and unmatched handles are
+lowercased. So never write `@handle`: credit names, or link a handle to
+its GitHub profile without the `@`.
 
 ## Best practices
 
