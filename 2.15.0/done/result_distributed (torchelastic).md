@@ -48,23 +48,20 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Add a `cas_backoff_max_seconds` rendezvous option that adds a random delay after a failed rendezvous state write, which reduces repeated write conflicts at large scale. It defaults to `0.0` (off) ([#185930](https://github.com/pytorch/pytorch/pull/185930))
+- Pass the `@record` entrypoint's qualified name to `ErrorHandler` through `set_entrypoint_fn_name()`, and add a `record_success()` hook that runs when the entrypoint returns normally, so custom error handlers can attribute failures and observe successful completion ([#194269](https://github.com/pytorch/pytorch/pull/194269), [#194746](https://github.com/pytorch/pytorch/pull/194746), [#195034](https://github.com/pytorch/pytorch/pull/195034))
+- Report socket-creation failures in the etcd server's `find_free_port()` through the module logger instead of `print` ([#197711](https://github.com/pytorch/pytorch/pull/197711))
 ### bug fixes
+- Fix the etcd server's `find_free_port()` raising `UnboundLocalError` and skipping the remaining addresses when socket creation fails ([#191451](https://github.com/pytorch/pytorch/pull/191451))
+- Fix `EtcdServer` never registering its exit handler, which left the etcd subprocess and its data directory behind when the process exited ([#197744](https://github.com/pytorch/pytorch/pull/197744))
+- Fix `get_socket_with_port()` returning ports already in use on other addresses, which made the TCPStore server fail with `EADDRINUSE` ([#199015](https://github.com/pytorch/pytorch/pull/199015))
+- Fix races that truncated or dropped tailed worker log output when a worker finished while its log was being read ([#195211](https://github.com/pytorch/pytorch/pull/195211))
+- Fix a file descriptor leak on every file-store rendezvous created without an endpoint, which could exhaust the process file descriptor limit ([#191425](https://github.com/pytorch/pytorch/pull/191425))
+- Fix an exception raised while shutting down the rendezvous in `launch_agent` replacing the worker's `ChildFailedError`; the shutdown error is now logged instead ([#195316](https://github.com/pytorch/pytorch/pull/195316))
 ### performance
 ### docs
+- Fix the outdated `EtcdServer` usage example and arguments, and remove a nonexistent `id` argument from the `Worker` docstring ([#198238](https://github.com/pytorch/pytorch/pull/198238), [#199255](https://github.com/pytorch/pytorch/pull/199255))
 ### devs
 ### Untopiced
-- [c10d] Flight recorder for backends without native support, and dump it on failure ([#192233](https://github.com/pytorch/pytorch/pull/192233))
-- [torchelastic] Thread entrypoint fn_name through ErrorHandler (#194269) ([#194269](https://github.com/pytorch/pytorch/pull/194269))
-- [torchelastic] Record entrypoint success in ErrorHandler (#194746) ([#194746](https://github.com/pytorch/pytorch/pull/194746))
-- [Tasks][Test Blame] Fix 10 broken tests caused by D116228049 (#195034) ([#195034](https://github.com/pytorch/pytorch/pull/195034))
-- [elastic] Fix find_free_port UnboundLocalError when socket creation fails ([#191451](https://github.com/pytorch/pytorch/pull/191451))
-- [BE][Ez]: Use logger.warning instead of print in etcd_server.py ([#197711](https://github.com/pytorch/pytorch/pull/197711))
-- [elastic] Register etcd server termination handler on successful start ([#197744](https://github.com/pytorch/pytorch/pull/197744))
-- [elastic] Fix stale EtcdServer docstring usage and Args ([#198238](https://github.com/pytorch/pytorch/pull/198238))
-- Fix get_free_port() returning ports in use on other addresses ([#199015](https://github.com/pytorch/pytorch/pull/199015))
-- [Elastic][Distributed] Add configurable randomized backoff after failed rendezvous state writes ([#185930](https://github.com/pytorch/pytorch/pull/185930))
-- [docs] Remove nonexistent `id` arg from Worker.__init__ docstring ([#199255](https://github.com/pytorch/pytorch/pull/199255))
-- [elastic] Fix lost-wakeup races that truncate tailed log output ([#195211](https://github.com/pytorch/pytorch/pull/195211))
-- Add NCCL2 debug server health checks ([#199092](https://github.com/pytorch/pytorch/pull/199092))
 ### not user facing
 ### security
