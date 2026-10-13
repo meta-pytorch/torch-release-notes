@@ -48,11 +48,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Upgrade NVSHMEM to 3.7.2, which fixes RoCE issues ([#194279](https://github.com/pytorch/pytorch/pull/194279))
 ### bug fixes
+- Fix `torch.multiprocessing.spawn` treating a child process that raised `KeyboardInterrupt` as successful. The child now exits quietly only when its parent has died; otherwise the traceback is reported like any other failure ([#194439](https://github.com/pytorch/pytorch/pull/194439))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [NVSHMEM] Bumped the nvshmem version to 3.7.2 ([#194279](https://github.com/pytorch/pytorch/pull/194279))
 ### not user facing
 ### security
