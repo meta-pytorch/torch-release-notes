@@ -49,10 +49,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix `torch.vmap` falling back to the slow per-sample loop, with a performance warning, for `mse_loss_backward`, `smooth_l1_loss_backward`, `huber_loss_backward`, the `nll_loss`/`nll_loss2d` forward and backward ops, and `addr` when Python runs with `-O` or `PYTORCH_JIT=0` is set ([#192859](https://github.com/pytorch/pytorch/pull/192859))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Remove condition preventing registration of some vmap decompositions ([#192859](https://github.com/pytorch/pytorch/pull/192859))
 ### not user facing
 ### security
