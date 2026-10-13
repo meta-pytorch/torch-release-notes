@@ -53,6 +53,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
-- [Testcase Refactoring] Bind ShardedTensor test ranks for runtime accelerator backends ([#190528](https://github.com/pytorch/pytorch/pull/190528))
 ### not user facing
+- Bind `ShardedTensor` test ranks to devices for any runtime accelerator backend ([#190528](https://github.com/pytorch/pytorch/pull/190528))
 ### security
