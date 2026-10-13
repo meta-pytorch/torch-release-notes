@@ -45,64 +45,127 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## releng
 ### bc breaking
+- PyPI wheels now ship with CUDA 13.2, and CUDA 12.6 wheels (the last builds that supported Maxwell, Pascal and Volta GPUs) are no longer published ([#196249](https://github.com/pytorch/pytorch/pull/196249), [#198913](https://github.com/pytorch/pytorch/pull/198913), [#199520](https://github.com/pytorch/pytorch/pull/199520))
+
+  PyTorch 2.15 publishes CUDA 13.0, 13.2 and 13.4 wheels. The default wheel on PyPI moves from CUDA 13.0
+  to CUDA 13.2. CUDA 12.6 wheels are removed for Linux x86_64, Linux aarch64 and Windows. CUDA 13 no longer
+  supports Maxwell (sm_5x), Pascal (sm_6x) and Volta (sm_70) GPUs, so the official PyTorch 2.15 binaries
+  do not run on them. CUDA 13.0 wheels are only built for Linux (x86_64 and aarch64); they are no longer
+  built for Windows. All CUDA 13.x wheels need an NVIDIA driver from the R580 series or newer.
+
+  If you use a Maxwell, Pascal or Volta GPU, or your driver only supports CUDA 12.x, stay on PyTorch 2.14
+  (`cu126`) or build PyTorch 2.15 from source against a CUDA 12.x toolkit.
+
+  Version 2.14:
+  ```bash
+  pip install torch  # CUDA 13.0
+  pip install torch --index-url https://download.pytorch.org/whl/cu126  # Maxwell/Pascal/Volta support
+  ```
+
+  Version 2.15:
+  ```bash
+  pip install torch  # CUDA 13.2
+  pip install torch --index-url https://download.pytorch.org/whl/cu130  # Linux only
+  pip install torch --index-url https://download.pytorch.org/whl/cu134
+  ```
+- Python 3.10 wheels are no longer published ([#198233](https://github.com/pytorch/pytorch/pull/198233), [#199398](https://github.com/pytorch/pytorch/pull/199398))
+
+  PyTorch 2.15 raises the minimum supported Python version to 3.11. `torch` wheels (and the matching
+  `triton` wheels) are no longer built for CPython 3.10 on any platform. Upgrade to Python 3.11 or newer,
+  or stay on PyTorch 2.14 if you need Python 3.10.
+
+  Version 2.14:
+  ```bash
+  python3.10 -m pip install torch==2.14.0
+  ```
+
+  Version 2.15:
+  ```bash
+  python3.11 -m pip install torch==2.15.0
+  ```
+- ROCm wheels move to ROCm 7.14 and 10.0. ROCm 7.2 wheels are no longer published, and the ROCm wheels no longer include gfx900/gfx906 kernels ([#194919](https://github.com/pytorch/pytorch/pull/194919), [#192258](https://github.com/pytorch/pytorch/pull/192258))
+
+  PyTorch 2.14 published ROCm 7.2 and 7.14 wheels. PyTorch 2.15 publishes ROCm 7.14 and ROCm 10.0 wheels,
+  all built from AMD's TheRock SDK wheels. The ROCm 7.2 build was the only one that still compiled
+  kernels for gfx900 (Vega 10, for example MI25) and gfx906 (Vega 20, for example MI50/MI60 and Radeon VII),
+  so those GPUs are no longer supported by the official ROCm binaries. Users with those GPUs can stay on
+  PyTorch 2.14 (`rocm7.2`), or build from source with those targets in `PYTORCH_ROCM_ARCH` if their ROCm
+  version still supports them.
+
+  Version 2.14:
+  ```bash
+  pip install torch --index-url https://download.pytorch.org/whl/rocm7.2
+  ```
+
+  Version 2.15:
+  ```bash
+  pip install torch --index-url https://download.pytorch.org/whl/rocm7.14
+  pip install torch --index-url https://download.pytorch.org/whl/rocm10.0
+  ```
 ### deprecation
 ### new features
+- Build the FlashAttention backend of `scaled_dot_product_attention` on Windows with CUDA ([#186343](https://github.com/pytorch/pytorch/pull/186343))
+
+  The FlashAttention SDPA backend used to be disabled for MSVC builds, so Windows CUDA builds fell back to
+  the memory-efficient backend, or to the math backend for grouped-query attention (GQA), which the
+  memory-efficient backend does not support. `USE_FLASH_ATTENTION` now defaults to on for Windows CUDA
+  builds, including the Windows CUDA wheels, so SDPA can use FlashAttention on Ampere (sm_80) and newer
+  GPUs on Windows.
+- Build the Python 3.15 and 3.15t wheels against CPython 3.15.0rc2 ([#199356](https://github.com/pytorch/pytorch/pull/199356), [#179094](https://github.com/pytorch/pytorch/pull/179094))
+
+  The cp315/cp315t wheels used to be built against 3.15 betas, whose ABI is not guaranteed to match
+  3.15.0 final. They are now built against 3.15.0rc2, after the ABI freeze, on Linux, Windows and macOS.
+  Together with Dynamo's Python 3.15 support ([#178393](https://github.com/pytorch/pytorch/pull/178393),
+  listed under Dynamo), this release also brings `torch.compile` to Python 3.15.
 ### improvements
+- Add support for CUDA 13.4: Linux x86_64, Linux aarch64 and Windows wheel and libtorch builds, updated to the CUDA 13.4 GA toolkit with a cuBLAS 13.8.1 patch release, and CI coverage including periodic, inductor and B200 smoke tests ([#196560](https://github.com/pytorch/pytorch/pull/196560), [#194996](https://github.com/pytorch/pytorch/pull/194996), [#196014](https://github.com/pytorch/pytorch/pull/196014), [#199269](https://github.com/pytorch/pytorch/pull/199269), [#194942](https://github.com/pytorch/pytorch/pull/194942), [#197212](https://github.com/pytorch/pytorch/pull/197212), [#198912](https://github.com/pytorch/pytorch/pull/198912), [#194905](https://github.com/pytorch/pytorch/pull/194905), [#192769](https://github.com/pytorch/pytorch/pull/192769))
+- CUDA 13.4 Linux wheels now depend on `cupti-python` 13.4.0 (except on Python 3.15 and free-threaded builds), so the Python CUPTI bindings used by the profiler are installed with `torch` ([#197764](https://github.com/pytorch/pytorch/pull/197764))
+- Update the CUDA 13.2 builds to CUDA 13.2.2 on Linux and Windows ([#196351](https://github.com/pytorch/pytorch/pull/196351), [#198843](https://github.com/pytorch/pytorch/pull/198843))
+- Update the bundled Triton to 3.9, and the Intel XPU Triton to 3.9.0 ([#190440](https://github.com/pytorch/pytorch/pull/190440), [#195006](https://github.com/pytorch/pytorch/pull/195006))
+- Upgrade cuDNN to 9.25.1 and then 9.26 (`nvidia-cudnn-cu13==9.26.0.51` in the CUDA 13 wheels, up from 9.24 in 2.14), with guards for SDPA cases that fail on cuDNN 9.25.1 and older ([#195492](https://github.com/pytorch/pytorch/pull/195492), [#196861](https://github.com/pytorch/pytorch/pull/196861))
+- CUDA wheels no longer link or depend on the cuRAND host library, since PyTorch only uses cuRAND's device-side API. `curand` is dropped from the wheels' `cuda-toolkit` extras. Extensions that call the cuRAND host API now have to install it themselves ([#194850](https://github.com/pytorch/pytorch/pull/194850))
+- Upgrade to ROCm 10.0 in CI and add gfx1250 (MI450) to the ROCm wheel architectures ([#194794](https://github.com/pytorch/pytorch/pull/194794), [#196610](https://github.com/pytorch/pytorch/pull/196610))
+- Upgrade the XPU support packages to Intel Deep Learning Essentials 2026.1.3, and install the Linux XPU driver and toolchain through Intel OMIX ([#195128](https://github.com/pytorch/pytorch/pull/195128), [#187900](https://github.com/pytorch/pytorch/pull/187900))
 ### bug fixes
+- Fix the PEP 517 source distribution missing from the 2.14.0 GitHub release: build leftovers pushed the sdist over GitHub's 2 GB asset limit. Future releases build the sdist without them and check asset sizes before publishing ([#195783](https://github.com/pytorch/pytorch/pull/195783))
+- Fix building CUDA from the sdist or the release source tarball failing with "No download info given for 'nccl_external'": the NCCL pin files are now shipped in both archives, and the error now names the workarounds (`USE_SYSTEM_NCCL=1` or `USE_NCCL=0`) ([#197544](https://github.com/pytorch/pytorch/pull/197544))
+- Fix ROCm 7.14 wheels printing `rocSHMEM Could not open libnuma` on every `import torch`, which could also make `import torch` hang on hosts without a GPU ([#195672](https://github.com/pytorch/pytorch/pull/195672))
+- Fix a standalone `cmake --install` (since 2.13) scattering Python package directories across the install prefix and writing into the source checkout ([#191494](https://github.com/pytorch/pytorch/pull/191494))
+- Fix wheel license metadata including third-party license files for code that is not shipped (for example a GPL-3.0 test license). This over-collection also caused Windows `MAX_PATH` failures when packaging; the list of license files is now explicit ([#185813](https://github.com/pytorch/pytorch/pull/185813))
+- Fix C++ compilation failures for `argmax`/`argmin` under `torch.compile` on s390x by switching the ZVECTOR CPU kernels to native 16-byte vectors ([#173072](https://github.com/pytorch/pytorch/pull/173072))
+- Fix Windows wheels failing to import with `[WinError 1114] A dynamic link library (DLL) initialization routine failed` when an older `msvcp140.dll` (before 14.40) is already loaded in the process ([#196987](https://github.com/pytorch/pytorch/pull/196987))
 ### performance
+- Add a scheduled Better Benchmark CI run on B200 that reports kernel and projected model latency to the PyTorch HUD ([#193991](https://github.com/pytorch/pytorch/pull/193991))
 ### docs
+- Improve search on the PyTorch documentation site, so API symbols such as `torch.nn.Linear` rank above module pages, by updating `pytorch_sphinx_theme2` to 0.4.13 ([#195042](https://github.com/pytorch/pytorch/pull/195042))
+- Link the reference of build environment variables from `CONTRIBUTING.md` and `README.md` ([#193617](https://github.com/pytorch/pytorch/pull/193617))
 ### devs
-### Untopiced
+- Move the CD wheel build scripts under `.ci/wheel/` (`.ci/manywheel/` is now `.ci/wheel/linux/`, `.ci/macwheel/` is now `.ci/wheel/mac/`) and use one `numpy` build pin for all platforms ([#189275](https://github.com/pytorch/pytorch/pull/189275))
+- Add `tools/torchtlx/dev.py` to switch a development environment between upstream Triton and FBTriton ([#193637](https://github.com/pytorch/pytorch/pull/193637))
+### not user facing
+- [pytorch][mtia] Honor explicit Kineto activity filters (#194920) ([#194920](https://github.com/pytorch/pytorch/pull/194920))
+- Create a @periodic Decorator ([#191946](https://github.com/pytorch/pytorch/pull/191946))
 - Retry and validate the randomtemp.exe download on Windows CUDA builds ([#193225](https://github.com/pytorch/pytorch/pull/193225))
-- [BE] Drop ROCm < 7.1 support from CI/CD ([#192258](https://github.com/pytorch/pytorch/pull/192258))
 - Bump aiohttp from 3.14.1 to 3.14.3 in /.ci/docker (66c3e509c6ed)
 - [experimental] A/B the test retry policy in unstable ([#193469](https://github.com/pytorch/pytorch/pull/193469))
-- Provide script to swap between upstream Triton and FBTriton ([#193637](https://github.com/pytorch/pytorch/pull/193637))
-- Link the build env var reference from CONTRIBUTING/README ([#193617](https://github.com/pytorch/pytorch/pull/193617))
-- Export Better Benchmark model rollups to HUD ([#193991](https://github.com/pytorch/pytorch/pull/193991))
 - Remove the test retry policy A/B experiment from unstable ([#194779](https://github.com/pytorch/pytorch/pull/194779))
-- Stop linking the cuRAND host library ([#194850](https://github.com/pytorch/pytorch/pull/194850))
-- [ROCm][CI] Add ROCm 10.0 wheel and builder support ([#194919](https://github.com/pytorch/pytorch/pull/194919))
 - Label tests that should run on CuTeDSL or B200 appropriately ([#193606](https://github.com/pytorch/pytorch/pull/193606))
-- Create a @periodic Decorator ([#191946](https://github.com/pytorch/pytorch/pull/191946))
-- Address the Python wheel tree by name, not through the install prefix ([#191494](https://github.com/pytorch/pytorch/pull/191494))
 - Teach the triage skill to flag issues affecting an upcoming release ([#195152](https://github.com/pytorch/pytorch/pull/195152))
-- Label tests that should run on CuTeDSL or B200 appropriately ([#193606](https://github.com/pytorch/pytorch/pull/193606))
-- Build Windows MAGMA for CUDA 13.4, drop CUDA 12.x builds ([#196014](https://github.com/pytorch/pytorch/pull/196014))
-- [Inductor] Keep padded tail divisors non-zero in vectorized integer remainder ([#192025](https://github.com/pytorch/pytorch/pull/192025))
 - Bump gitpython from 3.1.58 to 3.1.59 in /.ci/lumen_cli (8d756621a0a4)
-- [native_aot] topk: first AOT declaration (fp32/bf16 radix kernels) + e2e tests ([#190899](https://github.com/pytorch/pytorch/pull/190899))
-- [CMake] Propagate vecLib discovery results to BLAS ([#196428](https://github.com/pytorch/pytorch/pull/196428))
-- [CMake] Preserve explicit BLIS and FlexiBLAS selection ([#196430](https://github.com/pytorch/pytorch/pull/196430))
 - [BE] Fix B007 unused loop control variables in tools/, torchgen/ and functorch/ ([#192151](https://github.com/pytorch/pytorch/pull/192151))
 - flex_gemm: route QUACK through modern EpiMod ([#192662](https://github.com/pytorch/pytorch/pull/192662))
 - [inductor][ci] Add the inductor_aoti_fallback config, marked unstable (#196076) ([#196076](https://github.com/pytorch/pytorch/pull/196076))
-- [cuDNN][SDPA] Upgrade cuDNN 9.26, add some guards for failing <= 9.25.1 cases  ([#196861](https://github.com/pytorch/pytorch/pull/196861))
-- Add CUDA 12.6 sm90 build-only job to trunk (3fc28d6ccd18)
-- [native_aot] topk: first AOT declaration (fp32/bf16 radix kernels) + e2e tests ([#190899](https://github.com/pytorch/pytorch/pull/190899))
-- [ROCm] Bundle bare libnuma.so into TheRock thin wheels for rocSHMEM ([#195672](https://github.com/pytorch/pytorch/pull/195672))
-- Consolidate CD wheel build pipelines under .ci/wheel/ and unify the numpy pin ([#189275](https://github.com/pytorch/pytorch/pull/189275))
 - Add the review-time validator, row emitter, and suite CI ([#196844](https://github.com/pytorch/pytorch/pull/196844))
-- [XPU] Upgrade Intel DLE to 2026.1.3 and OMIX to 0.4.0 ([#195128](https://github.com/pytorch/pytorch/pull/195128))
-- Enable CUDA 13.4 Windows binary builds ([#194996](https://github.com/pytorch/pytorch/pull/194996))
-- Align Cuspy CUPTI stubs and dependencies with CUDA binary builds ([#197764](https://github.com/pytorch/pytorch/pull/197764))
-- Ship the NCCL pin files in the sdist and the release tarball ([#197544](https://github.com/pytorch/pytorch/pull/197544))
-- s390x: rework ZVECTOR data into 16-byte-sized vectors ([#173072](https://github.com/pytorch/pytorch/pull/173072))
 - Move the remaining py3.10 CI test jobs to 3.11 ([#198531](https://github.com/pytorch/pytorch/pull/198531))
 - [CI] Give the @claude agent a view of its remaining time budget ([#198687](https://github.com/pytorch/pytorch/pull/198687))
 - Actually exercise AVX512 kernels in the nogpu_AVX512 CI config ([#197637](https://github.com/pytorch/pytorch/pull/197637))
-- [jit] Resolve module annotations in MRO order ([#199074](https://github.com/pytorch/pytorch/pull/199074))
 - Bump gitpython from 3.1.59 to 3.1.62 in /.ci/lumen_cli (053288e9f833)
 - [ROCm][CI] periodic-rocm-mi350: run >2-GPU distributed tests via multigpu marker ([#197429](https://github.com/pytorch/pytorch/pull/197429))
 - [ROCm] Stop bundling ROCm shared libraries into Linux wheels ([#198895](https://github.com/pytorch/pytorch/pull/198895))
-- [CD] Build Python 3.15 wheels against CPython 3.15.0rc2 ([#199356](https://github.com/pytorch/pytorch/pull/199356))
 - [CI] Move the remaining CUDA 13.0 CI jobs to CUDA 13.2 ([#199343](https://github.com/pytorch/pytorch/pull/199343))
 - Let the hardened PR review use pr-review's sub-agents ([#199411](https://github.com/pytorch/pytorch/pull/199411))
-- Move skills to the Agent Skills location .agents/skills ([#199554](https://github.com/pytorch/pytorch/pull/199554))
-### not user facing
 - [CI] Split inductor_amx into 7 shards to stop timing out ([#192884](https://github.com/pytorch/pytorch/pull/192884))
 - [CI] Add addmm linalg tests to B200 smoke suite ([#192836](https://github.com/pytorch/pytorch/pull/192836))
-- [CD] Use cuda-bindings pre-release in CUDA 13.4 CI image ([#192769](https://github.com/pytorch/pytorch/pull/192769))
 - [vision hash update] update the pinned vision hash ([#192865](https://github.com/pytorch/pytorch/pull/192865))
 - [torchtitan hash update] update the pinned torchtitan hash ([#191279](https://github.com/pytorch/pytorch/pull/191279))
 - [vllm hash update] update the pinned vllm hash ([#192683](https://github.com/pytorch/pytorch/pull/192683))
@@ -159,11 +222,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [vllm hash update] update the pinned vllm hash ([#194552](https://github.com/pytorch/pytorch/pull/194552))
 - [torchcomms hash update] update the pinned torchcomms hash ([#194551](https://github.com/pytorch/pytorch/pull/194551))
 - [torchtitan hash update] update the pinned torchtitan hash ([#194477](https://github.com/pytorch/pytorch/pull/194477))
-- [BC breaking] Remove assert_allclose ([#164560](https://github.com/pytorch/pytorch/pull/164560))
 - [ROCm][CI] Bump rocm-preview wheels to August 5 and bring in amdsmi changes ([#192813](https://github.com/pytorch/pytorch/pull/192813))
 - Fix libtorch-extract being skipped on nightly-branch pushes ([#194610](https://github.com/pytorch/pytorch/pull/194610))
 - [CI] Read re-enabled issues with git log, not git cherry ([#194485](https://github.com/pytorch/pytorch/pull/194485))
-- [BC breaking] Remove assert_allclose ([#164560](https://github.com/pytorch/pytorch/pull/164560))
 - [CI] Add sm80 to the clang20 CUDA pull builds' arch list ([#194685](https://github.com/pytorch/pytorch/pull/194685))
 - [CI] Add gfx950 FlyDSL Inductor test shard ([#193473](https://github.com/pytorch/pytorch/pull/193473))
 - [triton hash update] update the pinned triton hash ([#194667](https://github.com/pytorch/pytorch/pull/194667))
@@ -172,8 +233,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Update Metamates merge rule ([#194668](https://github.com/pytorch/pytorch/pull/194668))
 - [vllm hash update] update the pinned vllm hash ([#194672](https://github.com/pytorch/pytorch/pull/194672))
 - Run the release runner-group reconcile in pytorch/pytorch ([#194681](https://github.com/pytorch/pytorch/pull/194681))
-- Add CUDA 13.4 nightly docker builds (runtime only) ([#194905](https://github.com/pytorch/pytorch/pull/194905))
-- [ROCm][CI] Upgrade trunk to ROCm 10.0 ([#194794](https://github.com/pytorch/pytorch/pull/194794))
 - [torchcomms hash update] update the pinned torchcomms hash ([#194671](https://github.com/pytorch/pytorch/pull/194671))
 - Update Metamates merge rule ([#194968](https://github.com/pytorch/pytorch/pull/194968))
 - [vision hash update] update the pinned vision hash ([#194669](https://github.com/pytorch/pytorch/pull/194669))
@@ -201,7 +260,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [CI] Skip dynamic indirect indexing smoke test on torch < 2.14 ([#195306](https://github.com/pytorch/pytorch/pull/195306))
 - [CI] Advisor: install Bun from a pinned URL to skip a GitHub API call ([#195491](https://github.com/pytorch/pytorch/pull/195491))
 - [advisor] Make `related` outrank every dismissal, including infra_issue ([#195502](https://github.com/pytorch/pytorch/pull/195502))
-- [cuDNN] Upgrade to cuDNN 9.25.1 ([#195492](https://github.com/pytorch/pytorch/pull/195492))
 - Add zoranzhao for as PyTorch reviewer ([#195514](https://github.com/pytorch/pytorch/pull/195514))
 - Update Metamates merge rule ([#195520](https://github.com/pytorch/pytorch/pull/195520))
 - [torchcomms hash update] update the pinned torchcomms hash ([#195521](https://github.com/pytorch/pytorch/pull/195521))
@@ -212,10 +270,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [ROCm] Use linux-jammy-rocm-3.10-mi350 as trunk-rocm-sandbox job name/environment ([#195198](https://github.com/pytorch/pytorch/pull/195198))
 - Run pr_time_benchmarks only once per commit (drop the CUDA 13.0 copy) ([#195548](https://github.com/pytorch/pytorch/pull/195548))
 - Update Metamates merge rule ([#195651](https://github.com/pytorch/pytorch/pull/195651))
-- [XPU] Migrate Linux CI/CD Docker to Intel OMIX for XPU support packages installation ([#187900](https://github.com/pytorch/pytorch/pull/187900))
 - [torchcomms hash update] update the pinned torchcomms hash ([#195653](https://github.com/pytorch/pytorch/pull/195653))
 - [vllm hash update] update the pinned vllm hash ([#195652](https://github.com/pytorch/pytorch/pull/195652))
-- [releng] Keep the plain source archive out of the PEP 517 sdist, and gate on release-asset size ([#195783](https://github.com/pytorch/pytorch/pull/195783))
 - Update spmd_types pin and migrate to spmd_typecheck auto-detection ([#195741](https://github.com/pytorch/pytorch/pull/195741))
 - [ROCm][Docker] Avoid caching TheRock wheels in Docker images ([#195526](https://github.com/pytorch/pytorch/pull/195526))
 - [ROCm] Update rocm preview version to 21st August wheel ([#193181](https://github.com/pytorch/pytorch/pull/193181))
@@ -223,7 +279,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add __init__.pyi.in to XPU merge rule patterns ([#195826](https://github.com/pytorch/pytorch/pull/195826))
 - Restore the runner-determinator label prefix on Windows binary builds ([#195863](https://github.com/pytorch/pytorch/pull/195863))
 - [native_aot][7/7] build_stage2: relink, patch the wheel, and the build wiring ([#194243](https://github.com/pytorch/pytorch/pull/194243))
-- [pytorch][mtia] Honor explicit Kineto activity filters (#194920) ([#194920](https://github.com/pytorch/pytorch/pull/194920))
 - Emit a scale-config AMI variant prefix so Windows canary AMIs are reachable ([#195906](https://github.com/pytorch/pytorch/pull/195906))
 - Remove the pytorch-canary code path from the runner determinator ([#195962](https://github.com/pytorch/pytorch/pull/195962))
 - [audio hash update] update the pinned audio hash ([#195794](https://github.com/pytorch/pytorch/pull/195794))
@@ -234,12 +289,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Update Metamates merge rule ([#196136](https://github.com/pytorch/pytorch/pull/196136))
 - Update Metamates merge rule ([#196179](https://github.com/pytorch/pytorch/pull/196179))
 - [torchcomms hash update] update the pinned torchcomms hash ([#196181](https://github.com/pytorch/pytorch/pull/196181))
-- [CD] Remove CUDA 12.6 nightly binary builds ([#196249](https://github.com/pytorch/pytorch/pull/196249))
 - [torchcomms hash update] update the pinned torchcomms hash ([#196248](https://github.com/pytorch/pytorch/pull/196248))
 - [torchtitan hash update] update the pinned torchtitan hash ([#195522](https://github.com/pytorch/pytorch/pull/195522))
 - Fix trymerge for PRs from org forks that block classic PATs ([#195905](https://github.com/pytorch/pytorch/pull/195905))
 - Don't retry job-id lookups when the GitHub API quota is already exhausted ([#196311](https://github.com/pytorch/pytorch/pull/196311))
-- Bump pytorch_sphinx_theme2 pin to 0.4.13 ([#195042](https://github.com/pytorch/pytorch/pull/195042))
 - [ROCm][CI] Introduce amd-dpx runner experiment ([#195879](https://github.com/pytorch/pytorch/pull/195879))
 - Update Metamates merge rule ([#196381](https://github.com/pytorch/pytorch/pull/196381))
 - [CI] Raise @claude job timeout to 2 hours ([#196537](https://github.com/pytorch/pytorch/pull/196537))
@@ -251,7 +304,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [vllm hash update] update the pinned vllm hash ([#196180](https://github.com/pytorch/pytorch/pull/196180))
 - Update Metamates merge rule ([#196669](https://github.com/pytorch/pytorch/pull/196669))
 - [torchcomms hash update] update the pinned torchcomms hash ([#196383](https://github.com/pytorch/pytorch/pull/196383))
-- [ROCm][CD] Add gfx1250 (MI450) to the nightly wheel arch list ([#196610](https://github.com/pytorch/pytorch/pull/196610))
 - Move ascend/pytorch from L2 to L3 ([#196580](https://github.com/pytorch/pytorch/pull/196580))
 - Update Metamates merge rule ([#196852](https://github.com/pytorch/pytorch/pull/196852))
 - [torchcomms hash update] update the pinned torchcomms hash ([#196854](https://github.com/pytorch/pytorch/pull/196854))
@@ -267,7 +319,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [torchcomms hash update] update the pinned torchcomms hash ([#196888](https://github.com/pytorch/pytorch/pull/196888))
 - [ROCm][CI] Run trunk on Python 3.11 and Ubuntu 24.04 ([#195154](https://github.com/pytorch/pytorch/pull/195154))
 - [native_aot] Install DSL runtimes for supported Pythons ([#196747](https://github.com/pytorch/pytorch/pull/196747))
-- Revert "Add CUDA 12.6 sm90 build-only job to trunk" ([#197022](https://github.com/pytorch/pytorch/pull/197022))
 - [CI] Move CUDA 13.0 jobs from pull/trunk to periodic ([#197031](https://github.com/pytorch/pytorch/pull/197031))
 - [vision hash update] update the pinned vision hash ([#197044](https://github.com/pytorch/pytorch/pull/197044))
 - [CI] Support a persistent [no-ci] PR title prefix ([#196534](https://github.com/pytorch/pytorch/pull/196534))
@@ -281,16 +332,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [ROCm][CI] Route rocm-preview tests through the amd-dpx runner experiment ([#197126](https://github.com/pytorch/pytorch/pull/197126))
 - Let get-docker-tag use main's Docker Hub image before waiting on ECR ([#197125](https://github.com/pytorch/pytorch/pull/197125))
 - Add the hardened PR review workflows ([#196845](https://github.com/pytorch/pytorch/pull/196845))
-- [CI] CUDA 13.4 Periodic Test CI Coverage ([#194942](https://github.com/pytorch/pytorch/pull/194942))
 - Make `@pytorchbot merge -i` work on ghstack stacks ([#197143](https://github.com/pytorch/pytorch/pull/197143))
 - Rebuild wheels for native DSL and Quack source changes ([#197138](https://github.com/pytorch/pytorch/pull/197138))
-- Enable FA build for SDPA on Windows+CUDA ([#186343](https://github.com/pytorch/pytorch/pull/186343))
 - [trymerge] Stop blocking merges on failures the AI CI Advisor cleared ([#195503](https://github.com/pytorch/pytorch/pull/195503))
 - Stop double-running inductor tests on ROCm default shards ([#197313](https://github.com/pytorch/pytorch/pull/197313))
-- [CD] Update CUDA 13.4 builds to 13.4 GA and pin the toolkit to its runfile installer ([#196560](https://github.com/pytorch/pytorch/pull/196560))
 - Make pr-review-readiness a wrapper over the pr-review skill ([#197331](https://github.com/pytorch/pytorch/pull/197331))
 - [ROCm][CI] Add MI350 slow job to slow.yml ([#197325](https://github.com/pytorch/pytorch/pull/197325))
-- [CD] Add 13.2.2 installer and Update to CUDA 13.2.2 for binaries ([#196351](https://github.com/pytorch/pytorch/pull/196351))
 - [ROCm][ciflow/rocm-preview] Update to 10.2.0a20260916 ([#196499](https://github.com/pytorch/pytorch/pull/196499))
 - [CI] Stop TorchTitan model integration tests ([#197604](https://github.com/pytorch/pytorch/pull/197604))
 - Update Metamates merge rule ([#197623](https://github.com/pytorch/pytorch/pull/197623))
@@ -304,18 +351,14 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Update Metamates merge rule ([#197770](https://github.com/pytorch/pytorch/pull/197770))
 - Update Metamates merge rule ([#197841](https://github.com/pytorch/pytorch/pull/197841))
 - [torchcomms hash update] update the pinned torchcomms hash ([#197366](https://github.com/pytorch/pytorch/pull/197366))
-- [CI] CUDA 13.4 Inductor CI tests ([#197212](https://github.com/pytorch/pytorch/pull/197212))
 - [torchtitan hash update] update the pinned torchtitan hash ([#197840](https://github.com/pytorch/pytorch/pull/197840))
 - Add guangyey/etaf to XPU merge rule ([#196947](https://github.com/pytorch/pytorch/pull/196947))
-- Add docker image for python 3.15 ([#179094](https://github.com/pytorch/pytorch/pull/179094))
 - [CRCR] Configure L2 backends for nightly reporting in allowlist.yml ([#197864](https://github.com/pytorch/pytorch/pull/197864))
-- Remove Python 3.10 from the nightly binary build matrix ([#198233](https://github.com/pytorch/pytorch/pull/198233))
 - Promote pytorch-mps-ci to CRCR allowlist L2 ([#194356](https://github.com/pytorch/pytorch/pull/194356))
 - Fix test_cpuset num threads torch import ([#198003](https://github.com/pytorch/pytorch/pull/198003))
 - Use Opus 5.5 and upgrade the Claude Code action ([#198241](https://github.com/pytorch/pytorch/pull/198241))
 - Move pull and trunk CI jobs from Python 3.10 to 3.11 ([#198271](https://github.com/pytorch/pytorch/pull/198271))
 - Map the 1-GPU runners to the 4xlarge-sized OSDC labels ([#197326](https://github.com/pytorch/pytorch/pull/197326))
-- [ROCm][Windows] Audit license-files: explicit enumeration + audit test (#183434) ([#185813](https://github.com/pytorch/pytorch/pull/185813))
 - [BE] Add Isalia20 as MPS reviewer ([#198502](https://github.com/pytorch/pytorch/pull/198502))
 - [BE] Add OpInfo files to MPS merge rules ([#198504](https://github.com/pytorch/pytorch/pull/198504))
 - [CI] Lower @claude job timeout to 55 minutes to match credential life time ([#198521](https://github.com/pytorch/pytorch/pull/198521))
@@ -334,8 +377,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [audio hash update] update the pinned audio hash ([#198434](https://github.com/pytorch/pytorch/pull/198434))
 - [torchtitan hash update] update the pinned torchtitan hash ([#198816](https://github.com/pytorch/pytorch/pull/198816))
 - [OSDC] Convert the runner labels a search for `runner:` does not find ([#198704](https://github.com/pytorch/pytorch/pull/198704))
-- [CD] Remove CUDA 13.0 from the binary build matrix ([#198913](https://github.com/pytorch/pytorch/pull/198913))
-- Update B200 smoke test workflow to CUDA 13.4 sm100 ([#198912](https://github.com/pytorch/pytorch/pull/198912))
 - AArch64: Fix OP Benchmark thread affinity ([#198867](https://github.com/pytorch/pytorch/pull/198867))
 - Route the riscv64 job back onto the cross-compilation code path ([#194880](https://github.com/pytorch/pytorch/pull/194880))
 - [CRCR] Configure MPS and Spyre event participation ([#199034](https://github.com/pytorch/pytorch/pull/199034))
@@ -350,7 +391,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [CI] Remove CUDA 13.0 jobs that duplicate an existing CUDA 13.2 job ([#199325](https://github.com/pytorch/pytorch/pull/199325))
 - [ROCm][CI] Remove DIND for rocm CI ([#197362](https://github.com/pytorch/pytorch/pull/197362))
 - [pr-review] Flag CI runner labels that break the runner naming standard ([#199315](https://github.com/pytorch/pytorch/pull/199315))
-- [CD] Remove Python 3.10 from the Triton wheel builds ([#199398](https://github.com/pytorch/pytorch/pull/199398))
 - Add allowlist for Linux Foundation fleet of runners for CI ([#198517](https://github.com/pytorch/pytorch/pull/198517))
 - Skip the hardened PR review when a PR carries 'no automated review' ([#199410](https://github.com/pytorch/pytorch/pull/199410))
 - Configure Auto PR Triage ownership for PyTorch ([#195777](https://github.com/pytorch/pytorch/pull/195777))
@@ -363,8 +403,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Auto PR Triage: fix failures seen in the first day of shadow runs ([#199428](https://github.com/pytorch/pytorch/pull/199428))
 - Auto PR Triage: switch from shadow to live mode ([#199507](https://github.com/pytorch/pytorch/pull/199507))
 - Auto PR Triage: start a new run whenever `open source` is added ([#199508](https://github.com/pytorch/pytorch/pull/199508))
-- [CD] Update cuBLAS to 13.8.1 for CUDA 13.4 binary ([#199269](https://github.com/pytorch/pytorch/pull/199269))
-- Revive CUDA 13.0 nightly binary builds ([#199520](https://github.com/pytorch/pytorch/pull/199520))
 - Auto PR Triage: print the worker's Claude transcript in the job log ([#199517](https://github.com/pytorch/pytorch/pull/199517))
 - Install llvm-bolt in all manywheel docker images ([#199400](https://github.com/pytorch/pytorch/pull/199400))
 - Auto-apply `actionable` to issues labeled `good first issue` ([#199559](https://github.com/pytorch/pytorch/pull/199559))
