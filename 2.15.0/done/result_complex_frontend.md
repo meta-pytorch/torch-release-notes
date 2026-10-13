@@ -45,12 +45,32 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## complex_frontend
 ### bc breaking
+- Ops that are undefined for complex inputs now raise `TypeError` instead of `RuntimeError`, and ops that are not yet implemented for complex inputs raise `NotImplementedError` ([#192350](https://github.com/pytorch/pytorch/pull/192350))
+
+  Order-dependent ops (`max`/`min` and their reductions, `maximum`, `minimum`, `fmax`, `fmin`, `sort`, `topk`, `aminmax`, `argmax`, `argmin`), `isposinf`/`isneginf`, `view_as_real` on a non-complex tensor, `imag` on a non-complex tensor and `view_as_complex` on a complex tensor now raise `TypeError`, matching Python (`1j < 2j` raises `TypeError`). Complex autograd for unsupported ops, `rad2deg`/`deg2rad`, `nansum`, `heaviside`, `isin`, and some bool/integer cases of `topk`/`argmax`/`view_as_complex` now raise `NotImplementedError`. Most error messages are unchanged. Because `NotImplementedError` is a subclass of `RuntimeError`, only the `TypeError` cases affect existing code: an `except RuntimeError:` around these calls no longer catches the error. Catch `TypeError` as well (or `(RuntimeError, TypeError)` to support both versions).
+
+  Version 2.14:
+  ```python
+  >>> torch.sort(torch.randn(3, dtype=torch.cfloat))
+  RuntimeError:  Sort does not support complex dtypes on CPU
+  ```
+
+  Version 2.15:
+  ```python
+  >>> torch.sort(torch.randn(3, dtype=torch.cfloat))
+  TypeError:  Sort does not support complex dtypes on CPU
+
+  >>> try:
+  ...     torch.sort(torch.randn(3, dtype=torch.cfloat))
+  ... except (RuntimeError, TypeError):
+  ...     pass
+  ```
+
 ### deprecation
 ### new features
 ### improvements
-- BE: Use TypeError/NotImplementedError for complex dtype checks ([#192350](https://github.com/pytorch/pytorch/pull/192350))
 ### bug fixes
-- [BE] Extend dropout support to complex numbers ([#195373](https://github.com/pytorch/pytorch/pull/195373))
+- Fix `torch.nn.functional.dropout` raising `NotImplementedError` for complex inputs on CPU and CUDA; complex dropout now works consistently on all backends (MPS no longer accepts complex `bernoulli_`, matching CPU and CUDA) ([#195373](https://github.com/pytorch/pytorch/pull/195373))
 ### performance
 ### docs
 ### devs
