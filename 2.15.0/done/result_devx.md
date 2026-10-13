@@ -49,11 +49,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- [MPS] Resolve compile_shader headers the way cpp_extension does ([#195295](https://github.com/pytorch/pytorch/pull/195295))
+- Fix `torch.mps.compile_shader` failing to find `#include <c10/metal/...>` headers under an editable install ([#195295](https://github.com/pytorch/pytorch/pull/195295))
 ### performance
 ### docs
 ### devs
+- Add `spin test`, which runs `pytest` with pass-through arguments, or `test/run_test.py` the way CI does with `--ci` ([#198649](https://github.com/pytorch/pytorch/pull/198649))
 ### Untopiced
-- Add `spin test`, a pytest wrapper with a `--ci` switch for test/run_test.py ([#198649](https://github.com/pytorch/pytorch/pull/198649))
 ### not user facing
 ### security
