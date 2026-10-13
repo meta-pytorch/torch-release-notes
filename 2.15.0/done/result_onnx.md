@@ -49,13 +49,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- [ONNX] Keep while_loop RNN decompositions during the decomposition step ([#193192](https://github.com/pytorch/pytorch/pull/193192))
+- Fix `torch.onnx.export(..., dynamo=True)` with dynamic shapes fixing the LSTM/GRU output sequence length to the example input's length, so models that use the RNN output's shape failed with `invalid expand shape` in ONNX Runtime at other sequence lengths ([#193192](https://github.com/pytorch/pytorch/pull/193192))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [RAWTHROW][11] torch/csrc/jit passes and runtime: 48 conversions ([#195858](https://github.com/pytorch/pytorch/pull/195858))
 ### not user facing
+- [RAWTHROW][11] torch/csrc/jit passes and runtime: 48 conversions ([#195858](https://github.com/pytorch/pytorch/pull/195858))
 - [Testcase Refactoring] Add proper hw_classification to test_core ([#193528](https://github.com/pytorch/pytorch/pull/193528))
 - [Testcase Refactoring] Add proper hw_classification to test_dynamic_shapes.py. ([#193529](https://github.com/pytorch/pytorch/pull/193529))
 - [Testcase Refactoring] Add proper hw_classification to test_registration ([#194330](https://github.com/pytorch/pytorch/pull/194330))
