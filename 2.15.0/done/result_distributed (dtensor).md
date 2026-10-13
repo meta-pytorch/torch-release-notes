@@ -48,19 +48,18 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Support `torch.compile` for DTensor random ops (`dropout`, `bernoulli`, `normal_`, `rand_like`, and others) on XPU. Previously these failed during fake-tensor tracing ([#187969](https://github.com/pytorch/pytorch/pull/187969))
 ### bug fixes
+- Fix context parallel FlexAttention with load balancing failing under graph capture with `Attempting to use FunctionalTensor on its own` or `seq_dims must have the pytree structure as buffers` ([#188766](https://github.com/pytorch/pytorch/pull/188766))
+- Fix context parallel building its attention mask with the default block size instead of the `BlockMask`'s actual block size ([#198250](https://github.com/pytorch/pytorch/pull/198250))
+- Fix ranks with uneven shards recording different graphs during graph capture, because zero-size padding took the eager shortcut ([#195641](https://github.com/pytorch/pytorch/pull/195641))
+- Fix `Shard` splitting with symbolic sizes producing negative lengths and crashing when trailing ranks should get empty shards, e.g. a dimension of size 5 split over 4 ranks ([#198168](https://github.com/pytorch/pytorch/pull/198168))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Drop redundant tuple/list/int wrappers around tensor shape and numel ([#185101](https://github.com/pytorch/pytorch/pull/185101))
-- [CP] Fix FlexCP + load balancing enabled + aot_fx_trace issue ([#188766](https://github.com/pytorch/pytorch/pull/188766))
-- Enable traceable DTensor RNG ops on XPU ([#187969](https://github.com/pytorch/pytorch/pull/187969))
-- Fix grammatical errors in comments and docstrings ([#194564](https://github.com/pytorch/pytorch/pull/194564))
-- [dtensor] Preserve zero-size ops during graph capture ([#195641](https://github.com/pytorch/pytorch/pull/195641))
-- [distributed] Add DeviceMesh.abort() API ([#189655](https://github.com/pytorch/pytorch/pull/189655))
-- [DTensor] Clamp SymInt _select_split_tensor so leftover ranks can be empty ([#198168](https://github.com/pytorch/pytorch/pull/198168))
-- [CP]Use the actual block mask block size when creating CP mask ([#198250](https://github.com/pytorch/pytorch/pull/198250))
-- [DTensor] Migrate unbind sharding propagation to single-dim strategy ([#198536](https://github.com/pytorch/pytorch/pull/198536))
 ### not user facing
+- Drop redundant `tuple()`/`list()`/`int()` wrappers around tensor shapes and `numel()` ([#185101](https://github.com/pytorch/pytorch/pull/185101))
+- Fix grammatical errors in comments and docstrings ([#194564](https://github.com/pytorch/pytorch/pull/194564))
+- Move `unbind` sharding propagation to the single-dim strategy without changing its behavior ([#198536](https://github.com/pytorch/pytorch/pull/198536))
 ### security
