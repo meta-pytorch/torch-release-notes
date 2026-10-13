@@ -45,35 +45,61 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## jit
 ### bc breaking
-- Fix C++ warning propagation for torch.ops and custom ops ([#193451](https://github.com/pytorch/pytorch/pull/193451))
+- Operators called through `torch.ops.*` and `torch._C._dispatch_call_boxed` now use PyTorch's own warning and exception translation instead of pybind11's ([#193451](https://github.com/pytorch/pytorch/pull/193451))
+
+    Previously, `TORCH_WARN` / `TORCH_WARN_ONCE` warnings raised by operators (including custom C++ operators) invoked through `torch.ops.*` were printed straight to stderr, so `warnings.catch_warnings()` and `warnings.filterwarnings()` had no effect on them. These calls now go through the same handling as the rest of `torch`, so the warnings reach Python's `warnings` module (as `UserWarning`, or the matching warning class such as `DeprecationWarning`). This is a behavior change if you run with warnings turned into errors (`-W error` or `warnings.simplefilter("error")`): such a warning now raises an exception.
+
+    C++ exceptions are also translated by PyTorch rather than pybind11. `c10` errors (`TORCH_CHECK` and friends) map to the same Python types as before, and `std::out_of_range` still becomes `IndexError` ([#195713](https://github.com/pytorch/pytorch/pull/195713)). However, any other standard or user-defined C++ exception raised by a custom operator becomes a `RuntimeError` with the same message. This includes exceptions pybind11 used to map to `ValueError`, `OverflowError` or `MemoryError`, and exceptions with a translator registered through `py::register_exception` or `py::register_exception_translator`. If you need a specific Python exception type from a custom operator, throw the matching `c10` error, for example `TORCH_CHECK_VALUE(...)` for `ValueError` or `TORCH_CHECK_TYPE(...)` for `TypeError`.
+
+    Version 2.14:
+
+    ```python
+    # C++ op: throw std::invalid_argument("bad size");
+    try:
+        torch.ops.my_lib.my_op(x)
+    except ValueError:  # pybind11 translation
+        ...
+    ```
+
+    Version 2.15:
+
+    ```python
+    # C++ op: TORCH_CHECK_VALUE(false, "bad size");
+    try:
+        torch.ops.my_lib.my_op(x)
+    except ValueError:
+        ...
+
+    # TORCH_WARN from the op is now a Python warning
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        torch.ops.my_lib.my_op(x)
+    ```
+
 ### deprecation
 ### new features
 ### improvements
-- Enable Sleef in the NNC LLVM codegen on aarch64 (#198002) ([#198002](https://github.com/pytorch/pytorch/pull/198002))
+- Enable Sleef vectorized math in the NNC (TensorExpr) LLVM codegen on aarch64 ([#198002](https://github.com/pytorch/pytorch/pull/198002))
 ### bug fixes
+- Fix `torch.jit.Attribute` annotations on `ScriptModule` being lost on Python 3.14 ([#195201](https://github.com/pytorch/pytorch/pull/195201))
+- Fix constant pooling and CSE merging `0.0` with `-0.0` float constants (giving wrong results for ops like `copysign`, `reciprocal`, `atan2`) and failing to pool identical NaN constants ([#192605](https://github.com/pytorch/pytorch/pull/192605))
+- Fix `torch.jit.export_opnames` missing operators used inside `torch.jit.fork` / `torch.jit.wait` subgraphs ([#197333](https://github.com/pytorch/pytorch/pull/197333))
+- Fix `torch.jit.script` missing class-level attribute annotations on `nn.Module` subclasses on Python 3.14, where lazily evaluated annotations are not reliably visible through module instances, and resolve inherited annotations along the class MRO. This raises the minimum `typing-extensions` requirement to 4.13.0 ([#199074](https://github.com/pytorch/pytorch/pull/199074))
 ### performance
+- Speed up `torch.jit.load` deserialization by skipping type-tag restoration for archives at version 3 or later, using a faster visited set when it is needed, and avoiding `IValue` copies in the unpickler ([#194035](https://github.com/pytorch/pytorch/pull/194035), [#193107](https://github.com/pytorch/pytorch/pull/193107), [#193250](https://github.com/pytorch/pytorch/pull/193250))
+- Speed up TorchScript graph pre-optimization by sharing one alias analysis across peephole sub-passes ([#194009](https://github.com/pytorch/pytorch/pull/194009))
 ### docs
 ### devs
-- Add META's Math Library (#198207) ([#198207](https://github.com/pytorch/pytorch/pull/198207))
+- `c10::List` iterators now satisfy the C++20 `std::random_access_iterator` concept and work with `std::ranges` algorithms, and `c10::List<T>::emplace` now constructs a `T` (so `List<double>().emplace(pos, 1)` stores a double instead of an int) ([#196002](https://github.com/pytorch/pytorch/pull/196002))
 ### Untopiced
-- [PyTorch][jit] Speed up restoreAccurateTypeTags via c10::FastSet and single hash lookup ([#193107](https://github.com/pytorch/pytorch/pull/193107))
-- [jit] Skip type-tag restoration for archives at version >= 3 (#194035) ([#194035](https://github.com/pytorch/pytorch/pull/194035))
-- [AI Codemod][PerfAICT-General] Share a single AliasDb across peephole sub-passes to cut redundant builds ([#194009](https://github.com/pytorch/pytorch/pull/194009))
-- Remove caffe2/core/timer.h ([#194228](https://github.com/pytorch/pytorch/pull/194228))
+### not user facing
+- Add META's Math Library (#198207) ([#198207](https://github.com/pytorch/pytorch/pull/198207))
 - Fix grammar and typos in code comments and docstrings ([#194491](https://github.com/pytorch/pytorch/pull/194491))
-- [PyTorch][jit] Avoid IValue copies in unpickler (#193250) ([#193250](https://github.com/pytorch/pytorch/pull/193250))
 - Fix grammar in comments and docstrings ([#194624](https://github.com/pytorch/pytorch/pull/194624))
-- Make c10::List's iterator model the concepts it claims ([#196002](https://github.com/pytorch/pytorch/pull/196002))
-- [py3.14][jit] Accumulate ScriptModule Attribute annotations on the class (#195201) ([#195201](https://github.com/pytorch/pytorch/pull/195201))
 - [RAWTHROW][10] torch/csrc/jit: 744 findings down to four subdirectories ([#195764](https://github.com/pytorch/pytorch/pull/195764))
 - [RAWTHROW][12] torch/csrc/jit/python: 49 conversions, tensorexpr is all that is left ([#195859](https://github.com/pytorch/pytorch/pull/195859))
 - [caffe2][buck] Hoist XNNPACK dep out of aten_cpu into :aten_native_xnnpack (#197457) ([#197457](https://github.com/pytorch/pytorch/pull/197457))
-- [jit] Resolve module annotations in MRO order (#198525) ([#198525](https://github.com/pytorch/pytorch/pull/198525))
-- [Check1:static check][2/7] Handle `fork`/`wait` in `export_opnames` (#197333) (#197333) ([#197333](https://github.com/pytorch/pytorch/pull/197333))
-### not user facing
-- Use C++20 concepts where it improves readability ([#179286](https://github.com/pytorch/pytorch/pull/179286))
 - Use c10::bit_cast for type punning instead of memcpy ([#194149](https://github.com/pytorch/pytorch/pull/194149))
 - Replace std::bind with std::bind_front where possible ([#195598](https://github.com/pytorch/pytorch/pull/195598))
-- [jit] Constant pooling/CSE: compare float attributes bitwise ([#192605](https://github.com/pytorch/pytorch/pull/192605))
 - [RAWTHROW][15] torch/csrc/jit/tensorexpr: 294 conversions, the burn-down list is empty ([#198500](https://github.com/pytorch/pytorch/pull/198500))
 ### security
