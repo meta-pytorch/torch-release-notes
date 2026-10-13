@@ -49,13 +49,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix a data race in `CPUCachingAllocator` destruction, which modified the shared allocation map without holding its mutex ([#196759](https://github.com/pytorch/pytorch/pull/196759))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [BE][Ez]: Remove more double probing with try_emplace ([#195375](https://github.com/pytorch/pytorch/pull/195375))
-- Prevent allocation-map races during `CPUCachingAllocator` teardown (#196759) ([#196759](https://github.com/pytorch/pytorch/pull/196759))
 ### not user facing
-- [RAWTHROW][5] aten/src: four buckets, not one sweep ([#194772](https://github.com/pytorch/pytorch/pull/194772))
+- [BE][Ez]: Remove more double probing with try_emplace ([#195375](https://github.com/pytorch/pytorch/pull/195375))
 - [RAWTHROW][5] aten/src: four buckets, not one sweep ([#194772](https://github.com/pytorch/pytorch/pull/194772))
 ### security
