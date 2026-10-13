@@ -52,16 +52,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
+- Fix source builds with CUDA 13.3, whose `nvcc` front end mis-printed a type alias in `ivalue_inl.h` ([#194659](https://github.com/pytorch/pytorch/pull/194659))
 ### Untopiced
 ### not user facing
-- Drop the caffe2 and torch protobuf string wrappers ([#194231](https://github.com/pytorch/pytorch/pull/194231))
-- Remove the caffe2/core/macros.h placeholder ([#194230](https://github.com/pytorch/pytorch/pull/194230))
-- Remove unused caffe2/utils/string_utils ([#185125](https://github.com/pytorch/pytorch/pull/185125))
-- Remove the caffe2/core/macros.h placeholder ([#194230](https://github.com/pytorch/pytorch/pull/194230))
-- [caffe2] Unblock caffe2_gpu under CUDA 13.3 (cudafe++ alias-decl reprint bug) ([#194659](https://github.com/pytorch/pytorch/pull/194659))
-- [caffe2/veclib] Fix (double)0 yielding -0.0 on AVX2 (#196607) ([#196607](https://github.com/pytorch/pytorch/pull/196607))
-- [caffe2/veclib] Add reduce_max to NEON's f32 layer ([#196716](https://github.com/pytorch/pytorch/pull/196716))
-- [caffe2/SumKernel] Adjust NEON ILP to match AVX2 and SVE256 fp32 computation ([#197037](https://github.com/pytorch/pytorch/pull/197037))
-- [caffe2/ReduceOpsKernel] Adjust NEON ILP to match AVX2 and SVE256 aten::norm fp32 computation ([#197252](https://github.com/pytorch/pytorch/pull/197252))
-- [caffe2/veclib] Fix double->int64 conversion on AVX2 (#196614) ([#196614](https://github.com/pytorch/pytorch/pull/196614))
+- Remove the unused Caffe2/torch protobuf string wrappers and the `caffe2/core/macros.h` placeholder ([#194231](https://github.com/pytorch/pytorch/pull/194231), [#194230](https://github.com/pytorch/pytorch/pull/194230))
 ### security
