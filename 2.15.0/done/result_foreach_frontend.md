@@ -47,22 +47,35 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add the public `torch.foreach` module (beta), which exposes the foreach (multi-tensor) operations under stable, documented names ([#193607](https://github.com/pytorch/pytorch/pull/193607))
+
+  `torch.foreach.<op>(inputs, ...)` applies an ordinary tensor operation across a list of tensors and, on supported accelerators, uses horizontally fused multi-tensor kernels. It covers unary ops (e.g. `abs`, `exp`, `sqrt`, `zero_`), binary ops (`add`, `sub`, `mul`, `div`, `clamp_min`, `clamp_max`, `minimum`, `maximum`, `pow`, `copy_`), pointwise ops (`addcmul`, `addcdiv`, `lerp`), and reductions/matrix ops (`max`, `norm`, `mm`), with in-place `_` variants where applicable. The public functions call the same operators as the existing private `torch._foreach_*` functions, which remain available with unchanged signatures, but differ in a few ways: required operands are positional-only and optional parameters are keyword-only, parameter names follow the corresponding ordinary op (the list argument is called `inputs`, and e.g. `norm` takes `ord=`), and there are no `out=` variants.
+
+  ```python
+  import torch
+
+  params = [torch.ones(2), torch.ones(3)]
+
+  # Before (private API, still supported)
+  torch._foreach_mul_(params, 3)
+  norms = torch._foreach_norm(params, 2)
+
+  # 2.15 public API
+  torch.foreach.mul_(params, 3)
+  norms = torch.foreach.norm(params, ord=2)
+  ```
+
 ### improvements
 ### bug fixes
 ### performance
+- Reduce the scratch memory used by CUDA `_foreach_norm` and `_foreach_max` (used by `clip_grad_norm_` and fused optimizers) on lists with very different tensor sizes, from tens of MB to the size actually needed ([#190549](https://github.com/pytorch/pytorch/pull/190549))
 ### docs
-- Update docs and stubs for foreach to be honest ([#193466](https://github.com/pytorch/pytorch/pull/193466))
+- Correct the type stubs and docs for in-place foreach functions, which return the input list rather than `None` ([#193466](https://github.com/pytorch/pytorch/pull/193466))
 ### devs
 ### Untopiced
-- Select the distribution kernels with if constexpr ([#194157](https://github.com/pytorch/pytorch/pull/194157))
-- Name the foreach norm block reduction once ([#194160](https://github.com/pytorch/pytorch/pull/194160))
-- Introduce public torch.foreach APIs ([#193607](https://github.com/pytorch/pytorch/pull/193607))
-- Build tensor_lists without copying each inner list ([#194169](https://github.com/pytorch/pytorch/pull/194169))
-- Drop unused includes in aten ([#194960](https://github.com/pytorch/pytorch/pull/194960))
-- [Test] Refactor `test_foreach.py`  ([#195452](https://github.com/pytorch/pytorch/pull/195452))
-- [rel-land] allow horizontal fusion of copies from dynamic inputs into concat operation (#195635) (#198294) ([#198294](https://github.com/pytorch/pytorch/pull/198294))
-- [Inductor] Skip ExternKernelSchedulerNode in create_foreach_nodes ([#198675](https://github.com/pytorch/pytorch/pull/198675))
 ### not user facing
-- allow horizontal fusion of copies from dynamic inputs into concat operation ([#195635](https://github.com/pytorch/pytorch/pull/195635))
-- [cuda] Compact ragged partials for foreach norm/max reductions ([#190549](https://github.com/pytorch/pytorch/pull/190549))
+- Instantiate only the needed CUDA distribution kernels with `if constexpr`, reducing binary size ([#194157](https://github.com/pytorch/pytorch/pull/194157))
+- Refactor foreach CUDA kernel helpers without behavior change ([#194160](https://github.com/pytorch/pytorch/pull/194160), [#194169](https://github.com/pytorch/pytorch/pull/194169))
+- Drop unused includes in ATen ([#194960](https://github.com/pytorch/pytorch/pull/194960))
+- Refactor `test_foreach.py` to follow the device-generic test guidelines ([#195452](https://github.com/pytorch/pytorch/pull/195452))
 ### security
