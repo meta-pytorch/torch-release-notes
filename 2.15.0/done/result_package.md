@@ -54,6 +54,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 ### Untopiced
 ### not user facing
-- Rename test owner label oncall: package/deploy -> module: package/deploy ([#192831](https://github.com/pytorch/pytorch/pull/192831))
-- [python][pytorch] Guard typing.io/typing.re imports in torch.package test fixture (#199451) ([#199451](https://github.com/pytorch/pytorch/pull/199451))
+- Rename the `torch.package` test owner label to `module: package/deploy` ([#192831](https://github.com/pytorch/pytorch/pull/192831))
+- Guard `typing.io`/`typing.re` imports in a `torch.package` test fixture for Python 3.13+ ([#199451](https://github.com/pytorch/pytorch/pull/199451))
 ### security
