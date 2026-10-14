@@ -193,6 +193,19 @@ Use these signals, in order:
 Ignore: pure refactors, test infra, lint fixes, typo fixes, internal
 dispatcher churn, reverts, and cherry-picks that land on both branches.
 
+Also drop work that is real but isn't a feature for blog readers:
+
+- **Private surfaces.** Code that lives only in an underscore module,
+  or that needs a private call before it can be used. Check this on
+  the release branch, not from the PR title. The 2.15 draft featured
+  NCCL4Py, which lived in `torch.distributed._nccl4py` and only worked
+  after calling `_register_nccl4py_backend()`.
+- **Bug-fix batches.** A group of fixes to one component (stubs that
+  did nothing, a deadlock) is not a new feature, even when it is a
+  large stack.
+- **Small API additions.** A new keyword argument or a couple of extra
+  reduction ops is a line in the release notes, not a blog entry.
+
 Typo-fix PRs are a large share of the `Untopiced` pool and are never
 blog-worthy; filter them early.
 
@@ -257,6 +270,74 @@ dropped. Watch for architectures that are built but deliberately not
 advertised — 2.14 built CUDA 13.4 while excluding it from Windows and
 the docker release matrix, so it was not a 2.14 install option.
 
+### Step 10 — Trim to the previous blog's length
+
+A first draft runs long. The 2.15 draft had about 3,500 words of
+reader-facing text and 22 feature entries; the 2.13 blog had about
+2,200 words and 16 entries. Count the words in the previous blog from
+the intro through Non-Feature Updates, and use that as the budget. That
+works out to about 100 words per entry, with up to about 150 for the
+lead entry.
+
+Don't count notes for the release manager toward the budget. Keep
+one-line `TODO(release-manager):` markers inline where they apply, but
+put anything longer (the draft banner, the below-threshold list, open
+questions) in a `## Notes for the release manager` section at the end,
+so it can be removed in one step before publishing.
+
+Make cuts in this order, cheapest first:
+
+1. **State each fact once.**
+   - CUDA, ROCm and Python versions go in Non-Feature Updates. Don't
+     give a version bump its own entry. If it lets users do something
+     new (`torch.compile` on a new Python), give that one sentence in
+     the highlights. Toolkit patch versions and packaging details
+     (RPATH, wheel build systems) belong in the release notes. The 2.15
+     draft stated the Python 3.10 drop three times.
+   - The intro needs the highlight bullets and one paragraph on the 2.x
+     arc. Don't add a second paragraph that restates the bullets.
+   - A detail that appears in two entries (e.g. a new GPU arch joining
+     the nightly wheel list) stays in one of them.
+2. **Re-apply the Step 3 filter** to what survived. Private surfaces
+   and bug-fix batches are easier to spot once the entries are written.
+3. **Merge related entries.**
+   - When one change made another possible, tell them as one story.
+     The flight recorder that made the rewritten NCCL backend
+     debuggable belongs in the entry about that backend becoming the
+     default, not in a separate "operability" entry.
+   - When one platform has more than three entries, group them by what
+     users get. 2.15's five MPS entries became three: FP8 and decode,
+     Metal kernels and linear algebra, and streams. If the highlight
+     bullet already treats them as one item, that's a sign they should
+     be merged.
+4. **Shorten Deprecations** to the three to five items most users will
+   hit, such as a dropped Python version, a changed default or a
+   dropped OS version. Point to the release notes for the rest. 2.13
+   listed three; the 2.15 draft started with twelve.
+5. **Cap each entry at about 100 words.** Keep the headline numbers and
+   the API users touch. Drop per-op lists, kernel internals (tile
+   formats, fallback paths), secondary benchmarks, and closing
+   sentences that list unrelated extras.
+
+While cutting:
+
+- **Keep each number tied to the change that produced it.** After a
+  merge, a speedup from one PR must not read as a claim for the whole
+  entry. In 2.15 the 1.32-1.34x MoE decode gain came from the
+  `grouped_mm` gemv path, not from all the MPS decode work.
+- **Fix the attribution.** If you drop the only sentence about a PR,
+  either remove that PR from the attribution line or keep a clause for
+  it. Dropping a contributor's only mention removes their credit, so do
+  it on purpose.
+- **Clean up after cuts.** Remove headings left empty and
+  cross-references to entries that no longer exist ("see the CUDA
+  entry under Core Features").
+
+**Propose the cuts; don't apply them silently.** Give the release
+manager a table of proposed cuts with the approximate words each saves
+and the running total against the budget, and let them choose. The
+published text should reflect edits a person reviewed.
+
 ## Output
 
 Save the draft to `<X.Y.Z>/blog-draft.md` in this repo. Do not commit
@@ -269,6 +350,8 @@ version into the pytorch.org blog repo.
   post is authoritative, this skill is a summary of it.
 - **Confirm scope before you dig in.** Thousands of commits; the user
   cares about a few dozen entries.
+- **Match the previous blog's length.** About 16 entries of about 100
+  words each. See Step 10.
 - **Let the PR author's words do the work.** Lift phrasing from the PR
   body's summary rather than re-describing the change from the diff.
 - **Flag uncertainty.** `TODO(release-manager): is this API Unstable?`

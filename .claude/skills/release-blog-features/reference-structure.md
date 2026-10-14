@@ -99,12 +99,16 @@ API Unstable
 
 ## Deprecations and Backwards-Incompatible Changes
 
+<Three to five items most users will hit. Link the release notes for
+the rest.>
+
 - **<Change>.** <What to do instead.> See [#<PR>](...).
 
 ## Non-Feature Updates
 
 - **Python support**: <changes>. See [#<PR>](...).
 - **CUDA**: <default build, versions added/removed>. See [#<PR>](...).
+- **ROCm**: <versions added/removed>. See [#<PR>](...).
 - **Triton**: pin advanced to <version>. See [#<PR>](...).
 - **oneDNN**: submodule upgraded to <version>. See [#<PR>](...).
 ```
@@ -186,9 +190,10 @@ Placement notes worth remembering:
 - A backend-specific compiler feature goes under its **platform**, not
   Compilation and Export. 2.13 filed the CuTeDSL Inductor backend
   under CUDA.
-- Release-engineering items that ship a feature (e.g. Python 3.15
-  wheels) can be a **Core Features** entry; pure version bumps belong
-  in Non-Feature Updates.
+- Version bumps (CUDA, ROCm, Python) belong in **Non-Feature Updates**
+  only. If one lets users do something new (e.g. `torch.compile` on
+  Python 3.15), give it one sentence in the highlights rather than its
+  own entry.
 
 ## Things to avoid
 
@@ -207,6 +212,10 @@ Placement notes worth remembering:
 - **Don't write commit-style descriptions.** "Fix segfault in foo when
   bar" belongs in release notes, not the blog. Lead with the problem
   the reader has.
+- **Don't repeat a fact across sections.** Versions live in
+  Non-Feature Updates; the intro doesn't restate the highlight bullets.
+- **Don't feature private APIs.** If it lives in an underscore module
+  or needs a private call to enable, leave it to the release notes.
 - **Don't infer the support matrix.** Read CUDA, ROCm and Python
   versions off `generate_binary_build_matrix.py` on both release
   branches and diff them.
