@@ -75,26 +75,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   RuntimeError: The MPS backend is supported on macOS 15.0+. Current OS version can be queried using `sw_vers`
   ```
 ### deprecation
-- Deprecate calling the C++ `at::mps::MPSProfiler` `begin*` profiling functions without a stream ([#192525](https://github.com/pytorch/pytorch/pull/192525), [#193611](https://github.com/pytorch/pytorch/pull/193611))
-
-  The `beginProfileKernel`, `beginProfileCopy`, `beginProfileGPUInterval`, `endProfileKernel` and `endProfileCopy` methods now have overloads that take the `MPSStream*` the work runs on. The old overloads without a stream still work and use the current MPS stream, but the `begin*` ones emit a deprecation warning such as `beginProfileKernel() called without a stream, may end up profiling the wrong stream`. C++ extensions that profile their own Metal kernels should pass the stream explicitly.
-
-  Version 2.14:
-  ```cpp
-  auto& profiler = at::mps::getMPSProfiler();
-  profiler.beginProfileKernel(pso, "my_kernel", {input, output});
-  // ... encode the kernel ...
-  profiler.endProfileKernel(pso);
-  ```
-
-  Version 2.15:
-  ```cpp
-  auto& profiler = at::mps::getMPSProfiler();
-  at::mps::MPSStream* stream = at::mps::getCurrentMPSStream();
-  profiler.beginProfileKernel(pso, "my_kernel", {input, output}, stream);
-  // ... encode the kernel ...
-  profiler.endProfileKernel(pso, stream);
-  ```
 ### new features
 - Add a public MPS stream API: `torch.mps.Stream` (with `synchronize()` and `stream_id`), `torch.mps.current_stream()`, `torch.mps.default_stream()`, `torch.mps.set_stream()` and the `torch.mps.stream()` context manager. These mirror the CUDA APIs, so independent workloads can be queued on separate MPS streams. Add `Tensor.record_stream` for MPS so the allocator does not reuse a tensor's memory until the recorded stream is done with it. For events on non-default streams, use `torch.Event("mps")`; `torch.mps.event.Event.record()` and `wait()` raise `NotImplementedError` when the current stream is not the default stream ([#191415](https://github.com/pytorch/pytorch/pull/191415), [#193464](https://github.com/pytorch/pytorch/pull/193464))
 
@@ -166,6 +146,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix building PyTorch with clang 16 and Apple clang 15 ([#199115](https://github.com/pytorch/pytorch/pull/199115))
 - Fix building with a Metal 4 toolchain against an older macOS SDK, where the Metal Performance Primitives headers are missing ([#196104](https://github.com/pytorch/pytorch/pull/196104))
 - Fix deprecation warnings when building against the macOS 27 SDK: drop the unused managed storage mode from the MPS allocator, and check for the `MTLGPUFamilyApple7` GPU family instead of the deprecated `MTLGPUFamilyMac2` when picking the MPS device ([#197200](https://github.com/pytorch/pytorch/pull/197200))
+- The C++ `at::mps::MPSProfiler` `begin*`/`end*` profiling methods gain overloads that take the `MPSStream*` the work runs on; the stream-less `begin*` overloads are deprecated and warn that they may profile the wrong stream ([#192525](https://github.com/pytorch/pytorch/pull/192525), [#193611](https://github.com/pytorch/pytorch/pull/193611))
 ### not user facing
 - Remove dead MPS code ([#193730](https://github.com/pytorch/pytorch/pull/193730), [#193731](https://github.com/pytorch/pytorch/pull/193731), [#193732](https://github.com/pytorch/pytorch/pull/193732), [#193733](https://github.com/pytorch/pytorch/pull/193733), [#193734](https://github.com/pytorch/pytorch/pull/193734))
 - Internal MPS refactors and cleanups: inline the MPS allocator block comparator, use transparent functors, change `MPSEventPtr` to `intrusive_ptr`, use a typed struct for LU scratch space, remove the obsolete `isLowPower` check, delete the `relu_mps` dispatch and `[scatter|gather]ViewTensor` wrappers, and pass bool kernel parameters as `bool` ([#195374](https://github.com/pytorch/pytorch/pull/195374), [#195753](https://github.com/pytorch/pytorch/pull/195753), [#195867](https://github.com/pytorch/pytorch/pull/195867), [#195297](https://github.com/pytorch/pytorch/pull/195297), [#195365](https://github.com/pytorch/pytorch/pull/195365), [#197068](https://github.com/pytorch/pytorch/pull/197068), [#197742](https://github.com/pytorch/pytorch/pull/197742), [#196157](https://github.com/pytorch/pytorch/pull/196157))
