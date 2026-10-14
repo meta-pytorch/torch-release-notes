@@ -264,9 +264,8 @@ the docker release matrix, so it was not a 2.14 install option.
 
 First drafts run long, mostly from repetition. Before handing off:
 
-- **State each fact once.** Version numbers go only in Non-Feature
-  Updates, the intro doesn't restate the highlight bullets, and a
-  detail shared by two entries goes in one of them.
+- **State each fact once.** The intro doesn't restate the highlight
+  bullets, and a detail shared by two entries goes in one of them.
 - **Put notes for the release manager at the end.** Keep one-line
   `TODO(release-manager):` markers inline, but move anything longer
   (the draft banner, the below-threshold list, open questions) to a
