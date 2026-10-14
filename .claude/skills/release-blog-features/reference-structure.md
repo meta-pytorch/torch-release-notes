@@ -186,9 +186,9 @@ Placement notes worth remembering:
 - A backend-specific compiler feature goes under its **platform**, not
   Compilation and Export. 2.13 filed the CuTeDSL Inductor backend
   under CUDA.
-- Version numbers (CUDA, ROCm, Python) belong in **Non-Feature
-  Updates** only. If a new version lets users do something new, say so
-  in one sentence rather than repeating the version matrix.
+- Release-engineering items that ship a feature (e.g. Python 3.15
+  wheels) can be a **Core Features** entry; pure version bumps belong
+  in Non-Feature Updates.
 
 ## Things to avoid
 
