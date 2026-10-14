@@ -47,13 +47,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Support causal grouped-query attention with a paged KV cache in the cuDNN backend of `torch.nn.attention.varlen` (`varlen_attn` and `varlen_attn_out`), enabling head dimension 256 with a paged KV cache on Blackwell GPUs; requires cuDNN 9.24 or newer ([#195650](https://github.com/pytorch/pytorch/pull/195650))
 ### improvements
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [SDPA][CUDA] Prefer cuDNN SDPA backend on sm86 and sm89 ([#192799](https://github.com/pytorch/pytorch/pull/192799))
-- [cuDNN][varlen] Support causal GQA paged KV serving ([#195650](https://github.com/pytorch/pytorch/pull/195650))
 ### not user facing
 ### security
