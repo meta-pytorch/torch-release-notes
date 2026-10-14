@@ -45,54 +45,34 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## distributed (checkpoint)
 ### bc breaking
+- Distributed checkpoint metadata now records tensor strides, so checkpoints saved with PyTorch 2.15 cannot be loaded by PyTorch 2.14 or earlier ([#194251](https://github.com/pytorch/pytorch/pull/194251))
+
+  `TensorProperties` gains an optional `strides` field in the pickled `.metadata` file. In older versions `dcp.load` raises a `CheckpointException` reporting `too many values to unpack (expected 5)`. There is no flag to write the old format.
+
+  Version 2.14 (loading a 2.15 checkpoint):
+  ```python
+  dcp.load(state_dict, checkpoint_id="/ckpt/step_100")
+  # CheckpointException: ... too many values to unpack (expected 5)
+  ```
+
+  Version 2.15:
+  ```python
+  dcp.load(state_dict, checkpoint_id="/ckpt/step_100")  # loads 2.14 and 2.15 checkpoints
+  ```
 ### deprecation
 ### new features
+- `FsspecReader` and `FsspecWriter` are now public in `torch.distributed.checkpoint`, and `FsspecWriter` supports `dcp.async_save` through a new `cache_staged_state_dict` argument placed before `overwrite` (pass `overwrite` and later arguments by keyword); importing the old private `_fsspec_filesystem` module emits a `DeprecationWarning` ([#188698](https://github.com/pytorch/pytorch/pull/188698))
 ### improvements
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Avoid Tensor refcount churn during c10::List<optional<Tensor>> iteration ([#192550](https://github.com/pytorch/pytorch/pull/192550))
-- Fix grammar and typos in docs and docstrings ([#194415](https://github.com/pytorch/pytorch/pull/194415))
-- Fix grammar and typos in code comments and docstrings ([#194493](https://github.com/pytorch/pytorch/pull/194493))
-- [S615805][S694227][PyTorch] Safely preserve tensor strides (#194251) ([#194251](https://github.com/pytorch/pytorch/pull/194251))
-- Fix remaining checkpoint filesystem races flagged in #194614 ([#196591](https://github.com/pytorch/pytorch/pull/196591))
-- Make Fsspec filesystem checkpointing public and exposing cache_staged_state_dict to enable async save ([#188698](https://github.com/pytorch/pytorch/pull/188698))
-- Make Fsspec filesystem checkpointing public and exposing cache_staged_state_dict to enable async save ([#188698](https://github.com/pytorch/pytorch/pull/188698))
 ### not user facing
-- [Testcase Refactoring]Add hw_classification to test_compatibility.py ([#192184](https://github.com/pytorch/pytorch/pull/192184))
-- Report a child's KeyboardInterrupt instead of exiting 0 in spawn ([#194439](https://github.com/pytorch/pytorch/pull/194439))
-- Fix EADDRINUSE from hard-coded MASTER_PORT in distributed test fixtures ([#194377](https://github.com/pytorch/pytorch/pull/194377))
-- [Testcase Refactoring]Add hw_classification to test_quantized_hf_storage.py ([#192194](https://github.com/pytorch/pytorch/pull/192194))
-- [Testcase Refactoring] Add HardwareClassification to test_hf_storage.py ([#193085](https://github.com/pytorch/pytorch/pull/193085))
-- [Testcase Refactoring] Add HardwareClassification to test_checkpointer.py ([#193119](https://github.com/pytorch/pytorch/pull/193119))
-- [Testcase Refactoring] Tag test_checkpoint_process.py classes with hw_classification ([#193523](https://github.com/pytorch/pytorch/pull/193523))
-- [Testcase Refactoring][DCP] Classify checkpoint barrier tests by hardware requirements ([#194199](https://github.com/pytorch/pytorch/pull/194199))
-- [Testcase Refactoring][DCP] Classify checkpoint writer tests by hardware requirements ([#194200](https://github.com/pytorch/pytorch/pull/194200))
-- [inductor][bucketing] Fuse uneven reduce-scatter packing ([#196647](https://github.com/pytorch/pytorch/pull/196647))
-- [Testcase Refactoring][DCP] Classify deduplicated tensor tests by hardware requirements ([#194202](https://github.com/pytorch/pytorch/pull/194202))
-- [ROCm] Re-enable distributed tests with resolved flaky history ([#196484](https://github.com/pytorch/pytorch/pull/196484))
-- [Testcase Refactoring] Add HardwareClassification to test_nested_dict.py ([#193117](https://github.com/pytorch/pytorch/pull/193117))
-- [Testcase Refactoring] Add HardwareClassification to test_types.py ([#193105](https://github.com/pytorch/pytorch/pull/193105))
-- [Testcase Refactoring] Add HardwareClassification to test_builder.py ([#193087](https://github.com/pytorch/pytorch/pull/193087))
-- [CI] Fix retry teardown and run distributed/test_store in-process ([#197324](https://github.com/pytorch/pytorch/pull/197324))
-- [Testcase Refactoring] Tag test_traverse.py TestTraverse with hw_classification ([#193524](https://github.com/pytorch/pytorch/pull/193524))
-- [distributed] Wait directly for async checkpoint completion in tests ([#197641](https://github.com/pytorch/pytorch/pull/197641))
-- [distributed] Resolve checkpoint test futures without sleeping ([#197638](https://github.com/pytorch/pytorch/pull/197638))
-- [distributed] Reuse workers for checkpoint state-dict utility tests ([#197647](https://github.com/pytorch/pytorch/pull/197647))
-- Reuse workers for checkpoint replication staging tests ([#197693](https://github.com/pytorch/pytorch/pull/197693))
-- Reuse workers for safetensors consolidation tests ([#197694](https://github.com/pytorch/pytorch/pull/197694))
-- [distributed] Reuse checkpoint ordering test workers ([#197704](https://github.com/pytorch/pytorch/pull/197704))
-- [distributed] Reuse workers for checkpoint collective wrapper tests ([#197654](https://github.com/pytorch/pytorch/pull/197654))
-- Reuse workers for FSDP model checkpoint tests ([#197688](https://github.com/pytorch/pytorch/pull/197688))
-- [distributed] Reuse workers for tensor-parallel checkpoint tests ([#197665](https://github.com/pytorch/pytorch/pull/197665))
-- [distributed] Reuse workers for checkpoint resharding tests ([#197666](https://github.com/pytorch/pytorch/pull/197666))
-- [distributed] Reuse workers for HSDP checkpoint tests ([#197667](https://github.com/pytorch/pytorch/pull/197667))
-- [distributed] Reuse workers for FSDP optimizer checkpoint tests ([#197670](https://github.com/pytorch/pytorch/pull/197670))
-- [distributed] Reuse safetensors resharding workers ([#197677](https://github.com/pytorch/pytorch/pull/197677))
-- [distributed] Reuse Gloo filesystem checkpoint workers ([#197683](https://github.com/pytorch/pytorch/pull/197683))
-- [distributed] Reuse accelerator checkpoint workers ([#197684](https://github.com/pytorch/pytorch/pull/197684))
-- [distributed] Reuse workers for FSDP checkpoint conversion tests ([#197668](https://github.com/pytorch/pytorch/pull/197668))
-- [distributed] Reuse workers for checkpoint initialization-info tests ([#197657](https://github.com/pytorch/pytorch/pull/197657))
+- Fix grammar and typos in docstrings and comments ([#194415](https://github.com/pytorch/pytorch/pull/194415), [#194493](https://github.com/pytorch/pytorch/pull/194493))
+- Tag distributed checkpoint test classes with hardware classifications ([#192184](https://github.com/pytorch/pytorch/pull/192184), [#192194](https://github.com/pytorch/pytorch/pull/192194), [#193085](https://github.com/pytorch/pytorch/pull/193085), [#193087](https://github.com/pytorch/pytorch/pull/193087), [#193105](https://github.com/pytorch/pytorch/pull/193105), [#193117](https://github.com/pytorch/pytorch/pull/193117), [#193119](https://github.com/pytorch/pytorch/pull/193119), [#193523](https://github.com/pytorch/pytorch/pull/193523), [#193524](https://github.com/pytorch/pytorch/pull/193524), [#194199](https://github.com/pytorch/pytorch/pull/194199), [#194200](https://github.com/pytorch/pytorch/pull/194200), [#194202](https://github.com/pytorch/pytorch/pull/194202))
+- Fix filesystem races in checkpoint save/load tests ([#196591](https://github.com/pytorch/pytorch/pull/196591))
+- Re-enable ROCm distributed tests whose flaky history was resolved ([#196484](https://github.com/pytorch/pytorch/pull/196484))
+- Fix retry teardown in distributed store tests and run `distributed/test_store` in-process ([#197324](https://github.com/pytorch/pytorch/pull/197324))
+- Speed up checkpoint tests by waiting on futures directly instead of sleeping and by reusing worker processes across test cases ([#197638](https://github.com/pytorch/pytorch/pull/197638), [#197641](https://github.com/pytorch/pytorch/pull/197641), [#197647](https://github.com/pytorch/pytorch/pull/197647), [#197654](https://github.com/pytorch/pytorch/pull/197654), [#197657](https://github.com/pytorch/pytorch/pull/197657), [#197665](https://github.com/pytorch/pytorch/pull/197665), [#197666](https://github.com/pytorch/pytorch/pull/197666), [#197667](https://github.com/pytorch/pytorch/pull/197667), [#197668](https://github.com/pytorch/pytorch/pull/197668), [#197670](https://github.com/pytorch/pytorch/pull/197670), [#197677](https://github.com/pytorch/pytorch/pull/197677), [#197683](https://github.com/pytorch/pytorch/pull/197683), [#197684](https://github.com/pytorch/pytorch/pull/197684), [#197688](https://github.com/pytorch/pytorch/pull/197688), [#197693](https://github.com/pytorch/pytorch/pull/197693), [#197694](https://github.com/pytorch/pytorch/pull/197694), [#197704](https://github.com/pytorch/pytorch/pull/197704))
 ### security
