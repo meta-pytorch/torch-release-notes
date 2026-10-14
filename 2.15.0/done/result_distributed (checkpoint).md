@@ -47,43 +47,21 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - Distributed checkpoint metadata now records tensor strides, so checkpoints saved with PyTorch 2.15 cannot be loaded by PyTorch 2.14 or earlier ([#194251](https://github.com/pytorch/pytorch/pull/194251))
 
-  `TensorProperties` in `torch.distributed.checkpoint.metadata` (and in `torch.distributed._shard.sharded_tensor.metadata`) has a new optional `strides` field, and it is pickled into the checkpoint's `.metadata` file. This was added so DCP can save tensor-like objects that are passed through `torch.Tensor`-typed APIs but do not implement `stride()`; for those, `strides` is recorded as `None`. PyTorch 2.15 still loads checkpoints written by older versions. Older versions expect five fields when they unpickle `TensorProperties`, so reading the 2.15 metadata fails with `ValueError: too many values to unpack (expected 5)`, and `dcp.load` raises a `CheckpointException` that reports this error. There is no flag to write the old format. Use PyTorch 2.15 or later to load checkpoints written by 2.15, or write the checkpoint with the older version.
+  `TensorProperties` gains an optional `strides` field in the pickled `.metadata` file. In older versions `dcp.load` raises a `CheckpointException` reporting `too many values to unpack (expected 5)`. There is no flag to write the old format.
 
-  Version 2.14 (loading a checkpoint written by 2.15):
+  Version 2.14 (loading a 2.15 checkpoint):
   ```python
-  >>> import torch.distributed.checkpoint as dcp
-  >>> dcp.load(state_dict, checkpoint_id="/ckpt/step_100")
-  torch.distributed.checkpoint.api.CheckpointException: CheckpointException ranks:dict_keys([0])
-  ...
-  AssertionError: metadata is None; global metadata read failed: too many values to unpack (expected 5); rank local metadata read failed: ...
+  dcp.load(state_dict, checkpoint_id="/ckpt/step_100")
+  # CheckpointException: ... too many values to unpack (expected 5)
   ```
 
   Version 2.15:
   ```python
-  >>> import torch.distributed.checkpoint as dcp
-  >>> dcp.load(state_dict, checkpoint_id="/ckpt/step_100")  # checkpoints from 2.14 and 2.15 both load
+  dcp.load(state_dict, checkpoint_id="/ckpt/step_100")  # loads 2.14 and 2.15 checkpoints
   ```
 ### deprecation
 ### new features
-- `FsspecReader` and `FsspecWriter` are now public in `torch.distributed.checkpoint`, and `FsspecWriter` supports `dcp.async_save` through a new `cache_staged_state_dict` argument ([#188698](https://github.com/pytorch/pytorch/pull/188698))
-
-  The fsspec storage classes move from the private `torch.distributed.checkpoint._fsspec_filesystem` module to `torch.distributed.checkpoint.fsspec_filesystem`, and both are exported from `torch.distributed.checkpoint`. Importing the old private module still works but emits a `DeprecationWarning`. `cache_staged_state_dict` is forwarded to `FileSystemWriter`. It keeps the staged state dict cached between `dcp.async_save` calls, which lowers staging latency but uses more memory. The new argument comes before `overwrite`, so pass `overwrite` and any later arguments by keyword.
-
-  Version 2.14:
-  ```python
-  from torch.distributed.checkpoint._fsspec_filesystem import FsspecWriter
-
-  writer = FsspecWriter("s3://bucket/ckpt")
-  dcp.save(state_dict, storage_writer=writer)
-  ```
-
-  Version 2.15:
-  ```python
-  from torch.distributed.checkpoint import FsspecWriter
-
-  writer = FsspecWriter("s3://bucket/ckpt", cache_staged_state_dict=True)
-  future = dcp.async_save(state_dict, storage_writer=writer)
-  ```
+- `FsspecReader` and `FsspecWriter` are now public in `torch.distributed.checkpoint`, and `FsspecWriter` supports `dcp.async_save` through a new `cache_staged_state_dict` argument placed before `overwrite` (pass `overwrite` and later arguments by keyword); importing the old private `_fsspec_filesystem` module emits a `DeprecationWarning` ([#188698](https://github.com/pytorch/pytorch/pull/188698))
 ### improvements
 ### bug fixes
 ### performance
