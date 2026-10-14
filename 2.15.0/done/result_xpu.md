@@ -65,6 +65,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `torch.xpu.mem_get_info` under-reporting free memory on Xe2 and later ([#195987](https://github.com/pytorch/pytorch/pull/195987))
 - Fix XPU device indices not matching SYCL's order when an integrated GPU is listed first ([#198336](https://github.com/pytorch/pytorch/pull/198336))
 - Fix oneDNN SDPA with grouped-query attention and head-broadcast masks ([#194973](https://github.com/pytorch/pytorch/pull/194973))
+- Fix "An event cannot be enqueued for signaling or waiting behind a command which is not enqueued in the backend" errors with oneCCL on BMG ([#197396](https://github.com/pytorch/pytorch/pull/197396))
 ### performance
 - Faster SDPA training ([#195419](https://github.com/pytorch/pytorch/pull/195419))
 ### docs
@@ -75,6 +76,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Unify LazyLevelZero stub macro into a single ZE_STUB ([#197209](https://github.com/pytorch/pytorch/pull/197209))
 - Add XPU caching allocator checkpoint pool state bindings ([#188259](https://github.com/pytorch/pytorch/pull/188259))
 - Improve error messages from `torch.xpu.utilization()` and other Level Zero Sysman queries on Xe2 and later GPUs when the process lacks the required permissions ([#197210](https://github.com/pytorch/pytorch/pull/197210), [#197494](https://github.com/pytorch/pytorch/pull/197494)) (cut for length)
-- Fix "An event cannot be enqueued for signaling or waiting behind a command which is not enqueued in the backend" errors with oneCCL on BMG ([#197396](https://github.com/pytorch/pytorch/pull/197396)) (cut for length)
 - Fix `torch.xpu.Event.record()` submitting twice on first use, which could lose profiling timestamps ([#194609](https://github.com/pytorch/pytorch/pull/194609)) (cut for length)
 ### security
