@@ -46,37 +46,36 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ## linalg_frontend
 ### bc breaking
 ### deprecation
+- MAGMA is deprecated as the backend for pivoted LU factorization on CUDA; `torch.linalg.lu_factor` (and ops built on it) with `pivot=True` now always uses cuSOLVER ([#190661](https://github.com/pytorch/pytorch/pull/190661))
+
+  With `pivot=True`, LU now dispatches to cuSOLVER even when `torch.backends.cuda.preferred_linalg_library("magma")` is set; a new built-in batched LU kernel replaces MAGMA's for large batches. When MAGMA is preferred, the first call warns: `linalg.lu_factor: MAGMA, as a linear algebra backend, is deprecated and will be removed in future releases.` `pivot=False` still uses MAGMA when it is preferred. To avoid the warning, use the default or cuSOLVER backend.
+
+  ```python
+  torch.backends.cuda.preferred_linalg_library("magma")
+  LU, pivots = torch.linalg.lu_factor(A)  # 2.14: MAGMA; 2.15: cuSOLVER + UserWarning
+  torch.backends.cuda.preferred_linalg_library("default")  # recommended
+  ```
+
 ### new features
 ### improvements
+- Add CUDA TunableOp support for `torch._scaled_mm` ([#186271](https://github.com/pytorch/pytorch/pull/186271))
+- Unify matmul shape-check error messages ([#193583](https://github.com/pytorch/pytorch/pull/193583))
 ### bug fixes
-- Fix silently wrong second-order forward AD for linalg.det/slogdet/solve ([#192667](https://github.com/pytorch/pytorch/pull/192667))
+- Fix silently wrong second-order forward AD for `linalg.det`, `slogdet` and `solve` ([#192667](https://github.com/pytorch/pytorch/pull/192667))
+- Fix wrong `torch.linalg.matrix_exp` results for some inputs ([#196658](https://github.com/pytorch/pytorch/pull/196658))
+- Fix wrong CPU `torch._int_mm` results for strided size-1 dimensions ([#194682](https://github.com/pytorch/pytorch/pull/194682))
 ### performance
+- Add a built-in CUDA batched LU kernel that matches MAGMA, and improve LU backend selection without pivoting ([#190329](https://github.com/pytorch/pytorch/pull/190329), [#193004](https://github.com/pytorch/pytorch/pull/193004))
 ### docs
 ### devs
 ### Untopiced
-- [TunableOp] Size screening profiles by the tuning limits ([#192403](https://github.com/pytorch/pytorch/pull/192403))
-- [TunableOp] Size screening profiles by the tuning limits ([#192403](https://github.com/pytorch/pytorch/pull/192403))
-- [BE] Share matrix multiplication shape checks ([#193583](https://github.com/pytorch/pytorch/pull/193583))
-- Update definition of ROCM_VERSION in cpp_extension.py ([#188184](https://github.com/pytorch/pytorch/pull/188184))
-- Reland #188184: derive ROCM_VERSION from torch.version.rocm ([#194985](https://github.com/pytorch/pytorch/pull/194985))
-- [ROCm] Report SDK and HIP versions separately ([#193602](https://github.com/pytorch/pytorch/pull/193602))
-- [ROCm] Report SDK and HIP versions separately ([#193602](https://github.com/pytorch/pytorch/pull/193602))
-- [CUDA][LinAlg] Batched LU with partial pivoting: a MAGMA-like kernel ([#190329](https://github.com/pytorch/pytorch/pull/190329))
-- Fix T8 coefficient in matrix exponential ([#196658](https://github.com/pytorch/pytorch/pull/196658))
-- [MAGMA][CUDA] lu_factor(pivot=True): deprecate MAGMA and dispatch to CUSOLVER unconditionally ([#190661](https://github.com/pytorch/pytorch/pull/190661))
-- [CUDA] Add TunableOp support for scaled GEMM ([#186271](https://github.com/pytorch/pytorch/pull/186271))
-- [2/N] Replace data_ptr with mutable_data_ptr ([#182809](https://github.com/pytorch/pytorch/pull/182809))
-- Fix _int_mm CPU corner case ([#194682](https://github.com/pytorch/pytorch/pull/194682))
-- [AI Codemod][PerfAICT] Reuse batch-dim views in bmm_out_or_baddbmm_ to cut select dispatch overhead ([#198570](https://github.com/pytorch/pytorch/pull/198570))
-- [CUDA][LinAlg] Nopiv LU - better heuristics ([#193004](https://github.com/pytorch/pytorch/pull/193004))
-- Remove no-op decorator skipCUDAIfNoMagmaAndNoLinalgsolver ([#198986](https://github.com/pytorch/pytorch/pull/198986))
-- [BE] Remove redundant `dtypesIfMPS` ([#199652](https://github.com/pytorch/pytorch/pull/199652))
 ### not user facing
-- [BE] Implement grouped MM on MPS, move grouped_mm tests to shared device tests ([#194917](https://github.com/pytorch/pytorch/pull/194917))
-- [BE] Extend grouped_mm test coverage ([#196075](https://github.com/pytorch/pytorch/pull/196075))
-- [Test] Clear process cache in _tunableop_ctx ([#196445](https://github.com/pytorch/pytorch/pull/196445))
-- [CUDA] Skip grouped_mm u64 indexing on SM100 CUDA 13.0 ([#196775](https://github.com/pytorch/pytorch/pull/196775))
-- [ROCm] Enable test_cholesky_solve_batched_many_batches for ROCm >= 10.1 ([#195956](https://github.com/pytorch/pytorch/pull/195956))
-- [Test] Deduplicate CUDA Kineto setup ([#198209](https://github.com/pytorch/pytorch/pull/198209))
-- [ROCm][UT] Run TunableOp TF32 and fp16 subnormal tests on RDNA ([#197361](https://github.com/pytorch/pytorch/pull/197361))
+- Move `grouped_mm` tests to shared device tests and extend their coverage ([#194917](https://github.com/pytorch/pytorch/pull/194917), [#196075](https://github.com/pytorch/pytorch/pull/196075))
+- Fix and enable TunableOp, `grouped_mm` and `cholesky_solve` tests on GB200, B200 and ROCm ([#196445](https://github.com/pytorch/pytorch/pull/196445), [#196775](https://github.com/pytorch/pytorch/pull/196775), [#195956](https://github.com/pytorch/pytorch/pull/195956), [#197361](https://github.com/pytorch/pytorch/pull/197361))
+- Deduplicate CUDA Kineto setup in tests ([#198209](https://github.com/pytorch/pytorch/pull/198209))
+- Remove the no-op test decorator `skipCUDAIfNoMagmaAndNoLinalgsolver` ([#198986](https://github.com/pytorch/pytorch/pull/198986))
+- Remove redundant `dtypesIfMPS` test decorators ([#199652](https://github.com/pytorch/pytorch/pull/199652))
+- Replace `data_ptr` with `mutable_data_ptr` in quantized kernels ([#182809](https://github.com/pytorch/pytorch/pull/182809))
+- Reduce dispatch overhead in `bmm` and `baddbmm` by reusing batch-dimension views ([#198570](https://github.com/pytorch/pytorch/pull/198570)) (cut for length)
+- Reduce TunableOp tuning time for expensive GEMMs by sizing the candidate screening runs by the configured tuning limits ([#192403](https://github.com/pytorch/pytorch/pull/192403)) (cut for length)
 ### security
