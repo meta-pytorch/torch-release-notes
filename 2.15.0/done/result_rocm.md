@@ -68,6 +68,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `F.batch_norm` on sharded DTensor inputs ([#197160](https://github.com/pytorch/pytorch/pull/197160))
 - Fix hipify narrowing 64-bit and unsigned `std::max`/`std::min` arguments to `int` ([#199444](https://github.com/pytorch/pytorch/pull/199444))
 - Fix JIT C++ extensions failing with `hipblas/hipblas.h: No such file or directory` with ROCm from TheRock pip wheels ([#196503](https://github.com/pytorch/pytorch/pull/196503))
+- Stop RCCL 2.28+ from printing a deprecation warning on every all-to-all ([#197534](https://github.com/pytorch/pytorch/pull/197534), [#199124](https://github.com/pytorch/pytorch/pull/199124))
 ### performance
 ### docs
 - Document gfx1151 SDPA layouts, hipFile GPUDirect Storage, and MI300 matmul precision issues ([#190771](https://github.com/pytorch/pytorch/pull/190771), [#195478](https://github.com/pytorch/pytorch/pull/195478), [#190736](https://github.com/pytorch/pytorch/pull/190736))
@@ -85,7 +86,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix a spurious "Ignoring invalid value for boolean flag AMD_SERIALIZE_KERNEL: 3" warning in device-side error messages ([#186652](https://github.com/pytorch/pytorch/pull/186652)) (cut for length)
 - Fix the CUDA stream pool handing out the same HIP stream repeatedly when GPU tracing is enabled ([#188252](https://github.com/pytorch/pytorch/pull/188252)) (cut for length)
 - Fix TunableOp `PYTORCH_TUNABLEOP_RECORD_UNTUNED` not recording GEMMs that miss the tuned table on the BLAS fast path ([#194939](https://github.com/pytorch/pytorch/pull/194939)) (cut for length)
-- Stop RCCL 2.28+ from printing a deprecation warning on every all-to-all ([#197534](https://github.com/pytorch/pytorch/pull/197534), [#199124](https://github.com/pytorch/pytorch/pull/199124)) (cut for length)
 - Cache the device warp size used by the BMM outer-product launch guard instead of querying it on every call ([#196368](https://github.com/pytorch/pytorch/pull/196368)) (cut for length)
 - Fix source builds linking against a system-wide ROCm instead of the configured one because of libnuma rpath-link handling ([#194268](https://github.com/pytorch/pytorch/pull/194268)) (cut for length)
 ### security
