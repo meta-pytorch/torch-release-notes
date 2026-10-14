@@ -49,7 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- Fix a data race in `CPUCachingAllocator` destruction, which modified the shared allocation map without holding its mutex ([#196759](https://github.com/pytorch/pytorch/pull/196759))
+- Fix a race in `CPUCachingAllocator` teardown ([#196759](https://github.com/pytorch/pytorch/pull/196759))
 ### performance
 ### docs
 ### devs
