@@ -45,62 +45,30 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## cpu (aarch64)
 ### bc breaking
-- Float32 `torch.sin` and `torch.cos` on Arm CPUs now use SLEEF's 3.5-ULP kernels instead of the 1.0-ULP kernels ([#196315](https://github.com/pytorch/pytorch/pull/196315))
+- Float32 `torch.sin` and `torch.cos` on Arm CPUs now use SLEEF's 3.5-ULP kernels instead of the 1.0-ULP kernels, matching x86 AVX2 accuracy and running 1.7x-2.4x faster on Neoverse V1/V2 ([#196315](https://github.com/pytorch/pytorch/pull/196315))
 
-  The vectorized float32 `sin` and `cos` kernels for the NEON (128-bit) and SVE code paths now call
-  SLEEF's `u35` variants (maximum error 3.5 ULP) instead of the `u10` variants (maximum error 1.0 ULP).
-  This puts Arm in the same accuracy class as the x86 AVX2 kernels and makes these ops 1.7x-2.4x
-  faster on Neoverse V1/V2. In the PR's measurements, results stayed within 1 ULP of the correctly
-  rounded value on NEON/SVE128 and within 2 ULP on SVE256. float16 and bfloat16 results were
-  unchanged after rounding to the output dtype.
-
-  You may see this change if you compare float32 `sin`/`cos` results on Arm bit-for-bit against values
-  recorded with an earlier release (golden files, `torch.equal`, or `assert_close` with `rtol=0, atol=0`).
-  Comparisons that use the default float32 tolerances of `torch.testing.assert_close` are not affected.
-  There is no switch to restore the `u10` kernels. If you need tighter accuracy, compute in float64
-  and cast back.
-
-  Version 2.14 (SVE256, SLEEF u10):
+  Bit-for-bit comparisons against earlier releases (golden files, `torch.equal`, `assert_close` with `rtol=0, atol=0`) may fail; default `assert_close` tolerances are unaffected. There is no switch back; for tighter accuracy, compute in float64 and cast back.
   ```python
-  >>> x = torch.full((256,), float.fromhex("0x1.0c1524p-1"))  # float32 pi/6
-  >>> x.cos()[0].item().hex()  # correctly rounded result
-  '0x1.bb67ae0000000p-1'
-  ```
-
-  Version 2.15 (SVE256, SLEEF u35):
-  ```python
-  >>> x.cos()[0].item().hex()  # 1 ULP away
-  '0x1.bb67b00000000p-1'
-  >>> x.double().cos().float()[0].item().hex()  # compute in float64 for a correctly rounded result
-  '0x1.bb67ae0000000p-1'
+  x.cos()  # 2.14: correctly rounded; 2.15: may be 1 ULP off
+  x.double().cos().float()  # correctly rounded
   ```
 ### deprecation
 ### new features
 ### improvements
-- Make float32 `sum` and `norm` on NEON use the same number of accumulators as AVX2 and SVE256, so they give bitwise-identical results across these CPUs. Results on NEON may differ from 2.14 in the last bits ([#197037](https://github.com/pytorch/pytorch/pull/197037), [#197252](https://github.com/pytorch/pytorch/pull/197252))
+- Make float32 `sum` and `norm` on NEON bitwise-identical to AVX2 and SVE256 ([#197037](https://github.com/pytorch/pytorch/pull/197037), [#197252](https://github.com/pytorch/pytorch/pull/197252))
 ### bug fixes
-- Fix out-of-range float32, float16 and bfloat16 to `uint8` conversions on Arm giving different results from x86 and from strided copies. Contiguous `x.byte()` used a saturating conversion (`-1 -> 0`), while other paths wrap through int64 (`-1 -> 255`) ([#196646](https://github.com/pytorch/pytorch/pull/196646), [#198744](https://github.com/pytorch/pytorch/pull/198744))
-- Fix `linspace` on CPU (and `linspace`/`logspace` on CUDA) losing precision for float16 and bfloat16 by computing the step in the higher-precision accumulate type ([#198415](https://github.com/pytorch/pytorch/pull/198415))
-- Fix the meta function of `torch.ops.aten._dyn_quant_pack_4bit_weight` disagreeing with the eager kernel on Arm CPUs without the dot-product extension, which broke `torch.compile` of 4-bit dynamically quantized matmul ([#197518](https://github.com/pytorch/pytorch/pull/197518))
-- Fix matmuls that go through the oneDNN/ACL path on aarch64 (for example `addmm`, `__rmatmul__`, `cholesky_inverse` and `cholesky_solve`) materializing copy-on-write (lazily cloned) inputs ([#198625](https://github.com/pytorch/pytorch/pull/198625))
+- Fix contiguous float to `uint8` conversion on Arm saturating instead of wrapping like x86 (`-1 -> 255`) ([#196646](https://github.com/pytorch/pytorch/pull/196646), [#198744](https://github.com/pytorch/pytorch/pull/198744))
+- Fix float16 and bfloat16 precision loss in `linspace` on CPU and `linspace`/`logspace` on CUDA ([#198415](https://github.com/pytorch/pytorch/pull/198415))
+- Fix `torch.compile` of 4-bit dynamically quantized matmul on Arm CPUs without the dot-product extension ([#197518](https://github.com/pytorch/pytorch/pull/197518))
 ### performance
-- Linux aarch64 CUDA builds are now optimized with LLVM BOLT by default ([#186245](https://github.com/pytorch/pytorch/pull/186245))
-
-  BOLT is a post-link optimizer that reorders the code in the PyTorch shared libraries based on
-  execution profiles. Profiles collected on a curated set of workloads are checked into the repository
-  (`cmake/bolt_profiles/`). The new `USE_LLVM_BOLT` build option defaults to ON for Linux + aarch64 +
-  CUDA builds when `llvm-bolt` 21 or newer is found and `USE_PRIORITIZED_TEXT_FOR_LD` is enabled (the
-  default on Linux aarch64); otherwise it defaults to OFF.
-  The PR reports up to 30% faster end-to-end workloads, with a few workloads up to 3%
-  slower. The gains will shrink as the code drifts away from the committed profiles until the profiles
-  are refreshed. When building from source, the unoptimized libraries are kept in a `prebolt/`
-  subdirectory of the build tree. Set `USE_LLVM_BOLT=0` to opt out.
-- Use NEON `vreinterpretq` intrinsics for casts between `Vectorized<T>` types on Arm instead of going through memory ([#196776](https://github.com/pytorch/pytorch/pull/196776))
-- Use the native GEMV path instead of oneDNN/ACL for single-column (`n == 1`) BF16 GEMMs on Arm Neoverse. This shape is common in single-token decode; the PR reports about 5x faster GPT-2 BF16 decode on Graviton 4 and 5 ([#198411](https://github.com/pytorch/pytorch/pull/198411))
-- Dispatch non-contiguous FP16 matmuls to the oneDNN ACL GEMM kernels instead of the reference implementation on AArch64 ([#198498](https://github.com/pytorch/pytorch/pull/198498))
-- Add NEON implementations of float <-> double vectorized conversion and of `Vectorized<float>::reduce_max` ([#197153](https://github.com/pytorch/pytorch/pull/197153), [#196716](https://github.com/pytorch/pytorch/pull/196716))
+- Optimize Linux aarch64 CUDA builds with LLVM BOLT by default, for up to 30% faster end-to-end workloads; set `USE_LLVM_BOLT=0` to opt out in source builds ([#186245](https://github.com/pytorch/pytorch/pull/186245))
+- Use the native GEMV path for single-column BF16 GEMMs on Arm Neoverse, for about 5x faster GPT-2 BF16 decode on Graviton 4 and 5 ([#198411](https://github.com/pytorch/pytorch/pull/198411))
+- Dispatch non-contiguous FP16 matmuls to oneDNN ACL GEMM kernels on AArch64 ([#198498](https://github.com/pytorch/pytorch/pull/198498))
 ### docs
 ### devs
-- Add the `AT_VEC_CUSTOM_MATH` build flag, which leaves the vectorized math functions on AVX2, AVX512, NEON and SVE256 declared but not defined (instead of using SLEEF), so that other math libraries can be plugged in ([#197419](https://github.com/pytorch/pytorch/pull/197419))
+- Add the `AT_VEC_CUSTOM_MATH` build flag to plug in vectorized math libraries other than SLEEF ([#197419](https://github.com/pytorch/pytorch/pull/197419))
 ### not user facing
+- Fix oneDNN/ACL matmuls on aarch64 materializing copy-on-write inputs ([#198625](https://github.com/pytorch/pytorch/pull/198625)) (cut for length)
+- Use NEON `vreinterpretq` intrinsics for casts between `Vectorized<T>` types on Arm ([#196776](https://github.com/pytorch/pytorch/pull/196776)) (cut for length)
+- Add NEON implementations of float <-> double vectorized conversion and of `Vectorized<float>::reduce_max` ([#197153](https://github.com/pytorch/pytorch/pull/197153), [#196716](https://github.com/pytorch/pytorch/pull/196716)) (cut for length)
 ### security
