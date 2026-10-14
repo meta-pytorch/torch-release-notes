@@ -48,13 +48,18 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Stop bypassing the AOTAutograd cache for `inference_mode` regions ([#191409](https://github.com/pytorch/pytorch/pull/191409))
 ### bug fixes
-- Fix dispatch failure on a tensor subclass with no __torch_dispatch__ ([#193968](https://github.com/pytorch/pytorch/pull/193968))
-- [aot_autograd] Return an input mutated in the graph at its own output slot ([#198622](https://github.com/pytorch/pytorch/pull/198622))
+- Fix compiling matmul or view ops on `Tensor` subclasses without `__torch_dispatch__` ([#193968](https://github.com/pytorch/pytorch/pull/193968))
+- Fix a wrong copy-back into mutated inputs under `keep_inference_input_mutations` ([#198622](https://github.com/pytorch/pytorch/pull/198622))
+- Fix AOTAutograd cache-key misses and crashes for some subclass metadata, and identical precompile fallback keys across ranks ([#193419](https://github.com/pytorch/pytorch/pull/193419), [#190080](https://github.com/pytorch/pytorch/pull/190080), [#191427](https://github.com/pytorch/pytorch/pull/191427))
+- Fix `PendingUnbackedSymbolNotFound` when a compiled `saved_tensors_hooks` pack hook allocates unbacked SymInts ([#193258](https://github.com/pytorch/pytorch/pull/193258))
+- Fix corrupted opaque constants in compiled graphs with tensor-subclass outputs ([#193190](https://github.com/pytorch/pytorch/pull/193190))
+- Fix a min-cut partitioner crash on graphs with `torch.device` nodes ([#196146](https://github.com/pytorch/pytorch/pull/196146))
+- Fix misaligned inputs reaching Inductor kernels after effect-token removal ([#198005](https://github.com/pytorch/pytorch/pull/198005))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Canonicalize set/frozenset iteration order in _stabilize_tensor_subclass_metadata ([#193419](https://github.com/pytorch/pytorch/pull/193419))
 ### not user facing
 ### security
