@@ -53,7 +53,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 ### devs
 ### Untopiced
-- Iterate containers directly instead of indexing through c10::irange ([#196677](https://github.com/pytorch/pytorch/pull/196677))
 ### not user facing
+- Iterate containers directly instead of indexing through c10::irange ([#196677](https://github.com/pytorch/pytorch/pull/196677))
 - [BE] [Typo] amsk -> mask ([#196483](https://github.com/pytorch/pytorch/pull/196483))
 ### security
