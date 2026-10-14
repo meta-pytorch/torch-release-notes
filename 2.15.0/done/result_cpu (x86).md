@@ -48,11 +48,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Add `uint16`, `uint32` and `uint64` support to `clamp`, `clamp_min`, `clamp_max`, `maximum` and `minimum` on CPU and CUDA ([#189953](https://github.com/pytorch/pytorch/pull/189953))
+- `clamp`, `maximum` and `minimum` support uint types ([#189953](https://github.com/pytorch/pytorch/pull/189953))
 ### bug fixes
-- Make AVX2 int64 <-> float64 vectorized conversions match the other CPU backends: converting int64 `0` now gives `+0.0` instead of `-0.0`, and float64 to int64 covers the full int64 range and truncates toward zero ([#196607](https://github.com/pytorch/pytorch/pull/196607), [#196614](https://github.com/pytorch/pytorch/pull/196614))
+- Fix AVX2 int64 to float64 conversion turning `0` into `-0.0` ([#196607](https://github.com/pytorch/pytorch/pull/196607), [#196614](https://github.com/pytorch/pytorch/pull/196614))
 ### performance
-- Fix the CPU kernel dispatch cache never being populated, which made every CPU dispatch re-probe the CPU capabilities ([#195328](https://github.com/pytorch/pytorch/pull/195328))
+- Fix CPU dispatch cache ([#195328](https://github.com/pytorch/pytorch/pull/195328))
 ### docs
 ### devs
 ### not user facing
