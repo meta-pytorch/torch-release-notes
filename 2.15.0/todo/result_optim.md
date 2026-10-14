@@ -46,17 +46,26 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ## optim
 ### bc breaking
 ### deprecation
+- Passing a bare `set` of parameters to an optimizer is deprecated and now emits a `FutureWarning`; it will become an error in a future release ([#198710](https://github.com/pytorch/pytorch/pull/198710))
+
+  Set iteration order can change between runs, so optimizer state could silently mismatch parameters on reload. The warning reads: `optimizer parameters need to be organized in ordered collections, but the ordering of tensors in sets will change between runs. Please use a list instead.`
+
+  ```python
+  opt = torch.optim.Adam(set(model.parameters()))  # 2.15: FutureWarning
+  opt = torch.optim.Adam(list(model.parameters()))  # recommended
+  ```
+
 ### new features
+- Add `torch.optim.functional`, a public module of functional optimizers (`adam`, `adamw`, `sgd`, `muon` and others) that run the same implementations as the optimizer classes while the caller manages parameters, gradients and state ([#194986](https://github.com/pytorch/pytorch/pull/194986))
 ### improvements
+- Validate `lambd` and `alpha` in `torch.optim.ASGD` ([#193303](https://github.com/pytorch/pytorch/pull/193303))
+- Run the optimizer graph-capture health check on all accelerators ([#194362](https://github.com/pytorch/pytorch/pull/194362))
 ### bug fixes
+- Fix `Muon` overwriting momentum with bf16 grads ([#194664](https://github.com/pytorch/pytorch/pull/194664))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Validate lambd and alpha in ASGD ([#193303](https://github.com/pytorch/pytorch/pull/193303))
-- [optim][muon] fix momentum buffer aliasing in Newton-Schulz ([#194664](https://github.com/pytorch/pytorch/pull/194664))
-- Publicize optim functional APIs under `torch.optim.functional` ([#194986](https://github.com/pytorch/pytorch/pull/194986))
-- Reject a bare set of params, consistent with set inside a param group ([#198710](https://github.com/pytorch/pytorch/pull/198710))
 ### not user facing
-- Extend accelerator graph-capture health check beyond CUDA/XPU ([#194362](https://github.com/pytorch/pytorch/pull/194362))
+- Deduplicate the `ADAM_MODE` enum and share one launcher across the fused Adam/AdamW CUDA implementations; the only visible change is that the unsupported-dtype error from the fused `amsgrad=True` kernels now names `fused_adam_amsgrad_kernel_cuda`/`fused_adamw_amsgrad_kernel_cuda` instead of `fused_adam_kernel_cuda`/`fused_adamw_kernel_cuda` ([#190774](https://github.com/pytorch/pytorch/pull/190774))
 ### security
