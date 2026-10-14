@@ -45,26 +45,35 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## distributed (pipeline)
 ### bc breaking
+- `torch.distributed.config.pipeline_per_direction_p2p` is renamed to `pipeline_per_edge_p2p` and now uses one communicator per directed rank-to-rank edge ([#196666](https://github.com/pytorch/pytorch/pull/196666))
+
+  The old names were removed with no alias: setting the attribute raises `AttributeError: torch.distributed.config.pipeline_per_direction_p2p does not exist`, and `TORCH_DISTRIBUTED_PIPELINE_PER_DIRECTION_P2P` is silently ignored.
+
+  Version 2.14:
+  ```python
+  dist_config.pipeline_per_direction_p2p = True
+  ```
+
+  Version 2.15:
+  ```python
+  dist_config.pipeline_per_edge_p2p = True  # or TORCH_DISTRIBUTED_PIPELINE_PER_EDGE_P2P=1
+  ```
 ### deprecation
 ### new features
+- Add `finalize_gradients` to pipeline schedule `step()` for gradient accumulation across several schedule runs with FSDP stages ([#196641](https://github.com/pytorch/pytorch/pull/196641))
+- Add `PipelineStage.register_forward_context(factory)` to wrap each stage forward in a context manager that receives the stage and microbatch indices ([#196462](https://github.com/pytorch/pytorch/pull/196462))
+- Add `torch.distributed.pipelining.analyze_pipeline_activation_liveness`, which computes activation lifetimes and reusable storage slots from a schedule ([#196464](https://github.com/pytorch/pytorch/pull/196464))
 ### improvements
+- `is_symm_mem_enabled_for_group()` no longer requires the deprecated `enable_symm_mem_for_group()` call ([#193115](https://github.com/pytorch/pytorch/pull/193115))
+- Add `WAIT_SEND_F`/`WAIT_SEND_B` schedule actions and an optional `max_outstanding_sends` limit on pending sends ([#196726](https://github.com/pytorch/pytorch/pull/196726), [#196727](https://github.com/pytorch/pytorch/pull/196727))
+- Add a `max_active_stages` argument to multi-stage schedules to control how many FSDP stages stay unsharded at once ([#193972](https://github.com/pytorch/pytorch/pull/193972))
+- Label pipeline schedule actions in CUDA graph traces captured with `enable_annotations=True` ([#195072](https://github.com/pytorch/pytorch/pull/195072))
+- Initialize pipeline communicators with one setup sequence for manual and traced stages ([#197488](https://github.com/pytorch/pytorch/pull/197488))
 ### bug fixes
 ### performance
+- Lower peak memory and improve overlap via lazy receive buffers and new `defer_reduce_grad_wait`/`unshard_lookahead` options ([#196463](https://github.com/pytorch/pytorch/pull/196463), [#196963](https://github.com/pytorch/pytorch/pull/196963), [#196725](https://github.com/pytorch/pytorch/pull/196725), [#196706](https://github.com/pytorch/pytorch/pull/196706))
 ### docs
 ### devs
 ### Untopiced
-- Make is_symm_mem_enabled_for_group() not require deprecated enable_symm_mem_for_group() ([#193115](https://github.com/pytorch/pytorch/pull/193115))
-- [pipelining] Expose scoped stage forward context ([#196462](https://github.com/pytorch/pytorch/pull/196462))
-- [pipelining] Allocate receive buffers just in time ([#196463](https://github.com/pytorch/pytorch/pull/196463))
-- [pipelining] Analyze pipeline activation liveness from schedules ([#196464](https://github.com/pytorch/pytorch/pull/196464))
-- [pipelining] Derive directed P2P groups from stage placement ([#196666](https://github.com/pytorch/pytorch/pull/196666))
-- [pipelining] Simplify pipeline communication initialization ([#197488](https://github.com/pytorch/pytorch/pull/197488))
-- [pipelining] Stagger FSDP unshards across schedule compute ([#196706](https://github.com/pytorch/pytorch/pull/196706))
-- [Pipeline] Support outer gradient accumulation ([#196641](https://github.com/pytorch/pytorch/pull/196641))
-- [Pipeline] Support outer gradient accumulation ([#196641](https://github.com/pytorch/pytorch/pull/196641))
-- [Pipeline] Defer FSDP gradient reduction waits ([#196725](https://github.com/pytorch/pytorch/pull/196725))
-- [Pipeline] Release forward outputs after sends complete ([#196963](https://github.com/pytorch/pytorch/pull/196963))
-- [Pipeline] Add explicit send wait actions ([#196726](https://github.com/pytorch/pytorch/pull/196726))
-- [Pipeline] Enforce an outstanding send budget ([#196727](https://github.com/pytorch/pytorch/pull/196727))
 ### not user facing
 ### security
