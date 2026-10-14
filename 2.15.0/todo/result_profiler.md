@@ -45,35 +45,85 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## profiler
 ### bc breaking
-- Separate allocator-internal trace tags from user metadata ([#193432](https://github.com/pytorch/pytorch/pull/193432))
-- Disable addr2line symbolization by default ([#195462](https://github.com/pytorch/pytorch/pull/195462))
+- C++ stack traces are now symbolized with `dladdr` instead of `addr2line` by default ([#195462](https://github.com/pytorch/pytorch/pull/195462))
+
+  `TORCH_DISABLE_ADDR2LINE` now defaults to on, since `addr2line` is slow and can hang. C++ frames in `TORCH_SHOW_CPP_STACKTRACES=1` errors and CUDA memory snapshots now show the library path and offset, plus the symbol name only if exported (otherwise `??`). To restore `addr2line`, set `TORCH_DISABLE_ADDR2LINE=0` or `TORCH_SYMBOLIZE_MODE=addr2line`.
+
+  ```bash
+  TORCH_SHOW_CPP_STACKTRACES=1 TORCH_DISABLE_ADDR2LINE=0 python train.py
+  ```
+
+- CUDA memory snapshots record the allocator's `mallocWithAddress` tag in a new `internal_metadata` field instead of appending it to `user_metadata` ([#193432](https://github.com/pytorch/pytorch/pull/193432))
+
+  `user_metadata` in `torch.cuda.memory._snapshot()` trace entries is now exactly what was set with `torch.cuda.memory._set_memory_metadata` (which now also accepts a dict). Tools that searched `user_metadata` for `mallocWithAddress` must read `internal_metadata` instead.
+
+  ```python
+  # 2.14
+  tagged = [e for e in trace if "mallocWithAddress" in e["user_metadata"]]
+  # 2.15
+  tagged = [e for e in trace if e.get("internal_metadata") == "mallocWithAddress"]
+  ```
+
+- Remove the deprecated `FunctionEvent.metadata_json` property ([#198265](https://github.com/pytorch/pytorch/pull/198265))
+
+  Accessing it now raises `AttributeError: 'FunctionEvent' object has no attribute 'metadata_json'`, and the `metadata_json` constructor argument is removed. Use `FunctionEvent.metadata`, a dict populated when `_ExperimentalConfig(expose_kineto_event_metadata=True)` is set (not the deprecated `event_metadata`).
+
+  ```python
+  metadata = event.metadata_json  # 2.14: JSON string
+  metadata = event.metadata  # 2.15: dict[str, Any] or None
+  ```
+
+- Rename the experimental CUPTI monitor profiler backend to Cuspy, without aliases for the old names ([#195881](https://github.com/pytorch/pytorch/pull/195881))
+
+  In `_ExperimentalConfig(custom_profiler_config=...)`, `"cupti_monitor"` is now `"cuspy"` and `"cupti_monitor_async_export"` is now `"cuspy_async_export"`; old names silently fall back to the default Kineto backend. `prof.take_pending_cupti_export()` is now `take_pending_cuspy_export()` (the old name raises `AttributeError`). Prefer the new `torch.profiler.CuspyConfig`.
+
+  ```python
+  # 2.14
+  cfg = _ExperimentalConfig(custom_profiler_config='{"backend":"cupti_monitor"}')
+  # 2.15
+  cfg = _ExperimentalConfig(custom_profiler_config='{"backend":"cuspy"}')
+  ```
+
 ### deprecation
+- `torch.autograd.profiler.load_nvprof`, `parse_nvprof_trace` and `EnforceUnique` are deprecated and will be removed in PyTorch 2.17 ([#198396](https://github.com/pytorch/pytorch/pull/198396))
+
+  `nvprof` does not support recent GPUs. They now emit a `FutureWarning` such as `` `torch.autograd.profiler.load_nvprof` is deprecated and will be removed in PyTorch 2.17. `` Use `torch.profiler.profile` or Nsight Systems with `torch.autograd.profiler.emit_nvtx()`.
+
+  ```python
+  events = torch.autograd.profiler.load_nvprof("trace.prof")  # 2.14
+  with torch.profiler.profile() as prof:  # 2.15
+      run_workload()
+  ```
+
+- `FunctionEvent.event_metadata` is deprecated in favor of `FunctionEvent.metadata` ([#198405](https://github.com/pytorch/pytorch/pull/198405))
+
+  `metadata` is a typed `dict[str, Any]` with everything `event_metadata` had. Accessing `event_metadata` emits `` FutureWarning: `event_metadata` is deprecated. Use `metadata` instead. ``
+
+  ```python
+  grid = event.event_metadata.grid  # 2.14
+  grid = event.metadata["grid"]  # 2.15
+  ```
 ### new features
-- [CUDA] Capture Python launch stacks for CUDA graphs ([#198419](https://github.com/pytorch/pytorch/pull/198419))
+- Add `torch.profiler.ProfilerActivityConfig` and `torch.profiler.PerformanceMetricsConfig` to configure collection per activity group, such as CUDA hardware performance counters ([#196065](https://github.com/pytorch/pytorch/pull/196065))
+- Add `torch.profiler.CuspyConfig` to enable the experimental Cuspy CUDA collection backend without `_ExperimentalConfig` ([#196066](https://github.com/pytorch/pytorch/pull/196066))
+- Record the Python launch stack of each CUDA graph node during capture with `annotation_config={"record_py_stacks": True}`, read via `torch.cuda.graph_annotations.get_kernel_py_stacks()` (requires CUPTI >= 13.3) ([#198419](https://github.com/pytorch/pytorch/pull/198419))
+
 ### improvements
+- Show `key_by="source"` CUDA graph annotations in Cuspy traces ([#196529](https://github.com/pytorch/pytorch/pull/196529))
 ### bug fixes
+- Fix inflated profiler device times from events sharing a correlation id ([#196282](https://github.com/pytorch/pytorch/pull/196282))
+- Fix Cuspy teardown heap corruption and `record_function` kwargs sent as raw JSON ([#195471](https://github.com/pytorch/pytorch/pull/195471), [#196352](https://github.com/pytorch/pytorch/pull/196352))
 ### performance
 ### docs
+- Fix the `toggle_collection_dynamic` example ([#190369](https://github.com/pytorch/pytorch/pull/190369))
 ### devs
+- Kineto source now lives in `third_party/kineto` instead of a git submodule ([#198648](https://github.com/pytorch/pytorch/pull/198648))
+- Remove the ignored `profiler_metrics` and `profiler_measure_per_kernel` `_ExperimentalConfig` arguments (now a `TypeError`), and deprecate the no-op `adjust_profiler_step` option ([#198262](https://github.com/pytorch/pytorch/pull/198262), [#193042](https://github.com/pytorch/pytorch/pull/193042))
 ### Untopiced
-- Deprecate the profiler's adjust_profiler_step option ([#193042](https://github.com/pytorch/pytorch/pull/193042))
-- Rename the CUPTI monitor to Cuspy ([#195881](https://github.com/pytorch/pytorch/pull/195881))
-- [Docs] Fix Python comments in profiler example ([#190369](https://github.com/pytorch/pytorch/pull/190369))
-- [Profiler] Introduce ProfilerActivityConfig as a way to trigger additional Kineto profilers ([#196065](https://github.com/pytorch/pytorch/pull/196065))
-- [Profiler] Introduce CuspyConfig as a way to trigger cuspy without experimental configs ([#196066](https://github.com/pytorch/pytorch/pull/196066))
-- Resolve Cuspy annotations by source graph node id in both observers ([#196529](https://github.com/pytorch/pytorch/pull/196529))
-- [cuspy] Render GPU-side annotations on the lane their kernels actually draw on (#197354) ([#197354](https://github.com/pytorch/pytorch/pull/197354))
-- [Profiler] Remove deprecated metadata json field ([#198265](https://github.com/pytorch/pytorch/pull/198265))
-- [Profiler] Remove deprecated experimental config options ([#198262](https://github.com/pytorch/pytorch/pull/198262))
-- [Profiler] Add a deprecation warning for profiler's nvprof handlers ([#198396](https://github.com/pytorch/pytorch/pull/198396))
-- [Profiler] Add deprecation warning for EventMetadata ([#198405](https://github.com/pytorch/pytorch/pull/198405))
 ### not user facing
 - [profiler][cupti] Turn kernel latency timestamps back off when nothing wants QUEUED ([#192370](https://github.com/pytorch/pytorch/pull/192370))
 - [profiler][cupti] Give logical lanes their own reserved id range ([#192393](https://github.com/pytorch/pytorch/pull/192393))
-- [profiler][cupti] Stop freeing activity buffers CUPTI may still own ([#195471](https://github.com/pytorch/pytorch/pull/195471))
-- [Profiler] Add typed metadata support for kwargs metadata ([#196352](https://github.com/pytorch/pytorch/pull/196352))
 - [profiler][cuspy] Use the documented forced flush when a field selection changes ([#196548](https://github.com/pytorch/pytorch/pull/196548))
-- [profiler] Fix unlinked runtime/driver events be counted in device time ([#196282](https://github.com/pytorch/pytorch/pull/196282))
 - [Profiler] Add a merge rule for Profiler ([#197474](https://github.com/pytorch/pytorch/pull/197474))
 - [Profiler] Fix up test_python_export_envelope_matches_kineto  ([#195935](https://github.com/pytorch/pytorch/pull/195935))
 - [Profiler] Lint exclusions to prepare for upstreaming ([#198013](https://github.com/pytorch/pytorch/pull/198013))
@@ -81,8 +131,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Profiler] Read event idx directly in collection.cpp ([#198665](https://github.com/pytorch/pytorch/pull/198665))
 - [Profiler] Simplify how shape handling works in collection.cpp ([#198540](https://github.com/pytorch/pytorch/pull/198540))
 - [Profiler] Enable Kineto tests ([#198813](https://github.com/pytorch/pytorch/pull/198813))
-- [Profiler] Upstreaming Kineto into Pytorch ([#198648](https://github.com/pytorch/pytorch/pull/198648))
 - [profiler][xpu] Test that ac2g CPU->GPU flow arrows end on the device ([#194904](https://github.com/pytorch/pytorch/pull/194904))
 - [Profiler] Update Kineto readme ([#199364](https://github.com/pytorch/pytorch/pull/199364))
 - [Profiler] Delete unneeded Kineto code ([#199359](https://github.com/pytorch/pytorch/pull/199359))
+- Fix the profiler warning for free-threaded Python never being emitted on Python 3.13t ([#194697](https://github.com/pytorch/pytorch/pull/194697)) (cut for length)
 ### security
