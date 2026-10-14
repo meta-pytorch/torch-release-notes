@@ -49,7 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- Fix `torch.onnx.export(..., dynamo=True)` with dynamic shapes fixing the LSTM/GRU output sequence length to the example input's length, so models that use the RNN output's shape failed with `invalid expand shape` in ONNX Runtime at other sequence lengths ([#193192](https://github.com/pytorch/pytorch/pull/193192))
+- Fix `torch.onnx.export(dynamo=True)` hardcoding LSTM/GRU output length under dynamic shapes ([#193192](https://github.com/pytorch/pytorch/pull/193192))
 ### performance
 ### docs
 ### devs
