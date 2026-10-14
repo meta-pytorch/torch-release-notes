@@ -45,60 +45,36 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## xpu
 ### bc breaking
-- Remove the `allocator` property from `torch.xpu.MemPool` ([#192041](https://github.com/pytorch/pytorch/pull/192041))
+- Remove the `allocator` property from `torch.xpu.MemPool` to match CUDA; `pool.allocator` now raises `AttributeError` ([#192041](https://github.com/pytorch/pytorch/pull/192041))
 
-    This matches `torch.cuda.MemPool`, which does not expose the allocator. Accessing `pool.allocator` now raises `AttributeError`. If you need the allocator, keep your own reference to the object you passed to the constructor.
-
-    Version 2.14:
-
-    ```python
-    pool = torch.xpu.MemPool(my_allocator)
-    alloc = pool.allocator
-    ```
-
-    Version 2.15:
-
-    ```python
-    pool = torch.xpu.MemPool(my_allocator)
-    alloc = my_allocator
-    ```
+  ```python
+  alloc = my_allocator  # keep your own reference
+  ```
 
 ### deprecation
 ### new features
-- `torch.xpu.Event` can now be shared across processes ([#192495](https://github.com/pytorch/pytorch/pull/192495), [#193399](https://github.com/pytorch/pytorch/pull/193399), [#192514](https://github.com/pytorch/pytorch/pull/192514))
-
-    Create the event with `torch.xpu.Event(interprocess=True)`. You can then pass it to another process through `torch.multiprocessing`, or export it with `event.ipc_handle()` and reopen it with `torch.xpu.Event.from_ipc_handle(device, handle)`. This matches the existing `torch.cuda.Event` IPC support.
-
-    ```python
-    event = torch.xpu.Event(interprocess=True)
-    ctx = torch.multiprocessing.get_context("spawn")
-    p = ctx.Process(target=consumer, args=(event,))  # consumer calls event.synchronize()
-    p.start()
-    event.record()
-    ```
+- `torch.xpu.Event(interprocess=True)` can now be shared across processes through `torch.multiprocessing` or `ipc_handle()` / `from_ipc_handle()`, matching `torch.cuda.Event` ([#192495](https://github.com/pytorch/pytorch/pull/192495), [#193399](https://github.com/pytorch/pytorch/pull/193399), [#192514](https://github.com/pytorch/pytorch/pull/192514))
 
 ### improvements
-- Add a `no_split` option to `torch.xpu.MemPool`, and support non-split pools and `use_on_oom` in the XPU caching allocator, matching CUDA ([#192048](https://github.com/pytorch/pytorch/pull/192048), [#192033](https://github.com/pytorch/pytorch/pull/192033), [#192038](https://github.com/pytorch/pytorch/pull/192038))
-- Support `torch.xpu.mem_get_info` and `torch.accelerator.get_memory_info` with a pluggable XPU allocator ([#197412](https://github.com/pytorch/pytorch/pull/197412))
-- Add XPU support for `torch.linalg.polar`, `torch.linalg.qr` (out variant), `torch.geqrf`, `torch.linalg.householder_product`, `torch.sparse.spsolve` (sparse CSR), sparse `torch.linalg.vector_norm`, `linalg._powsum`, and `_foreach_powsum` ([#188253](https://github.com/pytorch/pytorch/pull/188253), [#187564](https://github.com/pytorch/pytorch/pull/187564), [#189372](https://github.com/pytorch/pytorch/pull/189372), [#194165](https://github.com/pytorch/pytorch/pull/194165), [#189238](https://github.com/pytorch/pytorch/pull/189238))
-- Use the XPU overrideable SDPA backend for multi-query attention without requiring `enable_gqa=True`, instead of falling back to the math backend ([#196731](https://github.com/pytorch/pytorch/pull/196731))
-- Improve error messages from `torch.xpu.utilization()` and other Level Zero Sysman queries on Xe2 and later GPUs when the process lacks the required permissions ([#197210](https://github.com/pytorch/pytorch/pull/197210), [#197494](https://github.com/pytorch/pytorch/pull/197494))
+- Add `no_split` and `use_on_oom` support to `torch.xpu.MemPool` ([#192048](https://github.com/pytorch/pytorch/pull/192048), [#192033](https://github.com/pytorch/pytorch/pull/192033), [#192038](https://github.com/pytorch/pytorch/pull/192038))
+- Support `torch.xpu.mem_get_info` with a pluggable XPU allocator ([#197412](https://github.com/pytorch/pytorch/pull/197412))
+- Add XPU support for `linalg.polar`, `linalg.qr` (out), `geqrf`, `linalg.householder_product`, `sparse.spsolve` and sparse `vector_norm` ([#188253](https://github.com/pytorch/pytorch/pull/188253), [#187564](https://github.com/pytorch/pytorch/pull/187564), [#189372](https://github.com/pytorch/pytorch/pull/189372), [#194165](https://github.com/pytorch/pytorch/pull/194165), [#189238](https://github.com/pytorch/pytorch/pull/189238))
+- Use the XPU SDPA backend for multi-query attention without `enable_gqa=True` ([#196731](https://github.com/pytorch/pytorch/pull/196731))
 ### bug fixes
-- Fix incorrect `conv1d` backward results on XPU for some singleton-dimension input layouts ([#194328](https://github.com/pytorch/pytorch/pull/194328))
-- Fix `torch.xpu.mem_get_info` under-reporting free memory on Xe2 and later GPUs with SYCL compiler 2026.2 ([#195987](https://github.com/pytorch/pytorch/pull/195987))
-- Fix "An event cannot be enqueued for signaling or waiting behind a command which is not enqueued in the backend" errors with oneCCL on BMG by using reusable events only for interprocess events ([#197396](https://github.com/pytorch/pytorch/pull/197396))
-- Fix XPU device indices not matching SYCL's ordering on systems where an integrated GPU is listed before a discrete GPU ([#198336](https://github.com/pytorch/pytorch/pull/198336))
-- Fix batch norm accuracy, `fft`/`ifft` on empty batches, norm reductions, and half-precision `sampled_addmm` on XPU by updating torch-xpu-ops ([#193929](https://github.com/pytorch/pytorch/pull/193929))
-- Fix precision loss in XPU `addmm` and `baddbmm` for bf16/fp16 with non-trivial `alpha`/`beta` ([#174864](https://github.com/pytorch/pytorch/pull/174864))
-- Fix XPU oneDNN SDPA with grouped-query attention when the attention mask broadcasts over the head dimension ([#194973](https://github.com/pytorch/pytorch/pull/194973))
-- Fix `torch.xpu.Event.record()` submitting twice on first use, which could lose profiling timestamps ([#194609](https://github.com/pytorch/pytorch/pull/194609))
+- Fix wrong XPU results in `conv1d` backward ([#194328](https://github.com/pytorch/pytorch/pull/194328)), batch norm, `fft` on empty batches, norm reductions ([#193929](https://github.com/pytorch/pytorch/pull/193929)), and bf16/fp16 `addmm`/`baddbmm` with `alpha`/`beta` ([#174864](https://github.com/pytorch/pytorch/pull/174864))
+- Fix `torch.xpu.mem_get_info` under-reporting free memory on Xe2 and later ([#195987](https://github.com/pytorch/pytorch/pull/195987))
+- Fix XPU device indices not matching SYCL's order when an integrated GPU is listed first ([#198336](https://github.com/pytorch/pytorch/pull/198336))
+- Fix oneDNN SDPA with grouped-query attention and head-broadcast masks ([#194973](https://github.com/pytorch/pytorch/pull/194973))
 ### performance
-- Update the XPU SDPA oneDNN graph to use oneDNN 3.12's GQA and dropout support for better training performance ([#195419](https://github.com/pytorch/pytorch/pull/195419))
+- Faster SDPA training ([#195419](https://github.com/pytorch/pytorch/pull/195419))
 ### docs
-- Clarify Intel GPU prerequisites in the XPU getting-started guide ([#198820](https://github.com/pytorch/pytorch/pull/198820))
+- Clarify Intel GPU prerequisites ([#198820](https://github.com/pytorch/pytorch/pull/198820))
 ### devs
 ### Untopiced
 ### not user facing
 - Unify LazyLevelZero stub macro into a single ZE_STUB ([#197209](https://github.com/pytorch/pytorch/pull/197209))
 - Add XPU caching allocator checkpoint pool state bindings ([#188259](https://github.com/pytorch/pytorch/pull/188259))
+- Improve error messages from `torch.xpu.utilization()` and other Level Zero Sysman queries on Xe2 and later GPUs when the process lacks the required permissions ([#197210](https://github.com/pytorch/pytorch/pull/197210), [#197494](https://github.com/pytorch/pytorch/pull/197494)) (cut for length)
+- Fix "An event cannot be enqueued for signaling or waiting behind a command which is not enqueued in the backend" errors with oneCCL on BMG ([#197396](https://github.com/pytorch/pytorch/pull/197396)) (cut for length)
+- Fix `torch.xpu.Event.record()` submitting twice on first use, which could lose profiling timestamps ([#194609](https://github.com/pytorch/pytorch/pull/194609)) (cut for length)
 ### security
