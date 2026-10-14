@@ -48,17 +48,16 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Enable FP8 2:4 sparsity on ROCm MI300 ([#191682](https://github.com/pytorch/pytorch/pull/191682))
 ### bug fixes
+- Fix concurrent `torch.load` calls interfering in sparse tensor validation ([#194751](https://github.com/pytorch/pytorch/pull/194751))
+- Fix wrong values from sparse compressed `add` with `out=` and ROCm COO `coalesce` ([#197564](https://github.com/pytorch/pytorch/pull/197564), [#199484](https://github.com/pytorch/pytorch/pull/199484))
+- Fix semi-structured bitmask conversion on non-CUDA devices ([#193943](https://github.com/pytorch/pytorch/pull/193943))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [ROCm] Enable FP8 FNUZ sparse semi-structured support on ROCm MI300+ ([#191682](https://github.com/pytorch/pytorch/pull/191682))
-- [ROCm] Avoid OpenMP capture of structured bindings in SparseCsrTensorMath (#194263) ([#194263](https://github.com/pytorch/pytorch/pull/194263))
-- [sparse] Fix hardcoded "cuda" device in semi-structured bitmask conversion ([#193943](https://github.com/pytorch/pytorch/pull/193943))
-- Make sparse tensor validation state thread-local ([#194751](https://github.com/pytorch/pytorch/pull/194751))
-- Fix sparse CSR add aliasing indices between out and inputs ([#197564](https://github.com/pytorch/pytorch/pull/197564))
-- [ROCm] Fix feature tile offset in coalesceValuesKernel ([#199484](https://github.com/pytorch/pytorch/pull/199484))
 ### not user facing
-- [BE][Ez]: Use STL midpoint for better int overflow safety and intent ([#195749](https://github.com/pytorch/pytorch/pull/195749))
+- Use `std::midpoint` for overflow-safe midpoint calculations ([#195749](https://github.com/pytorch/pytorch/pull/195749))
+- Fix a ROCm build failure in `SparseCsrTensorMath` caused by OpenMP capture of structured bindings ([#194263](https://github.com/pytorch/pytorch/pull/194263))
 ### security
