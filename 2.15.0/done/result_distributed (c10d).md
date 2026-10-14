@@ -50,7 +50,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   `backend="nccl"` (also the default CUDA backend of `init_process_group()`) now creates a `ProcessGroupNCCL2`. The previous implementation is available as `backend="nccl-legacy"`. Differences:
 
   - Communicators are created eagerly in `init_process_group()`/`new_group()`, allocating GPU memory even for unused groups (`nccl-lazy` creates them on demand).
-  - Each group is bound to one CUDA device: `device_id`, else `LOCAL_RANK % torch.cuda.device_count()` (or the global rank modulo the device count); `torch.cuda.set_device()` is not used. Tensors on another GPU fail with `Expected tensor on cuda:X but found tensor on cuda:Y`. Pass `device_id` if needed; several GPUs per process requires `nccl-legacy`.
+  - Each group is bound to one CUDA device: `device_id`, else `LOCAL_RANK % torch.cuda.device_count()` (or the global rank modulo the device count); `torch.cuda.set_device()` is not used. Tensors on another GPU fail with `Expected tensor on cuda:X but found tensor on cuda:Y` or `ProcessGroupNCCL is bound to device cuda:X but an operation was issued on cuda:Y`. Pass `device_id` if needed; several GPUs per process requires `nccl-legacy`.
   - `dist.get_backend_impl(...)` returns a `ProcessGroupNCCL2`, so `isinstance(..., ProcessGroupNCCL)` is `False` and legacy-only methods such as `comm_split_count()` are missing.
   - An async `all_gather`'s `work.get_future()` value is the list of per-rank outputs, not a one-element list holding a stacked tensor.
 
