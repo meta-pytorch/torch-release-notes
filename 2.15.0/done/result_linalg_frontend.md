@@ -48,45 +48,24 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 - MAGMA is deprecated as the backend for pivoted LU factorization on CUDA; `torch.linalg.lu_factor` (and ops built on it) with `pivot=True` now always uses cuSOLVER ([#190661](https://github.com/pytorch/pytorch/pull/190661))
 
-  MAGMA is being phased out as a CUDA linear algebra backend. With `pivot=True`, LU factorization now dispatches to cuSOLVER even when `torch.backends.cuda.preferred_linalg_library("magma")` is set, and the default backend no longer picks MAGMA's batched LU for large batches (a new built-in batched LU kernel, listed under performance, closes the performance gap). When MAGMA is the preferred backend, the first call emits a one-time warning: `linalg.lu_factor: MAGMA, as a linear algebra backend, is deprecated and will be removed in future releases. linalg.lu_factor will try dispatching to cuSOLVER instead. If you see any error messages, please, file an issue on GitHub.` LU without pivoting (`pivot=False`) still uses MAGMA when it is the preferred backend. To avoid the warning, stop selecting MAGMA and use the default or cuSOLVER backend.
+  With `pivot=True`, LU now dispatches to cuSOLVER even when `torch.backends.cuda.preferred_linalg_library("magma")` is set; a new built-in batched LU kernel replaces MAGMA's for large batches. When MAGMA is preferred, the first call warns: `linalg.lu_factor: MAGMA, as a linear algebra backend, is deprecated and will be removed in future releases.` `pivot=False` still uses MAGMA when it is preferred. To avoid the warning, use the default or cuSOLVER backend.
 
-  Version 2.14:
   ```python
-  import torch
-
   torch.backends.cuda.preferred_linalg_library("magma")
-  A = torch.randn(64, 32, 32, device="cuda")
-  LU, pivots = torch.linalg.lu_factor(A)  # computed by MAGMA
-  ```
-
-  Version 2.15:
-  ```python
-  import torch
-
-  torch.backends.cuda.preferred_linalg_library("magma")
-  A = torch.randn(64, 32, 32, device="cuda")
-  LU, pivots = torch.linalg.lu_factor(A)
-  # UserWarning: linalg.lu_factor: MAGMA, as a linear algebra backend, is deprecated and will be
-  # removed in future releases. linalg.lu_factor will try dispatching to cuSOLVER instead. ...
-
-  # Recommended: use the default backend (or "cusolver")
-  torch.backends.cuda.preferred_linalg_library("default")
-  LU, pivots = torch.linalg.lu_factor(A)
+  LU, pivots = torch.linalg.lu_factor(A)  # 2.14: MAGMA; 2.15: cuSOLVER + UserWarning
+  torch.backends.cuda.preferred_linalg_library("default")  # recommended
   ```
 
 ### new features
 ### improvements
-- Add CUDA TunableOp support for scaled GEMMs (`torch._scaled_mm`), including tensorwise, blockwise, MXFP8 and NVFP4 scaling, and offline tuning ([#186271](https://github.com/pytorch/pytorch/pull/186271))
-- Make matrix multiplication shape-check error messages consistent across `mm`, `bmm`, `addmm`, scaled, sparse and backend-specific implementations ([#193583](https://github.com/pytorch/pytorch/pull/193583))
+- Add CUDA TunableOp support for `torch._scaled_mm` ([#186271](https://github.com/pytorch/pytorch/pull/186271))
+- Unify matmul shape-check error messages ([#193583](https://github.com/pytorch/pytorch/pull/193583))
 ### bug fixes
-- Fix silently wrong second-order forward-mode AD for `torch.linalg.det`, `torch.linalg.slogdet` and `torch.linalg.solve` ([#192667](https://github.com/pytorch/pytorch/pull/192667))
-- Fix `torch.linalg.matrix_exp` returning wrong results (and gradients) for inputs that select the degree-8 Taylor approximation, due to a missing factor in one coefficient ([#196658](https://github.com/pytorch/pytorch/pull/196658))
-- Fix CPU `torch._int_mm` producing wrong results when a size-1 dimension has an arbitrary stride (e.g. from `torch.compile`), which caused accuracy failures in int8 quantized LLM decoding; oneDNN GEMM failures now raise instead of being ignored ([#194682](https://github.com/pytorch/pytorch/pull/194682))
+- Fix silently wrong second-order forward AD for `linalg.det`, `slogdet` and `solve` ([#192667](https://github.com/pytorch/pytorch/pull/192667))
+- Fix wrong `torch.linalg.matrix_exp` results for some inputs ([#196658](https://github.com/pytorch/pytorch/pull/196658))
+- Fix wrong CPU `torch._int_mm` results for strided size-1 dimensions ([#194682](https://github.com/pytorch/pytorch/pull/194682))
 ### performance
-- Add a built-in batched LU factorization kernel with partial pivoting for CUDA that matches or beats MAGMA ([#190329](https://github.com/pytorch/pytorch/pull/190329))
-- Improve backend selection heuristics for CUDA LU factorization without pivoting, avoiding up to 7x slowdowns on low-batch inputs ([#193004](https://github.com/pytorch/pytorch/pull/193004))
-- Reduce dispatch overhead in `bmm` and `baddbmm` by reusing batch-dimension views ([#198570](https://github.com/pytorch/pytorch/pull/198570))
-- Reduce TunableOp tuning time for expensive GEMMs by sizing the candidate screening runs by the configured tuning limits (e.g. `PYTORCH_TUNABLEOP_MAX_TUNING_DURATION_MS`) ([#192403](https://github.com/pytorch/pytorch/pull/192403))
+- Add a built-in CUDA batched LU kernel that matches MAGMA, and improve LU backend selection without pivoting ([#190329](https://github.com/pytorch/pytorch/pull/190329), [#193004](https://github.com/pytorch/pytorch/pull/193004))
 ### docs
 ### devs
 ### Untopiced
@@ -97,4 +76,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Remove the no-op test decorator `skipCUDAIfNoMagmaAndNoLinalgsolver` ([#198986](https://github.com/pytorch/pytorch/pull/198986))
 - Remove redundant `dtypesIfMPS` test decorators ([#199652](https://github.com/pytorch/pytorch/pull/199652))
 - Replace `data_ptr` with `mutable_data_ptr` in quantized kernels ([#182809](https://github.com/pytorch/pytorch/pull/182809))
+- Reduce dispatch overhead in `bmm` and `baddbmm` by reusing batch-dimension views ([#198570](https://github.com/pytorch/pytorch/pull/198570)) (cut for length)
+- Reduce TunableOp tuning time for expensive GEMMs by sizing the candidate screening runs by the configured tuning limits ([#192403](https://github.com/pytorch/pytorch/pull/192403)) (cut for length)
 ### security
