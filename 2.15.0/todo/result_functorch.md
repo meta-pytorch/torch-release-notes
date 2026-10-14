@@ -50,9 +50,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 ### bug fixes
 ### performance
+- Speed up the min-cut partitioner, reducing cold compile time by about 5% ([#197724](https://github.com/pytorch/pytorch/pull/197724))
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
-- [functorch] Specialize activation-checkpointing minimum cut ([#197724](https://github.com/pytorch/pytorch/pull/197724))
 ### security
