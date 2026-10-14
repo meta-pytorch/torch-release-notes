@@ -48,12 +48,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Support pruned embedding tables (`compressed_indices_mapping`) in `quantized::embedding_bag_byte_rowwise_offsets` on CUDA and ROCm, which was previously CPU-only ([#194934](https://github.com/pytorch/pytorch/pull/194934))
-- Upgrade the oneDNN submodule to v3.13 ([#196712](https://github.com/pytorch/pytorch/pull/196712))
+- Support pruned tables in quantized `embedding_bag` on CUDA ([#194934](https://github.com/pytorch/pytorch/pull/194934))
+- Upgrade oneDNN to v3.13 ([#196712](https://github.com/pytorch/pytorch/pull/196712))
 ### bug fixes
-- Fix FX FP16/BF16 linear weight folding failing with a `KeyError` when the weight is also used elsewhere in the graph (e.g. `weight.dtype`) or shared between several linear calls ([#194292](https://github.com/pytorch/pytorch/pull/194292))
+- Fix FX FP16/BF16 linear weight folding `KeyError` for shared weights ([#194292](https://github.com/pytorch/pytorch/pull/194292))
 ### performance
-- Add QNNPACK AArch64 dynamic-quantization GEMM kernels for batch sizes 1 to 4, making small-batch dynamically quantized linear 2x (batch 4) to 4x (batch 1) faster ([#193595](https://github.com/pytorch/pytorch/pull/193595))
+- Speed up AArch64 small-batch QNNPACK linear 2-4x ([#193595](https://github.com/pytorch/pytorch/pull/193595))
 ### docs
 ### devs
 ### Untopiced
