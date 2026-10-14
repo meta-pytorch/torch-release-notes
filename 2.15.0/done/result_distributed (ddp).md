@@ -47,12 +47,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Add caller-controlled backward finalization to `DistributedDataParallel`. Setting `ddp.require_manual_backward_finalization = True` stops DDP from waiting on gradient all-reduces and writing reduced gradients back at the end of backward; the caller then calls `ddp.finalize_backward()` exactly once per synchronized backward, either after `backward()` returns or from a backward hook once all buckets are ready (`ddp.should_finalize_after_backward` says which is required). This lets other work, such as sparse backward or communication, overlap the in-flight all-reduce, or lets `optimizer.step()` start before backward fully returns ([#196651](https://github.com/pytorch/pytorch/pull/196651))
-- Add a `lazy_bucket_allocation` option (default `False`) to `DistributedDataParallel`. When enabled, DDP allocates each dense gradient bucket when its gradients become ready during backward and releases the bucket storage after backward, instead of keeping all buckets allocated across iterations. This lowers peak memory because the buckets no longer overlap with forward activations ([#199110](https://github.com/pytorch/pytorch/pull/199110))
+- Add manual backward finalization to `DistributedDataParallel`: set `ddp.require_manual_backward_finalization = True` and call `ddp.finalize_backward()`, so other work can overlap the in-flight gradient all-reduce ([#196651](https://github.com/pytorch/pytorch/pull/196651))
+- Add a `lazy_bucket_allocation` option to `DistributedDataParallel` that allocates gradient buckets during backward and frees them afterward, lowering peak memory ([#199110](https://github.com/pytorch/pytorch/pull/199110))
 ### improvements
 ### bug fixes
 ### performance
-- With `batched_grad_copy=True`, `DistributedDataParallel` now also batches the copy of reduced buckets back into `.grad` into one `_foreach_copy_` per bucket. This applies when `gradient_as_bucket_view=False` and removes one copy kernel launch per parameter ([#190524](https://github.com/pytorch/pytorch/pull/190524))
+- Batch DDP's copy into `.grad` with `batched_grad_copy=True` ([#190524](https://github.com/pytorch/pytorch/pull/190524))
 ### docs
 ### devs
 ### Untopiced
