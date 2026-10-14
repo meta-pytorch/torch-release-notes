@@ -48,20 +48,20 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Support building C++/CUDA extensions with `torch.utils.cpp_extension` on Windows ARM64: the CUDA and cuDNN libraries are now looked up under `lib/arm64` instead of the x64 directories ([#191656](https://github.com/pytorch/pytorch/pull/191656))
+- Support `torch.utils.cpp_extension` CUDA builds on Windows ARM64 ([#191656](https://github.com/pytorch/pytorch/pull/191656))
 ### bug fixes
-- Fix Windows source builds with MSVC silently computing wrong results in `parallel_for` kernels. `torch_cpu` linked both the `vcomp` and `libomp` OpenMP runtimes, so every worker thread saw itself as thread 0 of 1 and processed the whole range. This also fixes wrong CPU `scaled_dot_product_attention` results with multiple intra-op threads ([#193792](https://github.com/pytorch/pytorch/pull/193792))
-- Fix cross-compiled builds producing an untagged `_C.so` that the target interpreter cannot import, by setting `Python_SOABI` when cross-compiling ([#189388](https://github.com/pytorch/pytorch/pull/189388))
-- Fix BLAS/LAPACK detection for ATLAS, vecLib, BLIS and FlexiBLAS. A successful lookup could leave `BLAS_LIBRARIES` unset or let LAPACK detection pick a different BLAS than the one requested ([#196427](https://github.com/pytorch/pytorch/pull/196427), [#196428](https://github.com/pytorch/pytorch/pull/196428), [#196430](https://github.com/pytorch/pytorch/pull/196430))
-- Fix the Metal 4.0 capability check accepting SDKs that support `-std=metal4.0` but lack the MPP cooperative-tensor APIs, which made the build fail later when compiling the Metal 4 attention kernels ([#195302](https://github.com/pytorch/pytorch/pull/195302))
-- Fix the embedded Metal shaders not being regenerated when headers under `c10/metal` change, which left stale shaders in incremental macOS builds that only have the Command Line Tools installed ([#196202](https://github.com/pytorch/pytorch/pull/196202))
+- Fix Windows MSVC source builds computing wrong results in `parallel_for` kernels, including CPU `scaled_dot_product_attention` ([#193792](https://github.com/pytorch/pytorch/pull/193792))
+- Fix cross-compiled builds producing a `_C.so` that the target interpreter cannot import ([#189388](https://github.com/pytorch/pytorch/pull/189388))
+- Fix BLAS/LAPACK detection for ATLAS, vecLib, BLIS and FlexiBLAS ([#196427](https://github.com/pytorch/pytorch/pull/196427), [#196428](https://github.com/pytorch/pytorch/pull/196428), [#196430](https://github.com/pytorch/pytorch/pull/196430))
+- Fix macOS builds failing on SDKs that lack the Metal 4 cooperative-tensor APIs ([#195302](https://github.com/pytorch/pytorch/pull/195302))
+- Fix stale embedded Metal shaders in incremental macOS builds ([#196202](https://github.com/pytorch/pytorch/pull/196202))
 ### performance
 ### docs
 ### devs
-- Add an opt-in `USE_CMAKE_INSTRUMENTATION=1` build option that uses CMake's build instrumentation (CMake >= 4.3) to collect and summarize build metrics ([#189455](https://github.com/pytorch/pytorch/pull/189455))
-- Turn off `USE_FLASH_ATTENTION` automatically when none of the target CUDA architectures is sm80 or newer, instead of compiling kernels that can never run ([#194502](https://github.com/pytorch/pytorch/pull/194502))
-- Fix the misspelled `CUDA_LIMIT_GPU_ARCHITECTURE` in CUDA arch autodetection. The limit is now derived from the newest architecture the CUDA toolkit knows, and newer GPUs are clamped to that architecture plus PTX ([#195695](https://github.com/pytorch/pytorch/pull/195695))
-- Honor `USE_MIMALLOC=OFF` on Windows and AArch64, where it was previously ignored ([#199064](https://github.com/pytorch/pytorch/pull/199064))
+- Add an opt-in `USE_CMAKE_INSTRUMENTATION=1` build option to collect build metrics (CMake >= 4.3) ([#189455](https://github.com/pytorch/pytorch/pull/189455))
+- Turn off `USE_FLASH_ATTENTION` automatically when no target CUDA architecture is sm80 or newer ([#194502](https://github.com/pytorch/pytorch/pull/194502))
+- Fix the misspelled `CUDA_LIMIT_GPU_ARCHITECTURE` in CUDA architecture autodetection ([#195695](https://github.com/pytorch/pytorch/pull/195695))
+- Honor `USE_MIMALLOC=OFF` on Windows and AArch64 ([#199064](https://github.com/pytorch/pytorch/pull/199064))
 - Fix the FlashAttention CUDA build on Windows with MSVC in C++20 mode ([#197382](https://github.com/pytorch/pytorch/pull/197382))
 ### not user facing
 ### security
