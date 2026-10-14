@@ -47,9 +47,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - Operators called through `torch.ops.*` and `torch._C._dispatch_call_boxed` now use PyTorch's own warning and exception translation instead of pybind11's ([#193451](https://github.com/pytorch/pytorch/pull/193451))
 
-    Previously, `TORCH_WARN` / `TORCH_WARN_ONCE` warnings raised by operators (including custom C++ operators) invoked through `torch.ops.*` were printed straight to stderr, so `warnings.catch_warnings()` and `warnings.filterwarnings()` had no effect on them. These calls now go through the same handling as the rest of `torch`, so the warnings reach Python's `warnings` module (as `UserWarning`, or the matching warning class such as `DeprecationWarning`). This is a behavior change if you run with warnings turned into errors (`-W error` or `warnings.simplefilter("error")`): such a warning now raises an exception.
+    We make `torch.ops.*` calls go through the same exception and warning translation as the rest of the library. This means that some exception translation that used to be handled by pybind is now handled natively. User-defined pybind exception translation is thus lost. Restoring it may be done in a future release as part of a broader exception handler improvement.
 
-    C++ exceptions are also translated by PyTorch rather than pybind11. `c10` errors (`TORCH_CHECK` and friends) map to the same Python types as before, and `std::out_of_range` still becomes `IndexError` ([#195713](https://github.com/pytorch/pytorch/pull/195713)). However, any other standard or user-defined C++ exception raised by a custom operator becomes a `RuntimeError` with the same message. This includes exceptions pybind11 used to map to `ValueError`, `OverflowError` or `MemoryError`, and exceptions with a translator registered through `py::register_exception` or `py::register_exception_translator`. If you need a specific Python exception type from a custom operator, throw the matching `c10` error, for example `TORCH_CHECK_VALUE(...)` for `ValueError` or `TORCH_CHECK_TYPE(...)` for `TypeError`.
+    In addition, `TORCH_WARN` warnings from these operators now reach Python's `warnings` module, so they raise when warnings are turned into errors (`-W error`). `std::out_of_range` still becomes `IndexError` ([#195713](https://github.com/pytorch/pytorch/pull/195713)).
 
     Version 2.14:
 
@@ -79,18 +79,16 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Enable Sleef vectorized math in the NNC (TensorExpr) LLVM codegen on aarch64 ([#198002](https://github.com/pytorch/pytorch/pull/198002))
+- Use Sleef in NNC on aarch64 ([#198002](https://github.com/pytorch/pytorch/pull/198002))
 ### bug fixes
-- Fix `torch.jit.Attribute` annotations on `ScriptModule` being lost on Python 3.14 ([#195201](https://github.com/pytorch/pytorch/pull/195201))
-- Fix constant pooling and CSE merging `0.0` with `-0.0` float constants (giving wrong results for ops like `copysign`, `reciprocal`, `atan2`) and failing to pool identical NaN constants ([#192605](https://github.com/pytorch/pytorch/pull/192605))
-- Fix `torch.jit.export_opnames` missing operators used inside `torch.jit.fork` / `torch.jit.wait` subgraphs ([#197333](https://github.com/pytorch/pytorch/pull/197333))
-- Fix `torch.jit.script` missing class-level attribute annotations on `nn.Module` subclasses on Python 3.14, where lazily evaluated annotations are not reliably visible through module instances, and resolve inherited annotations along the class MRO. This raises the minimum `typing-extensions` requirement to 4.13.0 ([#199074](https://github.com/pytorch/pytorch/pull/199074))
+- Fix `torch.jit.Attribute` and `nn.Module` class annotations being lost on Python 3.14; this requires `typing-extensions>=4.13` ([#195201](https://github.com/pytorch/pytorch/pull/195201), [#199074](https://github.com/pytorch/pytorch/pull/199074))
+- Fix constant pooling merging `0.0` with `-0.0` ([#192605](https://github.com/pytorch/pytorch/pull/192605))
+- Fix `torch.jit.export_opnames` missing ops inside `torch.jit.fork` subgraphs ([#197333](https://github.com/pytorch/pytorch/pull/197333))
 ### performance
-- Speed up `torch.jit.load` deserialization by skipping type-tag restoration for archives at version 3 or later, using a faster visited set when it is needed, and avoiding `IValue` copies in the unpickler ([#194035](https://github.com/pytorch/pytorch/pull/194035), [#193107](https://github.com/pytorch/pytorch/pull/193107), [#193250](https://github.com/pytorch/pytorch/pull/193250))
-- Speed up TorchScript graph pre-optimization by sharing one alias analysis across peephole sub-passes ([#194009](https://github.com/pytorch/pytorch/pull/194009))
+- Speed up `torch.jit.load` and graph pre-optimization ([#194035](https://github.com/pytorch/pytorch/pull/194035), [#193107](https://github.com/pytorch/pytorch/pull/193107), [#193250](https://github.com/pytorch/pytorch/pull/193250), [#194009](https://github.com/pytorch/pytorch/pull/194009))
 ### docs
 ### devs
-- `c10::List` iterators now satisfy the C++20 `std::random_access_iterator` concept and work with `std::ranges` algorithms, and `c10::List<T>::emplace` now constructs a `T` (so `List<double>().emplace(pos, 1)` stores a double instead of an int) ([#196002](https://github.com/pytorch/pytorch/pull/196002))
+- `c10::List` iterators satisfy `std::random_access_iterator`, and `List<T>::emplace` now constructs a `T` ([#196002](https://github.com/pytorch/pytorch/pull/196002))
 ### Untopiced
 ### not user facing
 - Add META's Math Library (#198207) ([#198207](https://github.com/pytorch/pytorch/pull/198207))
