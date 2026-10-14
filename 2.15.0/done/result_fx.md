@@ -78,7 +78,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix generated minifier repros failing with `allocated size does not match required size` when a `repeat_interleave` input uses `int32` repeats ([#197035](https://github.com/pytorch/pytorch/pull/197035))
 ### Untopiced
 ### not user facing
-- Support `torch.nn.functional.scaled_addmm` and `scaled_addmm_` under `torch.compile`, lowered through Inductor's extern-kernel fallback with reinplacing of the functional form ([#195410](https://github.com/pytorch/pytorch/pull/195410)) (may belong in nn_frontend, next to #195409)
 - Skip `ShapeEnv.replace` for symbolic booleans that are already constant; no measurable wall-clock change ([#193159](https://github.com/pytorch/pytorch/pull/193159))
 - Make tensor device observations rank-portable under the in-progress compile-on-one-rank mode ([#196151](https://github.com/pytorch/pytorch/pull/196151))
 - Add hardware classification to FX test classes ([#192455](https://github.com/pytorch/pytorch/pull/192455), [#192470](https://github.com/pytorch/pytorch/pull/192470), [#192450](https://github.com/pytorch/pytorch/pull/192450), [#192451](https://github.com/pytorch/pytorch/pull/192451), [#193274](https://github.com/pytorch/pytorch/pull/193274), [#192929](https://github.com/pytorch/pytorch/pull/192929), [#194857](https://github.com/pytorch/pytorch/pull/194857), [#194879](https://github.com/pytorch/pytorch/pull/194879), [#192742](https://github.com/pytorch/pytorch/pull/192742))
