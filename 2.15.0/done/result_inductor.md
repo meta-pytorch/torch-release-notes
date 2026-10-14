@@ -53,6 +53,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```python
   from torch._higher_order_ops.invoke_subgraph import get_invoke_subgraph_compile_options
 
+  # passing options= requires this experimental flag in both versions
+  torch._dynamo.config.enable_invoke_subgraph_regional_compile = True
+
   opts = get_invoke_subgraph_compile_options(
       fw_inductor_config_patches={"triton.multi_kernel": 1}
   )
