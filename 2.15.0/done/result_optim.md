@@ -48,58 +48,20 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 - Passing a bare `set` of parameters to an optimizer is deprecated and now emits a `FutureWarning`; it will become an error in a future release ([#198710](https://github.com/pytorch/pytorch/pull/198710))
 
-  Optimizer state is matched to parameters by position, and iteration order over a `set` can change between runs, so `torch.optim.Adam(set(model.parameters()))` could silently mismatch state when it is reloaded. A set inside a param group was already rejected; a bare set was silently accepted. It now warns: `optimizer parameters need to be organized in ordered collections, but the ordering of tensors in sets will change between runs. Please use a list instead. This will be an error in a future release.` Pass a list (or another ordered iterable) instead.
+  Set iteration order can change between runs, so optimizer state could silently mismatch parameters on reload. The warning reads: `optimizer parameters need to be organized in ordered collections, but the ordering of tensors in sets will change between runs. Please use a list instead.`
 
-  Version 2.14:
   ```python
-  opt = torch.optim.Adam(set(model.parameters()))  # silently accepted
-  ```
-
-  Version 2.15:
-  ```python
-  opt = torch.optim.Adam(set(model.parameters()))  # FutureWarning
+  opt = torch.optim.Adam(set(model.parameters()))  # 2.15: FutureWarning
   opt = torch.optim.Adam(list(model.parameters()))  # recommended
   ```
 
 ### new features
-- Add `torch.optim.functional`, a public module with functional optimizer APIs (`adadelta`, `adafactor`, `adagrad`, `adam`, `adamax`, `adamw`, `asgd`, `muon`, `nadam`, `radam`, `rmsprop`, `rprop`, `sgd`, `sparse_adam`) for callers that want to manage parameters, gradients and optimizer state themselves ([#194986](https://github.com/pytorch/pytorch/pull/194986))
-
-  These functions run the same implementations as the optimizer classes and update parameters and state tensors in place; the caller creates, keeps and checkpoints the state. The `torch.optim` docs now include examples, such as keeping AdamW moment buffers in BF16 to save memory.
-
-  ```python
-  import torch
-  from torch.optim.functional import adamw
-
-  model = torch.nn.Linear(16, 4, device="cuda")
-  params = list(model.parameters())
-  exp_avgs = [torch.zeros_like(p, dtype=torch.bfloat16) for p in params]
-  exp_avg_sqs = [torch.zeros_like(p, dtype=torch.bfloat16) for p in params]
-  steps = [torch.zeros((), device=p.device) for p in params]
-
-  with torch.no_grad():
-      adamw(
-          params=params,
-          grads=[p.grad for p in params],
-          exp_avgs=exp_avgs,
-          exp_avg_sqs=exp_avg_sqs,
-          max_exp_avg_sqs=[],
-          state_steps=steps,
-          fused=True,  # CUDA fused path supports FP32 params with BF16 moments
-          amsgrad=False,
-          beta1=0.9,
-          beta2=0.999,
-          lr=1e-3,
-          weight_decay=1e-2,
-          eps=1e-8,
-          maximize=False,
-      )
-  ```
-
+- Add `torch.optim.functional`, a public module of functional optimizers (`adam`, `adamw`, `sgd`, `muon` and others) that run the same implementations as the optimizer classes while the caller manages parameters, gradients and state ([#194986](https://github.com/pytorch/pytorch/pull/194986))
 ### improvements
-- Validate `lambd` and `alpha` in `torch.optim.ASGD`; negative values now raise `ValueError` at construction instead of causing a `ZeroDivisionError` or a wrong learning-rate schedule during training ([#193303](https://github.com/pytorch/pytorch/pull/193303))
-- Run the optimizer graph-capture health check (including the `capturable=True` performance warning) on all accelerators, not only CUDA and XPU ([#194362](https://github.com/pytorch/pytorch/pull/194362))
+- Validate `lambd` and `alpha` in `torch.optim.ASGD` ([#193303](https://github.com/pytorch/pytorch/pull/193303))
+- Run the optimizer graph-capture health check on all accelerators ([#194362](https://github.com/pytorch/pytorch/pull/194362))
 ### bug fixes
-- Fix `Muon` normalizing the momentum buffer in place during Newton-Schulz orthogonalization when gradients are already `bfloat16` ([#194664](https://github.com/pytorch/pytorch/pull/194664))
+- Fix `Muon` overwriting momentum with bf16 grads ([#194664](https://github.com/pytorch/pytorch/pull/194664))
 ### performance
 ### docs
 ### devs
