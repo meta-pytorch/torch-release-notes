@@ -47,9 +47,17 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - With `MixedPrecisionPolicy(reduce_dtype=None)`, `fully_shard` now accumulates and reduces gradients in the parameter's `grad_dtype` (its original dtype by default) instead of in `param_dtype` ([#194434](https://github.com/pytorch/pytorch/pull/194434))
 
-  Before, `reduce_dtype=None` meant "reduce in `param_dtype`", and FSDP2 ignored any `grad_dtype` set on the parameters. Now `reduce_dtype=None` follows each parameter's `grad_dtype`, as configured before lazy initialization (the first forward or `FSDPModule.unshard()`). If `grad_dtype` is unset, the parameter's original dtype is used. If it is explicitly `None`, any incoming gradient dtype is accepted. This decision no longer depends on `param_dtype`. In the common setup of fp32 parameters with `param_dtype=torch.bfloat16`, gradients now accumulate and reduce-scatter in fp32 instead of bf16. That is more accurate but sends twice as many bytes per reduce-scatter. In the rare reverse setup (bf16 parameters with `param_dtype=torch.float32`), gradients now reduce in bf16 instead of fp32. `replicate()` behaves the same way because it uses the same `MixedPrecisionPolicy`. FSDP1 still reduces in `param_dtype`. To keep the old behavior, set `reduce_dtype` explicitly.
+  **This is BC-breaking**: `mp_policy.reduce_dtype=None` no longer defaults to `mp_policy.param_dtype`.
+  * [popular case] fp32 params, `MixedPrecisionPolicy(param_dtype=bf16)`
+    * before: grad accumulation and reduce happen in bf16
+    * after: grad accumulation and reduce happen in fp32 (2x reduce-scatter bytes)
+  * [rare case] bf16 params, `MixedPrecisionPolicy(param_dtype=fp32)`
+    * before: grad accumulation and reduce happen in fp32
+    * after: grad accumulation and reduce happen in bf16
 
-  This PR also changes gradient accumulation without reduction (`set_requires_gradient_sync(False)`): the unsharded parameter's `.grad` now always holds the accumulated gradient. Before, it was `None` when `reduce_dtype` differed from `param_dtype`, because FSDP kept the sum in a hidden buffer.
+  How to deal with BC: explicitly set `mp_policy.reduce_dtype`.
+
+  In grad accumulation (no reduce-scatter), the unsharded param's `.grad` always holds the accumulated value, visible via `model.parameters()` while unsharded. Before this change, `.grad` was `None` when `reduce_dtype` was set and differed from `param_dtype` (FSDP kept the sum in a hidden `reduce_dtype` buffer).
 
   Version 2.14:
   ```python
@@ -74,10 +82,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- Fix `RuntimeError: Inference tensors do not track version counter` when unsharding FSDP2 modules under `torch.inference_mode()` ([#197327](https://github.com/pytorch/pytorch/pull/197327))
+- Fix FSDP2 unshard under `torch.inference_mode()` ([#197327](https://github.com/pytorch/pytorch/pull/197327))
 ### performance
-- Avoid an extra full-size gradient allocation in reduce-scatter when the shard group has size 1 (e.g. HSDP with a sharding degree of 1). This allocation could cause out-of-memory errors ([#196348](https://github.com/pytorch/pytorch/pull/196348))
-- Upcast low-precision gradients during the reduce-scatter copy-in instead of once per parameter in autograd. This avoids extra cast kernels and higher-precision gradient memory when gradients reduce in a higher precision than the compute dtype ([#198668](https://github.com/pytorch/pytorch/pull/198668))
+- Reduce reduce-scatter gradient memory for size-1 shard groups and low-precision gradients ([#196348](https://github.com/pytorch/pytorch/pull/196348), [#198668](https://github.com/pytorch/pytorch/pull/198668))
 ### docs
 ### devs
 ### Untopiced
