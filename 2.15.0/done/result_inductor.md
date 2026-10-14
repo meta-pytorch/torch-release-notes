@@ -47,7 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - `torch.compiler.nested_compile_region(options=...)` now accepts only an allowlist of Inductor config patches ([#195864](https://github.com/pytorch/pytorch/pull/195864), [#195865](https://github.com/pytorch/pytorch/pull/195865))
 
-  Patches passed through `get_invoke_subgraph_compile_options(fw_inductor_config_patches=..., bw_inductor_config_patches=...)` used to accept any `torch._inductor.config` key, though many were silently ignored. Only `fallback_by_default` and `max_autotune` are now accepted; other keys raise `ValueError: Inductor config key '<key>' is not supported in forward nested compile-region options` (or `backward`). Apply other options to the whole compiled function.
+  Patches passed through `get_invoke_subgraph_compile_options(fw_inductor_config_patches=..., bw_inductor_config_patches=...)` used to accept any `torch._inductor.config` key, though many were silently ignored. Only `fallback_by_default` and `max_autotune` are now accepted; other keys raise `ValueError: Inductor config key '<key>' is not supported in forward nested compile-region options` (or `backward`). Apply other options to the whole compiled function. Patch dictionaries are now snapshotted when the options are created, so later mutation has no effect, and the default no longer implicitly sets `triton.autotune_at_compile_time=True`.
 
   Version 2.14:
   ```python
