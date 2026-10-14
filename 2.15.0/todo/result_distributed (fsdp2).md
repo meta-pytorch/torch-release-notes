@@ -45,18 +45,49 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## distributed (fsdp2)
 ### bc breaking
-- [FSDP2] Separate sharded and unsharded gradient dtypes ([#194434](https://github.com/pytorch/pytorch/pull/194434))
+- With `MixedPrecisionPolicy(reduce_dtype=None)`, `fully_shard` now accumulates and reduces gradients in the parameter's `grad_dtype` (its original dtype by default) instead of in `param_dtype` ([#194434](https://github.com/pytorch/pytorch/pull/194434))
+
+  **This is BC-breaking**: `mp_policy.reduce_dtype=None` no longer defaults to `mp_policy.param_dtype`.
+  * [popular case] fp32 params, `MixedPrecisionPolicy(param_dtype=bf16)`
+    * before: grad accumulation and reduce happen in bf16
+    * after: grad accumulation and reduce happen in fp32 (2x reduce-scatter bytes)
+  * [rare case] bf16 params, `MixedPrecisionPolicy(param_dtype=fp32)`
+    * before: grad accumulation and reduce happen in fp32
+    * after: grad accumulation and reduce happen in bf16
+
+  How to deal with BC: explicitly set `mp_policy.reduce_dtype`.
+
+  In grad accumulation (no reduce-scatter), the unsharded param's `.grad` always holds the accumulated value, visible via `model.parameters()` while unsharded. Before this change, `.grad` was `None` when `reduce_dtype` was set and differed from `param_dtype` (FSDP kept the sum in a hidden `reduce_dtype` buffer).
+
+  Version 2.14:
+  ```python
+  # fp32 parameters
+  mp_policy = MixedPrecisionPolicy(param_dtype=torch.bfloat16)
+  fully_shard(model, mp_policy=mp_policy)
+  # gradients accumulate and reduce-scatter in bf16
+  ```
+
+  Version 2.15:
+  ```python
+  # fp32 parameters
+  mp_policy = MixedPrecisionPolicy(param_dtype=torch.bfloat16)
+  fully_shard(model, mp_policy=mp_policy)
+  # gradients accumulate and reduce-scatter in fp32
+
+  # to keep the 2.14 behavior, set reduce_dtype explicitly
+  mp_policy = MixedPrecisionPolicy(param_dtype=torch.bfloat16, reduce_dtype=torch.bfloat16)
+  fully_shard(model, mp_policy=mp_policy)
+  ```
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
+- Fix FSDP2 unshard under `torch.inference_mode()` ([#197327](https://github.com/pytorch/pytorch/pull/197327))
 ### performance
+- Reduce reduce-scatter gradient memory for size-1 shard groups and low-precision gradients ([#196348](https://github.com/pytorch/pytorch/pull/196348), [#198668](https://github.com/pytorch/pytorch/pull/198668))
 ### docs
 ### devs
 ### Untopiced
-- [FSDP2] Avoid division-by-one allocation for singleton shards ([#196348](https://github.com/pytorch/pytorch/pull/196348))
-- [FSDP2] fix crash during unsharding in inference mode ([#197327](https://github.com/pytorch/pytorch/pull/197327))
-- [FSDP2] Extract copy preparation helpers ([#197372](https://github.com/pytorch/pytorch/pull/197372))
-- [FSDP2] Defer gradient upcasts to the reduce-scatter copy-in ([#198668](https://github.com/pytorch/pytorch/pull/198668))
 ### not user facing
+- Extract all-gather and reduce-scatter copy preparation into helpers ([#197372](https://github.com/pytorch/pytorch/pull/197372))
 ### security
