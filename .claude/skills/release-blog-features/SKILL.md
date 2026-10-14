@@ -192,6 +192,9 @@ Use these signals, in order:
 
 Ignore: pure refactors, test infra, lint fixes, typo fixes, internal
 dispatcher churn, reverts, and cherry-picks that land on both branches.
+Also skip private surfaces: code that lives only in an underscore
+module, or that needs a private call before it can be used. Check this
+on the release branch, not from the PR title.
 
 Typo-fix PRs are a large share of the `Untopiced` pool and are never
 blog-worthy; filter them early.
@@ -256,6 +259,11 @@ Diff against the base branch's copy so you can state what was added and
 dropped. Watch for architectures that are built but deliberately not
 advertised — 2.14 built CUDA 13.4 while excluding it from Windows and
 the docker release matrix, so it was not a 2.14 install option.
+
+### Step 10 — Propose cuts; don't apply them
+
+If the draft is longer than the previous blog, list candidate cuts with
+the approximate words each saves, and let the release manager choose.
 
 ## Output
 
