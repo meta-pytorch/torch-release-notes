@@ -54,5 +54,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 ### Untopiced
 ### not user facing
-- [Test][Refactor] Decouple test_dataloader according to the accelerator relevance.  ([#189250](https://github.com/pytorch/pytorch/pull/189250))
+- Split `test/test_dataloader.py` into accelerator-independent, accelerator-generic and CUDA-specific test classes ([#189250](https://github.com/pytorch/pytorch/pull/189250))
 ### security
