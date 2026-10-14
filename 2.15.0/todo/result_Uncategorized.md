@@ -45,25 +45,20 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## Uncategorized
 ### bc breaking
-- [checkpoint] Preserve registered effects in SAC ([#196956](https://github.com/pytorch/pytorch/pull/196956))
 ### deprecation
 ### new features
 ### improvements
 ### bug fixes
 ### performance
 ### docs
-- Update Release Cadence for 2027 ([#196760](https://github.com/pytorch/pytorch/pull/196760))
 ### devs
-### Untopiced
-- [RAWTHROW][0] Lexically-aware linter (no exclude_patterns change) ([#192848](https://github.com/pytorch/pytorch/pull/192848))
-- [BE] Fix compilation warnings in Convolution.metal (1bf2f95a6896)
-- Fix integer overflow in max_pool1d shape checks ([#194112](https://github.com/pytorch/pytorch/pull/194112))
-- Narrow `release triage` to issues confirmed on the latest release (2712c65eb8b2)
-- Skip the new batched solve_triangular samples under slow gradcheck ([#197901](https://github.com/pytorch/pytorch/pull/197901))
-- Skip TestCompositeCompliance.test_cow_input tests with ACL ([#197435](https://github.com/pytorch/pytorch/pull/197435))
-- [CUDA] Make graphs own annotation registry cleanup ([#198418](https://github.com/pytorch/pytorch/pull/198418))
-- testing blocking push to main (20f6c25dc1b0)
-- [FSDP] Skip unused work in FSDP parity references ([#198066](https://github.com/pytorch/pytorch/pull/198066))
 ### not user facing
+- Add a lexically-aware raw-throw linter ([#192848](https://github.com/pytorch/pytorch/pull/192848))
+- Fix compilation warnings in Convolution.metal (1bf2f95a6896)
+- Narrow the `release triage` criteria in the issue-triage skill (2712c65eb8b2)
+- Update the release cadence for 2027 in RELEASE.md ([#196760](https://github.com/pytorch/pytorch/pull/196760))
+- Skip the new batched `solve_triangular` samples under slow gradcheck ([#197901](https://github.com/pytorch/pytorch/pull/197901))
+- Skip `TestCompositeCompliance.test_cow_input` tests with ACL ([#197435](https://github.com/pytorch/pytorch/pull/197435))
+- Test commit for blocking pushes to main (20f6c25dc1b0)
+- Skip unused work in FSDP parity test references ([#198066](https://github.com/pytorch/pytorch/pull/198066))
 ### security
-- Fix weights-only NEWOBJ handling for pybind11 types ([#194647](https://github.com/pytorch/pytorch/pull/194647))
