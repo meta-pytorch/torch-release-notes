@@ -47,7 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - Selective activation checkpointing now saves, rather than recomputes, the outputs of operators with an ordered effect unless the policy returns `CheckpointPolicy.MUST_RECOMPUTE` ([#196956](https://github.com/pytorch/pytorch/pull/196956))
 
-  Recomputing an effectful operator reruns its side effect. In eager mode, when a `create_selective_checkpoint_contexts` policy returns `PREFER_RECOMPUTE`, `PREFER_CPU_OFFLOAD` or `MUST_CPU_OFFLOAD` for an operator with an ordered effect (e.g. via `register_effect(torch.library.EffectType.ORDERED)`), its outputs are now saved as with `MUST_SAVE`, which can increase activation memory. Under `torch.compile`, `MUST_RECOMPUTE` on an effectful operator now raises at compile time: `RuntimeError: AOTAutograd does not support MUST_RECOMPUTE for effectful operations because forward effects cannot join the backward effect-token chain.` Use a save policy instead.
+  Recomputing an effectful operator reruns its side effect. In eager mode, when a `create_selective_checkpoint_contexts` policy returns `PREFER_RECOMPUTE`, `PREFER_CPU_OFFLOAD` or `MUST_CPU_OFFLOAD` for an operator with an ordered effect (e.g. via `register_effect(torch.library.EffectType.ORDERED)`), its outputs are now saved as with `MUST_SAVE`, which can increase activation memory. Operators in the `c10d` namespace are excluded. Under `torch.compile`, `MUST_RECOMPUTE` on an effectful operator now raises at compile time: `RuntimeError: AOTAutograd does not support MUST_RECOMPUTE for effectful operations because forward effects cannot join the backward effect-token chain.` Use a save policy instead.
 
   ```python
   policy = lambda ctx, op, *args, **kwargs: CheckpointPolicy.PREFER_RECOMPUTE
@@ -57,7 +57,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ### deprecation
 ### new features
-- Add `ctx.input_grad_buffers` to custom `torch.autograd.Function` backward, exposing the engine's gradient accumulation buffers (or `None` when unavailable) so a fused kernel can accumulate an input's gradient in place and return `None` for it ([#196491](https://github.com/pytorch/pytorch/pull/196491))
+- Add `ctx.input_grad_buffers` to custom `torch.autograd.Function` backward, exposing the engine's gradient accumulation buffers (or `None` when unavailable) so a fused kernel can accumulate an input's gradient in place and return `None` for it. Availability depends on backward order, so keep an out-of-place fallback; buffers must be updated synchronously within the current `backward` call, and the property is unavailable with `create_graph=True`, anomaly detection, or post-hooks on the producing node ([#196491](https://github.com/pytorch/pytorch/pull/196491))
 - Add `torch.autograd.graph.queue_callback(callback)`, a public API to run a callback when the current backward pass finishes ([#193958](https://github.com/pytorch/pytorch/pull/193958))
 ### improvements
 - Add backward and forward-mode AD for the `torch.special` Bessel functions ([#189872](https://github.com/pytorch/pytorch/pull/189872))
