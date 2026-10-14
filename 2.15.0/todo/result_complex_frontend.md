@@ -45,12 +45,21 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## complex_frontend
 ### bc breaking
+- Ops undefined for complex inputs now raise `TypeError` instead of `RuntimeError`, and ops not yet implemented for them raise `NotImplementedError` ([#192350](https://github.com/pytorch/pytorch/pull/192350))
+
+  Order-dependent ops (`sort`, `topk`, `argmax`, `max`/`min` with `dim`, etc.), `isposinf`/`isneginf`, and `view_as_real`/`imag`/`view_as_complex` on wrong dtypes now raise `TypeError`, matching Python (`1j < 2j`). `except RuntimeError:` no longer catches the `TypeError` cases; catch `(RuntimeError, TypeError)`.
+
+  ```python
+  torch.sort(torch.randn(3, dtype=torch.cfloat))
+  # 2.14: RuntimeError:  Sort does not support complex dtypes on CPU
+  # 2.15: TypeError:  Sort does not support complex dtypes on CPU
+  ```
+
 ### deprecation
 ### new features
 ### improvements
-- BE: Use TypeError/NotImplementedError for complex dtype checks ([#192350](https://github.com/pytorch/pytorch/pull/192350))
 ### bug fixes
-- [BE] Extend dropout support to complex numbers ([#195373](https://github.com/pytorch/pytorch/pull/195373))
+- Fix `F.dropout` raising `NotImplementedError` for complex inputs ([#195373](https://github.com/pytorch/pytorch/pull/195373))
 ### performance
 ### docs
 ### devs
