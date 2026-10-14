@@ -47,24 +47,21 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Add manual backward finalization to `fully_shard`. Call `FSDPModule.set_manual_backward_finalization(True)` on the root module, then call `FSDPModule.finalize_backward()` on the calling thread to finish pending gradient reduction and resharding. This lets you place gradient reduction at a point of your choosing, for example after several backward passes or inside a CUDA graph, instead of in the autograd final callback ([#196640](https://github.com/pytorch/pytorch/pull/196640))
-- Add `finalize_backward(async_op=True)`, which returns a `torch.distributed.fsdp.GradientReductionHandle` instead of blocking. Call `handle.wait()` before reading gradients or starting more work on the module, so gradient reduction can overlap other compute ([#196724](https://github.com/pytorch/pytorch/pull/196724))
-- Add `param_dtype_override_fn` to `MixedPrecisionPolicy` for per-parameter mixed precision in `fully_shard`. The callable runs once per parameter and returns `None`, `param_dtype`, or the parameter's original dtype, so selected parameters can stay in full precision while still using one all-gather per `fully_shard` group ([#196626](https://github.com/pytorch/pytorch/pull/196626))
-- Add `FSDPModule.set_keep_unsharded_storage()`, which keeps the unsharded parameter storage allocated across `reshard()`, so storage addresses stay stable between unshard and reshard ([#198417](https://github.com/pytorch/pytorch/pull/198417))
-- Allow tensor-subclass parameters that implement the FSDP extension hooks to free the raw all-gather buffers right after `fsdp_post_all_gather`. Implement `fsdp_should_release_all_gather_outputs_after_post_all_gather()` and return `True`; the transformed tensors are kept until the normal reshard ([#194114](https://github.com/pytorch/pytorch/pull/194114))
+- Add `FSDPModule.set_manual_backward_finalization(True)` and `FSDPModule.finalize_backward()` to run gradient reduction and resharding at a chosen point instead of in the autograd final callback ([#196640](https://github.com/pytorch/pytorch/pull/196640))
+- Add `finalize_backward(async_op=True)`, which returns a `GradientReductionHandle` so gradient reduction can overlap other compute ([#196724](https://github.com/pytorch/pytorch/pull/196724))
+- Add `param_dtype_override_fn` to `MixedPrecisionPolicy` for per-parameter mixed precision in `fully_shard`, keeping one all-gather per group ([#196626](https://github.com/pytorch/pytorch/pull/196626))
+- Add `FSDPModule.set_keep_unsharded_storage()` to keep unsharded parameter storage allocated across `reshard()` ([#198417](https://github.com/pytorch/pytorch/pull/198417))
+- Let tensor-subclass parameters free raw all-gather buffers right after `fsdp_post_all_gather` by implementing `fsdp_should_release_all_gather_outputs_after_post_all_gather()` ([#194114](https://github.com/pytorch/pytorch/pull/194114))
 ### improvements
 ### bug fixes
-- Fix `AttributeError: 'FSDPParam' object has no attribute '_unsharded_param'` during gradient accumulation when `reduce_dtype` differs from the parameter dtype and some parameters were not used in forward ([#194058](https://github.com/pytorch/pytorch/pull/194058))
-- Fix silently wrong gradients with `ShardingStrategy.NO_SHARD` and `CPUOffload(offload_params=True)`, which happened because a device buffer was freed and reused while still in use ([#194519](https://github.com/pytorch/pytorch/pull/194519))
-- Fix wrap overrides leaking between modules through a shared mutable default dictionary when overriding module mixed precision ([#194895](https://github.com/pytorch/pytorch/pull/194895))
-- Fix `fully_shard` keeping the last prefetched all-gather output alive through backward when part of the model runs outside the grouped forward ([#196460](https://github.com/pytorch/pytorch/pull/196460))
-- Fix possible use-after-free of the reduce-scatter output on backends that free memory eagerly across streams, by recording the consumer stream on it ([#193686](https://github.com/pytorch/pytorch/pull/193686))
-- Fix silently wrong gradients with `set_all_reduce_hook` when the hook runs on a separate stream: the next group's reduce-scatter could overwrite the output before the hook finished reading it ([#198804](https://github.com/pytorch/pytorch/pull/198804))
-- Fix CUDA graph capture failing with `cudaErrorStreamCaptureUnjoined` when backward finalization cleans up a prefetched all-gather that was never used ([#199677](https://github.com/pytorch/pytorch/pull/199677))
-- Fix the single-rank all-gather path converting values instead of copying bytes when an extension's `fsdp_pre_all_gather` returns a `uint8` view. This caused size-mismatch errors, or silently wrong values for one-byte dtypes such as float8 ([#199733](https://github.com/pytorch/pytorch/pull/199733))
+- Fix silently wrong gradients with `NO_SHARD` plus `CPUOffload(offload_params=True)`, and with `set_all_reduce_hook` on a separate stream ([#194519](https://github.com/pytorch/pytorch/pull/194519), [#198804](https://github.com/pytorch/pytorch/pull/198804))
+- Fix `AttributeError: 'FSDPParam' object has no attribute '_unsharded_param'` in gradient accumulation with unused parameters ([#194058](https://github.com/pytorch/pytorch/pull/194058))
+- Fix `fully_shard` keeping prefetched all-gather outputs alive, a reduce-scatter use-after-free, and `cudaErrorStreamCaptureUnjoined` under CUDA graph capture ([#196460](https://github.com/pytorch/pytorch/pull/196460), [#193686](https://github.com/pytorch/pytorch/pull/193686), [#199677](https://github.com/pytorch/pytorch/pull/199677))
+- Fix wrong float8 values in the single-rank all-gather path for `uint8` views ([#199733](https://github.com/pytorch/pytorch/pull/199733))
+- Fix mixed precision wrap overrides leaking between modules ([#194895](https://github.com/pytorch/pytorch/pull/194895))
 ### performance
 ### docs
-- Document that modifying parameters between forward and backward is not supported with `fully_shard` ([#198826](https://github.com/pytorch/pytorch/pull/198826))
+- Document parameter-mutation limits of `fully_shard` ([#198826](https://github.com/pytorch/pytorch/pull/198826))
 ### devs
 ### Untopiced
 ### not user facing
