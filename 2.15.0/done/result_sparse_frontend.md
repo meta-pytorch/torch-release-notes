@@ -48,12 +48,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Enable FP8 semi-structured (2:4) sparsity on ROCm MI300 (gfx942) through hipSparseLt using the native `float8_e4m3fnuz` dtype ([#191682](https://github.com/pytorch/pytorch/pull/191682))
+- Enable FP8 2:4 sparsity on ROCm MI300 ([#191682](https://github.com/pytorch/pytorch/pull/191682))
 ### bug fixes
-- Fix concurrent `torch.load` calls interfering with each other's deferred sparse tensor validation by making that state thread-local ([#194751](https://github.com/pytorch/pytorch/pull/194751))
-- Fix sparse compressed (CSR/CSC/BSR/BSC) `add` with `out=` sharing index tensors between `out` and the inputs, which could corrupt the inputs or return wrong values, especially on ROCm ([#197564](https://github.com/pytorch/pytorch/pull/197564))
-- Fix sparse COO `coalesce` on ROCm dropping values for dense dimensions wider than one tile ([#199484](https://github.com/pytorch/pytorch/pull/199484))
-- Fix semi-structured sparsity bitmask conversion raising a device-mismatch error for tensors on non-CUDA devices (e.g. PrivateUse1 backends) ([#193943](https://github.com/pytorch/pytorch/pull/193943))
+- Fix concurrent `torch.load` calls interfering in sparse tensor validation ([#194751](https://github.com/pytorch/pytorch/pull/194751))
+- Fix wrong values from sparse compressed `add` with `out=` and ROCm COO `coalesce` ([#197564](https://github.com/pytorch/pytorch/pull/197564), [#199484](https://github.com/pytorch/pytorch/pull/199484))
+- Fix semi-structured bitmask conversion on non-CUDA devices ([#193943](https://github.com/pytorch/pytorch/pull/193943))
 ### performance
 ### docs
 ### devs
