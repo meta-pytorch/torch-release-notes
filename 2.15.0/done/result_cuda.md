@@ -113,6 +113,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `torch.cuda.make_graphed_callables` graphs being garbage-collected during an unrelated capture ([#195397](https://github.com/pytorch/pytorch/pull/195397))
 - Fix `torch.cuda.empty_cache()` unmapping expandable segments on another device without synchronizing it ([#197159](https://github.com/pytorch/pytorch/pull/197159)), and expandable segments imported over IPC each reserving about 9/8 of device memory ([#198129](https://github.com/pytorch/pytorch/pull/198129))
 - Fix several memory visualizer (MemoryViz) bugs, including wrong pool attribution and underreported peaks ([#199335](https://github.com/pytorch/pytorch/pull/199335), [#199415](https://github.com/pytorch/pytorch/pull/199415), [#193989](https://github.com/pytorch/pytorch/pull/193989))
+- Recover from a corrupted or truncated JITerator kernel cache entry by recompiling the kernel ([#186346](https://github.com/pytorch/pytorch/pull/186346))
 ### performance
 - Avoid CPU-GPU synchronization when assigning scalars through indexing on CUDA, e.g. `x[mask] = 1.0` ([#189303](https://github.com/pytorch/pytorch/pull/189303), [#188330](https://github.com/pytorch/pytorch/pull/188330), [#198811](https://github.com/pytorch/pytorch/pull/198811))
 - Speed up CUDA `upsample_linear1d` by 5-25x for small outputs ([#180885](https://github.com/pytorch/pytorch/pull/180885)), pooling backward ([#191086](https://github.com/pytorch/pytorch/pull/191086), [#195119](https://github.com/pytorch/pytorch/pull/195119), [#196156](https://github.com/pytorch/pytorch/pull/196156)), dtype-conversion copies ([#195542](https://github.com/pytorch/pytorch/pull/195542), [#198723](https://github.com/pytorch/pytorch/pull/198723)), 2D transpose copies ([#194310](https://github.com/pytorch/pytorch/pull/194310)), and `zero_` ([#195303](https://github.com/pytorch/pytorch/pull/195303), [#198565](https://github.com/pytorch/pytorch/pull/198565))
@@ -129,7 +130,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Clean up `RowwiseScaledMM` CUTLASS arguments and warning suppressions ([#195396](https://github.com/pytorch/pytorch/pull/195396))
 - Replace `qsort` with `std::sort` in CUDA index utilities ([#195470](https://github.com/pytorch/pytorch/pull/195470))
 - Remove unused local tensors in batch norm statistics ([#199479](https://github.com/pytorch/pytorch/pull/199479))
-- Recover from a corrupted or truncated JITerator kernel cache entry by recompiling the kernel ([#186346](https://github.com/pytorch/pytorch/pull/186346)) (cut for length)
 - Log recoverable `cudaMalloc` failures in the CUDA caching allocator at INFO level instead of WARNING ([#193391](https://github.com/pytorch/pytorch/pull/193391)) (cut for length)
 - Fix an out-of-bounds read in the cuDNN/MIOpen CTC loss eligibility check when `target_lengths` is longer than `input_lengths` ([#196084](https://github.com/pytorch/pytorch/pull/196084)) (cut for length)
 - Fix lost updates in pinned host memory allocator statistics with concurrent memory pools ([#199144](https://github.com/pytorch/pytorch/pull/199144)) (cut for length)
