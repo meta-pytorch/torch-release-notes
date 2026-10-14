@@ -47,30 +47,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Add the public `torch.foreach` module (beta), which exposes the foreach (multi-tensor) operations under stable, documented names ([#193607](https://github.com/pytorch/pytorch/pull/193607))
-
-  `torch.foreach.<op>(inputs, ...)` applies an ordinary tensor operation across a list of tensors and, on supported accelerators, uses horizontally fused multi-tensor kernels. It covers unary ops (e.g. `abs`, `exp`, `sqrt`, `zero_`), binary ops (`add`, `sub`, `mul`, `div`, `clamp_min`, `clamp_max`, `minimum`, `maximum`, `pow`, `copy_`), pointwise ops (`addcmul`, `addcdiv`, `lerp`), and reductions/matrix ops (`max`, `norm`, `mm`), with in-place `_` variants where applicable. The public functions call the same operators as the existing private `torch._foreach_*` functions, which remain available with unchanged signatures, but differ in a few ways: required operands are positional-only and optional parameters are keyword-only, parameter names follow the corresponding ordinary op (the list argument is called `inputs`, and e.g. `norm` takes `ord=`), and there are no `out=` variants.
-
-  ```python
-  import torch
-
-  params = [torch.ones(2), torch.ones(3)]
-
-  # Before (private API, still supported)
-  torch._foreach_mul_(params, 3)
-  norms = torch._foreach_norm(params, 2)
-
-  # 2.15 public API
-  torch.foreach.mul_(params, 3)
-  norms = torch.foreach.norm(params, ord=2)
-  ```
-
+- Add the public `torch.foreach` module (beta), which exposes the multi-tensor `torch._foreach_*` operations under stable, documented names (e.g. `torch.foreach.mul_(params, 3)`) with parameter names that follow the ordinary ops ([#193607](https://github.com/pytorch/pytorch/pull/193607))
 ### improvements
 ### bug fixes
 ### performance
-- Reduce the scratch memory used by CUDA `_foreach_norm` and `_foreach_max` (used by `clip_grad_norm_` and fused optimizers) on lists with very different tensor sizes, from tens of MB to the size actually needed ([#190549](https://github.com/pytorch/pytorch/pull/190549))
+- Reduce `_foreach_norm`/`max` CUDA scratch memory ([#190549](https://github.com/pytorch/pytorch/pull/190549))
 ### docs
-- Correct the type stubs and docs for in-place foreach functions, which return the input list rather than `None` ([#193466](https://github.com/pytorch/pytorch/pull/193466))
+- Fix in-place foreach type stubs to return the input list ([#193466](https://github.com/pytorch/pytorch/pull/193466))
 ### devs
 ### Untopiced
 ### not user facing
