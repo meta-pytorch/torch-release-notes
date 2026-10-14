@@ -48,34 +48,28 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Support fake-tensor tracing of sparse compressed tensor constructors (`torch.sparse_compressed_tensor` and friends), `_to_dense` for every sparse layout, and layout queries on `FunctionalTensor`s that wrap sparse tensors, as groundwork for compiling sparse compressed tensor creation ([#192091](https://github.com/pytorch/pytorch/pull/192091))
-- Fix type annotations on FX public APIs: `Tracer(autowrap_modules=...)` now accepts any-length `tuple[ModuleType, ...]`, and `CodeGen.process_inputs` returns `tuple[Any, ...]` ([#195467](https://github.com/pytorch/pytorch/pull/195467), [#188287](https://github.com/pytorch/pytorch/pull/188287))
+- Support fake-tensor tracing of sparse compressed tensor constructors and `_to_dense` ([#192091](https://github.com/pytorch/pytorch/pull/192091))
+- Fix type annotations on `Tracer(autowrap_modules=...)` and `CodeGen.process_inputs` ([#195467](https://github.com/pytorch/pytorch/pull/195467), [#188287](https://github.com/pytorch/pytorch/pull/188287))
 ### bug fixes
-- Keep `torch._check(not expr)` on a symbolic boolean as a runtime assertion under `torch.compile` and strict export by lowering Python `not` to `torch.sym_not`, instead of constant-folding it away and later failing with a data-dependent guard error; non-strict export now gives an error hint that points to `torch.sym_not()` ([#186043](https://github.com/pytorch/pytorch/pull/186043))
-- Fix `TypeError` from `expect_true` and symbolic solving when comparing two symbolic booleans for equality (e.g. `Eq(Eq(u0, 1), Eq(u1, 1))`) ([#186461](https://github.com/pytorch/pytorch/pull/186461))
-- Fix `IndexError: list index out of range` and `AssertionError: sources must not be empty for symbol` in guard generation when recompiling a model that takes a jagged `NestedTensor` input whose batch size changes ([#193059](https://github.com/pytorch/pytorch/pull/193059))
-- Fix unguardable guards for `NestedTensor` reductions with `keepdim=True` by statically evaluating symbolic expressions that only involve the nested (ragged) size ([#184628](https://github.com/pytorch/pytorch/pull/184628))
-- Fix `AttributeError: 'int' object has no attribute 'is_nonnegative'` when lowering a modulo of two plain integers during symbolic shape computation ([#198395](https://github.com/pytorch/pytorch/pull/198395))
-- Simplify `C * (x // C)` back to `x` when `x` is known to be divisible by `C`, so equivalent symbolic shapes such as `x` and `2 * (x // 2)` are recognized as equal again ([#198808](https://github.com/pytorch/pytorch/pull/198808))
-- Fix `assert_size_stride` failures such as `stride 24576==14336 at dim=0` on the second call of a compiled training graph under dynamic shapes, by keeping the strides of saved activations symbolic instead of baking in the first call's values ([#194420](https://github.com/pytorch/pytorch/pull/194420))
-- Fix silently stale results under `torch._dynamo.config.specialize_float=False`, where a Python float argument used by an op that cannot take a tensor scalar was baked into a cached graph and reused for later calls with a different value ([#195040](https://github.com/pytorch/pytorch/pull/195040))
-- Fix `torch._dynamo.config.canonicalize_output_graph_node_order=True` moving computation outside a `torch.inference_mode()` region, which made outputs silently require grad ([#195518](https://github.com/pytorch/pytorch/pull/195518))
-- Fix AOTInductor silently dropping deferred runtime assertions on data-dependent sizes (for example `torch._check(x.nonzero().size(0) < 10)`) when lite mode (`selective_decompose`) is enabled ([#199294](https://github.com/pytorch/pytorch/pull/199294))
-- Fix pickling and `torch.load` of `GraphModule`s produced by `aot_export_module` and non-strict `torch.export` ([#186418](https://github.com/pytorch/pytorch/pull/186418))
-- Fix `RuntimeError: Cannot access data pointer of Tensor` when pickling an FX graph with `GraphPickler` whose node metadata contains a fake view tensor ([#194771](https://github.com/pytorch/pytorch/pull/194771))
-- Fix printing an FX graph whose node metadata holds a BSR or BSC sparse tensor, which raised `Sparse BSR tensors do not have strides` and broke exporting such models when `TORCH_TRACE` was set ([#195253](https://github.com/pytorch/pytorch/pull/195253))
-- Fix `torch.fx.subgraph_rewriter.replace_pattern` leaving a topologically invalid graph when adjacent matches share a node through a list argument (for example nested `torch.cat` patterns) ([#185365](https://github.com/pytorch/pytorch/pull/185365))
-- Fix `torch.fx.wrap` keeping its caller's stack frames, and every tensor they reference, alive until the cyclic garbage collector runs ([#198561](https://github.com/pytorch/pytorch/pull/198561))
-- Fix `torch.export` permanently retaining every traced graph, and through it the module and its parameters, in a debug-only map used for fake-tensor leak detection ([#198295](https://github.com/pytorch/pytorch/pull/198295))
-- Make the FX accelerator splitter's fusion discovery deterministic, so identical graphs always produce the same accelerator submodules ([#198684](https://github.com/pytorch/pytorch/pull/198684))
-- Fix `KeyError` in `torch.fx.experimental.shape_inference` when `ShapeEnv` assigns non-sequential symbol names ([#197491](https://github.com/pytorch/pytorch/pull/197491))
+- Keep `torch._check(not expr)` on a symbolic boolean as a runtime assertion, and fix a `TypeError` comparing two symbolic booleans ([#186043](https://github.com/pytorch/pytorch/pull/186043), [#186461](https://github.com/pytorch/pytorch/pull/186461))
+- Fix guard errors for jagged `NestedTensor` inputs whose batch size changes or with `keepdim=True` reductions ([#193059](https://github.com/pytorch/pytorch/pull/193059), [#184628](https://github.com/pytorch/pytorch/pull/184628))
+- Fix a crash on modulo of plain ints in symbolic shapes, and simplify `C * (x // C)` back to `x` ([#198395](https://github.com/pytorch/pytorch/pull/198395), [#198808](https://github.com/pytorch/pytorch/pull/198808))
+- Fix `assert_size_stride` failures on the second call of a compiled training graph under dynamic shapes ([#194420](https://github.com/pytorch/pytorch/pull/194420))
+- Fix stale results from a float argument baked into a cached graph under `specialize_float=False` ([#195040](https://github.com/pytorch/pytorch/pull/195040))
+- Fix `canonicalize_output_graph_node_order` moving ops out of `inference_mode`, making outputs require grad ([#195518](https://github.com/pytorch/pytorch/pull/195518))
+- Fix AOTInductor dropping runtime assertions on data-dependent sizes in lite mode ([#199294](https://github.com/pytorch/pytorch/pull/199294))
+- Fix pickling `GraphModule`s from `aot_export_module` and non-strict export, and graphs with fake view tensors in metadata ([#186418](https://github.com/pytorch/pytorch/pull/186418), [#194771](https://github.com/pytorch/pytorch/pull/194771))
+- Fix printing FX graphs with BSR or BSC tensors in node metadata ([#195253](https://github.com/pytorch/pytorch/pull/195253))
+- Fix `replace_pattern` producing an invalid graph when adjacent matches share a node ([#185365](https://github.com/pytorch/pytorch/pull/185365))
+- Fix memory leaks from `torch.fx.wrap` keeping caller frames alive and `torch.export` retaining every traced graph ([#198561](https://github.com/pytorch/pytorch/pull/198561), [#198295](https://github.com/pytorch/pytorch/pull/198295))
+- Make the FX accelerator splitter's fusion discovery deterministic ([#198684](https://github.com/pytorch/pytorch/pull/198684))
+- Fix `KeyError` in `shape_inference` with non-sequential symbol names ([#197491](https://github.com/pytorch/pytorch/pull/197491))
 ### performance
-- Reduce compile time under dynamic shapes by caching the results of symbolic binary arithmetic, skipping `ShapeEnv` event-recording overhead when recording is off, and avoiding repeated free-symbol scans during axiom matching (about 2% total compile time from event recording alone on a reported model) ([#193219](https://github.com/pytorch/pytorch/pull/193219), [#193161](https://github.com/pytorch/pytorch/pull/193161), [#195623](https://github.com/pytorch/pytorch/pull/195623))
-- Avoid deep-copying `from_node` provenance in FX `NodeSource`, removing roughly quadratic cost in the number of passes and cutting a reported export-and-lowering workflow from 406s to 342s ([#193051](https://github.com/pytorch/pytorch/pull/193051))
-- Speed up the FX accelerator splitter on large graphs by skipping fusion discovery when every node is supported and making fusion dependency updates linear in fusion group size ([#198519](https://github.com/pytorch/pytorch/pull/198519), [#198654](https://github.com/pytorch/pytorch/pull/198654))
+- Reduce compile time in `ShapeEnv` and FX `from_node` provenance tracking ([#193219](https://github.com/pytorch/pytorch/pull/193219), [#193161](https://github.com/pytorch/pytorch/pull/193161), [#195623](https://github.com/pytorch/pytorch/pull/195623), [#193051](https://github.com/pytorch/pytorch/pull/193051))
+- Speed up the FX accelerator splitter on large graphs ([#198519](https://github.com/pytorch/pytorch/pull/198519), [#198654](https://github.com/pytorch/pytorch/pull/198654))
 ### docs
 ### devs
-- Fix generated minifier repros failing with `allocated size does not match required size` when a `repeat_interleave` input uses `int32` repeats ([#197035](https://github.com/pytorch/pytorch/pull/197035))
+- Fix minifier repros failing for `repeat_interleave` with `int32` repeats ([#197035](https://github.com/pytorch/pytorch/pull/197035))
 ### Untopiced
 ### not user facing
 - Skip `ShapeEnv.replace` for symbolic booleans that are already constant; no measurable wall-clock change ([#193159](https://github.com/pytorch/pytorch/pull/193159))
