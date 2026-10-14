@@ -48,24 +48,19 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- Include compile and frame IDs in non-strict export `TORCH_TRACE` logs ([#186495](https://github.com/pytorch/pytorch/pull/186495))
 ### bug fixes
+- Fix data-dependent guard errors in export for tensor-valued `torch._assert` (now a runtime assertion), `scaled_dot_product_attention` with data-dependent head dims, and `torch.distributions` argument validation ([#186306](https://github.com/pytorch/pytorch/pull/186306), [#184983](https://github.com/pytorch/pytorch/pull/184983), [#186291](https://github.com/pytorch/pytorch/pull/186291))
+- Fix `move_to_device_pass` leaving stale device arguments in generated code ([#185105](https://github.com/pytorch/pytorch/pull/185105))
+- Fix deserializing exported programs with symbolic-size fake tensor constants ([#185025](https://github.com/pytorch/pytorch/pull/185025))
+- Fix `... is not tracked with proxy` errors from the fake tensor dispatch cache ([#185100](https://github.com/pytorch/pytorch/pull/185100))
 ### performance
 ### docs
+- Fix the `register_module_as_pytree_input_node` docstring ([#196449](https://github.com/pytorch/pytorch/pull/196449))
 ### devs
 ### Untopiced
-- [export][serde] Initialize symbol ranges before constants ([#185025](https://github.com/pytorch/pytorch/pull/185025))
-- Fix typos in comments, docstrings, and error messages ([#185830](https://github.com/pytorch/pytorch/pull/185830))
-- Fix typos and grammatical errors in comments and docstrings ([#194322](https://github.com/pytorch/pytorch/pull/194322))
-- reland support min, max in maybe mark dynamic (#194091) (#194625) ([#194625](https://github.com/pytorch/pytorch/pull/194625))
-- Keep fake tensor cache synthesis out of proxy traces ([#185100](https://github.com/pytorch/pytorch/pull/185100))
-- [PyTorch] Make `has_triton` accelerator-only by default (#195544) ([#195544](https://github.com/pytorch/pytorch/pull/195544))
-- Fix incorrect docstring for register_module_as_pytree_input_node ([#196449](https://github.com/pytorch/pytorch/pull/196449))
-- Support tensor torch._assert in export ([#186306](https://github.com/pytorch/pytorch/pull/186306))
-- Initialize compile context for non-strict export tracing ([#186495](https://github.com/pytorch/pytorch/pull/186495))
-- Make SDPA backend checks safe for unbacked head dims ([#184983](https://github.com/pytorch/pytorch/pull/184983))
-- Fix export move_to_device_pass device rewrites ([#185105](https://github.com/pytorch/pytorch/pull/185105))
-- Preserve CIA ops in AOT joint export ([#184052](https://github.com/pytorch/pytorch/pull/184052))
 ### not user facing
-- support min, max in maybe mark dynamic ([#194091](https://github.com/pytorch/pytorch/pull/194091))
-- [RAWTHROW][3] torch/csrc/utils: fix the serialization codegen ([#194378](https://github.com/pytorch/pytorch/pull/194378))
+- Make the internal `has_triton()` helper ignore Triton's CPU backend unless `include_cpu=True` is passed, so accelerator checks keep their current behavior once Triton ships a CPU backend ([#195544](https://github.com/pytorch/pytorch/pull/195544))
+- Fix typos in comments, docstrings, and error messages ([#185830](https://github.com/pytorch/pytorch/pull/185830), [#194322](https://github.com/pytorch/pytorch/pull/194322))
+- Replace raw C++ `throw`s in the generated export serialization types with `TORCH_CHECK`, adding file and line information to their error messages ([#194378](https://github.com/pytorch/pytorch/pull/194378))
 ### security
