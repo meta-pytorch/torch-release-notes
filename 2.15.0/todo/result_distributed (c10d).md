@@ -68,7 +68,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 ### deprecation
 ### new features
-- Add `torch.distributed._functional_collectives.wait_tensors`, which waits on all outputs of a multi-output functional collective at once; `torch.compile` uses it for coalesced collectives and `batch_isend_irecv` ([#193892](https://github.com/pytorch/pytorch/pull/193892))
 - Add an `nccl4py` backend (`init_process_group(backend="nccl4py")`), a Python-only NCCL backend built on the `nccl4py` bindings ([#191703](https://github.com/pytorch/pytorch/pull/191703), [#196331](https://github.com/pytorch/pytorch/pull/196331), [#198000](https://github.com/pytorch/pytorch/pull/198000), [#195766](https://github.com/pytorch/pytorch/pull/195766))
 - Add an experimental one-sided transport API, `torch.distributed._transport`, with a NIXL backend and CUDA-graph-capturable stream-ordered transfers ([#195643](https://github.com/pytorch/pytorch/pull/195643), [#197032](https://github.com/pytorch/pytorch/pull/197032), [#198889](https://github.com/pytorch/pytorch/pull/198889), [#198918](https://github.com/pytorch/pytorch/pull/198918))
 - Add an experimental pure-Python watchdog, `torch.distributed._watchdog`, that detects hung CPU and GPU operations in Python distributed backends and dumps thread stacks on timeout ([#192075](https://github.com/pytorch/pytorch/pull/192075))
@@ -105,6 +104,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 - Make `FakeProcessGroup` support `all_to_all_single` with any sizes and add a `simulate_uniform_ranks` option ([#193985](https://github.com/pytorch/pytorch/pull/193985), [#194545](https://github.com/pytorch/pytorch/pull/194545))
 - Fix a clang build error and add `amd_smi` as a ROCm 7.14+ build dependency ([#194104](https://github.com/pytorch/pytorch/pull/194104), [#192520](https://github.com/pytorch/pytorch/pull/192520))
+- Add the private `torch.distributed._functional_collectives.wait_tensors`, which waits on all outputs of a multi-output functional collective at once; `torch.compile` uses it for coalesced collectives and `batch_isend_irecv` ([#193892](https://github.com/pytorch/pytorch/pull/193892))
 ### not user facing
 - Prepare for the `nccl2` default switch: force `nccl-legacy` for internal builds, run legacy-only tests with `nccl-legacy`, and configure test timeouts through the `ProcessGroup` API ([#193221](https://github.com/pytorch/pytorch/pull/193221), [#193240](https://github.com/pytorch/pytorch/pull/193240), [#193238](https://github.com/pytorch/pytorch/pull/193238))
 - Refactor `nccl2` `Work` completion state, completion hooks and input tensor ownership ahead of the lifetime fixes listed above ([#194830](https://github.com/pytorch/pytorch/pull/194830), [#194831](https://github.com/pytorch/pytorch/pull/194831), [#194832](https://github.com/pytorch/pytorch/pull/194832))
