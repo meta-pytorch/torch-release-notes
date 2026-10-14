@@ -47,13 +47,15 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - Distributed checkpoint metadata now records tensor strides, so checkpoints saved with PyTorch 2.15 cannot be loaded by PyTorch 2.14 or earlier ([#194251](https://github.com/pytorch/pytorch/pull/194251))
 
-  `TensorProperties` in `torch.distributed.checkpoint.metadata` (and in `torch.distributed._shard.sharded_tensor.metadata`) has a new optional `strides` field, and it is pickled into the checkpoint's `.metadata` file. This was added so DCP can save tensor-like objects that are passed through `torch.Tensor`-typed APIs but do not implement `stride()`; for those, `strides` is recorded as `None`. PyTorch 2.15 still loads checkpoints written by older versions. Older versions expect five fields when they unpickle `TensorProperties`, so loading a 2.15 checkpoint with them fails with `ValueError: too many values to unpack (expected 5)`. There is no flag to write the old format. Use PyTorch 2.15 or later to load checkpoints written by 2.15, or write the checkpoint with the older version.
+  `TensorProperties` in `torch.distributed.checkpoint.metadata` (and in `torch.distributed._shard.sharded_tensor.metadata`) has a new optional `strides` field, and it is pickled into the checkpoint's `.metadata` file. This was added so DCP can save tensor-like objects that are passed through `torch.Tensor`-typed APIs but do not implement `stride()`; for those, `strides` is recorded as `None`. PyTorch 2.15 still loads checkpoints written by older versions. Older versions expect five fields when they unpickle `TensorProperties`, so reading the 2.15 metadata fails with `ValueError: too many values to unpack (expected 5)`, and `dcp.load` raises a `CheckpointException` that reports this error. There is no flag to write the old format. Use PyTorch 2.15 or later to load checkpoints written by 2.15, or write the checkpoint with the older version.
 
   Version 2.14 (loading a checkpoint written by 2.15):
   ```python
   >>> import torch.distributed.checkpoint as dcp
   >>> dcp.load(state_dict, checkpoint_id="/ckpt/step_100")
-  ValueError: too many values to unpack (expected 5)
+  torch.distributed.checkpoint.api.CheckpointException: CheckpointException ranks:dict_keys([0])
+  ...
+  AssertionError: metadata is None; global metadata read failed: too many values to unpack (expected 5); rank local metadata read failed: ...
   ```
 
   Version 2.15:
