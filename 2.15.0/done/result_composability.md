@@ -47,54 +47,39 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - Under functionalization, a regenerated output of `split`, `split_with_sizes` or `unbind` is now rebuilt as a single `slice` or `select` of its base, so its `grad_fn` is `SliceBackward0`/`SelectBackward0` instead of `SplitBackward0`/`SplitWithSizesBackward0`/`UnbindBackward0` ([#194037](https://github.com/pytorch/pytorch/pull/194037))
 
-  Functionalization (used by `torch.compile`, `torch.func.functionalize` and `torch.export`) records how to rebuild every view after its base is mutated. Previously one output of a multi-output view was rebuilt by replaying the whole operation and indexing the result, so regenerating all N outputs of one base built N*N tensors and left a redundant `split`/`unbind` node in the graph for each regeneration. Each output is now built directly as a `slice` (for `split`/`split_with_sizes`) or `select` (for `unbind`). This greatly reduces compile time for code that mutates many `split()` views (for example 32s to 15s with 128 views), and functionalized graphs now contain one `slice`/`select` per regenerated view instead of a `split`/`unbind` plus `getitem` nodes.
-
-  Gradients are unchanged, and autograd still rejects in-place modification of these outputs. However, a regenerated output (for example one returned from a functionalized function, or an output of a compiled function that aliases an input) now reports the `select`/`slice` node, and the in-place error names that op (`Select`/`Slice`) with output index 0 instead of the original multi-output op and output index: `RuntimeError: Output 0 of Select is a view and is being modified inplace. This view is the output of a function that returns multiple views. Such functions do not allow the output views to be modified inplace.` Code that inspects `grad_fn` names, matches the old error text, or pattern-matches `split`/`unbind` nodes in functionalized graphs needs updating. There is no option to restore the previous behavior.
+  This greatly reduces compile time for code that mutates many `split()` views (for example 32s to 15s with 128 views). Gradients are unchanged, but the in-place error now names the new op with output index 0: `RuntimeError: Output 0 of Select is a view and is being modified inplace.` Code that inspects `grad_fn` names, matches the old error text, or pattern-matches `split`/`unbind` nodes in functionalized graphs needs updating. There is no option to restore the previous behavior.
 
   Version 2.14:
   ```python
-  >>> def f(x):
-  ...     base = x.clone()
-  ...     out = base.unbind(0)[1]
-  ...     base.add_(1)
-  ...     return out
-  >>> out = torch.func.functionalize(f)(torch.ones(2, 3, requires_grad=True))
+  >>> out = torch.func.functionalize(f)(x)  # f returns base.unbind(0)[1] after base.add_(1)
   >>> out.grad_fn
   <UnbindBackward0 object at 0x...>
-  >>> out.mul_(2)
-  RuntimeError: Output 1 of Unbind is a view and is being modified inplace. This view is the output of a function that returns multiple views. ...
   ```
 
   Version 2.15:
   ```python
-  >>> out = torch.func.functionalize(f)(torch.ones(2, 3, requires_grad=True))
+  >>> out = torch.func.functionalize(f)(x)
   >>> out.grad_fn
   <SelectBackward0 object at 0x...>
-  >>> out.mul_(2)
-  RuntimeError: Output 0 of Select is a view and is being modified inplace. This view is the output of a function that returns multiple views. ...
   ```
 ### deprecation
 ### new features
 ### improvements
-- Add meta implementations for the `histogramdd` helper operators so `torch.histogramdd` can be traced with fake tensors and dynamic shapes, for example under `torch.export` ([#198897](https://github.com/pytorch/pytorch/pull/198897))
-- Validate `attn_bias` and key/value sequence-length shapes in the fake/meta kernel of the overrideable fused SDPA backend, surfacing invalid shapes at trace time ([#194271](https://github.com/pytorch/pytorch/pull/194271), [#198303](https://github.com/pytorch/pytorch/pull/198303))
-- Raise `NotImplementedError` instead of a plain `RuntimeError` when linear algebra and norm operations (including `torch.norm` and `torch.linalg.vander`) receive integer, Boolean, or unsupported half-precision inputs; existing `except RuntimeError` handlers still catch it ([#192352](https://github.com/pytorch/pytorch/pull/192352))
-- Avoid installing guards from size hints in the symbolic fast paths of `expand` and broadcasting, so backed dimensions whose hint is 1 stay symbolic instead of being specialized ([#198258](https://github.com/pytorch/pytorch/pull/198258))
+- Add meta implementations for `torch.histogramdd` helper ops, enabling fake-tensor tracing ([#198897](https://github.com/pytorch/pytorch/pull/198897))
+- Validate `attn_bias` and key/value shapes in the overrideable fused SDPA fake kernel ([#194271](https://github.com/pytorch/pytorch/pull/194271), [#198303](https://github.com/pytorch/pytorch/pull/198303))
+- Raise `NotImplementedError` instead of `RuntimeError` for unsupported dtypes in linalg and norm ops ([#192352](https://github.com/pytorch/pytorch/pull/192352))
+- Keep backed dimensions with hint 1 symbolic in `expand` and broadcasting ([#198258](https://github.com/pytorch/pytorch/pull/198258))
 ### bug fixes
-- Fix silently wrong forward values and `inf`/`nan` gradients when compiling `torch.nn.utils.parametrizations.weight_norm` on a 1-D parameter (such as a bias) with Inductor, and match eager's norm dtype for half-precision inputs ([#198772](https://github.com/pytorch/pytorch/pull/198772))
-- Fix compiled `torch.normal(mean, std)` returning the promoted dtype instead of `mean`'s dtype when `mean` and `std` have different floating dtypes ([#194557](https://github.com/pytorch/pytorch/pull/194557))
-- Make fake/meta `out=` variants enforce the same output-dtype rules as eager for `torch.all`, `torch.any`, `torch.amax`, `torch.amin`, `torch.conj_physical`, `torch.frexp`, `torch.index_add`, `torch.index_copy`, `torch.index_select`, `torch.nan_to_num`, `torch.tril`, and `torch.triu` ([#192383](https://github.com/pytorch/pytorch/pull/192383), [#193050](https://github.com/pytorch/pytorch/pull/193050), [#193555](https://github.com/pytorch/pytorch/pull/193555))
-- Add meta kernels for the fused GRU cell forward and backward operators so CUDA `torch.nn.GRUCell` can be traced with fake tensors and compiled, including inside `scan` ([#191156](https://github.com/pytorch/pytorch/pull/191156))
-- Fix symbolic fake-tensor propagation for the `out=` overloads of the bitwise shift operators ([#194375](https://github.com/pytorch/pytorch/pull/194375))
-- Fix `GuardOnDataDependentSymNode` errors from the `torch.linalg.cross` meta kernel when the cross dimension is data-dependent ([#195767](https://github.com/pytorch/pytorch/pull/195767))
-- Make the `native_layer_norm` decomposition reject mixed weight/bias dtypes on XPU as eager does, matching the existing CUDA check ([#198647](https://github.com/pytorch/pytorch/pull/198647))
-- Fix meta output strides for FFT operators on MPS and the `torch.logspace` reference on devices without float64 (such as MPS), so compiled code matches eager ([#199030](https://github.com/pytorch/pytorch/pull/199030))
-- Allow a CPU scalar `value` tensor in the `masked_fill` reference on MTIA, matching eager ([#195611](https://github.com/pytorch/pytorch/pull/195611))
-- Fix `torch.cond` branch metadata mismatches caused by `math.trunc(s / 1)` on a `SymInt` not simplifying back to `s` ([#186194](https://github.com/pytorch/pytorch/pull/186194))
-- Fix `torch.tensor(..., device="meta")` under `FakeTensorMode` returning a plain meta tensor instead of a `FakeTensor` ([#186188](https://github.com/pytorch/pytorch/pull/186188))
-- Fix spurious `Tensor device mismatch` errors when the FakeTensor dispatch cache reused a result for an index-less device argument (such as `device="cuda"`) traced under a different current device ([#197583](https://github.com/pytorch/pytorch/pull/197583))
+- Fix wrong values and `nan` gradients when compiling `weight_norm` on 1-D parameters ([#198772](https://github.com/pytorch/pytorch/pull/198772))
+- Fix compiled `torch.normal(mean, std)` output dtype with mixed float dtypes ([#194557](https://github.com/pytorch/pytorch/pull/194557))
+- Fix fake/meta kernels: eager-matching `out=` dtype checks for many ops, symbolic `out=` bitwise shifts, and data-dependent `linalg.cross` ([#192383](https://github.com/pytorch/pytorch/pull/192383), [#193050](https://github.com/pytorch/pytorch/pull/193050), [#193555](https://github.com/pytorch/pytorch/pull/193555), [#194375](https://github.com/pytorch/pytorch/pull/194375), [#195767](https://github.com/pytorch/pytorch/pull/195767))
+- Add fused GRU cell meta kernels so CUDA `nn.GRUCell` can be compiled ([#191156](https://github.com/pytorch/pytorch/pull/191156))
+- Match eager in decompositions and refs on XPU (`native_layer_norm`), MPS (FFT strides, `logspace`) and MTIA (`masked_fill`) ([#198647](https://github.com/pytorch/pytorch/pull/198647), [#199030](https://github.com/pytorch/pytorch/pull/199030), [#195611](https://github.com/pytorch/pytorch/pull/195611))
+- Fix `torch.cond` branch metadata mismatches from `math.trunc(s / 1)` on a `SymInt` ([#186194](https://github.com/pytorch/pytorch/pull/186194))
+- Fix `torch.tensor(..., device="meta")` under `FakeTensorMode` not returning a `FakeTensor` ([#186188](https://github.com/pytorch/pytorch/pull/186188))
+- Fix spurious `Tensor device mismatch` errors from the FakeTensor dispatch cache ([#197583](https://github.com/pytorch/pytorch/pull/197583))
 ### performance
-- Speed up FakeTensor dispatch cache hits for view operations by not computing the symbolic size and stride twice, which reduces compile time with dynamic shapes ([#192821](https://github.com/pytorch/pytorch/pull/192821))
+- Speed up FakeTensor view cache hits ([#192821](https://github.com/pytorch/pytorch/pull/192821))
 ### docs
 ### devs
 ### Untopiced
