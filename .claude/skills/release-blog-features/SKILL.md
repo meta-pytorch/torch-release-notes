@@ -260,20 +260,10 @@ dropped. Watch for architectures that are built but deliberately not
 advertised — 2.14 built CUDA 13.4 while excluding it from Windows and
 the docker release matrix, so it was not a 2.14 install option.
 
-### Step 10 — Remove repetition before handing off
+### Step 10 — Propose cuts; don't apply them
 
-First drafts run long, mostly from repetition. Before handing off:
-
-- **State each fact once.** The intro doesn't restate the highlight
-  bullets, and a detail shared by two entries goes in one of them.
-- **Put notes for the release manager at the end.** Keep one-line
-  `TODO(release-manager):` markers inline, but move anything longer
-  (the draft banner, the below-threshold list, open questions) to a
-  `## Notes for the release manager` section so it can be removed in
-  one step.
-- **Propose any further cuts; don't apply them.** If the draft is still
-  longer than the previous blog, list candidate cuts with the
-  approximate words each saves, and let the release manager choose.
+If the draft is longer than the previous blog, list candidate cuts with
+the approximate words each saves, and let the release manager choose.
 
 ## Output
 
