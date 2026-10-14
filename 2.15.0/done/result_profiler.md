@@ -47,193 +47,78 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - C++ stack traces are now symbolized with `dladdr` instead of `addr2line` by default ([#195462](https://github.com/pytorch/pytorch/pull/195462))
 
-    `TORCH_DISABLE_ADDR2LINE` now defaults to on. Launching `addr2line` to symbolize C++ frames is slow and can hang, so it was commonly disabled in production. This affects every place PyTorch symbolizes captured C++ stacks, such as `TORCH_SHOW_CPP_STACKTRACES=1` error messages and C++ frames in CUDA memory snapshots recorded with `torch.cuda.memory._record_memory_history(stacks="all")`. With `dladdr`, C++ frames report the shared library path and offset plus the symbol name only when the symbol is exported (otherwise `??`), instead of the `addr2line` result (demangled names for all functions, plus source file and line when the binary has debug info; release wheels mostly show `??:0`), and the `symbolizing C++ stack trace for exception; if this hangs, rerun with TORCH_DISABLE_ADDR2LINE=1...` warning is no longer printed. To get `addr2line` symbolization back, set `TORCH_DISABLE_ADDR2LINE=0`. `TORCH_SYMBOLIZE_MODE` (`dladdr`, `addr2line`, or `fast`) still takes precedence when set.
+  `TORCH_DISABLE_ADDR2LINE` now defaults to on, since `addr2line` is slow and can hang. C++ frames in `TORCH_SHOW_CPP_STACKTRACES=1` errors and CUDA memory snapshots now show the library path and offset, plus the symbol name only if exported (otherwise `??`). To restore `addr2line`, set `TORCH_DISABLE_ADDR2LINE=0` or `TORCH_SYMBOLIZE_MODE=addr2line`.
 
-    Version 2.14:
-
-    ```bash
-    # addr2line symbolization by default
-    TORCH_SHOW_CPP_STACKTRACES=1 python train.py
-    ```
-
-    Version 2.15:
-
-    ```bash
-    # dladdr symbolization by default; opt back into addr2line with either of:
-    TORCH_SHOW_CPP_STACKTRACES=1 TORCH_DISABLE_ADDR2LINE=0 python train.py
-    TORCH_SHOW_CPP_STACKTRACES=1 TORCH_SYMBOLIZE_MODE=addr2line python train.py
-    ```
+  ```bash
+  TORCH_SHOW_CPP_STACKTRACES=1 TORCH_DISABLE_ADDR2LINE=0 python train.py
+  ```
 
 - CUDA memory snapshots record the allocator's `mallocWithAddress` tag in a new `internal_metadata` field instead of appending it to `user_metadata` ([#193432](https://github.com/pytorch/pytorch/pull/193432))
 
-    When the caching allocator serves an exact-address allocation (for example `UntypedStorage._resize_with_addr_`), it records a synthetic malloc/free pair for the prefix block and tags it as `mallocWithAddress`. Previously it did this by temporarily appending `"\nmallocWithAddress"` to the thread's user metadata, which changed what users set with `torch.cuda.memory._set_memory_metadata` and broke metadata that was JSON. Now `user_metadata` in trace entries from `torch.cuda.memory._snapshot()` is exactly what the user set, and the tag appears under a separate `internal_metadata` key that is only present when the allocator tagged the event. The memory visualizer shows it under "Internal Metadata". Tools that searched `user_metadata` for `mallocWithAddress` must read `internal_metadata` instead. As part of this change, `torch.cuda.memory._set_memory_metadata` also accepts a dict, which is stored as compact JSON.
+  `user_metadata` in `torch.cuda.memory._snapshot()` trace entries is now exactly what was set with `torch.cuda.memory._set_memory_metadata` (which now also accepts a dict). Tools that searched `user_metadata` for `mallocWithAddress` must read `internal_metadata` instead.
 
-    Version 2.14:
-
-    ```python
-    trace = torch.cuda.memory._snapshot()["device_traces"][device]
-    tagged = [e for e in trace if "mallocWithAddress" in e["user_metadata"]]
-    ```
-
-    Version 2.15:
-
-    ```python
-    trace = torch.cuda.memory._snapshot()["device_traces"][device]
-    tagged = [e for e in trace if e.get("internal_metadata") == "mallocWithAddress"]
-    ```
-
+  ```python
+  # 2.14
+  tagged = [e for e in trace if "mallocWithAddress" in e["user_metadata"]]
+  # 2.15
+  tagged = [e for e in trace if e.get("internal_metadata") == "mallocWithAddress"]
+  ```
 
 - Remove the deprecated `FunctionEvent.metadata_json` property ([#198265](https://github.com/pytorch/pytorch/pull/198265))
 
-    `metadata_json` was deprecated in 2.12. Accessing it on events from `prof.events()` now raises `AttributeError: 'FunctionEvent' object has no attribute 'metadata_json'`, and the `metadata_json` constructor argument of `torch.autograd.profiler_util.FunctionEvent` is removed. The 2.12 deprecation message pointed to `event_metadata`, but that is itself deprecated in this release (see deprecations), so use `FunctionEvent.metadata`, a dict of typed values populated when `_ExperimentalConfig(expose_kineto_event_metadata=True)` is set.
+  Accessing it now raises `AttributeError: 'FunctionEvent' object has no attribute 'metadata_json'`, and the `metadata_json` constructor argument is removed. Use `FunctionEvent.metadata`, a dict populated when `_ExperimentalConfig(expose_kineto_event_metadata=True)` is set (not the deprecated `event_metadata`).
 
-    Version 2.14:
-
-    ```python
-    for event in prof.events():
-        metadata = event.metadata_json  # JSON string, FutureWarning
-    ```
-
-    Version 2.15:
-
-    ```python
-    for event in prof.events():
-        metadata = event.metadata  # dict[str, Any] or None
-    ```
+  ```python
+  metadata = event.metadata_json  # 2.14: JSON string
+  metadata = event.metadata  # 2.15: dict[str, Any] or None
+  ```
 
 - Rename the experimental CUPTI monitor profiler backend to Cuspy, without aliases for the old names ([#195881](https://github.com/pytorch/pytorch/pull/195881))
 
-    The experimental in-process CUPTI collection backend selected through `_ExperimentalConfig(custom_profiler_config=...)` is now called Cuspy. The backend value `"cupti_monitor"` is now `"cuspy"`, the `{"cupti_monitor": true}` key is now `{"cuspy": true}`, and the `"cupti_monitor_async_export"` key is now `"cuspy_async_export"`. The old backend names are no longer recognized and the profiler silently falls back to the default Kineto backend. Setting `"cupti_monitor_async_export"` no longer raises an error. The private `torch.profiler._cupti` package moved to `torch.profiler._cuspy` and `torch._C._profiler._cupti_monitor` to `torch._C._profiler._cuspy`. The documented `torch.profiler.profile.take_pending_cupti_export()` method is renamed to `take_pending_cuspy_export()`, also without an alias, so calling the old name raises `AttributeError`. Prefer the new `torch.profiler.CuspyConfig` (see new features) over `custom_profiler_config`.
+  In `_ExperimentalConfig(custom_profiler_config=...)`, `"cupti_monitor"` is now `"cuspy"` and `"cupti_monitor_async_export"` is now `"cuspy_async_export"`; old names silently fall back to the default Kineto backend. `prof.take_pending_cupti_export()` is now `take_pending_cuspy_export()` (the old name raises `AttributeError`). Prefer the new `torch.profiler.CuspyConfig`.
 
-    Version 2.14:
-
-    ```python
-    cfg = _ExperimentalConfig(
-        custom_profiler_config='{"backend":"cupti_monitor","cupti_monitor_async_export":true}'
-    )
-    with torch.profiler.profile(experimental_config=cfg) as prof:
-        ...
-    obs = prof.take_pending_cupti_export()
-    ```
-
-    Version 2.15:
-
-    ```python
-    cfg = _ExperimentalConfig(
-        custom_profiler_config='{"backend":"cuspy","cuspy_async_export":true}'
-    )
-    with torch.profiler.profile(experimental_config=cfg) as prof:
-        ...
-    obs = prof.take_pending_cuspy_export()
-    ```
+  ```python
+  # 2.14
+  cfg = _ExperimentalConfig(custom_profiler_config='{"backend":"cupti_monitor"}')
+  # 2.15
+  cfg = _ExperimentalConfig(custom_profiler_config='{"backend":"cuspy"}')
+  ```
 
 ### deprecation
+- `torch.autograd.profiler.load_nvprof`, `parse_nvprof_trace` and `EnforceUnique` are deprecated and will be removed in PyTorch 2.17 ([#198396](https://github.com/pytorch/pytorch/pull/198396))
 
-- `torch.autograd.profiler.load_nvprof`, `torch.autograd.profiler.parse_nvprof_trace`, and `torch.autograd.profiler.EnforceUnique` are deprecated and will be removed in PyTorch 2.17 ([#198396](https://github.com/pytorch/pytorch/pull/198396))
+  `nvprof` does not support recent GPUs. They now emit a `FutureWarning` such as `` `torch.autograd.profiler.load_nvprof` is deprecated and will be removed in PyTorch 2.17. `` Use `torch.profiler.profile` or Nsight Systems with `torch.autograd.profiler.emit_nvtx()`.
 
-    These helpers read traces from NVIDIA's `nvprof`, which is deprecated and does not support recent GPUs. Calling them now emits a `FutureWarning` such as `` `torch.autograd.profiler.load_nvprof` is deprecated and will be removed in PyTorch 2.17. `` Use `torch.profiler.profile` to collect GPU traces, or run under Nsight Systems with `torch.autograd.profiler.emit_nvtx()` for NVTX ranges.
-
-    Version 2.14:
-
-    ```python
-    events = torch.autograd.profiler.load_nvprof("trace.prof")
-    ```
-
-    Version 2.15:
-
-    ```python
-    with torch.profiler.profile(
-        activities=[torch.profiler.ProfilerActivity.CPU, torch.profiler.ProfilerActivity.CUDA]
-    ) as prof:
-        run_workload()
-    events = prof.events()
-    ```
+  ```python
+  events = torch.autograd.profiler.load_nvprof("trace.prof")  # 2.14
+  with torch.profiler.profile() as prof:  # 2.15
+      run_workload()
+  ```
 
 - `FunctionEvent.event_metadata` is deprecated in favor of `FunctionEvent.metadata` ([#198405](https://github.com/pytorch/pytorch/pull/198405))
 
-    `event_metadata` returned an `EventMetadata` object built from raw string metadata. `metadata` is a plain `dict[str, Any]` of typed values, and it now also includes fields that Kineto stores as raw JSON, so it carries everything `event_metadata` did. Accessing `event_metadata` now emits `` FutureWarning: `event_metadata` is deprecated. Use `metadata` instead. ``
+  `metadata` is a typed `dict[str, Any]` with everything `event_metadata` had. Accessing `event_metadata` emits `` FutureWarning: `event_metadata` is deprecated. Use `metadata` instead. ``
 
-    Version 2.14:
-
-    ```python
-    grid = event.event_metadata.grid
-    ```
-
-    Version 2.15:
-
-    ```python
-    grid = event.metadata["grid"]
-    ```
-
+  ```python
+  grid = event.event_metadata.grid  # 2.14
+  grid = event.metadata["grid"]  # 2.15
+  ```
 ### new features
-- Add `torch.profiler.ProfilerActivityConfig` and `torch.profiler.PerformanceMetricsConfig` to configure extra collection, such as CUDA hardware performance counters, per activity group ([#196065](https://github.com/pytorch/pytorch/pull/196065))
-
-    An entry in the `activities` argument of `torch.profiler.profile` can now map a `ProfilerActivity` to a `ProfilerActivityConfig` (the existing form, a list of activity-type names, still works). `ProfilerActivityConfig.activity_types` selects the fine-grained activity types to collect (`None` keeps the defaults), and `profiler_configs` takes extra profiler configurations. `PerformanceMetricsConfig(metric_names=..., sampling_interval_ms=..., lookback_window_ms=...)` collects CUPTI PM sampling metrics on the current CUDA device; this requires a Kineto build with CUPTI PM sampling support.
-
-    ```python
-    from torch.profiler import (
-        PerformanceMetricsConfig, profile, ProfilerActivity, ProfilerActivityConfig,
-    )
-
-    cuda_config = ProfilerActivityConfig(
-        profiler_configs=[PerformanceMetricsConfig(metric_names=["sm__cycles_active.avg"])]
-    )
-    with profile(activities=[ProfilerActivity.CPU, {ProfilerActivity.CUDA: cuda_config}]) as prof:
-        run_workload()
-    ```
-
+- Add `torch.profiler.ProfilerActivityConfig` and `torch.profiler.PerformanceMetricsConfig` to configure collection per activity group, such as CUDA hardware performance counters ([#196065](https://github.com/pytorch/pytorch/pull/196065))
 - Add `torch.profiler.CuspyConfig` to enable the experimental Cuspy CUDA collection backend without `_ExperimentalConfig` ([#196066](https://github.com/pytorch/pytorch/pull/196066))
-
-    Pass a `CuspyConfig` in the `profiler_configs` of the CUDA `ProfilerActivityConfig` to use Cuspy. Its flags `enable_cuda_sync_events`, `enable_environment_counters`, `enable_graph_dependencies`, and `enable_event_node_ids` replace the matching `custom_profiler_config` keys, and a `PerformanceMetricsConfig` in the same list configures Cuspy's PM sampling for that session. CPU activity must also be enabled. The `custom_profiler_config` route still works during the migration.
-
-    ```python
-    cuda_config = torch.profiler.ProfilerActivityConfig(
-        profiler_configs=[
-            torch.profiler.PerformanceMetricsConfig(
-                metric_names=["sm__cycles_active.avg.pct_of_peak_sustained_elapsed"],
-            ),
-            torch.profiler.CuspyConfig(enable_graph_dependencies=True),
-        ],
-    )
-    with torch.profiler.profile(
-        activities=[
-            torch.profiler.ProfilerActivity.CPU,
-            {torch.profiler.ProfilerActivity.CUDA: cuda_config},
-        ],
-    ) as prof:
-        run_workload()
-    ```
-
-- Record the Python launch stack of each CUDA graph node during capture ([#198419](https://github.com/pytorch/pytorch/pull/198419))
-
-    Capture with `torch.cuda.graph(g, enable_annotations=True, annotation_config={"record_py_stacks": True})` to record the user Python frames that launched each kernel, memcpy, memset, event, and host node. Read them with `torch.cuda.graph_annotations.get_kernel_py_stacks()` or save them as gzip-compressed JSON next to a trace with `torch.cuda.graph_annotations.dump_kernel_py_stacks(path)`. Framework and generated Inductor frames are filtered by default; `annotation_config["py_stack_filter_paths"]` replaces the filter list (`[]` disables filtering). Recording requires `cupti-python` and CUPTI >= 13.3, and needs a CUPTI subscription that no other profiler holds.
-
-    ```python
-    from torch.cuda.graph_annotations import dump_kernel_py_stacks
-
-    g = torch.cuda.CUDAGraph()
-    with (
-        torch.autograd.grad_mode.set_multithreading_enabled(False),
-        torch.cuda.graph(g, enable_annotations=True, annotation_config={"record_py_stacks": True}),
-    ):
-        y = x @ x.t()
-    dump_kernel_py_stacks("graph_stacks.json.gz")
-    ```
+- Record the Python launch stack of each CUDA graph node during capture with `annotation_config={"record_py_stacks": True}`, read via `torch.cuda.graph_annotations.get_kernel_py_stacks()` (requires CUPTI >= 13.3) ([#198419](https://github.com/pytorch/pytorch/pull/198419))
 
 ### improvements
-- Cuspy now resolves CUDA graph annotations by the capture graph's node id, so graphs captured with `annotation_config={"key_by": "source"}` show their annotations in Cuspy traces ([#196529](https://github.com/pytorch/pytorch/pull/196529))
+- Show `key_by="source"` CUDA graph annotations in Cuspy traces ([#196529](https://github.com/pytorch/pytorch/pull/196529))
 ### bug fixes
-- Fix device time of profiler events being inflated by unrelated runtime/driver events that share a correlation id ([#196282](https://github.com/pytorch/pytorch/pull/196282))
-- Fix `record_function` kwargs metadata being passed to Kineto as raw JSON fragments instead of typed values ([#196352](https://github.com/pytorch/pytorch/pull/196352))
-- Fix intermittent heap corruption at profiler teardown in the experimental CUPTI monitor (Cuspy) backend caused by freeing activity buffers CUPTI still owned ([#195471](https://github.com/pytorch/pytorch/pull/195471))
-- Fix the profiler warning for free-threaded Python never being emitted on Python 3.13t ([#194697](https://github.com/pytorch/pytorch/pull/194697))
+- Fix inflated profiler device times from events sharing a correlation id ([#196282](https://github.com/pytorch/pytorch/pull/196282))
+- Fix Cuspy teardown heap corruption and `record_function` kwargs sent as raw JSON ([#195471](https://github.com/pytorch/pytorch/pull/195471), [#196352](https://github.com/pytorch/pytorch/pull/196352))
 ### performance
 ### docs
-- Fix C++-style comments in the `toggle_collection_dynamic` example of `torch.profiler.profile` ([#190369](https://github.com/pytorch/pytorch/pull/190369))
+- Fix the `toggle_collection_dynamic` example ([#190369](https://github.com/pytorch/pytorch/pull/190369))
 ### devs
-- Kineto source is now part of the PyTorch repository under `third_party/kineto` instead of a git submodule ([#198648](https://github.com/pytorch/pytorch/pull/198648))
-- Remove the ignored `profiler_metrics` and `profiler_measure_per_kernel` arguments from the experimental `_ExperimentalConfig`; they have warned since 2.14 and now raise `TypeError`, including for positional callers and when unpickling a config saved by 2.14 ([#198262](https://github.com/pytorch/pytorch/pull/198262))
-- Deprecate the experimental `_ExperimentalConfig(adjust_profiler_step=...)` option, which no longer has any effect and now emits a `FutureWarning` ([#193042](https://github.com/pytorch/pytorch/pull/193042))
+- Kineto source now lives in `third_party/kineto` instead of a git submodule ([#198648](https://github.com/pytorch/pytorch/pull/198648))
+- Remove the ignored `profiler_metrics` and `profiler_measure_per_kernel` `_ExperimentalConfig` arguments (now a `TypeError`), and deprecate the no-op `adjust_profiler_step` option ([#198262](https://github.com/pytorch/pytorch/pull/198262), [#193042](https://github.com/pytorch/pytorch/pull/193042))
 ### Untopiced
 ### not user facing
 - [profiler][cupti] Turn kernel latency timestamps back off when nothing wants QUEUED ([#192370](https://github.com/pytorch/pytorch/pull/192370))
@@ -249,4 +134,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [profiler][xpu] Test that ac2g CPU->GPU flow arrows end on the device ([#194904](https://github.com/pytorch/pytorch/pull/194904))
 - [Profiler] Update Kineto readme ([#199364](https://github.com/pytorch/pytorch/pull/199364))
 - [Profiler] Delete unneeded Kineto code ([#199359](https://github.com/pytorch/pytorch/pull/199359))
+- Fix the profiler warning for free-threaded Python never being emitted on Python 3.13t ([#194697](https://github.com/pytorch/pytorch/pull/194697)) (cut for length)
 ### security
