@@ -47,9 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Support causal grouped-query attention with a paged KV cache in the cuDNN backend of `torch.nn.attention.varlen` ([#195650](https://github.com/pytorch/pytorch/pull/195650))
-
-  `varlen_attn` and `varlen_attn_out` can now route autoregressive KV-cache inference (causal attention with `seqused_k` and `block_table`, grouped-query attention, and short queries with `max_q <= 128`) to cuDNN. This makes head dimension 256 with a paged KV cache available on Blackwell GPUs. With a KV cache, cuDNN aligns the causal mask to the bottom right, matching the Flash Attention backend. `varlen_attn_out` now goes through normal backend selection and writes directly into the caller's output tensor on the cuDNN path. These paths require cuDNN 9.24 or newer, and the cuDNN backend rejects paged caches whose page size is not a power of two.
+- Support causal grouped-query attention with a paged KV cache in the cuDNN backend of `torch.nn.attention.varlen` (`varlen_attn` and `varlen_attn_out`), enabling head dimension 256 with a paged KV cache on Blackwell GPUs; requires cuDNN 9.24 or newer ([#195650](https://github.com/pytorch/pytorch/pull/195650))
 ### improvements
 ### bug fixes
 ### performance
