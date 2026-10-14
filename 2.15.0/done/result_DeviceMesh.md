@@ -47,9 +47,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Add the experimental `DeviceMesh.abort()` to abort all process groups owned by a mesh. Without it, ranks can hang when a peer exits early. For NCCL the aborts run concurrently inside one group, which avoids the deadlock you get from calling `abort()` on each group in turn. Call it on the root mesh; calling it on a submesh raises `RuntimeError` ([#189655](https://github.com/pytorch/pytorch/pull/189655))
+- Add the experimental `DeviceMesh.abort()` to abort all process groups of a root mesh, avoiding hangs when a peer exits early ([#189655](https://github.com/pytorch/pytorch/pull/189655))
 ### improvements
-- Add a `preserve_rank_order` option to `DeviceMesh`. When it is `True`, a permuted mesh dimension that spans the whole world gets its own process group instead of reusing the default group, and subgroups keep the mesh's rank order instead of sorting ranks ([#193224](https://github.com/pytorch/pytorch/pull/193224))
+- Add a `preserve_rank_order` option to `DeviceMesh` so subgroups keep the mesh's rank order ([#193224](https://github.com/pytorch/pytorch/pull/193224))
 ### bug fixes
 ### performance
 ### docs
