@@ -49,10 +49,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix a use-after-free in `RRef` error handling ([#192960](https://github.com/pytorch/pytorch/pull/192960))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- [rpc] Fix dangling this in RRef::handleError static map ([#192960](https://github.com/pytorch/pytorch/pull/192960))
 ### not user facing
 ### security
