@@ -47,22 +47,18 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add the public `torch.foreach` module (beta), which exposes the multi-tensor `torch._foreach_*` operations under stable, documented names (e.g. `torch.foreach.mul_(params, 3)`) with parameter names that follow the ordinary ops ([#193607](https://github.com/pytorch/pytorch/pull/193607))
 ### improvements
 ### bug fixes
 ### performance
+- Reduce `_foreach_norm`/`max` CUDA scratch memory ([#190549](https://github.com/pytorch/pytorch/pull/190549))
 ### docs
-- Update docs and stubs for foreach to be honest ([#193466](https://github.com/pytorch/pytorch/pull/193466))
+- Fix in-place foreach type stubs to return the input list ([#193466](https://github.com/pytorch/pytorch/pull/193466))
 ### devs
 ### Untopiced
-- Select the distribution kernels with if constexpr ([#194157](https://github.com/pytorch/pytorch/pull/194157))
-- Name the foreach norm block reduction once ([#194160](https://github.com/pytorch/pytorch/pull/194160))
-- Introduce public torch.foreach APIs ([#193607](https://github.com/pytorch/pytorch/pull/193607))
-- Build tensor_lists without copying each inner list ([#194169](https://github.com/pytorch/pytorch/pull/194169))
-- Drop unused includes in aten ([#194960](https://github.com/pytorch/pytorch/pull/194960))
-- [Test] Refactor `test_foreach.py`  ([#195452](https://github.com/pytorch/pytorch/pull/195452))
-- [rel-land] allow horizontal fusion of copies from dynamic inputs into concat operation (#195635) (#198294) ([#198294](https://github.com/pytorch/pytorch/pull/198294))
-- [Inductor] Skip ExternKernelSchedulerNode in create_foreach_nodes ([#198675](https://github.com/pytorch/pytorch/pull/198675))
 ### not user facing
-- allow horizontal fusion of copies from dynamic inputs into concat operation ([#195635](https://github.com/pytorch/pytorch/pull/195635))
-- [cuda] Compact ragged partials for foreach norm/max reductions ([#190549](https://github.com/pytorch/pytorch/pull/190549))
+- Instantiate only the needed CUDA distribution kernels with `if constexpr`, reducing binary size ([#194157](https://github.com/pytorch/pytorch/pull/194157))
+- Refactor foreach CUDA kernel helpers without behavior change ([#194160](https://github.com/pytorch/pytorch/pull/194160), [#194169](https://github.com/pytorch/pytorch/pull/194169))
+- Drop unused includes in ATen ([#194960](https://github.com/pytorch/pytorch/pull/194960))
+- Refactor `test_foreach.py` to follow the device-generic test guidelines ([#195452](https://github.com/pytorch/pytorch/pull/195452))
 ### security
