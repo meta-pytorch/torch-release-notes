@@ -52,7 +52,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 ### docs
 ### devs
-- Fix source builds with CUDA 13.3, whose `nvcc` front end mis-printed a type alias in `ivalue_inl.h` ([#194659](https://github.com/pytorch/pytorch/pull/194659))
+- Fix source builds with CUDA 13.3 ([#194659](https://github.com/pytorch/pytorch/pull/194659))
 ### Untopiced
 ### not user facing
 - Remove the unused Caffe2/torch protobuf string wrappers and the `caffe2/core/macros.h` placeholder ([#194231](https://github.com/pytorch/pytorch/pull/194231), [#194230](https://github.com/pytorch/pytorch/pull/194230))
