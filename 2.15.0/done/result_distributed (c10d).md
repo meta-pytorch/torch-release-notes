@@ -51,7 +51,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
   - NCCL communicators are created eagerly when `init_process_group()` or `new_group()` is called, not at the first collective. Each group's NCCL resources and GPU memory are allocated at creation time, even if the group is never used. `nccl-lazy` keeps creating per-peer communicators on demand. Pipeline-parallel stages that run on an eager NCCL group now log a one-time warning that suggests creating the group with `backend="nccl-lazy"`.
   - Each process group is bound to a single CUDA device when it is created. If `device_id` is not passed to `init_process_group()`, the device is `LOCAL_RANK % torch.cuda.device_count()` when `LOCAL_RANK` is set, and otherwise the global rank modulo the device count. The device selected with `torch.cuda.set_device()` is not used. A collective on a tensor that lives on another GPU fails with `Expected tensor on cuda:X but found tensor on cuda:Y` or `ProcessGroupNCCL is bound to device cuda:X but an operation was issued on cuda:Y`. If your ranks do not map to GPUs this way, pass `device_id` explicitly. Using several GPUs from one process requires `nccl-legacy`.
-  - The backend object returned by `dist.get_backend_impl(device="cuda")` or `pg._get_backend(torch.device("cuda"))` is now a `ProcessGroupNCCL2`, not a `ProcessGroupNCCL`. As a result, `isinstance(..., ProcessGroupNCCL)` checks return `False`, and methods that only exist on the legacy class (for example `comm_split_count()` and `get_build_nccl_version()`) are missing. The `comm_ptr` property and `_comm_ptr()` method work on every NCCL backend.
+  - The backend object returned by `dist.get_backend_impl(device=torch.device("cuda"))` or `pg._get_backend(torch.device("cuda"))` is now a `ProcessGroupNCCL2`, not a `ProcessGroupNCCL`. As a result, `isinstance(..., ProcessGroupNCCL)` checks return `False`, and methods that only exist on the legacy class (for example `comm_split_count()` and `get_build_nccl_version()`) are missing. The `comm_ptr` property and `_comm_ptr()` method work on every NCCL backend.
   - For an asynchronous `all_gather`, the value of `work.get_future()` is the list of per-rank output tensors. The legacy backend returned a one-element list holding a stacked `[world_size, ...]` tensor. Code such as DDP communication hooks that indexes the future's value should read the output tensor list it passed to `all_gather` instead, which works with both backends.
 
   To restore the previous behavior, set `TORCH_DIST_USE_NCCL2=0` in the environment of every rank before the first process group is created, or request `nccl-legacy` explicitly:
@@ -61,7 +61,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   # "nccl" resolves to the legacy ProcessGroupNCCL; communicators are
   # created lazily on the device of the first collective's tensors.
   dist.init_process_group("nccl")
-  type(dist.get_backend_impl(device="cuda"))  # ProcessGroupNCCL
+  type(dist.get_backend_impl(device=torch.device("cuda")))  # ProcessGroupNCCL
   ```
 
   Version 2.15:
@@ -69,7 +69,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   # "nccl" resolves to nccl2; the communicator is created during
   # init_process_group on device_id (or LOCAL_RANK % device_count).
   dist.init_process_group("nccl", device_id=torch.device("cuda", local_rank))
-  type(dist.get_backend_impl(device="cuda"))  # ProcessGroupNCCL2
+  type(dist.get_backend_impl(device=torch.device("cuda")))  # ProcessGroupNCCL2
 
   # Keep the legacy implementation:
   dist.init_process_group("nccl-legacy")
