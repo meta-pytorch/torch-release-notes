@@ -50,7 +50,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 ### bug fixes
 ### performance
-- Speed up the min-cut rematerialization partitioner that `torch.compile` uses to split training graphs into forward and backward, by replacing NetworkX's general-purpose minimum-cut solver with a specialized one, reducing cold compile time by about 5% on average (up to 10%) across five reported models ([#197724](https://github.com/pytorch/pytorch/pull/197724))
+- Speed up the min-cut partitioner, reducing cold compile time by about 5% ([#197724](https://github.com/pytorch/pytorch/pull/197724))
 ### docs
 ### devs
 ### Untopiced
