@@ -48,6 +48,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 - Add `torch.nn.functional.scaled_addmm` and its in-place variant `scaled_addmm_`, the `addmm` analogue of `torch.nn.functional.scaled_mm` ([#195409](https://github.com/pytorch/pytorch/pull/195409))
+- Support `torch.nn.functional.scaled_addmm` and `scaled_addmm_` under `torch.compile`, lowered through Inductor's extern-kernel fallback with reinplacing of the functional form ([#195410](https://github.com/pytorch/pytorch/pull/195410)) (may belong in nn_frontend, next to #195409)
 
   `scaled_addmm(input, mat1, mat2, scale_a, scale_recipe_a, scale_b, scale_recipe_b, ..., *, beta=1.0, alpha=1.0)` computes `beta * input + alpha * scaled_mm(mat1, mat2)` in a single cuBLASLt GEMM on CUDA. The scaling recipes and swizzles have the same meaning as in `scaled_mm` (tensorwise and rowwise FP8, DeepSeek-style block scaling on SM90, MXFP8 and NVFP4), and the result has the dtype of `input` (`float16`, `bfloat16` or `float32`). `scaled_addmm_` accumulates into `input` in place, which suits accumulating weight gradients over microbatches. ROCm is not supported.
 
@@ -66,7 +67,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Allow `scaled_dot_product_attention` to use FlashAttention-4 with different query/key and value head dimensions (e.g. DeepSeek-style Q/K=192, V=128), and size the output by the value head dimension ([#193039](https://github.com/pytorch/pytorch/pull/193039))
 - Support `F.interpolate(..., mode="bicubic")` backward under `torch.use_deterministic_algorithms(True)` by using a deterministic decomposition ([#193707](https://github.com/pytorch/pytorch/pull/193707))
 - Support `mode="bicubic"` with 5-D (volumetric) input in `torch.nn.functional.grid_sample` on CPU and CUDA, including backward and double backward ([#194787](https://github.com/pytorch/pytorch/pull/194787))
-- Preserve the `channels_last_3d` memory format in CUDA `InstanceNorm3d` instead of forcing a contiguous layout ([#199112](https://github.com/pytorch/pytorch/pull/199112))
 - Add the missing `weight` argument to the `torch.nn.functional.mse_loss` type stub ([#196126](https://github.com/pytorch/pytorch/pull/196126))
 - Allow `torch.nn.attention.varlen.varlen_attn` to dispatch causal attention to cuDNN, using the same bottom-right causal alignment as the Flash backend ([#193630](https://github.com/pytorch/pytorch/pull/193630))
 ### bug fixes
