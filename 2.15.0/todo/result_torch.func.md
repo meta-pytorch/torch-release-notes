@@ -49,10 +49,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
+- Fix `torch.vmap` falling back to the slow loop for several loss ops and `addr` under `python -O` ([#192859](https://github.com/pytorch/pytorch/pull/192859))
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Remove condition preventing registration of some vmap decompositions ([#192859](https://github.com/pytorch/pytorch/pull/192859))
 ### not user facing
 ### security
