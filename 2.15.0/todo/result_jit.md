@@ -45,35 +45,59 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## jit
 ### bc breaking
-- Fix C++ warning propagation for torch.ops and custom ops ([#193451](https://github.com/pytorch/pytorch/pull/193451))
+- Operators called through `torch.ops.*` and `torch._C._dispatch_call_boxed` now use PyTorch's own warning and exception translation instead of pybind11's ([#193451](https://github.com/pytorch/pytorch/pull/193451))
+
+    We make `torch.ops.*` calls go through the same exception and warning translation as the rest of the library. This means that some exception translation that used to be handled by pybind is now handled natively. User-defined pybind exception translation is thus lost. Restoring it may be done in a future release as part of a broader exception handler improvement.
+
+    In addition, `TORCH_WARN` warnings from these operators now reach Python's `warnings` module, so they raise when warnings are turned into errors (`-W error`). `std::out_of_range` still becomes `IndexError` ([#195713](https://github.com/pytorch/pytorch/pull/195713)).
+
+    Version 2.14:
+
+    ```python
+    # C++ op: throw std::invalid_argument("bad size");
+    try:
+        torch.ops.my_lib.my_op(x)
+    except ValueError:  # pybind11 translation
+        ...
+    ```
+
+    Version 2.15:
+
+    ```python
+    # C++ op: TORCH_CHECK_VALUE(false, "bad size");
+    try:
+        torch.ops.my_lib.my_op(x)
+    except ValueError:
+        ...
+
+    # TORCH_WARN from the op is now a Python warning
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        torch.ops.my_lib.my_op(x)
+    ```
+
 ### deprecation
 ### new features
 ### improvements
-- Enable Sleef in the NNC LLVM codegen on aarch64 (#198002) ([#198002](https://github.com/pytorch/pytorch/pull/198002))
+- Use Sleef in NNC on aarch64 ([#198002](https://github.com/pytorch/pytorch/pull/198002))
 ### bug fixes
+- Fix `torch.jit.Attribute` and `nn.Module` class annotations being lost on Python 3.14; this requires `typing-extensions>=4.13` ([#195201](https://github.com/pytorch/pytorch/pull/195201), [#199074](https://github.com/pytorch/pytorch/pull/199074))
+- Fix constant pooling merging `0.0` with `-0.0` ([#192605](https://github.com/pytorch/pytorch/pull/192605))
+- Fix `torch.jit.export_opnames` missing ops inside `torch.jit.fork` subgraphs ([#197333](https://github.com/pytorch/pytorch/pull/197333))
 ### performance
+- Speed up `torch.jit.load` and graph pre-optimization ([#194035](https://github.com/pytorch/pytorch/pull/194035), [#193107](https://github.com/pytorch/pytorch/pull/193107), [#193250](https://github.com/pytorch/pytorch/pull/193250), [#194009](https://github.com/pytorch/pytorch/pull/194009))
 ### docs
 ### devs
-- Add META's Math Library (#198207) ([#198207](https://github.com/pytorch/pytorch/pull/198207))
+- `c10::List` iterators satisfy `std::random_access_iterator`, and `List<T>::emplace` now constructs a `T` ([#196002](https://github.com/pytorch/pytorch/pull/196002))
 ### Untopiced
-- [PyTorch][jit] Speed up restoreAccurateTypeTags via c10::FastSet and single hash lookup ([#193107](https://github.com/pytorch/pytorch/pull/193107))
-- [jit] Skip type-tag restoration for archives at version >= 3 (#194035) ([#194035](https://github.com/pytorch/pytorch/pull/194035))
-- [AI Codemod][PerfAICT-General] Share a single AliasDb across peephole sub-passes to cut redundant builds ([#194009](https://github.com/pytorch/pytorch/pull/194009))
-- Remove caffe2/core/timer.h ([#194228](https://github.com/pytorch/pytorch/pull/194228))
+### not user facing
+- Add META's Math Library (#198207) ([#198207](https://github.com/pytorch/pytorch/pull/198207))
 - Fix grammar and typos in code comments and docstrings ([#194491](https://github.com/pytorch/pytorch/pull/194491))
-- [PyTorch][jit] Avoid IValue copies in unpickler (#193250) ([#193250](https://github.com/pytorch/pytorch/pull/193250))
 - Fix grammar in comments and docstrings ([#194624](https://github.com/pytorch/pytorch/pull/194624))
-- Make c10::List's iterator model the concepts it claims ([#196002](https://github.com/pytorch/pytorch/pull/196002))
-- [py3.14][jit] Accumulate ScriptModule Attribute annotations on the class (#195201) ([#195201](https://github.com/pytorch/pytorch/pull/195201))
 - [RAWTHROW][10] torch/csrc/jit: 744 findings down to four subdirectories ([#195764](https://github.com/pytorch/pytorch/pull/195764))
 - [RAWTHROW][12] torch/csrc/jit/python: 49 conversions, tensorexpr is all that is left ([#195859](https://github.com/pytorch/pytorch/pull/195859))
 - [caffe2][buck] Hoist XNNPACK dep out of aten_cpu into :aten_native_xnnpack (#197457) ([#197457](https://github.com/pytorch/pytorch/pull/197457))
-- [jit] Resolve module annotations in MRO order (#198525) ([#198525](https://github.com/pytorch/pytorch/pull/198525))
-- [Check1:static check][2/7] Handle `fork`/`wait` in `export_opnames` (#197333) (#197333) ([#197333](https://github.com/pytorch/pytorch/pull/197333))
-### not user facing
-- Use C++20 concepts where it improves readability ([#179286](https://github.com/pytorch/pytorch/pull/179286))
 - Use c10::bit_cast for type punning instead of memcpy ([#194149](https://github.com/pytorch/pytorch/pull/194149))
 - Replace std::bind with std::bind_front where possible ([#195598](https://github.com/pytorch/pytorch/pull/195598))
-- [jit] Constant pooling/CSE: compare float attributes bitwise ([#192605](https://github.com/pytorch/pytorch/pull/192605))
 - [RAWTHROW][15] torch/csrc/jit/tensorexpr: 294 conversions, the burn-down list is empty ([#198500](https://github.com/pytorch/pytorch/pull/198500))
 ### security
