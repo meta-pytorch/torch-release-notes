@@ -48,11 +48,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
+- `clamp`, `maximum` and `minimum` support uint types ([#189953](https://github.com/pytorch/pytorch/pull/189953))
 ### bug fixes
+- Fix AVX2 int64 to float64 conversion turning `0` into `-0.0` ([#196607](https://github.com/pytorch/pytorch/pull/196607), [#196614](https://github.com/pytorch/pytorch/pull/196614))
 ### performance
+- Fix CPU dispatch cache ([#195328](https://github.com/pytorch/pytorch/pull/195328))
 ### docs
 ### devs
-### Untopiced
-- Add Barebones Unsigned Integer Support to the Clamp Family ([#189953](https://github.com/pytorch/pytorch/pull/189953))
 ### not user facing
 ### security
