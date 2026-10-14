@@ -47,12 +47,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+- Add the experimental `DeviceMesh.abort()` to abort all process groups of a root mesh, avoiding hangs when a peer exits early ([#189655](https://github.com/pytorch/pytorch/pull/189655))
 ### improvements
+- Add a `preserve_rank_order` option to `DeviceMesh` so subgroups keep the mesh's rank order ([#193224](https://github.com/pytorch/pytorch/pull/193224))
 ### bug fixes
 ### performance
 ### docs
 ### devs
 ### Untopiced
-- Preserving Custom Rank Layouts in DeviceMesh ([#193224](https://github.com/pytorch/pytorch/pull/193224))
 ### not user facing
 ### security
