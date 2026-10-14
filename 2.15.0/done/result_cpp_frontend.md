@@ -47,20 +47,19 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Add `torch::stable::sort` to the stable ABI, returning the sorted values and indices (with optional stable sorting) ([#198038](https://github.com/pytorch/pytorch/pull/198038))
-- Make more `c10/util` helpers available header-only under `torch/headeronly/util` (`MathConstants.h`, `copysign.h`, `Load.h`, `BFloat16-math.h`, `irange.h`, `TypeCast.h` and `overflows.h`); the old `c10/util` headers keep working as forwarding includes ([#194673](https://github.com/pytorch/pytorch/pull/194673), [#194781](https://github.com/pytorch/pytorch/pull/194781))
+- Add `torch::stable::sort` to the stable ABI ([#198038](https://github.com/pytorch/pytorch/pull/198038))
+- Make more `c10/util` helpers available header-only under `torch/headeronly/util` ([#194673](https://github.com/pytorch/pytorch/pull/194673), [#194781](https://github.com/pytorch/pytorch/pull/194781))
 ### improvements
-- Add a `gil_not_used` option to `torch.utils.cpp_extension.load_inline` so generated pybind11 modules can be imported on free-threaded Python without re-enabling the GIL ([#196802](https://github.com/pytorch/pytorch/pull/196802))
-- Raise a compile-time `#error` when an extension sets `TORCH_TARGET_VERSION` newer than the libtorch headers it is compiled against ([#193962](https://github.com/pytorch/pytorch/pull/193962))
-- Add a hint to the operator registration error for unsupported symbolic C++ kernel signatures (e.g. `const SymIntArrayRef&`), which previously looked like an `int[]` vs `SymInt[]` schema mismatch ([#197736](https://github.com/pytorch/pytorch/pull/197736))
+- Add `gil_not_used` to `cpp_extension.load_inline` for free-threaded Python ([#196802](https://github.com/pytorch/pytorch/pull/196802))
+- Error at compile time when `TORCH_TARGET_VERSION` is newer than the libtorch headers ([#193962](https://github.com/pytorch/pytorch/pull/193962))
+- Clarify the error for unsupported symbolic C++ kernel signatures ([#197736](https://github.com/pytorch/pytorch/pull/197736))
 ### bug fixes
-- Fix `torch::nn::Sequential::clone()` replacing submodule names with their indices, which changed `state_dict` keys of the clone ([#195107](https://github.com/pytorch/pytorch/pull/195107))
-- Fix `torch::nn::functional::multi_head_attention_forward` crashing the process with an integer division by zero when `num_heads` is 0; it now raises an error ([#195381](https://github.com/pytorch/pytorch/pull/195381))
+- Fix `torch::nn::Sequential::clone()` renaming submodules ([#195107](https://github.com/pytorch/pytorch/pull/195107))
+- Fix `multi_head_attention_forward` crashing with `num_heads=0` ([#195381](https://github.com/pytorch/pytorch/pull/195381))
 - Fix `std::numeric_limits<c10::BFloat16>::signaling_NaN()` returning infinity ([#195415](https://github.com/pytorch/pytorch/pull/195415))
-- Fix the C++20 requirement check in `ATen/ATen.h` and `torch/all.h` never firing on MSVC and Windows nvcc, so building with an older standard now fails with a clear error ([#197417](https://github.com/pytorch/pytorch/pull/197417))
-- Fix the fast symbolizer (`TORCH_SYMBOLIZE_MODE=fast`) producing no file/line information on aarch64 and for DWARF 2/3 and clang DWARF 5 debug info ([#195799](https://github.com/pytorch/pytorch/pull/195799))
-- Fix downstream C++ projects failing to compile against libtorch headers (e.g. `'requires' only available with '-std=c++20'`) because the exported CMake `torch` target did not propagate the C++20 requirement; CUDA sources in downstream projects must still set `CMAKE_CUDA_STANDARD` themselves ([#190784](https://github.com/pytorch/pytorch/pull/190784))
-- Fix a `no type named 'time_t' in namespace 'std'` compile error with clang when including `torch/csrc/stable/macros.h` ([#197021](https://github.com/pytorch/pytorch/pull/197021))
+- Fix the C++20 requirement not propagating through the CMake `torch` target or being checked on MSVC ([#190784](https://github.com/pytorch/pytorch/pull/190784), [#197417](https://github.com/pytorch/pytorch/pull/197417))
+- Fix the fast symbolizer missing file/line info on aarch64 and some DWARF versions ([#195799](https://github.com/pytorch/pytorch/pull/195799))
+- Fix a clang `time_t` compile error in `torch/csrc/stable/macros.h` ([#197021](https://github.com/pytorch/pytorch/pull/197021))
 ### performance
 ### docs
 ### devs
