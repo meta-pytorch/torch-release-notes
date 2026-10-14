@@ -82,25 +82,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
     tagged = [e for e in trace if e.get("internal_metadata") == "mallocWithAddress"]
     ```
 
-- Remove the deprecated `profiler_metrics` and `profiler_measure_per_kernel` arguments from `torch._C._profiler._ExperimentalConfig` ([#198262](https://github.com/pytorch/pytorch/pull/198262))
-
-    These options have been ignored and have emitted a `FutureWarning` since 2.14. Passing them by keyword now raises a `TypeError` from the `_ExperimentalConfig` constructor, and the read-only `profiler_metrics` / `profiler_measure_per_kernel` attributes are gone. Because they were the first two constructor arguments, every remaining argument moved two positions to the left: code that builds `_ExperimentalConfig` positionally now fails with the same `TypeError: __init__(): incompatible constructor arguments` (the old first argument was a list, the new one is `verbose: bool`) and must switch to keyword arguments. The pickled state layout also changed, so `_ExperimentalConfig` objects pickled by earlier releases cannot be restored: unpickling one raises `TypeError: 'bool' object is not iterable`. Drop the arguments; there is no replacement. To collect hardware counters, use `torch.profiler.PerformanceMetricsConfig` (see new features).
-
-    Version 2.14:
-
-    ```python
-    cfg = torch._C._profiler._ExperimentalConfig(
-        profiler_metrics=["sm__cycles_elapsed.avg"],
-        profiler_measure_per_kernel=True,
-        verbose=True,
-    )
-    ```
-
-    Version 2.15:
-
-    ```python
-    cfg = torch._C._profiler._ExperimentalConfig(verbose=True)
-    ```
 
 - Remove the deprecated `FunctionEvent.metadata_json` property ([#198265](https://github.com/pytorch/pytorch/pull/198265))
 
@@ -122,7 +103,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 - Rename the experimental CUPTI monitor profiler backend to Cuspy, without aliases for the old names ([#195881](https://github.com/pytorch/pytorch/pull/195881))
 
-    The experimental in-process CUPTI collection backend selected through `_ExperimentalConfig(custom_profiler_config=...)` is now called Cuspy. The backend value `"cupti_monitor"` is now `"cuspy"`, the `{"cupti_monitor": true}` key is now `{"cuspy": true}`, and the `"cupti_monitor_async_export"` key is now `"cuspy_async_export"`. The old backend names are no longer recognized and the profiler silently falls back to the default Kineto backend. Setting `"cupti_monitor_async_export"` no longer raises an error. The private `torch.profiler._cupti` package moved to `torch.profiler._cuspy` and `torch._C._profiler._cupti_monitor` to `torch._C._profiler._cuspy`. Prefer the new `torch.profiler.CuspyConfig` (see new features) over `custom_profiler_config`.
+    The experimental in-process CUPTI collection backend selected through `_ExperimentalConfig(custom_profiler_config=...)` is now called Cuspy. The backend value `"cupti_monitor"` is now `"cuspy"`, the `{"cupti_monitor": true}` key is now `{"cuspy": true}`, and the `"cupti_monitor_async_export"` key is now `"cuspy_async_export"`. The old backend names are no longer recognized and the profiler silently falls back to the default Kineto backend. Setting `"cupti_monitor_async_export"` no longer raises an error. The private `torch.profiler._cupti` package moved to `torch.profiler._cuspy` and `torch._C._profiler._cupti_monitor` to `torch._C._profiler._cuspy`. The documented `torch.profiler.profile.take_pending_cupti_export()` method is renamed to `take_pending_cuspy_export()`, also without an alias, so calling the old name raises `AttributeError`. Prefer the new `torch.profiler.CuspyConfig` (see new features) over `custom_profiler_config`.
 
     Version 2.14:
 
@@ -130,6 +111,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
     cfg = _ExperimentalConfig(
         custom_profiler_config='{"backend":"cupti_monitor","cupti_monitor_async_export":true}'
     )
+    with torch.profiler.profile(experimental_config=cfg) as prof:
+        ...
+    obs = prof.take_pending_cupti_export()
     ```
 
     Version 2.15:
@@ -138,28 +122,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
     cfg = _ExperimentalConfig(
         custom_profiler_config='{"backend":"cuspy","cuspy_async_export":true}'
     )
+    with torch.profiler.profile(experimental_config=cfg) as prof:
+        ...
+    obs = prof.take_pending_cuspy_export()
     ```
 
 ### deprecation
-- The experimental `adjust_profiler_step` option of `_ExperimentalConfig` is deprecated and no longer has any effect ([#193042](https://github.com/pytorch/pytorch/pull/193042))
-
-    `adjust_profiler_step=True` used to move the start of each `ProfilerStep#N` annotation forward to its parent Python event so the two did not partly overlap. Moving the annotation made downstream tools misreport step durations, and the option has been off by default since it was moved behind the experimental config. The alignment has been removed. Passing `adjust_profiler_step=True` (by keyword or position) now emits `FutureWarning: adjust_profiler_step is deprecated and ignored. It will be removed in a future release.` when the profiler starts. Remove the argument.
-
-    Version 2.14:
-
-    ```python
-    with torch.profiler.profile(
-        experimental_config=torch._C._profiler._ExperimentalConfig(adjust_profiler_step=True),
-    ) as prof:
-        ...
-    ```
-
-    Version 2.15:
-
-    ```python
-    with torch.profiler.profile() as prof:
-        ...
-    ```
 
 - `torch.autograd.profiler.load_nvprof`, `torch.autograd.profiler.parse_nvprof_trace`, and `torch.autograd.profiler.EnforceUnique` are deprecated and will be removed in PyTorch 2.17 ([#198396](https://github.com/pytorch/pytorch/pull/198396))
 
@@ -264,6 +232,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix C++-style comments in the `toggle_collection_dynamic` example of `torch.profiler.profile` ([#190369](https://github.com/pytorch/pytorch/pull/190369))
 ### devs
 - Kineto source is now part of the PyTorch repository under `third_party/kineto` instead of a git submodule ([#198648](https://github.com/pytorch/pytorch/pull/198648))
+- Remove the ignored `profiler_metrics` and `profiler_measure_per_kernel` arguments from the experimental `_ExperimentalConfig`; they have warned since 2.14 and now raise `TypeError`, including for positional callers and when unpickling a config saved by 2.14 ([#198262](https://github.com/pytorch/pytorch/pull/198262))
+- Deprecate the experimental `_ExperimentalConfig(adjust_profiler_step=...)` option, which no longer has any effect and now emits a `FutureWarning` ([#193042](https://github.com/pytorch/pytorch/pull/193042))
 ### Untopiced
 ### not user facing
 - [profiler][cupti] Turn kernel latency timestamps back off when nothing wants QUEUED ([#192370](https://github.com/pytorch/pytorch/pull/192370))
