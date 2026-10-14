@@ -48,19 +48,15 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Add a `cas_backoff_max_seconds` rendezvous option that adds a random delay after a failed rendezvous state write, which reduces repeated write conflicts at large scale. It defaults to `0.0` (off) ([#185930](https://github.com/pytorch/pytorch/pull/185930))
-- Pass the `@record` entrypoint's qualified name to `ErrorHandler` through `set_entrypoint_fn_name()`, and add a `record_success()` hook that runs when the entrypoint returns normally, so custom error handlers can attribute failures and observe successful completion ([#194269](https://github.com/pytorch/pytorch/pull/194269), [#194746](https://github.com/pytorch/pytorch/pull/194746), [#195034](https://github.com/pytorch/pytorch/pull/195034))
-- Report socket-creation failures in the etcd server's `find_free_port()` through the module logger instead of `print` ([#197711](https://github.com/pytorch/pytorch/pull/197711))
+- Add a `cas_backoff_max_seconds` rendezvous option that adds random backoff after failed rendezvous state writes ([#185930](https://github.com/pytorch/pytorch/pull/185930))
+- Let custom `ErrorHandler`s see the `@record` entrypoint name and observe success through `record_success()` ([#194269](https://github.com/pytorch/pytorch/pull/194269), [#194746](https://github.com/pytorch/pytorch/pull/194746), [#195034](https://github.com/pytorch/pytorch/pull/195034))
 ### bug fixes
-- Fix the etcd server's `find_free_port()` raising `UnboundLocalError` and skipping the remaining addresses when socket creation fails ([#191451](https://github.com/pytorch/pytorch/pull/191451))
-- Fix `EtcdServer` never registering its exit handler, which left the etcd subprocess and its data directory behind when the process exited ([#197744](https://github.com/pytorch/pytorch/pull/197744))
-- Fix `get_socket_with_port()` returning ports already in use on other addresses, which made the TCPStore server fail with `EADDRINUSE` ([#199015](https://github.com/pytorch/pytorch/pull/199015))
-- Fix races that truncated or dropped tailed worker log output when a worker finished while its log was being read ([#195211](https://github.com/pytorch/pytorch/pull/195211))
-- Fix a file descriptor leak on every file-store rendezvous created without an endpoint, which could exhaust the process file descriptor limit ([#191425](https://github.com/pytorch/pytorch/pull/191425))
-- Fix an exception raised while shutting down the rendezvous in `launch_agent` replacing the worker's `ChildFailedError`; the shutdown error is now logged instead ([#195316](https://github.com/pytorch/pytorch/pull/195316))
+- Fix the etcd server's `find_free_port()` raising `UnboundLocalError` and `EtcdServer` leaking its subprocess ([#191451](https://github.com/pytorch/pytorch/pull/191451), [#197711](https://github.com/pytorch/pytorch/pull/197711), [#197744](https://github.com/pytorch/pytorch/pull/197744))
+- Fix `get_socket_with_port()` returning in-use ports (TCPStore `EADDRINUSE`) and a file-store rendezvous file descriptor leak ([#199015](https://github.com/pytorch/pytorch/pull/199015), [#191425](https://github.com/pytorch/pytorch/pull/191425))
+- Fix truncated tailed worker logs and `launch_agent` shutdown errors hiding `ChildFailedError` ([#195211](https://github.com/pytorch/pytorch/pull/195211), [#195316](https://github.com/pytorch/pytorch/pull/195316))
 ### performance
 ### docs
-- Fix the outdated `EtcdServer` usage example and arguments, and remove a nonexistent `id` argument from the `Worker` docstring ([#198238](https://github.com/pytorch/pytorch/pull/198238), [#199255](https://github.com/pytorch/pytorch/pull/199255))
+- Fix the `EtcdServer` example and `Worker` docstring ([#198238](https://github.com/pytorch/pytorch/pull/198238), [#199255](https://github.com/pytorch/pytorch/pull/199255))
 ### devs
 ### Untopiced
 ### not user facing
