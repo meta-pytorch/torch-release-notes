@@ -86,7 +86,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   import importlib
   import torch
 
-  importlib.reload(torch)  # appeared to work, but left the process in a corrupted state
+  importlib.reload(torch)
+  # RuntimeError: Only a single TORCH_LIBRARY can be used to register the namespace triton; ...
+  # (re-importing after a failed `import torch` failed with similarly misleading errors or could segfault)
   ```
 
   Version 2.15:
