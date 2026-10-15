@@ -45,16 +45,16 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## distributed (c10d)
 ### bc breaking
-- The `nccl` backend now uses the `nccl2` implementation by default ([#192281](https://github.com/pytorch/pytorch/pull/192281), [#192895](https://github.com/pytorch/pytorch/pull/192895), [#193237](https://github.com/pytorch/pytorch/pull/193237), [#193241](https://github.com/pytorch/pytorch/pull/193241))
+- The `nccl` backend now uses a rewritten, cleaned-up NCCL implementation by default ([#192281](https://github.com/pytorch/pytorch/pull/192281), [#192895](https://github.com/pytorch/pytorch/pull/192895), [#193237](https://github.com/pytorch/pytorch/pull/193237), [#193241](https://github.com/pytorch/pytorch/pull/193241))
 
-  `backend="nccl"` (also the default CUDA backend of `init_process_group()`) now creates a `ProcessGroupNCCL2`. The previous implementation is available as `backend="nccl-legacy"`. Differences:
+  `backend="nccl"` (also the default CUDA backend of `init_process_group()`) now creates the new implementation. The legacy implementation is available as `backend="nccl-legacy"`. Differences:
 
   - Communicators are created eagerly in `init_process_group()`/`new_group()`, allocating GPU memory even for unused groups (`nccl-lazy` creates them on demand).
   - Each group is bound to one CUDA device: `device_id`, else `LOCAL_RANK % torch.cuda.device_count()` (or the global rank modulo the device count); `torch.cuda.set_device()` is not used. Tensors on another GPU fail with `Expected tensor on cuda:X but found tensor on cuda:Y` or `ProcessGroupNCCL is bound to device cuda:X but an operation was issued on cuda:Y`. Pass `device_id` if needed; several GPUs per process requires `nccl-legacy`.
-  - `dist.get_backend_impl(...)` returns a `ProcessGroupNCCL2`, so `isinstance(..., ProcessGroupNCCL)` is `False` and legacy-only methods such as `comm_split_count()` are missing.
+  - `dist.get_backend_impl(...)` returns the new backend class, so `isinstance(..., ProcessGroupNCCL)` is `False` and legacy-only methods such as `comm_split_count()` are missing.
   - An async `all_gather`'s `work.get_future()` value is the list of per-rank outputs, not a one-element list holding a stacked tensor.
 
-  To restore the old behavior, set `TORCH_DIST_USE_NCCL2=0` on every rank before creating the process group, or use `nccl-legacy`:
+  To restore the legacy behavior, set `TORCH_DIST_USE_NCCL2=0` on every rank before creating the process group, or use `nccl-legacy`:
 
   Version 2.14:
   ```python
@@ -63,29 +63,28 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
   Version 2.15:
   ```python
-  dist.init_process_group("nccl", device_id=torch.device("cuda", local_rank))  # ProcessGroupNCCL2
-  dist.init_process_group("nccl-legacy")  # previous behavior
+  dist.init_process_group("nccl", device_id=torch.device("cuda", local_rank))  # new implementation
+  dist.init_process_group("nccl-legacy")  # legacy implementation
   ```
 ### deprecation
 ### new features
-- Add an `nccl4py` backend (`init_process_group(backend="nccl4py")`), a Python-only NCCL backend built on the `nccl4py` bindings ([#191703](https://github.com/pytorch/pytorch/pull/191703), [#196331](https://github.com/pytorch/pytorch/pull/196331), [#198000](https://github.com/pytorch/pytorch/pull/198000), [#195766](https://github.com/pytorch/pytorch/pull/195766))
 - Add an experimental one-sided transport API, `torch.distributed._transport`, with a NIXL backend and CUDA-graph-capturable stream-ordered transfers ([#195643](https://github.com/pytorch/pytorch/pull/195643), [#197032](https://github.com/pytorch/pytorch/pull/197032), [#198889](https://github.com/pytorch/pytorch/pull/198889), [#198918](https://github.com/pytorch/pytorch/pull/198918))
 - Add an experimental pure-Python watchdog, `torch.distributed._watchdog`, that detects hung CPU and GPU operations in Python distributed backends and dumps thread stacks on timeout ([#192075](https://github.com/pytorch/pytorch/pull/192075))
 - Add `get_peer_cft_handle(peer)` and `get_multimem_cft_handle()` to NCCL symmetric memory for NCCL Compute Fabric Transport ([#191685](https://github.com/pytorch/pytorch/pull/191685))
 ### improvements
-- Extend `nccl2`: collective runtime estimation, the NCCL allocator for backend tensors, an opt-in shrink/grow `reconfigure()` path, legacy-matching errors, and windows and reconfiguration on ROCm ([#192854](https://github.com/pytorch/pytorch/pull/192854), [#192855](https://github.com/pytorch/pytorch/pull/192855), [#199240](https://github.com/pytorch/pytorch/pull/199240), [#194953](https://github.com/pytorch/pytorch/pull/194953), [#193282](https://github.com/pytorch/pytorch/pull/193282), [#194774](https://github.com/pytorch/pytorch/pull/194774))
+- Extend the new NCCL backend: collective runtime estimation, the NCCL allocator for backend tensors, an opt-in shrink/grow `reconfigure()` path, legacy-matching errors, and windows and reconfiguration on ROCm ([#192854](https://github.com/pytorch/pytorch/pull/192854), [#192855](https://github.com/pytorch/pytorch/pull/192855), [#199240](https://github.com/pytorch/pytorch/pull/199240), [#194953](https://github.com/pytorch/pytorch/pull/194953), [#193282](https://github.com/pytorch/pytorch/pull/193282), [#194774](https://github.com/pytorch/pytorch/pull/194774))
 - Add a `comm_ptr` property returning the `ncclComm_t` on all NCCL backends ([#197558](https://github.com/pytorch/pytorch/pull/197558), [#198865](https://github.com/pytorch/pytorch/pull/198865))
 - Support `ReduceOp.PREMUL_SUM` in functional `all_reduce` and under `LocalTensorMode`, and backward for `MIN`/`MAX` ([#190942](https://github.com/pytorch/pytorch/pull/190942), [#193868](https://github.com/pytorch/pytorch/pull/193868), [#191947](https://github.com/pytorch/pytorch/pull/191947))
 - Stop emitting a `FutureWarning` from `all_gather_into_tensor` and `reduce_scatter_tensor` ([#193874](https://github.com/pytorch/pytorch/pull/193874))
 - Allow a CPU `device_id` in `init_process_group` ([#198340](https://github.com/pytorch/pytorch/pull/198340))
 - Add `TORCH_NCCL_TEARDOWN_ON_TIMEOUT` to terminate on a legacy NCCL timeout instead of hanging ([#196187](https://github.com/pytorch/pytorch/pull/196187))
-- Record the flight recorder for backends without built-in support (`nccl2`, MPI, UCC) and dump it on `nccl2` health-check failures ([#192233](https://github.com/pytorch/pytorch/pull/192233), [#199092](https://github.com/pytorch/pytorch/pull/199092))
+- Record the flight recorder for backends without built-in support (the new NCCL backend, MPI, UCC) and dump it on new NCCL backend health-check failures ([#192233](https://github.com/pytorch/pytorch/pull/192233), [#199092](https://github.com/pytorch/pytorch/pull/199092))
 - Support the symmetric memory `MemPool` on XPU ([#197065](https://github.com/pytorch/pytorch/pull/197065))
 - Add an expert-major receive layout and zero-copy dispatch/combine to the experimental token-switch MoE dispatch API ([#187784](https://github.com/pytorch/pytorch/pull/187784), [#187785](https://github.com/pytorch/pytorch/pull/187785))
 - Pass timeout and `enable_reconfigure` to dynamically created TorchComms communicators ([#199099](https://github.com/pytorch/pytorch/pull/199099))
 ### bug fixes
-- Fix `nccl2` lifetime bugs: a crash or hang when `Work` outlives `destroy_process_group()`, tensors kept alive after `wait_tensor`, a stray CUDA context on GPU 0, failed nonblocking splits treated as ready, and errors destroying a group used in CUDA graphs ([#195485](https://github.com/pytorch/pytorch/pull/195485), [#193239](https://github.com/pytorch/pytorch/pull/193239), [#198339](https://github.com/pytorch/pytorch/pull/198339), [#199263](https://github.com/pytorch/pytorch/pull/199263), [#199226](https://github.com/pytorch/pytorch/pull/199226))
-- Fix the flight recorder not attaching to `nccl` groups that use `nccl2` ([#192858](https://github.com/pytorch/pytorch/pull/192858))
+- Fix new NCCL backend lifetime bugs: a crash or hang when `Work` outlives `destroy_process_group()`, tensors kept alive after `wait_tensor`, a stray CUDA context on GPU 0, failed nonblocking splits treated as ready, and errors destroying a group used in CUDA graphs ([#195485](https://github.com/pytorch/pytorch/pull/195485), [#193239](https://github.com/pytorch/pytorch/pull/193239), [#198339](https://github.com/pytorch/pytorch/pull/198339), [#199263](https://github.com/pytorch/pytorch/pull/199263), [#199226](https://github.com/pytorch/pytorch/pull/199226))
+- Fix the flight recorder not attaching to `nccl` groups that use the new NCCL backend ([#192858](https://github.com/pytorch/pytorch/pull/192858))
 - Fix single-rank legacy NCCL `reduce_scatter` dropping the `PREMUL_SUM` factor ([#198961](https://github.com/pytorch/pytorch/pull/198961))
 - Fix all-zero gradients from coalesced functional collectives under `torch.compile` ([#196077](https://github.com/pytorch/pytorch/pull/196077))
 - Fix functional `all_gather_single` with a negative `gather_dim` ([#194865](https://github.com/pytorch/pytorch/pull/194865))
@@ -107,12 +106,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix a clang build error and add `amd_smi` as a ROCm 7.14+ build dependency ([#194104](https://github.com/pytorch/pytorch/pull/194104), [#192520](https://github.com/pytorch/pytorch/pull/192520))
 - Add the private `torch.distributed._functional_collectives.wait_tensors`, which waits on all outputs of a multi-output functional collective at once; `torch.compile` uses it for coalesced collectives and `batch_isend_irecv` ([#193892](https://github.com/pytorch/pytorch/pull/193892))
 ### not user facing
-- Prepare for the `nccl2` default switch: force `nccl-legacy` for internal builds, run legacy-only tests with `nccl-legacy`, and configure test timeouts through the `ProcessGroup` API ([#193221](https://github.com/pytorch/pytorch/pull/193221), [#193240](https://github.com/pytorch/pytorch/pull/193240), [#193238](https://github.com/pytorch/pytorch/pull/193238))
-- Refactor `nccl2` `Work` completion state, completion hooks and input tensor ownership ahead of the lifetime fixes listed above ([#194830](https://github.com/pytorch/pytorch/pull/194830), [#194831](https://github.com/pytorch/pytorch/pull/194831), [#194832](https://github.com/pytorch/pytorch/pull/194832))
-- Initialize the backend group UID in the `nccl2` constructor, fixing a symmetric-memory rendezvous regression caused by eager initialization (#192895) in this release ([#194935](https://github.com/pytorch/pytorch/pull/194935))
+- Prepare for the new NCCL backend default switch: force `nccl-legacy` for internal builds, run legacy-only tests with `nccl-legacy`, and configure test timeouts through the `ProcessGroup` API ([#193221](https://github.com/pytorch/pytorch/pull/193221), [#193240](https://github.com/pytorch/pytorch/pull/193240), [#193238](https://github.com/pytorch/pytorch/pull/193238))
+- Refactor the new NCCL backend's `Work` completion state, completion hooks and input tensor ownership ahead of the lifetime fixes listed above ([#194830](https://github.com/pytorch/pytorch/pull/194830), [#194831](https://github.com/pytorch/pytorch/pull/194831), [#194832](https://github.com/pytorch/pytorch/pull/194832))
+- Initialize the backend group UID in the new NCCL backend constructor, fixing a symmetric-memory rendezvous regression caused by eager initialization (#192895) in this release ([#194935](https://github.com/pytorch/pytorch/pull/194935))
 - Factor TorchComms backend creation into a reusable helper ([#197616](https://github.com/pytorch/pytorch/pull/197616))
 - Replace raw C++ `throw`s with `TORCH_CHECK`-family macros in `torch/csrc/distributed` while keeping the same Python exception types ([#193612](https://github.com/pytorch/pytorch/pull/193612), [#195149](https://github.com/pytorch/pytorch/pull/195149), [#195763](https://github.com/pytorch/pytorch/pull/195763))
 - Code cleanups: `fmap`/`filter` rvalue overloads, range-based for loops, and comment/docstring typo fixes ([#194929](https://github.com/pytorch/pytorch/pull/194929), [#196097](https://github.com/pytorch/pytorch/pull/196097), [#193967](https://github.com/pytorch/pytorch/pull/193967))
 - Fix a threaded process group teardown crash in the test utilities ([#196786](https://github.com/pytorch/pytorch/pull/196786))
 - Test fixes: hardcoded rendezvous ports, ROCm NaN-check tests, and the ROCm torchcomms test harness ([#195994](https://github.com/pytorch/pytorch/pull/195994), [#197885](https://github.com/pytorch/pytorch/pull/197885), [#196907](https://github.com/pytorch/pytorch/pull/196907))
+- Add an `nccl4py` backend (`init_process_group(backend="nccl4py")`), a Python-only NCCL backend built on the `nccl4py` bindings ([#191703](https://github.com/pytorch/pytorch/pull/191703), [#196331](https://github.com/pytorch/pytorch/pull/196331), [#198000](https://github.com/pytorch/pytorch/pull/198000), [#195766](https://github.com/pytorch/pytorch/pull/195766)) (removed by PoC)
 ### security
