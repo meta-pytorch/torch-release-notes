@@ -54,7 +54,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   - `dist.get_backend_impl(...)` returns a `ProcessGroupNCCL2`, so `isinstance(..., ProcessGroupNCCL)` is `False` and legacy-only methods such as `comm_split_count()` are missing.
   - An async `all_gather`'s `work.get_future()` value is the list of per-rank outputs, not a one-element list holding a stacked tensor.
 
-  To restore the old behavior, set `TORCH_DIST_USE_NCCL2=0` on every rank or use `nccl-legacy`:
+  To restore the old behavior, set `TORCH_DIST_USE_NCCL2=0` on every rank before creating the process group, or use `nccl-legacy`:
 
   Version 2.14:
   ```python
@@ -98,6 +98,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### performance
 - Speed up `all_gather_object` ([#196185](https://github.com/pytorch/pytorch/pull/196185))
 - Share the parent `Store` connection across `split_group` child groups ([#196665](https://github.com/pytorch/pytorch/pull/196665))
+- Use the NVLS multicast (multimem) barrier for CUDA symmetric memory when a multicast mapping is available ([#192861](https://github.com/pytorch/pytorch/pull/192861))
 ### docs
 - Add a tutorial for the distributed debug server ([#178800](https://github.com/pytorch/pytorch/pull/178800))
 - Document `Backend.Options` and fix `irecv` and NCCL env var docs ([#196123](https://github.com/pytorch/pytorch/pull/196123), [#189623](https://github.com/pytorch/pytorch/pull/189623), [#194701](https://github.com/pytorch/pytorch/pull/194701))
@@ -114,5 +115,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Code cleanups: `fmap`/`filter` rvalue overloads, range-based for loops, and comment/docstring typo fixes ([#194929](https://github.com/pytorch/pytorch/pull/194929), [#196097](https://github.com/pytorch/pytorch/pull/196097), [#193967](https://github.com/pytorch/pytorch/pull/193967))
 - Fix a threaded process group teardown crash in the test utilities ([#196786](https://github.com/pytorch/pytorch/pull/196786))
 - Test fixes: hardcoded rendezvous ports, ROCm NaN-check tests, and the ROCm torchcomms test harness ([#195994](https://github.com/pytorch/pytorch/pull/195994), [#197885](https://github.com/pytorch/pytorch/pull/197885), [#196907](https://github.com/pytorch/pytorch/pull/196907))
-- Use the NVLS multicast (multimem) barrier for CUDA symmetric memory when a multicast mapping is available ([#192861](https://github.com/pytorch/pytorch/pull/192861)) (cut for length)
 ### security

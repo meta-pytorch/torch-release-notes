@@ -58,6 +58,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### docs
 - Fix the `EtcdServer` example and `Worker` docstring ([#198238](https://github.com/pytorch/pytorch/pull/198238), [#199255](https://github.com/pytorch/pytorch/pull/199255))
 ### devs
-### Untopiced
 ### not user facing
 ### security
