@@ -4,7 +4,10 @@ Use this template when drafting a release blog. It mirrors the
 structure of <https://pytorch.org/blog/pytorch-2-13-release-blog/>.
 
 **Verify against the latest published post before drafting.** The
-format drifts between releases; this file records it as of 2.13.
+format drifts between releases; this file records it as of 2.13, with
+the changes 2.14 introduced (an `### MPS (Apple Silicon)` subsection and
+a version table under Non-Feature Updates) and the 2.15 release
+manager's edits to the draft.
 
 ## Template
 
@@ -82,6 +85,11 @@ API Unstable
 #### <Entry title>
 ...
 
+### MPS (Apple Silicon)
+
+#### <Entry title>
+...
+
 ### XPU (Intel GPUs)
 
 #### <Entry title>
@@ -102,6 +110,15 @@ API Unstable
 - **<Change>.** <What to do instead.> See [#<PR>](...).
 
 ## Non-Feature Updates
+
+| Component | <PREV> | <VERSION> |
+|---|---|---|
+| CUDA | <advertised versions> | <advertised versions> |
+| Default wheel | CUDA <x.y> | CUDA <x.y> |
+| ROCm | <versions> | <versions> |
+| Python | <range, incl. free-threaded> | <range, incl. free-threaded> |
+| Triton | <version> | <version> |
+| cuDNN | <version> | <version> |
 
 - **Python support**: <changes>. See [#<PR>](...).
 - **CUDA**: <default build, versions added/removed>. See [#<PR>](...).
@@ -175,8 +192,8 @@ Top-level sections, in the order 2.13 used them:
 8. Non-Feature Updates
 
 Backend subsections under Platform Features and Updates: CUDA, ROCm,
-Arm, XPU (Intel GPUs), C++ ABI. Use `###` for the backend and `####`
-for entries beneath it.
+Arm, MPS (Apple Silicon), XPU (Intel GPUs), C++ ABI. Use `###` for the
+backend and `####` for entries beneath it.
 
 Placement notes worth remembering:
 
@@ -187,16 +204,25 @@ Placement notes worth remembering:
   Compilation and Export. 2.13 filed the CuTeDSL Inductor backend
   under CUDA.
 - Release-engineering items that ship a feature (e.g. Python 3.15
-  wheels) can be a **Core Features** entry; pure version bumps belong
-  in Non-Feature Updates.
+  wheels, a new default CUDA version) can be a **Core Features** entry;
+  pure version bumps belong in Non-Feature Updates. Give such entries a
+  plain heading ("CUDA 13.2 by Default and CUDA 13.4 Wheels"), with no
+  "– Release Engineering" suffix, and no Installation or packaging/sdist
+  subsections. The 2.15 release manager removed all three from the draft.
 
 ## Things to avoid
 
 - **Don't use retired designations.** No Stable, Beta or Prototype.
 - **Don't put designations in headings.** They are body text.
 - **Don't skip attribution.** Every entry ends with `(PR #NNN by Name,
-  Company)`. Worksheets have no author data, so fetch it from the API
-  and leave a TODO to convert handles to names.
+  Company)`. Worksheets have no author data. Resolve names and
+  affiliations as SKILL.md's Attribution section describes (previous
+  blog, then commit email, then GitHub profile), and mark the rest
+  `TODO(affiliation)`. Never leave raw `@handle`s.
+- **Don't use internal code names in prose.** Follow the previous
+  post's terminology ("the rewritten NCCL backend", not `nccl2`).
+- **Don't advertise versions the release doesn't publish.** A version can
+  be in the build matrix and still not be offered (CUDA 13.0 in 2.15).
 - **Don't invent speedup numbers.** Only cite numbers that appear in
   the PR body or on a linked dashboard. If a number comes from a PR
   title, say so.
