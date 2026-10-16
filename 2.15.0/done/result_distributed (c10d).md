@@ -47,14 +47,18 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - The `nccl` backend now uses a rewritten, cleaned-up NCCL implementation by default ([#192281](https://github.com/pytorch/pytorch/pull/192281), [#192895](https://github.com/pytorch/pytorch/pull/192895), [#193237](https://github.com/pytorch/pytorch/pull/193237), [#193241](https://github.com/pytorch/pytorch/pull/193241))
 
-  `backend="nccl"` (also the default CUDA backend of `init_process_group()`) now creates the new implementation. The legacy implementation is available as `backend="nccl-legacy"`. Differences:
+  `backend="nccl"` (also the default CUDA backend of `init_process_group()`) now creates the new implementation. The legacy implementation is available as `backend="nccl-legacy"` for this release only: **`nccl-legacy` and `TORCH_DIST_USE_NCCL2=0` will be removed in the next release**, so migrate to `nccl` or `nccl-lazy`.
 
-  - Communicators are created eagerly in `init_process_group()`/`new_group()`, allocating GPU memory even for unused groups (`nccl-lazy` creates them on demand).
+  Use `nccl` (eager initialization) by default. Use `nccl-lazy` when you need independent point-to-point communicators: collectives run on one eagerly created communicator, and each send/recv peer pair gets its own lazily created communicator and stream, so concurrent P2P to different peers can overlap (as in the legacy backend).
+
+  Differences from the legacy backend:
+
+  - Communicators are created eagerly in `init_process_group()`/`new_group()`, allocating GPU memory even for unused groups.
   - Each group is bound to one CUDA device: `device_id`, else `LOCAL_RANK % torch.cuda.device_count()` (or the global rank modulo the device count); `torch.cuda.set_device()` is not used. Tensors on another GPU fail with `Expected tensor on cuda:X but found tensor on cuda:Y` or `ProcessGroupNCCL is bound to device cuda:X but an operation was issued on cuda:Y`. Pass `device_id` if needed; several GPUs per process requires `nccl-legacy`.
   - `dist.get_backend_impl(...)` returns the new backend class, so `isinstance(..., ProcessGroupNCCL)` is `False` and legacy-only methods such as `comm_split_count()` are missing.
   - An async `all_gather`'s `work.get_future()` value is the list of per-rank outputs, not a one-element list holding a stacked tensor.
 
-  To restore the legacy behavior, set `TORCH_DIST_USE_NCCL2=0` on every rank before creating the process group, or use `nccl-legacy`:
+  To temporarily restore the legacy behavior in 2.15, set `TORCH_DIST_USE_NCCL2=0` on every rank before creating the process group, or use `nccl-legacy`:
 
   Version 2.14:
   ```python
@@ -64,7 +68,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   Version 2.15:
   ```python
   dist.init_process_group("nccl", device_id=torch.device("cuda", local_rank))  # new implementation
-  dist.init_process_group("nccl-legacy")  # legacy implementation
+  dist.init_process_group("nccl-lazy", device_id=torch.device("cuda", local_rank))  # independent P2P communicators
+  dist.init_process_group("nccl-legacy")  # legacy implementation, removed in the next release
   ```
 ### deprecation
 ### new features
