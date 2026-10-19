@@ -45,7 +45,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## xpu
 ### bc breaking
-- Remove the `allocator` property from `torch.xpu.MemPool`, matching `torch.cuda.MemPool` ([#192041](https://github.com/pytorch/pytorch/pull/192041))
+- Remove the `allocator` property from `torch.xpu.MemPool`, aligning with other accelerators ([#192041](https://github.com/pytorch/pytorch/pull/192041))
 
   `torch.xpu.MemPool` no longer exposes the allocator it was constructed with, so `pool.allocator` now raises `AttributeError`. Keep your own reference to the allocator instead; passing one to the `MemPool` constructor is unchanged.
 
