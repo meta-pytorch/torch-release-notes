@@ -51,6 +51,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 ### bug fixes
 ### performance
+- Prefer the cuDNN backend for SDPA on sm86/sm89 for higher performance ([#192799](https://github.com/pytorch/pytorch/pull/192799))
 ### docs
 ### devs
 ### Untopiced
