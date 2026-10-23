@@ -61,7 +61,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 - `torch.compiler.precompile` is now a module instead of a callable; capture with `torch.compiler.precompile.capture(...)` and reload with `torch.compiler.precompile.load(...)` ([#197993](https://github.com/pytorch/pytorch/pull/197993), [#198135](https://github.com/pytorch/pytorch/pull/198135), [#198213](https://github.com/pytorch/pytorch/pull/198213))
 
-  Calling `torch.compiler.precompile(fn, *example_inputs)` now raises `TypeError: 'module' object is not callable`. `capture(fn, *, artifact_path, cache_path)` returns a context manager that you call once inside the `with` block; it writes both files on exit, and `load` now takes those paths. `decompositions=` moves to `tracer=MakeFxTracer(decompositions=...)`.
+  Calling `torch.compiler.precompile(fn, *example_inputs)` now raises `TypeError: 'module' object is not callable`. `capture(fn, *, artifact_path, cache_path)` returns a context manager that you call once inside the `with` block; it writes both files when the block exits cleanly (or on `cap.save()`), and `load` now takes those paths. `decompositions=` moves to `tracer=MakeFxTracer(decompositions=...)`.
 
   Version 2.14:
   ```python
@@ -92,7 +92,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 - Deprecate the no-op `torch._inductor.config.use_mixed_mm` and `torch._inductor.config.mixed_mm_choice` settings ([#193721](https://github.com/pytorch/pytorch/pull/193721))
 
-  These settings have been ignored since the tuned `mixed_mm` path was removed. Reading or setting either now emits a one-time `FutureWarning` such as `torch._inductor.config.use_mixed_mm is deprecated and does not do anything`. The `mixed_mm` AutoHeuristic options were removed. Delete these settings from your code.
+  These settings have been ignored since the tuned `mixed_mm` path was removed. Reading or setting either now emits a one-time `FutureWarning` such as `torch._inductor.config.use_mixed_mm is deprecated and does not do anything`. `autoheuristic_collect.mixed_mm` and `autoheuristic_use.mixed_mm` were removed, and `"mixed_mm"` is no longer the `TORCHINDUCTOR_AUTOHEURISTIC_USE` default. Delete these settings from your code.
 
   Version 2.14:
   ```python

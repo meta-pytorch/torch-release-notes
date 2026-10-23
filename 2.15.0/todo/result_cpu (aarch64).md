@@ -49,7 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
   Bit-for-bit comparisons against earlier releases (golden files, `torch.equal`, `assert_close` with `rtol=0, atol=0`) may fail; default `assert_close` tolerances are unaffected. There is no switch back; for tighter accuracy, compute in float64 and cast back.
   ```python
-  x.cos()  # 2.14: correctly rounded; 2.15: may be 1 ULP off
+  x.cos()  # 2.14: within 1 ULP; 2.15: within 2 ULP
   x.double().cos().float()  # correctly rounded
   ```
 ### deprecation

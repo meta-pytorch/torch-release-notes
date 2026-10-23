@@ -61,7 +61,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 - On CUDA, cuBLAS and cuBLASLt workspaces are now allocated for each operation instead of being cached per handle and stream ([#194311](https://github.com/pytorch/pytorch/pull/194311))
 
-  Graphs captured separately on one stream could share the cached workspace and fail on replay with `CUDA error: an illegal memory access was encountered`. Workspaces are now freed after each op, so `torch.cuda.memory_allocated()` excludes them and the handle from `torch.cuda.current_blas_handle()` has no ATen workspace attached. Set `TORCH_CUBLAS_WORKSPACE_CACHE=1` to restore caching (unsafe with multiple graphs on one stream). ROCm has a matching change ([#196920](https://github.com/pytorch/pytorch/pull/196920)).
+  Graphs captured separately on one stream could share the cached workspace and fail on replay with `CUDA error: an illegal memory access was encountered`. Workspaces are now freed after each op, so `torch.cuda.memory_allocated()` excludes them and the handle from `torch.cuda.current_blas_handle()` has no ATen workspace attached. Set `TORCH_CUBLAS_WORKSPACE_CACHE=1` to restore caching (unsafe with multiple graphs on one stream). `TORCH_CUBLASLT_UNIFIED_WORKSPACE` now only takes effect with caching enabled. ROCm has a matching change ([#196920](https://github.com/pytorch/pytorch/pull/196920)).
 
   Version 2.14:
   ```python
