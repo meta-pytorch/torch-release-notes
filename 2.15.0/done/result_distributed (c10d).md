@@ -56,7 +56,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   - Communicators are created eagerly in `init_process_group()`/`new_group()`, allocating GPU memory even for unused groups.
   - Each group is bound to one CUDA device: `device_id`, else `LOCAL_RANK % torch.cuda.device_count()` (or the global rank modulo the device count); `torch.cuda.set_device()` is not used. Tensors on another GPU fail with `Expected tensor on cuda:X but found tensor on cuda:Y` or `ProcessGroupNCCL is bound to device cuda:X but an operation was issued on cuda:Y`. Pass `device_id` if needed; several GPUs per process requires `nccl-legacy`.
   - `dist.get_backend_impl(...)` returns the new backend class, so `isinstance(..., ProcessGroupNCCL)` is `False` and legacy-only methods such as `comm_split_count()` are missing.
-  - An async `all_gather`'s `work.get_future()` value is the list of per-rank outputs, not a one-element list holding a stacked tensor.
+  - An async `all_gather`'s `work.get_future()` value is the list of per-rank outputs, not a one-element list holding a stacked tensor; read the output list passed to `all_gather` instead (works on both backends).
 
   To temporarily restore the legacy behavior in 2.15, set `TORCH_DIST_USE_NCCL2=0` on every rank before creating the process group, or use `nccl-legacy`:
 

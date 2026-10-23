@@ -47,7 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - Ops undefined for complex inputs now raise `TypeError` instead of `RuntimeError`, and ops not yet implemented for them raise `NotImplementedError` ([#192350](https://github.com/pytorch/pytorch/pull/192350))
 
-  Order-dependent ops (`sort`, `topk`, `argmax`, `max`/`min` with `dim`, etc.), `isposinf`/`isneginf`, and `view_as_real`/`imag`/`view_as_complex` on wrong dtypes now raise `TypeError`, matching Python (`1j < 2j`). `except RuntimeError:` no longer catches the `TypeError` cases; catch `(RuntimeError, TypeError)`.
+  Order-dependent ops (`sort`, `topk`, `argmax`, `max`/`min` with `dim`, etc.; not full `max()`/`min()`/`amax`/`amin`), `isposinf`/`isneginf`, `view_as_real`/`imag` on real tensors and `view_as_complex` on complex tensors now raise `TypeError`, matching Python (`1j < 2j`). `except RuntimeError:` no longer catches the `TypeError` cases; catch `(RuntimeError, TypeError)`.
 
   ```python
   torch.sort(torch.randn(3, dtype=torch.cfloat))
