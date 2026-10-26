@@ -96,6 +96,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix an abort in the XPU flash attention backward with an empty batch, and return BSHD-contiguous input gradients from the XPU efficient attention backward ([#198200](https://github.com/pytorch/pytorch/pull/198200))
 - Fix `weight_norm` running out of memory for 1-D inputs on XPU, and a host-to-device metadata race in nested `_transform_bias_rescale_qkv` ([#200289](https://github.com/pytorch/pytorch/pull/200289))
 - Fix RNG stream reuse for large tensors on XPU ([#200289](https://github.com/pytorch/pytorch/pull/200289))
+- Fix Inductor treating every XPU kernel that uses scratch memory as spilling registers ([#197061](https://github.com/pytorch/pytorch/pull/197061))
 
 ### performance
 - Speed up SDPA training on XPU by aligning the oneDNN graph SDPA pattern with oneDNN v3.13 and integrating its GQA and dropout support ([#195419](https://github.com/pytorch/pytorch/pull/195419))

@@ -118,6 +118,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Avoid CPU-GPU synchronization when assigning scalars through indexing on CUDA, e.g. `x[mask] = 1.0` ([#189303](https://github.com/pytorch/pytorch/pull/189303), [#188330](https://github.com/pytorch/pytorch/pull/188330), [#198811](https://github.com/pytorch/pytorch/pull/198811))
 - Speed up CUDA `upsample_linear1d` by 5-25x for small outputs ([#180885](https://github.com/pytorch/pytorch/pull/180885)), pooling backward ([#191086](https://github.com/pytorch/pytorch/pull/191086), [#195119](https://github.com/pytorch/pytorch/pull/195119), [#196156](https://github.com/pytorch/pytorch/pull/196156)), dtype-conversion copies ([#195542](https://github.com/pytorch/pytorch/pull/195542), [#198723](https://github.com/pytorch/pytorch/pull/198723)), 2D transpose copies ([#194310](https://github.com/pytorch/pytorch/pull/194310)), and `zero_` ([#195303](https://github.com/pytorch/pytorch/pull/195303), [#198565](https://github.com/pytorch/pytorch/pull/198565))
 - `torch.topk` on CUDA 13 Linux wheels uses ahead-of-time compiled radix-select kernels on Hopper and Blackwell (median 2.16x on H100) ([#190899](https://github.com/pytorch/pytorch/pull/190899))
+- Fix a 10-30x slowdown of `gather`, `index_select`, `x[idx]` and `scatter_add` on rows of 16 or 32 bytes ([#200995](https://github.com/pytorch/pytorch/pull/200995))
 ### docs
 ### devs
 - Update the bundled CUTLASS to v4.8.0 and CUTLASS-Operators to v0.3.0 ([#198179](https://github.com/pytorch/pytorch/pull/198179))

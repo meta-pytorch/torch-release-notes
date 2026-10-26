@@ -49,6 +49,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 - Added `torch::stable::sort` to the stable ABI ([#198038](https://github.com/pytorch/pytorch/pull/198038))
 - Made more `c10/util` helpers available header-only under `torch/headeronly/util` ([#194673](https://github.com/pytorch/pytorch/pull/194673), [#194781](https://github.com/pytorch/pytorch/pull/194781))
+- Add stable ABI conversions for `torch.dtype`/`torch.device` Python objects and a `torch::stable::is_tensor_pyobject` check ([#192774](https://github.com/pytorch/pytorch/pull/192774))
 ### improvements
 - Added support for no-GIL-compatible inline C++ extensions ([#196802](https://github.com/pytorch/pytorch/pull/196802))
 - Added check for compatible `TORCH_TARGET_VERSION` and `libtorch` headers ([#193962](https://github.com/pytorch/pytorch/pull/193962))

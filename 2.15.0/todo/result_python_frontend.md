@@ -108,6 +108,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `Tensor.__dlpack__` exporting tensors on a non-current non-CUDA device ([#195721](https://github.com/pytorch/pytorch/pull/195721))
 - Fix `torch.isinf`/`isfinite` raising for fp8 dtypes without infinity ([#197444](https://github.com/pytorch/pytorch/pull/197444))
 - Fix `FlopCounterMode` for CPU flash attention and nested attention backward ([#195801](https://github.com/pytorch/pytorch/pull/195801), [#196461](https://github.com/pytorch/pytorch/pull/196461))
+- Fix `torch.isfinite` reporting NaN as finite for `float8_e8m0fnu` ([#199878](https://github.com/pytorch/pytorch/pull/199878))
 ### performance
 - Reduce `TensorIterator` overhead and dtype refcount contention under free-threading ([#194422](https://github.com/pytorch/pytorch/pull/194422), [#194371](https://github.com/pytorch/pytorch/pull/194371))
 ### docs
@@ -125,3 +126,4 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### security
 - Fix `torch.load(weights_only=True)` exposing uninitialized pybind11-backed objects (such as DTensor placements) when a checkpoint uses the `NEWOBJ` opcode without a matching `BUILD`; such checkpoints are now rejected as corrupt or malicious ([#194647](https://github.com/pytorch/pytorch/pull/194647))
 - Fix a stack buffer overflow in `torch_shm_manager` (libshm) when the Unix socket path is too long (e.g. a long `TMPDIR`); it now raises an error ([#195183](https://github.com/pytorch/pytorch/pull/195183))
+- After `import torch.distributed`, `torch.load(weights_only=True)` and `get_unsafe_globals_in_checkpoint` no longer treat builtin exceptions as safe globals (a process-wide allowlist added in 2.14), and loading no longer calls overridden `append`/`extend` on allowlisted `list` subclasses. Checkpoints with pickled exceptions now need `torch.serialization.add_safe_globals`; object collectives are unchanged ([#200956](https://github.com/pytorch/pytorch/pull/200956))
