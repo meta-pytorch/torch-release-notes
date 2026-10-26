@@ -8,8 +8,8 @@
 - [Bug fixes](#bug-fixes)
 - [Performance](#performance)
 - [Documentation](#documentation)
-- [Developers](#developers)
 - [Security](#security)
+- [Developers](#developers)
 
 # Highlights
 
@@ -21,554 +21,554 @@ For more details about these highlighted features, you can look at the release b
 
 ## Python Frontend
 
-- `import torch` can no longer be re-executed in the same process, including via `importlib.reload(torch)` ([#194654](https://github.com/pytorch/pytorch/pull/194654))
+### `import torch` can no longer be re-executed in the same process, including via `importlib.reload(torch)` ([#194654](https://github.com/pytorch/pytorch/pull/194654))
 
-  `importlib.reload(torch)` and `del sys.modules["torch"]` + re-import now raise, as does retrying `import torch` after it failed. Re-running the module body was already unsafe in exactly the same way as the retry, so the new check does not distinguish the two. Normal use is unaffected: a successful import leaves `torch` in `sys.modules` so the body never re-runs, and re-entrant imports from a backend extension during autoload still short-circuit on `sys.modules` without reaching the check.
+`importlib.reload(torch)` and `del sys.modules["torch"]` + re-import now raise, as does retrying `import torch` after it failed. Re-running the module body was already unsafe in exactly the same way as the retry, so the new check does not distinguish the two. Normal use is unaffected: a successful import leaves `torch` in `sys.modules` so the body never re-runs, and re-entrant imports from a backend extension during autoload still short-circuit on `sys.modules` without reaching the check.
 
-  Version 2.14:
-  ```python
-  import importlib
-  import torch
+Version 2.14:
+```python
+import importlib
+import torch
 
-  importlib.reload(torch)
-  # RuntimeError: Only a single TORCH_LIBRARY can be used to register the namespace triton; ...
-  # (re-importing after a failed `import torch` failed with similarly misleading errors or could segfault)
-  ```
+importlib.reload(torch)
+# RuntimeError: Only a single TORCH_LIBRARY can be used to register the namespace triton; ...
+# (re-importing after a failed `import torch` failed with similarly misleading errors or could segfault)
+```
 
-  Version 2.15:
-  ```python
-  import importlib
-  import torch
+Version 2.15:
+```python
+import importlib
+import torch
 
-  importlib.reload(torch)
-  # ImportError: `torch` can only be initialized once per process, so this module cannot
-  # be imported again: neither via `importlib.reload(torch)`, nor by re-importing after
-  # a failed `import torch`.
-  ```
+importlib.reload(torch)
+# ImportError: `torch` can only be initialized once per process, so this module cannot
+# be imported again: neither via `importlib.reload(torch)`, nor by re-importing after
+# a failed `import torch`.
+```
 
-- Nested tensors are no longer allowlisted for `torch.load(..., weights_only=True)` ([#194380](https://github.com/pytorch/pytorch/pull/194380))
+### Nested tensors are no longer allowlisted for `torch.load(..., weights_only=True)` ([#194380](https://github.com/pytorch/pytorch/pull/194380))
 
-  Nested jagged and strided nested tensors are no longer on the default `weights_only` allowlist. Loading a checkpoint that contains one with `weights_only=True` (the default) now fails with `Unsupported global: GLOBAL torch.nested._internal.nested_tensor._rebuild_njt was not an allowed global by default` (or `GLOBAL torch._utils._rebuild_nested_tensor` for strided nested tensors). To load checkpoints containing nested tensors, allow them explicitly with `torch.serialization.safe_globals` (see below), or use `weights_only=False` for trusted files.
+Nested jagged and strided nested tensors are no longer on the default `weights_only` allowlist. Loading a checkpoint that contains one with `weights_only=True` (the default) now fails with `Unsupported global: GLOBAL torch.nested._internal.nested_tensor._rebuild_njt was not an allowed global by default` (or `GLOBAL torch._utils._rebuild_nested_tensor` for strided nested tensors). To load checkpoints containing nested tensors, allow them explicitly with `torch.serialization.safe_globals` (see below), or use `weights_only=False` for trusted files.
 
-  Version 2.14:
-  ```python
-  loaded = torch.load("njt.pt", weights_only=True)  # works
-  ```
+Version 2.14:
+```python
+loaded = torch.load("njt.pt", weights_only=True)  # works
+```
 
-  Version 2.15:
-  ```python
-  from torch.nested._internal.nested_tensor import _rebuild_njt, NestedTensor
-  with torch.serialization.safe_globals([_rebuild_njt, NestedTensor]):
-      loaded = torch.load("njt.pt", weights_only=True)
-  ```
+Version 2.15:
+```python
+from torch.nested._internal.nested_tensor import _rebuild_njt, NestedTensor
+with torch.serialization.safe_globals([_rebuild_njt, NestedTensor]):
+    loaded = torch.load("njt.pt", weights_only=True)
+```
 
-- Operators called through `torch.ops.*` and `torch._C._dispatch_call_boxed` now use PyTorch's own warning and exception translation instead of pybind11's ([#193451](https://github.com/pytorch/pytorch/pull/193451))
+### Operators called through `torch.ops.*` and `torch._C._dispatch_call_boxed` now use PyTorch's own warning and exception translation instead of pybind11's ([#193451](https://github.com/pytorch/pytorch/pull/193451))
 
-  We make `torch.ops.*` calls go through the same exception and warning translation as the rest of the library. This means that some exception translation that used to be handled by pybind is now handled natively. User-defined pybind exception translation is thus lost. Restoring it may be done in a future release as part of a broader exception handler improvement.
+We make `torch.ops.*` calls go through the same exception and warning translation as the rest of the library. This means that some exception translation that used to be handled by pybind is now handled natively. User-defined pybind exception translation is thus lost. Restoring it may be done in a future release as part of a broader exception handler improvement.
 
-  In addition, `TORCH_WARN` warnings from these operators now reach Python's `warnings` module, so they raise when warnings are turned into errors (`-W error`). `std::out_of_range` still becomes `IndexError` ([#195713](https://github.com/pytorch/pytorch/pull/195713)).
+In addition, `TORCH_WARN` warnings from these operators now reach Python's `warnings` module, so they raise when warnings are turned into errors (`-W error`). `std::out_of_range` still becomes `IndexError` ([#195713](https://github.com/pytorch/pytorch/pull/195713)).
 
-  Version 2.14:
+Version 2.14:
 
-  ```python
-  # C++ op: throw std::invalid_argument("bad size");
-  try:
-      torch.ops.my_lib.my_op(x)
-  except ValueError:  # pybind11 translation
-      ...
-  ```
+```python
+# C++ op: throw std::invalid_argument("bad size");
+try:
+    torch.ops.my_lib.my_op(x)
+except ValueError:  # pybind11 translation
+    ...
+```
 
-  Version 2.15:
+Version 2.15:
 
-  ```python
-  # C++ op: TORCH_CHECK_VALUE(false, "bad size");
-  try:
-      torch.ops.my_lib.my_op(x)
-  except ValueError:
-      ...
+```python
+# C++ op: TORCH_CHECK_VALUE(false, "bad size");
+try:
+    torch.ops.my_lib.my_op(x)
+except ValueError:
+    ...
 
-  # TORCH_WARN from the op is now a Python warning
-  with warnings.catch_warnings():
-      warnings.simplefilter("ignore")
-      torch.ops.my_lib.my_op(x)
-  ```
+# TORCH_WARN from the op is now a Python warning
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    torch.ops.my_lib.my_op(x)
+```
 
 ## Autograd
 
-- Selective activation checkpointing now saves, rather than recomputes, the outputs of operators with an ordered effect unless the policy returns `CheckpointPolicy.MUST_RECOMPUTE` ([#196956](https://github.com/pytorch/pytorch/pull/196956))
+### Selective activation checkpointing now saves, rather than recomputes, the outputs of operators with an ordered effect unless the policy returns `CheckpointPolicy.MUST_RECOMPUTE` ([#196956](https://github.com/pytorch/pytorch/pull/196956))
 
-  In eager mode, if a `create_selective_checkpoint_contexts` policy returns `PREFER_RECOMPUTE`, `PREFER_CPU_OFFLOAD` or `MUST_CPU_OFFLOAD` for a non-aliasing operator with an ordered effect (e.g. via `register_effect(torch.library.EffectType.ORDERED)`), its outputs are now saved as with `MUST_SAVE` instead of recomputed, so the side effect is no longer replayed during backward. This can increase activation memory. Operators in the `c10d` namespace are excluded. Under `torch.compile`, `MUST_RECOMPUTE` on an effectful operator now raises at compile time: `RuntimeError: AOTAutograd does not support MUST_RECOMPUTE for effectful operations because forward effects cannot join the backward effect-token chain.` Use a save policy instead.
+In eager mode, if a `create_selective_checkpoint_contexts` policy returns `PREFER_RECOMPUTE`, `PREFER_CPU_OFFLOAD` or `MUST_CPU_OFFLOAD` for a non-aliasing operator with an ordered effect (e.g. via `register_effect(torch.library.EffectType.ORDERED)`), its outputs are now saved as with `MUST_SAVE` instead of recomputed, so the side effect is no longer replayed during backward. This can increase activation memory. Operators in the `c10d` namespace are excluded. Under `torch.compile`, `MUST_RECOMPUTE` on an effectful operator now raises at compile time: `RuntimeError: AOTAutograd does not support MUST_RECOMPUTE for effectful operations because forward effects cannot join the backward effect-token chain.` Use a save policy instead.
 
-  ```python
-  policy = lambda ctx, op, *args, **kwargs: CheckpointPolicy.PREFER_RECOMPUTE
-  checkpoint(fn, x, use_reentrant=False, context_fn=lambda: create_selective_checkpoint_contexts(policy))
-  # 2.14: an effectful op in fn runs twice; 2.15: once (use MUST_RECOMPUTE to replay)
-  ```
+```python
+policy = lambda ctx, op, *args, **kwargs: CheckpointPolicy.PREFER_RECOMPUTE
+checkpoint(fn, x, use_reentrant=False, context_fn=lambda: create_selective_checkpoint_contexts(policy))
+# 2.14: an effectful op in fn runs twice; 2.15: once (use MUST_RECOMPUTE to replay)
+```
 
 ## Distributed (c10d)
 
-- The `nccl` backend now uses a rewritten, cleaned-up NCCL implementation by default ([#192281](https://github.com/pytorch/pytorch/pull/192281), [#192895](https://github.com/pytorch/pytorch/pull/192895), [#193237](https://github.com/pytorch/pytorch/pull/193237), [#193241](https://github.com/pytorch/pytorch/pull/193241))
+### The `nccl` backend now uses a rewritten, cleaned-up NCCL implementation by default ([#192281](https://github.com/pytorch/pytorch/pull/192281), [#192895](https://github.com/pytorch/pytorch/pull/192895), [#193237](https://github.com/pytorch/pytorch/pull/193237), [#193241](https://github.com/pytorch/pytorch/pull/193241))
 
-  `backend="nccl"` (also the default CUDA backend of `init_process_group()`) now creates the new implementation. The legacy implementation is available as `backend="nccl-legacy"` for this release only: **`nccl-legacy` and `TORCH_DIST_USE_NCCL2=0` will be removed in the next release**, so migrate to `nccl` or `nccl-lazy`.
+`backend="nccl"` (also the default CUDA backend of `init_process_group()`) now creates the new implementation. The legacy implementation is available as `backend="nccl-legacy"` for this release only: **`nccl-legacy` and `TORCH_DIST_USE_NCCL2=0` will be removed in the next release**, so migrate to `nccl` or `nccl-lazy`.
 
-  Use `nccl` (eager initialization) by default. Use `nccl-lazy` when you need independent point-to-point communicators: collectives run on one eagerly created communicator, and each send/recv peer pair gets its own lazily created communicator and stream, so concurrent P2P to different peers can overlap (as in the legacy backend).
+Use `nccl` (eager initialization) by default. Use `nccl-lazy` when you need independent point-to-point communicators: collectives run on one eagerly created communicator, and each send/recv peer pair gets its own lazily created communicator and stream, so concurrent P2P to different peers can overlap (as in the legacy backend).
 
-  Differences from the legacy backend:
+Differences from the legacy backend:
 
-  - Communicators are created eagerly in `init_process_group()`/`new_group()`, allocating GPU memory even for unused groups.
-  - Each group is bound to one CUDA device: `device_id`, else `LOCAL_RANK % torch.cuda.device_count()` (or the global rank modulo the device count); `torch.cuda.set_device()` is not used. Tensors on another GPU fail with `Expected tensor on cuda:X but found tensor on cuda:Y` or `ProcessGroupNCCL is bound to device cuda:X but an operation was issued on cuda:Y`. Pass `device_id` if needed; several GPUs per process requires `nccl-legacy`.
-  - `dist.get_backend_impl(...)` returns the new backend class, so `isinstance(..., ProcessGroupNCCL)` is `False` and legacy-only methods such as `comm_split_count()` are missing.
-  - An async `all_gather`'s `work.get_future()` value is the list of per-rank outputs, not a one-element list holding a stacked tensor; read the output list passed to `all_gather` instead (works on both backends).
+- Communicators are created eagerly in `init_process_group()`/`new_group()`, allocating GPU memory even for unused groups.
+- Each group is bound to one CUDA device: `device_id`, else `LOCAL_RANK % torch.cuda.device_count()` (or the global rank modulo the device count); `torch.cuda.set_device()` is not used. Tensors on another GPU fail with `Expected tensor on cuda:X but found tensor on cuda:Y` or `ProcessGroupNCCL is bound to device cuda:X but an operation was issued on cuda:Y`. Pass `device_id` if needed; several GPUs per process requires `nccl-legacy`.
+- `dist.get_backend_impl(...)` returns the new backend class, so `isinstance(..., ProcessGroupNCCL)` is `False` and legacy-only methods such as `comm_split_count()` are missing.
+- An async `all_gather`'s `work.get_future()` value is the list of per-rank outputs, not a one-element list holding a stacked tensor; read the output list passed to `all_gather` instead (works on both backends).
 
-  To temporarily restore the legacy behavior in 2.15, set `TORCH_DIST_USE_NCCL2=0` on every rank before creating the process group, or use `nccl-legacy`:
+To temporarily restore the legacy behavior in 2.15, set `TORCH_DIST_USE_NCCL2=0` on every rank before creating the process group, or use `nccl-legacy`:
 
-  Version 2.14:
-  ```python
-  dist.init_process_group("nccl")  # ProcessGroupNCCL
-  ```
+Version 2.14:
+```python
+dist.init_process_group("nccl")  # ProcessGroupNCCL
+```
 
-  Version 2.15:
-  ```python
-  dist.init_process_group("nccl", device_id=torch.device("cuda", local_rank))  # new implementation
-  dist.init_process_group("nccl-lazy", device_id=torch.device("cuda", local_rank))  # independent P2P communicators
-  dist.init_process_group("nccl-legacy")  # legacy implementation, removed in the next release
-  ```
+Version 2.15:
+```python
+dist.init_process_group("nccl", device_id=torch.device("cuda", local_rank))  # new implementation
+dist.init_process_group("nccl-lazy", device_id=torch.device("cuda", local_rank))  # independent P2P communicators
+dist.init_process_group("nccl-legacy")  # legacy implementation, removed in the next release
+```
 
 ## Distributed Checkpointing
 
-- Distributed checkpoint metadata now records tensor strides, so checkpoints saved with PyTorch 2.15 cannot be loaded by PyTorch 2.14 or earlier ([#194251](https://github.com/pytorch/pytorch/pull/194251))
+### Distributed checkpoint metadata now records tensor strides, so checkpoints saved with PyTorch 2.15 cannot be loaded by PyTorch 2.14 or earlier ([#194251](https://github.com/pytorch/pytorch/pull/194251))
 
-  `TensorProperties` gains an optional `strides` field in the pickled `.metadata` file. In older versions `dcp.load` raises a `CheckpointException` reporting `too many values to unpack (expected 5)`. There is no flag to write the old format.
+`TensorProperties` gains an optional `strides` field in the pickled `.metadata` file. In older versions `dcp.load` raises a `CheckpointException` reporting `too many values to unpack (expected 5)`. There is no flag to write the old format.
 
-  Version 2.14 (loading a 2.15 checkpoint):
-  ```python
-  dcp.load(state_dict, checkpoint_id="/ckpt/step_100")
-  # CheckpointException: ... too many values to unpack (expected 5)
-  ```
+Version 2.14 (loading a 2.15 checkpoint):
+```python
+dcp.load(state_dict, checkpoint_id="/ckpt/step_100")
+# CheckpointException: ... too many values to unpack (expected 5)
+```
 
-  Version 2.15:
-  ```python
-  dcp.load(state_dict, checkpoint_id="/ckpt/step_100")  # loads 2.14 and 2.15 checkpoints
-  ```
+Version 2.15:
+```python
+dcp.load(state_dict, checkpoint_id="/ckpt/step_100")  # loads 2.14 and 2.15 checkpoints
+```
 
 ## Distributed FSDP2
 
-- With `MixedPrecisionPolicy(reduce_dtype=None)`, `fully_shard` now accumulates and reduces gradients in the parameter's `grad_dtype` (its original dtype by default) instead of in `param_dtype` ([#194434](https://github.com/pytorch/pytorch/pull/194434))
+### With `MixedPrecisionPolicy(reduce_dtype=None)`, `fully_shard` now accumulates and reduces gradients in the parameter's `grad_dtype` (its original dtype by default) instead of in `param_dtype` ([#194434](https://github.com/pytorch/pytorch/pull/194434))
 
-  **This is BC-breaking**: `mp_policy.reduce_dtype=None` no longer defaults to `mp_policy.param_dtype`.
-  * [popular case] fp32 params, `MixedPrecisionPolicy(param_dtype=bf16)`
-    * before: grad accumulation and reduce happen in bf16
-    * after: grad accumulation and reduce happen in fp32 (2x reduce-scatter bytes)
-  * [rare case] bf16 params, `MixedPrecisionPolicy(param_dtype=fp32)`
-    * before: grad accumulation and reduce happen in fp32
-    * after: grad accumulation and reduce happen in bf16
+**This is BC-breaking**: `mp_policy.reduce_dtype=None` no longer defaults to `mp_policy.param_dtype`.
+* [popular case] fp32 params, `MixedPrecisionPolicy(param_dtype=bf16)`
+  * before: grad accumulation and reduce happen in bf16
+  * after: grad accumulation and reduce happen in fp32 (2x reduce-scatter bytes)
+* [rare case] bf16 params, `MixedPrecisionPolicy(param_dtype=fp32)`
+  * before: grad accumulation and reduce happen in fp32
+  * after: grad accumulation and reduce happen in bf16
 
-  How to deal with BC: explicitly set `mp_policy.reduce_dtype`.
+How to deal with BC: explicitly set `mp_policy.reduce_dtype`.
 
-  In grad accumulation (no reduce-scatter), the unsharded param's `.grad` always holds the accumulated value, visible via `model.parameters()` while unsharded. Before this change, `.grad` was `None` when `reduce_dtype` was set and differed from `param_dtype` (FSDP kept the sum in a hidden `reduce_dtype` buffer).
+In grad accumulation (no reduce-scatter), the unsharded param's `.grad` always holds the accumulated value, visible via `model.parameters()` while unsharded. Before this change, `.grad` was `None` when `reduce_dtype` was set and differed from `param_dtype` (FSDP kept the sum in a hidden `reduce_dtype` buffer).
 
-  Version 2.14:
-  ```python
-  # fp32 parameters
-  mp_policy = MixedPrecisionPolicy(param_dtype=torch.bfloat16)
-  fully_shard(model, mp_policy=mp_policy)
-  # gradients accumulate and reduce-scatter in bf16
-  ```
+Version 2.14:
+```python
+# fp32 parameters
+mp_policy = MixedPrecisionPolicy(param_dtype=torch.bfloat16)
+fully_shard(model, mp_policy=mp_policy)
+# gradients accumulate and reduce-scatter in bf16
+```
 
-  Version 2.15:
-  ```python
-  # fp32 parameters
-  mp_policy = MixedPrecisionPolicy(param_dtype=torch.bfloat16)
-  fully_shard(model, mp_policy=mp_policy)
-  # gradients accumulate and reduce-scatter in fp32
+Version 2.15:
+```python
+# fp32 parameters
+mp_policy = MixedPrecisionPolicy(param_dtype=torch.bfloat16)
+fully_shard(model, mp_policy=mp_policy)
+# gradients accumulate and reduce-scatter in fp32
 
-  # to keep the 2.14 behavior, set reduce_dtype explicitly
-  mp_policy = MixedPrecisionPolicy(param_dtype=torch.bfloat16, reduce_dtype=torch.bfloat16)
-  fully_shard(model, mp_policy=mp_policy)
-  ```
+# to keep the 2.14 behavior, set reduce_dtype explicitly
+mp_policy = MixedPrecisionPolicy(param_dtype=torch.bfloat16, reduce_dtype=torch.bfloat16)
+fully_shard(model, mp_policy=mp_policy)
+```
 
 ## Distributed Pipelining
 
-- `torch.distributed.config.pipeline_per_direction_p2p` is renamed to `pipeline_per_edge_p2p` and now uses one communicator per directed rank-to-rank edge ([#196666](https://github.com/pytorch/pytorch/pull/196666))
+### `torch.distributed.config.pipeline_per_direction_p2p` is renamed to `pipeline_per_edge_p2p` and now uses one communicator per directed rank-to-rank edge ([#196666](https://github.com/pytorch/pytorch/pull/196666))
 
-  The old names were removed with no alias: setting the attribute raises `AttributeError: torch.distributed.config.pipeline_per_direction_p2p does not exist`, and `TORCH_DISTRIBUTED_PIPELINE_PER_DIRECTION_P2P` is silently ignored.
+The old names were removed with no alias: setting the attribute raises `AttributeError: torch.distributed.config.pipeline_per_direction_p2p does not exist`, and `TORCH_DISTRIBUTED_PIPELINE_PER_DIRECTION_P2P` is silently ignored.
 
-  Version 2.14:
-  ```python
-  dist_config.pipeline_per_direction_p2p = True
-  ```
+Version 2.14:
+```python
+dist_config.pipeline_per_direction_p2p = True
+```
 
-  Version 2.15:
-  ```python
-  dist_config.pipeline_per_edge_p2p = True  # or TORCH_DISTRIBUTED_PIPELINE_PER_EDGE_P2P=1
-  ```
+Version 2.15:
+```python
+dist_config.pipeline_per_edge_p2p = True  # or TORCH_DISTRIBUTED_PIPELINE_PER_EDGE_P2P=1
+```
 
 ## Profiler
 
-- C++ stack traces are now symbolized with `dladdr` instead of `addr2line` by default ([#195462](https://github.com/pytorch/pytorch/pull/195462))
+### C++ stack traces are now symbolized with `dladdr` instead of `addr2line` by default ([#195462](https://github.com/pytorch/pytorch/pull/195462))
 
-  `TORCH_DISABLE_ADDR2LINE` now defaults to on, since `addr2line` is slow and can hang. C++ frames in `TORCH_SHOW_CPP_STACKTRACES=1` errors and CUDA memory snapshots now show the library path and offset, plus the symbol name only if exported (otherwise `??`). To restore `addr2line`, set `TORCH_DISABLE_ADDR2LINE=0` or `TORCH_SYMBOLIZE_MODE=addr2line`.
+`TORCH_DISABLE_ADDR2LINE` now defaults to on, since `addr2line` is slow and can hang. C++ frames in `TORCH_SHOW_CPP_STACKTRACES=1` errors and CUDA memory snapshots now show the library path and offset, plus the symbol name only if exported (otherwise `??`). To restore `addr2line`, set `TORCH_DISABLE_ADDR2LINE=0` or `TORCH_SYMBOLIZE_MODE=addr2line`.
 
-  ```bash
-  TORCH_SHOW_CPP_STACKTRACES=1 TORCH_DISABLE_ADDR2LINE=0 python train.py
-  ```
+```bash
+TORCH_SHOW_CPP_STACKTRACES=1 TORCH_DISABLE_ADDR2LINE=0 python train.py
+```
 
-- CUDA memory snapshots record the allocator's `mallocWithAddress` tag in a new `internal_metadata` field instead of appending it to `user_metadata` ([#193432](https://github.com/pytorch/pytorch/pull/193432))
+### CUDA memory snapshots record the allocator's `mallocWithAddress` tag in a new `internal_metadata` field instead of appending it to `user_metadata` ([#193432](https://github.com/pytorch/pytorch/pull/193432))
 
-  `user_metadata` in `torch.cuda.memory._snapshot()` trace entries is now exactly what was set with `torch.cuda.memory._set_memory_metadata` (which now also accepts a dict). Tools that searched `user_metadata` for `mallocWithAddress` must read `internal_metadata` instead.
+`user_metadata` in `torch.cuda.memory._snapshot()` trace entries is now exactly what was set with `torch.cuda.memory._set_memory_metadata` (which now also accepts a dict). Tools that searched `user_metadata` for `mallocWithAddress` must read `internal_metadata` instead.
 
-  ```python
-  # 2.14
-  tagged = [e for e in trace if "mallocWithAddress" in e["user_metadata"]]
-  # 2.15
-  tagged = [e for e in trace if e.get("internal_metadata") == "mallocWithAddress"]
-  ```
+```python
+# 2.14
+tagged = [e for e in trace if "mallocWithAddress" in e["user_metadata"]]
+# 2.15
+tagged = [e for e in trace if e.get("internal_metadata") == "mallocWithAddress"]
+```
 
-- Remove the deprecated `FunctionEvent.metadata_json` property ([#198265](https://github.com/pytorch/pytorch/pull/198265))
+### Remove the deprecated `FunctionEvent.metadata_json` property ([#198265](https://github.com/pytorch/pytorch/pull/198265))
 
-  Accessing it now raises `AttributeError: 'FunctionEvent' object has no attribute 'metadata_json'`, and the `metadata_json` constructor argument is removed. Use `FunctionEvent.metadata`, a dict populated when `_ExperimentalConfig(expose_kineto_event_metadata=True)` is set (not the deprecated `event_metadata`).
+Accessing it now raises `AttributeError: 'FunctionEvent' object has no attribute 'metadata_json'`, and the `metadata_json` constructor argument is removed. Use `FunctionEvent.metadata`, a dict populated when `_ExperimentalConfig(expose_kineto_event_metadata=True)` is set (not the deprecated `event_metadata`).
 
-  ```python
-  metadata = event.metadata_json  # 2.14: JSON string
-  metadata = event.metadata  # 2.15: dict[str, Any] or None
-  ```
+```python
+metadata = event.metadata_json  # 2.14: JSON string
+metadata = event.metadata  # 2.15: dict[str, Any] or None
+```
 
-- Rename the experimental CUPTI monitor profiler backend to Cuspy, without aliases for the old names ([#195881](https://github.com/pytorch/pytorch/pull/195881))
+### Rename the experimental CUPTI monitor profiler backend to Cuspy, without aliases for the old names ([#195881](https://github.com/pytorch/pytorch/pull/195881))
 
-  In `_ExperimentalConfig(custom_profiler_config=...)`, `"cupti_monitor"` is now `"cuspy"` and `"cupti_monitor_async_export"` is now `"cuspy_async_export"`; old names silently fall back to the default Kineto backend. `prof.take_pending_cupti_export()` is now `take_pending_cuspy_export()` (the old name raises `AttributeError`). Prefer the new `torch.profiler.CuspyConfig`.
+In `_ExperimentalConfig(custom_profiler_config=...)`, `"cupti_monitor"` is now `"cuspy"` and `"cupti_monitor_async_export"` is now `"cuspy_async_export"`; old names silently fall back to the default Kineto backend. `prof.take_pending_cupti_export()` is now `take_pending_cuspy_export()` (the old name raises `AttributeError`). Prefer the new `torch.profiler.CuspyConfig`.
 
-  ```python
-  # 2.14
-  cfg = _ExperimentalConfig(custom_profiler_config='{"backend":"cupti_monitor"}')
-  # 2.15
-  cfg = _ExperimentalConfig(custom_profiler_config='{"backend":"cuspy"}')
-  ```
+```python
+# 2.14
+cfg = _ExperimentalConfig(custom_profiler_config='{"backend":"cupti_monitor"}')
+# 2.15
+cfg = _ExperimentalConfig(custom_profiler_config='{"backend":"cuspy"}')
+```
 
 ## Dynamo
 
-- Higher-order ops now reject input mutation and aliasing in their bodies unless the op opts in ([#185738](https://github.com/pytorch/pytorch/pull/185738))
+### Higher-order ops now reject input mutation and aliasing in their bodies unless the op opts in ([#185738](https://github.com/pytorch/pytorch/pull/185738))
 
-  Before, Dynamo let any higher-order op body mutate or alias its inputs by default. Ops that do not implement those semantics could silently produce invalid graphs. Mutation and aliasing are now off by default. The built-in wrappers that support them (`wrap`, checkpoint, `autograd.Function`, autocast/set-grad wrappers) opt in. A `flex_attention` `mask_mod` may read captured views but must not mutate inputs or return aliases. Under `fullgraph=True`, unsupported mutation or aliasing raises `Encountered input mutation during higher order op tracing` or `Encountered aliasing during higher order op tracing`; otherwise, Dynamo graph breaks and falls back to eager execution. Rewrite the higher-order op body to avoid mutation or aliasing.
+Before, Dynamo let any higher-order op body mutate or alias its inputs by default. Ops that do not implement those semantics could silently produce invalid graphs. Mutation and aliasing are now off by default. The built-in wrappers that support them (`wrap`, checkpoint, `autograd.Function`, autocast/set-grad wrappers) opt in. A `flex_attention` `mask_mod` may read captured views but must not mutate inputs or return aliases. Under `fullgraph=True`, unsupported mutation or aliasing raises `Encountered input mutation during higher order op tracing` or `Encountered aliasing during higher order op tracing`; otherwise, Dynamo graph breaks and falls back to eager execution. Rewrite the higher-order op body to avoid mutation or aliasing.
 
-  For example, rewrite an in-place `flex_attention` score modifier as an out-of-place operation:
+For example, rewrite an in-place `flex_attention` score modifier as an out-of-place operation:
 
-  Version 2.14:
-  ```python
-  def score_mod(score, b, h, q, k):
-      score.add_(1)
-      return score.clone()
-  ```
+Version 2.14:
+```python
+def score_mod(score, b, h, q, k):
+    score.add_(1)
+    return score.clone()
+```
 
-  Version 2.15:
-  ```python
-  def score_mod(score, b, h, q, k):
-      return score + 1
-  ```
+Version 2.15:
+```python
+def score_mod(score, b, h, q, k):
+    return score + 1
+```
 
 ## Inductor
 
-- `torch.compiler.nested_compile_region(options=...)` now accepts only an allowlist of Inductor config patches ([#195864](https://github.com/pytorch/pytorch/pull/195864), [#195865](https://github.com/pytorch/pytorch/pull/195865))
+### `torch.compiler.nested_compile_region(options=...)` now accepts only an allowlist of Inductor config patches ([#195864](https://github.com/pytorch/pytorch/pull/195864), [#195865](https://github.com/pytorch/pytorch/pull/195865))
 
-  Patches passed through `get_invoke_subgraph_compile_options(fw_inductor_config_patches=..., bw_inductor_config_patches=...)` used to accept any `torch._inductor.config` key, though many were silently ignored. Only `fallback_by_default` and `max_autotune` are now accepted; other keys raise `ValueError: Inductor config key '<key>' is not supported in forward nested compile-region options` (or `backward`). Apply other options to the whole compiled function. Patch dictionaries are now snapshotted when the options are created, so later mutation has no effect, and the default no longer implicitly sets `triton.autotune_at_compile_time=True`.
+Patches passed through `get_invoke_subgraph_compile_options(fw_inductor_config_patches=..., bw_inductor_config_patches=...)` used to accept any `torch._inductor.config` key, though many were silently ignored. Only `fallback_by_default` and `max_autotune` are now accepted; other keys raise `ValueError: Inductor config key '<key>' is not supported in forward nested compile-region options` (or `backward`). Apply other options to the whole compiled function. Patch dictionaries are now snapshotted when the options are created, so later mutation has no effect, and the default no longer implicitly sets `triton.autotune_at_compile_time=True`.
 
-  Version 2.14:
-  ```python
-  opts = get_invoke_subgraph_compile_options(fw_inductor_config_patches={"triton.multi_kernel": 1})
-  ```
+Version 2.14:
+```python
+opts = get_invoke_subgraph_compile_options(fw_inductor_config_patches={"triton.multi_kernel": 1})
+```
 
-  Version 2.15:
-  ```python
-  opts = get_invoke_subgraph_compile_options(fw_inductor_config_patches={"max_autotune": True})
-  compiled = torch.compile(fn, options={"triton.multi_kernel": 1})
-  ```
+Version 2.15:
+```python
+opts = get_invoke_subgraph_compile_options(fw_inductor_config_patches={"max_autotune": True})
+compiled = torch.compile(fn, options={"triton.multi_kernel": 1})
+```
 
-- `torch.compiler.precompile` is now a module instead of a callable; capture with `torch.compiler.precompile.capture(...)` and reload with `torch.compiler.precompile.load(...)` ([#197993](https://github.com/pytorch/pytorch/pull/197993), [#198135](https://github.com/pytorch/pytorch/pull/198135), [#198213](https://github.com/pytorch/pytorch/pull/198213))
+### `torch.compiler.precompile` is now a module instead of a callable; capture with `torch.compiler.precompile.capture(...)` and reload with `torch.compiler.precompile.load(...)` ([#197993](https://github.com/pytorch/pytorch/pull/197993), [#198135](https://github.com/pytorch/pytorch/pull/198135), [#198213](https://github.com/pytorch/pytorch/pull/198213))
 
-  Calling `torch.compiler.precompile(fn, *example_inputs)` now raises `TypeError: 'module' object is not callable`. `capture(fn, *, artifact_path, cache_path)` returns a context manager that you call once inside the `with` block; it writes both files when the block exits cleanly (or on `cap.save()`), and `load` now takes those paths. `decompositions=` moves to `tracer=MakeFxTracer(decompositions=...)`.
+Calling `torch.compiler.precompile(fn, *example_inputs)` now raises `TypeError: 'module' object is not callable`. `capture(fn, *, artifact_path, cache_path)` returns a context manager that you call once inside the `with` block; it writes both files when the block exits cleanly (or on `cap.save()`), and `load` now takes those paths. `decompositions=` moves to `tracer=MakeFxTracer(decompositions=...)`.
 
-  Version 2.14:
-  ```python
-  python_code, cache = torch.compiler.precompile(lambda m, x: m(x), model, x)
-  f = torch.compiler.precompile.load(python_code, cache)
-  ```
+Version 2.14:
+```python
+python_code, cache = torch.compiler.precompile(lambda m, x: m(x), model, x)
+f = torch.compiler.precompile.load(python_code, cache)
+```
 
-  Version 2.15:
-  ```python
-  with torch.compiler.precompile.capture(lambda m, x: m(x), artifact_path="m.py", cache_path="m.cache") as cap:
-      cap(model, x)
-  f = torch.compiler.precompile.load("m.py", "m.cache")
-  ```
+Version 2.15:
+```python
+with torch.compiler.precompile.capture(lambda m, x: m(x), artifact_path="m.py", cache_path="m.cache") as cap:
+    cap(model, x)
+f = torch.compiler.precompile.load("m.py", "m.cache")
+```
 
 ## Composability
 
-- Under functionalization, a regenerated output of `split`, `split_with_sizes` or `unbind` is now rebuilt as a single `slice` or `select` of its base, so its `grad_fn` is `SliceBackward0`/`SelectBackward0` instead of `SplitBackward0`/`SplitWithSizesBackward0`/`UnbindBackward0` ([#194037](https://github.com/pytorch/pytorch/pull/194037))
+### Under functionalization, a regenerated output of `split`, `split_with_sizes` or `unbind` is now rebuilt as a single `slice` or `select` of its base, so its `grad_fn` is `SliceBackward0`/`SelectBackward0` instead of `SplitBackward0`/`SplitWithSizesBackward0`/`UnbindBackward0` ([#194037](https://github.com/pytorch/pytorch/pull/194037))
 
-  This greatly reduces compile time for code that mutates many `split()` views (for example 32s to 15s with 128 views). Gradients are unchanged, but the in-place error now names the new op with output index 0: `RuntimeError: Output 0 of Select is a view and is being modified inplace.` Code that inspects `grad_fn` names, matches the old error text, or pattern-matches `split`/`unbind` nodes in functionalized graphs needs updating. There is no option to restore the previous behavior.
+This greatly reduces compile time for code that mutates many `split()` views (for example 32s to 15s with 128 views). Gradients are unchanged, but the in-place error now names the new op with output index 0: `RuntimeError: Output 0 of Select is a view and is being modified inplace.` Code that inspects `grad_fn` names, matches the old error text, or pattern-matches `split`/`unbind` nodes in functionalized graphs needs updating. There is no option to restore the previous behavior.
 
-  Version 2.14:
-  ```python
-  >>> out = torch.func.functionalize(f)(x)  # f returns base.unbind(0)[1] after base.add_(1)
-  >>> out.grad_fn
-  <UnbindBackward0 object at 0x...>
-  ```
+Version 2.14:
+```python
+>>> out = torch.func.functionalize(f)(x)  # f returns base.unbind(0)[1] after base.add_(1)
+>>> out.grad_fn
+<UnbindBackward0 object at 0x...>
+```
 
-  Version 2.15:
-  ```python
-  >>> out = torch.func.functionalize(f)(x)
-  >>> out.grad_fn
-  <SelectBackward0 object at 0x...>
-  ```
+Version 2.15:
+```python
+>>> out = torch.func.functionalize(f)(x)
+>>> out.grad_fn
+<SelectBackward0 object at 0x...>
+```
 
 ## Release Engineering
 
-- PyPI wheels now ship with CUDA 13.2, and CUDA 12.6 and CUDA 13.0 wheels are no longer published ([#196249](https://github.com/pytorch/pytorch/pull/196249), [#198913](https://github.com/pytorch/pytorch/pull/198913))
+### PyPI wheels now ship with CUDA 13.2, and CUDA 12.6 and CUDA 13.0 wheels are no longer published ([#196249](https://github.com/pytorch/pytorch/pull/196249), [#198913](https://github.com/pytorch/pytorch/pull/198913))
 
-  The default PyPI wheel moves from CUDA 13.0 to CUDA 13.2. The 2.15 wheels are `cu132` and `cu134`; `cu126` and `cu130` are no longer built. CUDA 13 wheels need NVIDIA driver 580 or newer and a GPU of Turing (`sm_75`) or newer, so Maxwell, Pascal and Volta GPUs and hosts with a CUDA 12.x driver should stay on 2.14.
+The default PyPI wheel moves from CUDA 13.0 to CUDA 13.2. The 2.15 wheels are `cu132` and `cu134`; `cu126` and `cu130` are no longer built. CUDA 13 wheels need NVIDIA driver 580 or newer and a GPU of Turing (`sm_75`) or newer, so Maxwell, Pascal and Volta GPUs and hosts with a CUDA 12.x driver should stay on 2.14.
 
-  Version 2.15:
-  ```bash
-  # PyPI wheel now uses CUDA 13.2
-  pip install torch
+Version 2.15:
+```bash
+# PyPI wheel now uses CUDA 13.2
+pip install torch
 
-  # CUDA 13.4 wheels
-  pip install torch --index-url https://download.pytorch.org/whl/cu134
+# CUDA 13.4 wheels
+pip install torch --index-url https://download.pytorch.org/whl/cu134
 
-  # To stay on CUDA 12.6 or CUDA 13.0, pin PyTorch 2.14:
-  pip install torch==2.14.0 --index-url https://download.pytorch.org/whl/cu126  # or cu130
-  ```
+# To stay on CUDA 12.6 or CUDA 13.0, pin PyTorch 2.14:
+pip install torch==2.14.0 --index-url https://download.pytorch.org/whl/cu126  # or cu130
+```
 
-- Python 3.10 wheels are no longer published ([#198233](https://github.com/pytorch/pytorch/pull/198233), [#199398](https://github.com/pytorch/pytorch/pull/199398))
+### Python 3.10 wheels are no longer published ([#198233](https://github.com/pytorch/pytorch/pull/198233), [#199398](https://github.com/pytorch/pytorch/pull/199398))
 
-  PyTorch 2.15 raises the minimum supported Python version for binaries to 3.11: no `cp310` wheels are built for `torch` or the Triton wheels, and CI no longer tests on Python 3.10. On Python 3.10, `pip` cannot find a 2.15 wheel. Upgrade to Python 3.11 or newer, or stay on PyTorch 2.14.
+PyTorch 2.15 raises the minimum supported Python version for binaries to 3.11: no `cp310` wheels are built for `torch` or the Triton wheels, and CI no longer tests on Python 3.10. On Python 3.10, `pip` cannot find a 2.15 wheel. Upgrade to Python 3.11 or newer, or stay on PyTorch 2.14.
 
-  Version 2.14:
-  ```bash
-  python3.10 -m pip install torch  # cp310 wheel available
-  ```
+Version 2.14:
+```bash
+python3.10 -m pip install torch  # cp310 wheel available
+```
 
-  Version 2.15:
-  ```bash
-  python3.11 -m pip install torch==2.15.0  # Python 3.11 through 3.15 (including 3.14t and 3.15t)
-  ```
+Version 2.15:
+```bash
+python3.11 -m pip install torch==2.15.0  # Python 3.11 through 3.15 (including 3.14t and 3.15t)
+```
 
-- ROCm wheels move to ROCm 7.14 and 10.0; ROCm 7.2 wheels and gfx900/gfx906 kernels are dropped ([#194919](https://github.com/pytorch/pytorch/pull/194919))
+### ROCm wheels move to ROCm 7.14 and 10.0; ROCm 7.2 wheels and gfx900/gfx906 kernels are dropped ([#194919](https://github.com/pytorch/pytorch/pull/194919))
 
-  gfx900 (MI25) and gfx906 (MI50/MI60, Radeon VII) users can stay on 2.14 (`rocm7.2`) or build from source with those targets in `PYTORCH_ROCM_ARCH`.
-  ```bash
-  pip install torch --index-url https://download.pytorch.org/whl/rocm7.14  # or rocm10.0
-  ```
+gfx900 (MI25) and gfx906 (MI50/MI60, Radeon VII) users can stay on 2.14 (`rocm7.2`) or build from source with those targets in `PYTORCH_ROCM_ARCH`.
+```bash
+pip install torch --index-url https://download.pytorch.org/whl/rocm7.14  # or rocm10.0
+```
 
-- Linux CUDA wheels no longer depend on the cuRAND library ([#194850](https://github.com/pytorch/pytorch/pull/194850))
+### Linux CUDA wheels no longer depend on the cuRAND library ([#194850](https://github.com/pytorch/pytorch/pull/194850))
 
-  PyTorch only uses the cuRAND device API, so `torch` no longer links `libcurand`, no longer preloads it on `import torch`, and the wheel's CUDA requirements no longer include cuRAND. Extensions or libraries that call the cuRAND host API (for example `curandCreateGenerator`) and relied on `pip install torch` bringing in the cuRAND library can fail to load `libcurand.so` and must now install it themselves.
+PyTorch only uses the cuRAND device API, so `torch` no longer links `libcurand`, no longer preloads it on `import torch`, and the wheel's CUDA requirements no longer include cuRAND. Extensions or libraries that call the cuRAND host API (for example `curandCreateGenerator`) and relied on `pip install torch` bringing in the cuRAND library can fail to load `libcurand.so` and must now install it themselves.
 
-  Version 2.15:
-  ```bash
-  pip install torch
-  pip install "cuda-toolkit[curand]==13.2.2"  # match the toolkit version of your wheel
-  ```
+Version 2.15:
+```bash
+pip install torch
+pip install "cuda-toolkit[curand]==13.2.2"  # match the toolkit version of your wheel
+```
 
 ## CUDA
 
-- `torch.histc(..., out=...)` on CUDA now raises an error when `out` does not have the same dtype as the input ([#196100](https://github.com/pytorch/pytorch/pull/196100))
+### `torch.histc(..., out=...)` on CUDA now raises an error when `out` does not have the same dtype as the input ([#196100](https://github.com/pytorch/pytorch/pull/196100))
 
-  CUDA used to silently cast into any `out` dtype. It now matches CPU and MPS and rejects mismatches, even widening ones. Compute without `out` and cast instead.
+CUDA used to silently cast into any `out` dtype. It now matches CPU and MPS and rejects mismatches, even widening ones. Compute without `out` and cast instead.
 
-  Version 2.14:
-  ```python
-  >>> torch.histc(x, bins=4, min=-2.0, max=2.0, out=int64_out)  # silently truncated
-  ```
+Version 2.14:
+```python
+>>> torch.histc(x, bins=4, min=-2.0, max=2.0, out=int64_out)  # silently truncated
+```
 
-  Version 2.15:
-  ```python
-  RuntimeError: torch.histogram: input tensor and hist tensor should have the same dtype, but got input float and hist long int
-  >>> int64_out.copy_(torch.histc(x, bins=4, min=-2.0, max=2.0))  # workaround
-  ```
+Version 2.15:
+```python
+RuntimeError: torch.histogram: input tensor and hist tensor should have the same dtype, but got input float and hist long int
+>>> int64_out.copy_(torch.histc(x, bins=4, min=-2.0, max=2.0))  # workaround
+```
 
-- On CUDA, cuBLAS and cuBLASLt workspaces are now allocated for each operation instead of being cached per handle and stream ([#194311](https://github.com/pytorch/pytorch/pull/194311))
+### On CUDA, cuBLAS and cuBLASLt workspaces are now allocated for each operation instead of being cached per handle and stream ([#194311](https://github.com/pytorch/pytorch/pull/194311))
 
-  Graphs captured separately on one stream could share the cached workspace and fail on replay with `CUDA error: an illegal memory access was encountered`. Workspaces are now freed after each op, so `torch.cuda.memory_allocated()` excludes them and the handle from `torch.cuda.current_blas_handle()` has no ATen workspace attached. Set `TORCH_CUBLAS_WORKSPACE_CACHE=1` to restore caching (unsafe with multiple graphs on one stream). `TORCH_CUBLASLT_UNIFIED_WORKSPACE` now only takes effect with caching enabled. ROCm has a matching change ([#196920](https://github.com/pytorch/pytorch/pull/196920)).
+Graphs captured separately on one stream could share the cached workspace and fail on replay with `CUDA error: an illegal memory access was encountered`. Workspaces are now freed after each op, so `torch.cuda.memory_allocated()` excludes them and the handle from `torch.cuda.current_blas_handle()` has no ATen workspace attached. Set `TORCH_CUBLAS_WORKSPACE_CACHE=1` to restore caching (unsafe with multiple graphs on one stream). `TORCH_CUBLASLT_UNIFIED_WORKSPACE` now only takes effect with caching enabled. ROCm has a matching change ([#196920](https://github.com/pytorch/pytorch/pull/196920)).
 
-  Version 2.14:
-  ```python
-  >>> torch.mm(a, a, out=out)
-  >>> torch.cuda.memory_allocated() - before > 0  # workspace stays allocated
-  True
-  ```
+Version 2.14:
+```python
+>>> torch.mm(a, a, out=out)
+>>> torch.cuda.memory_allocated() - before > 0  # workspace stays allocated
+True
+```
 
-  Version 2.15:
-  ```python
-  >>> torch.cuda.memory_allocated() - before  # freed after the op
-  0
-  ```
+Version 2.15:
+```python
+>>> torch.cuda.memory_allocated() - before  # freed after the op
+0
+```
 
 ## CPU (AArch64)
 
-- Float32 `torch.sin` and `torch.cos` on Arm CPUs (NEON and SVE) now use SLEEF's 3.5-ULP kernels instead of the 1.0-ULP kernels, matching the accuracy of the x86 AVX2 implementation and running 1.7x-2.4x faster on Neoverse V1/V2 ([#196315](https://github.com/pytorch/pytorch/pull/196315))
+### Float32 `torch.sin` and `torch.cos` on Arm CPUs (NEON and SVE) now use SLEEF's 3.5-ULP kernels instead of the 1.0-ULP kernels, matching the accuracy of the x86 AVX2 implementation and running 1.7x-2.4x faster on Neoverse V1/V2 ([#196315](https://github.com/pytorch/pytorch/pull/196315))
 
-  Float32 `sin` and `cos` results on Arm can now differ from earlier releases in the last bits. Bit-for-bit comparisons against stored golden outputs, `torch.equal`, or `torch.testing.assert_close` with `rtol=0, atol=0` may fail; default `assert_close` tolerances are unaffected. There is no switch to restore the previous kernels; if you need tighter accuracy, compute in float64 and cast back.
+Float32 `sin` and `cos` results on Arm can now differ from earlier releases in the last bits. Bit-for-bit comparisons against stored golden outputs, `torch.equal`, or `torch.testing.assert_close` with `rtol=0, atol=0` may fail; default `assert_close` tolerances are unaffected. There is no switch to restore the previous kernels; if you need tighter accuracy, compute in float64 and cast back.
 
-  Version 2.14:
-  ```python
-  >>> x.cos()  # float32 on Arm: within 1 ULP
-  ```
+Version 2.14:
+```python
+>>> x.cos()  # float32 on Arm: within 1 ULP
+```
 
-  Version 2.15:
-  ```python
-  >>> x.cos()  # float32 on Arm: within 2 ULP
-  >>> x.double().cos().float()  # workaround: correctly rounded
-  ```
+Version 2.15:
+```python
+>>> x.cos()  # float32 on Arm: within 2 ULP
+>>> x.double().cos().float()  # workaround: correctly rounded
+```
 
 ## MPS
 
-- The MPS backend now requires macOS 15 (Sequoia) or newer ([#199261](https://github.com/pytorch/pytorch/pull/199261), [#200290](https://github.com/pytorch/pytorch/pull/200290))
+### The MPS backend now requires macOS 15 (Sequoia) or newer ([#199261](https://github.com/pytorch/pytorch/pull/199261), [#200290](https://github.com/pytorch/pytorch/pull/200290))
 
-  macOS 14 has reached end of life, so its MPS workarounds were removed. On macOS 14, `torch.backends.mps.is_available()` returns `False` and allocating on `mps` raises the error below. To keep using MPS, stay on PyTorch 2.14 or upgrade macOS; CPU builds still run on older macOS. C++ extensions: `at::mps::MacOSVersion::MACOS_14_4` was removed.
+macOS 14 has reached end of life, so its MPS workarounds were removed. On macOS 14, `torch.backends.mps.is_available()` returns `False` and allocating on `mps` raises the error below. To keep using MPS, stay on PyTorch 2.14 or upgrade macOS; CPU builds still run on older macOS. C++ extensions: `at::mps::MacOSVersion::MACOS_14_4` was removed.
 
-  ```python
-  >>> torch.ones(2, device="mps")  # 2.15 on macOS 14
-  RuntimeError: The MPS backend is supported on macOS 15.0+. Current OS version can be queried using `sw_vers`
-  ```
+```python
+>>> torch.ones(2, device="mps")  # 2.15 on macOS 14
+RuntimeError: The MPS backend is supported on macOS 15.0+. Current OS version can be queried using `sw_vers`
+```
 
 ## XPU
 
-- Remove the `allocator` property from `torch.xpu.MemPool`, aligning with other accelerators ([#192041](https://github.com/pytorch/pytorch/pull/192041))
+### Remove the `allocator` property from `torch.xpu.MemPool`, aligning with other accelerators ([#192041](https://github.com/pytorch/pytorch/pull/192041))
 
-  `torch.xpu.MemPool` no longer exposes the allocator it was constructed with, so `pool.allocator` now raises `AttributeError`. Keep your own reference to the allocator instead; passing one to the `MemPool` constructor is unchanged.
+`torch.xpu.MemPool` no longer exposes the allocator it was constructed with, so `pool.allocator` now raises `AttributeError`. Keep your own reference to the allocator instead; passing one to the `MemPool` constructor is unchanged.
 
-  Before:
+Before:
 
-  ```python
-  pool = torch.xpu.MemPool(allocator.allocator())
-  my_allocator = pool.allocator
-  ```
+```python
+pool = torch.xpu.MemPool(allocator.allocator())
+my_allocator = pool.allocator
+```
 
-  After:
+After:
 
-  ```python
-  my_allocator = allocator.allocator()
-  pool = torch.xpu.MemPool(my_allocator)
-  ```
+```python
+my_allocator = allocator.allocator()
+pool = torch.xpu.MemPool(my_allocator)
+```
 
 ## Complex Frontend
 
-- Ops that are undefined for complex inputs now raise `TypeError` instead of `RuntimeError` ([#192350](https://github.com/pytorch/pytorch/pull/192350))
+### Ops that are undefined for complex inputs now raise `TypeError` instead of `RuntimeError` ([#192350](https://github.com/pytorch/pytorch/pull/192350))
 
-  This covers order-dependent ops (`sort`, `argsort`, `topk`, `argmax`/`argmin`, `max`/`min` with `dim`, `maximum`/`minimum`, `fmax`/`fmin`, `aminmax`), `isposinf`/`isneginf`, `view_as_real`/`imag` on real tensors, and `view_as_complex` on complex tensors, matching Python (`1j < 2j` is a `TypeError`). `except RuntimeError:` no longer catches these; catch `(RuntimeError, TypeError)`. Ops not yet implemented for a dtype (e.g. `rad2deg`, `nansum`, `heaviside` on complex, `topk`/`argmax` on bool) now raise `NotImplementedError`, which `except RuntimeError:` still catches. Full `max()`/`min()`/`amax`/`amin` are unchanged.
+This covers order-dependent ops (`sort`, `argsort`, `topk`, `argmax`/`argmin`, `max`/`min` with `dim`, `maximum`/`minimum`, `fmax`/`fmin`, `aminmax`), `isposinf`/`isneginf`, `view_as_real`/`imag` on real tensors, and `view_as_complex` on complex tensors, matching Python (`1j < 2j` is a `TypeError`). `except RuntimeError:` no longer catches these; catch `(RuntimeError, TypeError)`. Ops not yet implemented for a dtype (e.g. `rad2deg`, `nansum`, `heaviside` on complex, `topk`/`argmax` on bool) now raise `NotImplementedError`, which `except RuntimeError:` still catches. Full `max()`/`min()`/`amax`/`amin` are unchanged.
 
-  ```python
-  torch.sort(torch.randn(3, dtype=torch.cfloat))
-  # 2.14: RuntimeError:  Sort does not support complex dtypes on CPU
-  # 2.15: TypeError:  Sort does not support complex dtypes on CPU
-  ```
+```python
+torch.sort(torch.randn(3, dtype=torch.cfloat))
+# 2.14: RuntimeError:  Sort does not support complex dtypes on CPU
+# 2.15: TypeError:  Sort does not support complex dtypes on CPU
+```
 
 # Deprecations
 
 ## Optimizer
 
-- Passing a bare `set` of parameters to an optimizer is deprecated and now emits a `FutureWarning`; it will become an error in a future release ([#198710](https://github.com/pytorch/pytorch/pull/198710))
+### Passing a bare `set` of parameters to an optimizer is deprecated and now emits a `FutureWarning`; it will become an error in a future release ([#198710](https://github.com/pytorch/pytorch/pull/198710))
 
-  Set iteration order can change between runs, so optimizer state could silently mismatch parameters on reload. The warning reads: `optimizer parameters need to be organized in ordered collections, but the ordering of tensors in sets will change between runs. Please use a list instead.`
+Set iteration order can change between runs, so optimizer state could silently mismatch parameters on reload. The warning reads: `optimizer parameters need to be organized in ordered collections, but the ordering of tensors in sets will change between runs. Please use a list instead.`
 
-  ```python
-  opt = torch.optim.Adam(set(model.parameters()))  # 2.15: FutureWarning
-  opt = torch.optim.Adam(list(model.parameters()))  # recommended
-  ```
+```python
+opt = torch.optim.Adam(set(model.parameters()))  # 2.15: FutureWarning
+opt = torch.optim.Adam(list(model.parameters()))  # recommended
+```
 
 ## Linear Algebra Frontend
 
-- MAGMA is deprecated for LU factorization with pivoting on CUDA: `torch.linalg.lu_factor`, `torch.linalg.lu`, and the ops that use it internally (`torch.linalg.solve`, `torch.linalg.inv`, `torch.linalg.det`, `torch.linalg.slogdet`) now always use cuSOLVER ([#190661](https://github.com/pytorch/pytorch/pull/190661))
+### MAGMA is deprecated for LU factorization with pivoting on CUDA: `torch.linalg.lu_factor`, `torch.linalg.lu`, and the ops that use it internally (`torch.linalg.solve`, `torch.linalg.inv`, `torch.linalg.det`, `torch.linalg.slogdet`) now always use cuSOLVER ([#190661](https://github.com/pytorch/pytorch/pull/190661))
 
-  This only affects code that sets `torch.backends.cuda.preferred_linalg_library("magma")`: pivoted LU now uses cuSOLVER anyway; a new built-in batched LU kernel replaces MAGMA's for large batches. When MAGMA is preferred, the first call warns: `linalg.lu_factor: MAGMA, as a linear algebra backend, is deprecated and will be removed in future releases.` `pivot=False` still uses MAGMA when it is preferred. To avoid the warning, use the default or cuSOLVER backend.
+This only affects code that sets `torch.backends.cuda.preferred_linalg_library("magma")`: pivoted LU now uses cuSOLVER anyway; a new built-in batched LU kernel replaces MAGMA's for large batches. When MAGMA is preferred, the first call warns: `linalg.lu_factor: MAGMA, as a linear algebra backend, is deprecated and will be removed in future releases.` `pivot=False` still uses MAGMA when it is preferred. To avoid the warning, use the default or cuSOLVER backend.
 
-  ```python
-  torch.backends.cuda.preferred_linalg_library("magma")
-  LU, pivots = torch.linalg.lu_factor(A)  # 2.14: MAGMA; 2.15: cuSOLVER + UserWarning
-  torch.backends.cuda.preferred_linalg_library("default")  # recommended
-  ```
+```python
+torch.backends.cuda.preferred_linalg_library("magma")
+LU, pivots = torch.linalg.lu_factor(A)  # 2.14: MAGMA; 2.15: cuSOLVER + UserWarning
+torch.backends.cuda.preferred_linalg_library("default")  # recommended
+```
 
 ## Profiler
 
-- `torch.autograd.profiler.load_nvprof`, `parse_nvprof_trace` and `EnforceUnique` are deprecated and will be removed in PyTorch 2.17 ([#198396](https://github.com/pytorch/pytorch/pull/198396))
+### `torch.autograd.profiler.load_nvprof`, `parse_nvprof_trace` and `EnforceUnique` are deprecated and will be removed in PyTorch 2.17 ([#198396](https://github.com/pytorch/pytorch/pull/198396))
 
-  `nvprof` does not support recent GPUs. They now emit a `FutureWarning` such as `` `torch.autograd.profiler.load_nvprof` is deprecated and will be removed in PyTorch 2.17. `` Use `torch.profiler.profile` or Nsight Systems with `torch.autograd.profiler.emit_nvtx()`.
+`nvprof` does not support recent GPUs. They now emit a `FutureWarning` such as `` `torch.autograd.profiler.load_nvprof` is deprecated and will be removed in PyTorch 2.17. `` Use `torch.profiler.profile` or Nsight Systems with `torch.autograd.profiler.emit_nvtx()`.
 
-  ```python
-  events = torch.autograd.profiler.load_nvprof("trace.prof")  # 2.14
-  with torch.profiler.profile() as prof:  # 2.15
-      run_workload()
-  ```
+```python
+events = torch.autograd.profiler.load_nvprof("trace.prof")  # 2.14
+with torch.profiler.profile() as prof:  # 2.15
+    run_workload()
+```
 
-- `FunctionEvent.event_metadata` is deprecated in favor of `FunctionEvent.metadata` ([#198405](https://github.com/pytorch/pytorch/pull/198405))
+### `FunctionEvent.event_metadata` is deprecated in favor of `FunctionEvent.metadata` ([#198405](https://github.com/pytorch/pytorch/pull/198405))
 
-  `metadata` is a typed `dict[str, Any]` with everything `event_metadata` had. Accessing `event_metadata` emits `FutureWarning: `event_metadata` is deprecated. Use `metadata` instead.`
+`metadata` is a typed `dict[str, Any]` with everything `event_metadata` had. Accessing `event_metadata` emits `FutureWarning: `event_metadata` is deprecated. Use `metadata` instead.`
 
-  ```python
-  grid = event.event_metadata.grid  # 2.14
-  grid = event.metadata["grid"]  # 2.15
-  ```
+```python
+grid = event.event_metadata.grid  # 2.14
+grid = event.metadata["grid"]  # 2.15
+```
 
 ## Inductor
 
-- Deprecate `torch._inductor.config.triton.use_block_ptr` because Triton removed its block-pointer API ([#191007](https://github.com/pytorch/pytorch/pull/191007))
+### Deprecate `torch._inductor.config.triton.use_block_ptr` because Triton removed its block-pointer API ([#191007](https://github.com/pytorch/pytorch/pull/191007))
 
-  With a Triton that no longer provides block pointers, `use_block_ptr=True` is now a no-op that falls back to the default indexing path with a one-time `FutureWarning: config.triton.use_block_ptr=True but the installed Triton no longer provides the block-pointer frontend API`, instead of failing with `CompilationError: ... Block pointers have been removed in favor of the tensor descriptor API`. Use tensor descriptors instead.
+With a Triton that no longer provides block pointers, `use_block_ptr=True` is now a no-op that falls back to the default indexing path with a one-time `FutureWarning: config.triton.use_block_ptr=True but the installed Triton no longer provides the block-pointer frontend API`, instead of failing with `CompilationError: ... Block pointers have been removed in favor of the tensor descriptor API`. Use tensor descriptors instead.
 
-  Version 2.14:
-  ```python
-  torch._inductor.config.triton.use_block_ptr = True
-  ```
+Version 2.14:
+```python
+torch._inductor.config.triton.use_block_ptr = True
+```
 
-  Version 2.15:
-  ```python
-  torch._inductor.config.triton.use_tensor_descriptor = True
-  ```
+Version 2.15:
+```python
+torch._inductor.config.triton.use_tensor_descriptor = True
+```
 
-- Deprecate the no-op `torch._inductor.config.use_mixed_mm` and `torch._inductor.config.mixed_mm_choice` settings ([#193721](https://github.com/pytorch/pytorch/pull/193721))
+### Deprecate the no-op `torch._inductor.config.use_mixed_mm` and `torch._inductor.config.mixed_mm_choice` settings ([#193721](https://github.com/pytorch/pytorch/pull/193721))
 
-  These settings have been ignored since the tuned `mixed_mm` path was removed. Reading or setting either now emits a one-time `FutureWarning` such as `torch._inductor.config.use_mixed_mm is deprecated and does not do anything`. `autoheuristic_collect.mixed_mm` and `autoheuristic_use.mixed_mm` were removed, and `"mixed_mm"` is no longer the `TORCHINDUCTOR_AUTOHEURISTIC_USE` default. Delete these settings from your code.
+These settings have been ignored since the tuned `mixed_mm` path was removed. Reading or setting either now emits a one-time `FutureWarning` such as `torch._inductor.config.use_mixed_mm is deprecated and does not do anything`. `autoheuristic_collect.mixed_mm` and `autoheuristic_use.mixed_mm` were removed, and `"mixed_mm"` is no longer the `TORCHINDUCTOR_AUTOHEURISTIC_USE` default. Delete these settings from your code.
 
-  Version 2.14:
-  ```python
-  torch._inductor.config.use_mixed_mm = True  # silently ignored
-  ```
+Version 2.14:
+```python
+torch._inductor.config.use_mixed_mm = True  # silently ignored
+```
 
-  Version 2.15:
-  ```python
-  # FutureWarning; delete the line
-  ```
+Version 2.15:
+```python
+# FutureWarning; delete the line
+```
 
-- Rename `torch._inductor.config.benchmark_epilogue_fusion` to `benchmark_template_fusion` and `max_epilogue_benchmarked_choices` to `max_template_fusion_benchmarked_choices` ([#198430](https://github.com/pytorch/pytorch/pull/198430))
+### Rename `torch._inductor.config.benchmark_epilogue_fusion` to `benchmark_template_fusion` and `max_epilogue_benchmarked_choices` to `max_template_fusion_benchmarked_choices` ([#198430](https://github.com/pytorch/pytorch/pull/198430))
 
-  The settings also cover prologue fusion, so the old names were misleading. The old names remain as deprecated aliases that emit a one-time `FutureWarning`. The environment variable is now `TORCHINDUCTOR_BENCHMARK_TEMPLATE_FUSION`; `TORCHINDUCTOR_BENCHMARK_EPILOGUE_FUSION` is still read as a fallback.
+The settings also cover prologue fusion, so the old names were misleading. The old names remain as deprecated aliases that emit a one-time `FutureWarning`. The environment variable is now `TORCHINDUCTOR_BENCHMARK_TEMPLATE_FUSION`; `TORCHINDUCTOR_BENCHMARK_EPILOGUE_FUSION` is still read as a fallback.
 
-  Version 2.14:
-  ```python
-  torch._inductor.config.benchmark_epilogue_fusion = False
-  ```
+Version 2.14:
+```python
+torch._inductor.config.benchmark_epilogue_fusion = False
+```
 
-  Version 2.15:
-  ```python
-  torch._inductor.config.benchmark_template_fusion = False
-  ```
+Version 2.15:
+```python
+torch._inductor.config.benchmark_template_fusion = False
+```
 
 ## CUDA
 
-- `torch.cuda.graph_annotations.clear_kernel_annotations()` is deprecated and now emits a `FutureWarning` ([#195398](https://github.com/pytorch/pytorch/pull/195398))
+### `torch.cuda.graph_annotations.clear_kernel_annotations()` is deprecated and now emits a `FutureWarning` ([#195398](https://github.com/pytorch/pytorch/pull/195398))
 
-  The CUDA graph kernel annotation registry now cleans up after itself: annotations are rekeyed to the executable graph when it is instantiated and dropped when that graph is destroyed. A global clear also discards annotations for graphs that are still live. Remove the call, and reset or delete a graph to drop its annotations.
+The CUDA graph kernel annotation registry now cleans up after itself: annotations are rekeyed to the executable graph when it is instantiated and dropped when that graph is destroyed. A global clear also discards annotations for graphs that are still live. Remove the call, and reset or delete a graph to drop its annotations.
 
-  Version 2.14:
-  ```python
-  annotations = get_kernel_annotations()
-  clear_kernel_annotations()
-  ```
+Version 2.14:
+```python
+annotations = get_kernel_annotations()
+clear_kernel_annotations()
+```
 
-  Version 2.15:
-  ```python
-  annotations = get_kernel_annotations()
-  # No clear needed; g's annotations are dropped when g is reset or destroyed.
-  ```
+Version 2.15:
+```python
+annotations = get_kernel_annotations()
+# No clear needed; g's annotations are dropped when g is reset or destroyed.
+```
 
 # New Features
 

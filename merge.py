@@ -81,6 +81,13 @@ def sort_commits_by_category(per_module_commits):
     return per_category_commits
 
 
+def render_heading_commit(commit):
+    # BC-breaking and deprecation entries are rendered as level 3 headings so
+    # their headlines stand out (matches 2.6-2.8 and 2.11)
+    lines = commit.rstrip("\n").split("\n")
+    return "\n".join([f"### {lines[0]}"] + lines[1:])
+
+
 def render_commit(commit):
     # `commit` is the rendered markdown for a single list item. Emit it as a
     # bullet, indenting every continuation line by 2 spaces so nested paragraphs
@@ -234,8 +241,8 @@ def write_output(per_category_commits, output_filename, version="X.x.x"):
         f.write("- [Bug fixes](#bug-fixes)\n")
         f.write("- [Performance](#performance)\n")
         f.write("- [Documentation](#documentation)\n")
-        f.write("- [Developers](#developers)\n")
-        f.write("- [Security](#security)\n\n")
+        f.write("- [Security](#security)\n")
+        f.write("- [Developers](#developers)\n\n")
         f.write("# Highlights\n\n")
         f.write("TODO\n\n")
         f.write("For more details about these highlighted features, you can look "
@@ -257,7 +264,8 @@ def write_output(per_category_commits, output_filename, version="X.x.x"):
                 assert module_name in module_name_mapping, f"no nice name for {module_name} found; mapping needs to be updated"
                 nice_module_name = module_name_mapping[module_name]
                 f.write(f"## {nice_module_name}\n\n")
-                rendered = [render_commit(c) for c in cat_commits[module_name]]
+                render = render_heading_commit if cat_short_name in ("bc breaking", "deprecation") else render_commit
+                rendered = [render(c) for c in cat_commits[module_name]]
                 # if any entry spans multiple lines, render a "loose" list with a
                 # blank line between every item so markdown stays well-formed
                 loose = any("\n" in r for r in rendered)
