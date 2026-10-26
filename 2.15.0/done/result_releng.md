@@ -107,6 +107,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix Windows wheels failing to import with `[WinError 1114]` when an older `msvcp140.dll` (before 14.40) is already loaded ([#196987](https://github.com/pytorch/pytorch/pull/196987))
 - Fix wheel license metadata listing license files for code that is not shipped, and Windows `MAX_PATH` failures while packaging them ([#185813](https://github.com/pytorch/pytorch/pull/185813))
 - Fix standalone `cmake --install` scattering Python package files across the install prefix and writing into the source checkout ([#191494](https://github.com/pytorch/pytorch/pull/191494))
+- Make Python 3.15 Linux wheels depend on `triton`, so `torch.compile` works on GPU after `pip install torch` ([#200294](https://github.com/pytorch/pytorch/pull/200294))
 ### performance
 ### docs
 - Fix docs search ranking module stub pages above the API symbols they document and listing duplicate results ([#195042](https://github.com/pytorch/pytorch/pull/195042))

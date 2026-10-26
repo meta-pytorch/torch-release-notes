@@ -54,6 +54,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `move_to_device_pass` leaving stale device arguments in generated code ([#185105](https://github.com/pytorch/pytorch/pull/185105))
 - Fix deserializing exported programs with symbolic-size fake tensor constants ([#185025](https://github.com/pytorch/pytorch/pull/185025))
 - Fix `... is not tracked with proxy` errors from the fake tensor dispatch cache ([#185100](https://github.com/pytorch/pytorch/pull/185100))
+- Fix `torch.export.export` raising `GuardOnDataDependentSymNode` for `x[mask] = scalar` when `x` has a data-dependent size ([#200412](https://github.com/pytorch/pytorch/pull/200412))
 ### performance
 ### docs
 - Fix the `register_module_as_pytree_input_node` docstring ([#196449](https://github.com/pytorch/pytorch/pull/196449))
