@@ -58,6 +58,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix a min-cut partitioner crash on graphs with `torch.device` nodes ([#196146](https://github.com/pytorch/pytorch/pull/196146))
 - Fix misaligned inputs reaching Inductor kernels after effect-token removal ([#198005](https://github.com/pytorch/pytorch/pull/198005))
 ### performance
+- Speed up the min-cut partitioner, reducing cold compile time by about 5% ([#197724](https://github.com/pytorch/pytorch/pull/197724))
 ### docs
 ### devs
 ### Untopiced

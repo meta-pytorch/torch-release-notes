@@ -45,37 +45,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## jit
 ### bc breaking
-- Operators called through `torch.ops.*` and `torch._C._dispatch_call_boxed` now use PyTorch's own warning and exception translation instead of pybind11's ([#193451](https://github.com/pytorch/pytorch/pull/193451))
-
-    We make `torch.ops.*` calls go through the same exception and warning translation as the rest of the library. This means that some exception translation that used to be handled by pybind is now handled natively. User-defined pybind exception translation is thus lost. Restoring it may be done in a future release as part of a broader exception handler improvement.
-
-    In addition, `TORCH_WARN` warnings from these operators now reach Python's `warnings` module, so they raise when warnings are turned into errors (`-W error`). `std::out_of_range` still becomes `IndexError` ([#195713](https://github.com/pytorch/pytorch/pull/195713)).
-
-    Version 2.14:
-
-    ```python
-    # C++ op: throw std::invalid_argument("bad size");
-    try:
-        torch.ops.my_lib.my_op(x)
-    except ValueError:  # pybind11 translation
-        ...
-    ```
-
-    Version 2.15:
-
-    ```python
-    # C++ op: TORCH_CHECK_VALUE(false, "bad size");
-    try:
-        torch.ops.my_lib.my_op(x)
-    except ValueError:
-        ...
-
-    # TORCH_WARN from the op is now a Python warning
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        torch.ops.my_lib.my_op(x)
-    ```
-
 ### deprecation
 ### new features
 ### improvements
@@ -88,7 +57,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Speed up `torch.jit.load` and graph pre-optimization ([#194035](https://github.com/pytorch/pytorch/pull/194035), [#193107](https://github.com/pytorch/pytorch/pull/193107), [#193250](https://github.com/pytorch/pytorch/pull/193250), [#194009](https://github.com/pytorch/pytorch/pull/194009))
 ### docs
 ### devs
-- `c10::List` iterators satisfy `std::random_access_iterator`, and `List<T>::emplace` now constructs a `T` ([#196002](https://github.com/pytorch/pytorch/pull/196002))
 ### Untopiced
 ### not user facing
 - Add META's Math Library (#198207) ([#198207](https://github.com/pytorch/pytorch/pull/198207))

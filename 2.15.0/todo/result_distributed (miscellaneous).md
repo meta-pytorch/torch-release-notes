@@ -48,7 +48,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Upgrade NVSHMEM to 3.7.2 ([#194279](https://github.com/pytorch/pytorch/pull/194279))
 ### bug fixes
 - Fix `multiprocessing.spawn` treating a child's `KeyboardInterrupt` as success ([#194439](https://github.com/pytorch/pytorch/pull/194439))
 ### performance

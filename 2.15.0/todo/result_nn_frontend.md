@@ -47,8 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Add `torch.nn.functional.scaled_addmm` and in-place `scaled_addmm_`, which compute `beta * input + alpha * scaled_mm(mat1, mat2)` in a single cuBLASLt GEMM on CUDA with the same scaling recipes as `scaled_mm` ([#195409](https://github.com/pytorch/pytorch/pull/195409))
-- Support `scaled_addmm` and `scaled_addmm_` under `torch.compile` ([#195410](https://github.com/pytorch/pytorch/pull/195410))
+- Add `torch.nn.functional.scaled_addmm` and in-place `scaled_addmm_`, which compute `beta * input + alpha * scaled_mm(mat1, mat2)` in a single cuBLASLt GEMM on CUDA with the same scaling recipes as `scaled_mm`; also supported under `torch.compile` ([#195409](https://github.com/pytorch/pytorch/pull/195409), [#195410](https://github.com/pytorch/pytorch/pull/195410))
 ### improvements
 - Support soft-label targets with `reduction="none"` on the chunked `linear_cross_entropy` path ([#188296](https://github.com/pytorch/pytorch/pull/188296))
 - Allow FlashAttention-4 in `scaled_dot_product_attention` with different query/key and value head dimensions ([#193039](https://github.com/pytorch/pytorch/pull/193039))
