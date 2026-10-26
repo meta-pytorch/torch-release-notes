@@ -46,9 +46,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ## linalg_frontend
 ### bc breaking
 ### deprecation
-- MAGMA is deprecated as the backend for pivoted LU factorization on CUDA; `torch.linalg.lu_factor` (and ops built on it) with `pivot=True` now always uses cuSOLVER ([#190661](https://github.com/pytorch/pytorch/pull/190661))
+- MAGMA is deprecated for LU factorization with pivoting on CUDA: `torch.linalg.lu_factor`, `torch.linalg.lu`, and the ops that use it internally (`torch.linalg.solve`, `torch.linalg.inv`, `torch.linalg.det`, `torch.linalg.slogdet`) now always use cuSOLVER ([#190661](https://github.com/pytorch/pytorch/pull/190661))
 
-  With `pivot=True`, LU now dispatches to cuSOLVER even when `torch.backends.cuda.preferred_linalg_library("magma")` is set; a new built-in batched LU kernel replaces MAGMA's for large batches. When MAGMA is preferred, the first call warns: `linalg.lu_factor: MAGMA, as a linear algebra backend, is deprecated and will be removed in future releases.` `pivot=False` still uses MAGMA when it is preferred. To avoid the warning, use the default or cuSOLVER backend.
+  This only affects code that sets `torch.backends.cuda.preferred_linalg_library("magma")`: pivoted LU now uses cuSOLVER anyway; a new built-in batched LU kernel replaces MAGMA's for large batches. When MAGMA is preferred, the first call warns: `linalg.lu_factor: MAGMA, as a linear algebra backend, is deprecated and will be removed in future releases.` `pivot=False` still uses MAGMA when it is preferred. To avoid the warning, use the default or cuSOLVER backend.
 
   ```python
   torch.backends.cuda.preferred_linalg_library("magma")
