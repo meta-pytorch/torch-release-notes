@@ -50,7 +50,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 - Make Dynamo guards rank-portable under `compile_on_one_rank` ([#196150](https://github.com/pytorch/pytorch/pull/196150), [#196938](https://github.com/pytorch/pytorch/pull/196938), [#196939](https://github.com/pytorch/pytorch/pull/196939), [#196940](https://github.com/pytorch/pytorch/pull/196940))
 ### bug fixes
-- Fix `MemoryTracker.load()` dropping the operation count ([#191453](https://github.com/pytorch/pytorch/pull/191453), [#192476](https://github.com/pytorch/pytorch/pull/192476))
 ### performance
 ### docs
 - Document the remaining NVSHMEM bindings ([#193449](https://github.com/pytorch/pytorch/pull/193449))
@@ -70,4 +69,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Comment NIXL transport lifecycle states ([#198890](https://github.com/pytorch/pytorch/pull/198890))
 - Fix a duplicated word in the `DefaultStager.stage` docstring ([#195233](https://github.com/pytorch/pytorch/pull/195233))
 - Repository tooling: issue-triage GitHub MCP startup fix and agent development guidance for distributed ([#194930](https://github.com/pytorch/pytorch/pull/194930), [#199168](https://github.com/pytorch/pytorch/pull/199168))
+- Fix `MemoryTracker.load()` dropping the operation count ([#191453](https://github.com/pytorch/pytorch/pull/191453), [#192476](https://github.com/pytorch/pytorch/pull/192476))
 ### security

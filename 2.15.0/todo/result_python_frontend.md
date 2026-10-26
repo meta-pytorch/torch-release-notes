@@ -86,6 +86,37 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
       loaded = torch.load("njt.pt", weights_only=True)
   ```
 
+- Operators called through `torch.ops.*` and `torch._C._dispatch_call_boxed` now use PyTorch's own warning and exception translation instead of pybind11's ([#193451](https://github.com/pytorch/pytorch/pull/193451))
+
+    We make `torch.ops.*` calls go through the same exception and warning translation as the rest of the library. This means that some exception translation that used to be handled by pybind is now handled natively. User-defined pybind exception translation is thus lost. Restoring it may be done in a future release as part of a broader exception handler improvement.
+
+    In addition, `TORCH_WARN` warnings from these operators now reach Python's `warnings` module, so they raise when warnings are turned into errors (`-W error`). `std::out_of_range` still becomes `IndexError` ([#195713](https://github.com/pytorch/pytorch/pull/195713)).
+
+    Version 2.14:
+
+    ```python
+    # C++ op: throw std::invalid_argument("bad size");
+    try:
+        torch.ops.my_lib.my_op(x)
+    except ValueError:  # pybind11 translation
+        ...
+    ```
+
+    Version 2.15:
+
+    ```python
+    # C++ op: TORCH_CHECK_VALUE(false, "bad size");
+    try:
+        torch.ops.my_lib.my_op(x)
+    except ValueError:
+        ...
+
+    # TORCH_WARN from the op is now a Python warning
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        torch.ops.my_lib.my_op(x)
+    ```
+
 ### deprecation
 ### new features
 ### improvements
@@ -95,9 +126,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Support `Optional[list[Tensor]]` annotations in `torch.library.infer_schema` and `custom_op` ([#187012](https://github.com/pytorch/pytorch/pull/187012))
 - Make `torch.iinfo` and `torch.finfo` hashable ([#193290](https://github.com/pytorch/pytorch/pull/193290))
 - Name the context manager in tracebacks through `torch.no_grad`-style decorators ([#186502](https://github.com/pytorch/pytorch/pull/186502))
-- Raise `NotImplementedError` instead of `RuntimeError` for `mean`, `var`, `std` and related ops on integer tensors ([#192351](https://github.com/pytorch/pytorch/pull/192351))
 - Improve type stubs for `Tensor @ scalar` and `torch.utils` re-exports ([#195220](https://github.com/pytorch/pytorch/pull/195220), [#195289](https://github.com/pytorch/pytorch/pull/195289))
-- Add `torch.mtia.is_current_stream_capturing()` ([#196354](https://github.com/pytorch/pytorch/pull/196354))
 ### bug fixes
 - Fix `torch.asarray` on buffer-protocol objects to take the dtype from the buffer format ([#188784](https://github.com/pytorch/pytorch/pull/188784))
 - Fix `torch.load` with `map_location="meta"` or `FakeTensorMode` losing storage sharing ([#193566](https://github.com/pytorch/pytorch/pull/193566))
@@ -107,7 +136,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `torch.finfo(torch.float8_e5m2fnuz).eps` being off by 2x ([#198855](https://github.com/pytorch/pytorch/pull/198855))
 - Fix `Tensor.__dlpack__` exporting tensors on a non-current non-CUDA device ([#195721](https://github.com/pytorch/pytorch/pull/195721))
 - Fix `torch.isinf`/`isfinite` raising for fp8 dtypes without infinity ([#197444](https://github.com/pytorch/pytorch/pull/197444))
-- Fix `FlopCounterMode` for CPU flash attention and nested attention backward ([#195801](https://github.com/pytorch/pytorch/pull/195801), [#196461](https://github.com/pytorch/pytorch/pull/196461))
 - Fix `torch.isfinite` reporting NaN as finite for `float8_e8m0fnu` ([#199878](https://github.com/pytorch/pytorch/pull/199878))
 ### performance
 - Reduce `TensorIterator` overhead and dtype refcount contention under free-threading ([#194422](https://github.com/pytorch/pytorch/pull/194422), [#194371](https://github.com/pytorch/pytorch/pull/194371))
@@ -123,6 +151,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Widen the fp16 redispatch test tolerance for `linear_cross_entropy` OpInfos ([#197565](https://github.com/pytorch/pytorch/pull/197565))
 - Skip the `conv_transpose1d` complex32 reference test on MI200 ([#198025](https://github.com/pytorch/pytorch/pull/198025))
 - Make `tensor[indices] = scalar` dispatch to `index_fill_` instead of first materializing the scalar as a tensor ([#195787](https://github.com/pytorch/pytorch/pull/195787)) (cut for length)
+- Add `torch.mtia.is_current_stream_capturing()` ([#196354](https://github.com/pytorch/pytorch/pull/196354))
+- Fix `FlopCounterMode` for CPU flash attention and nested attention backward ([#195801](https://github.com/pytorch/pytorch/pull/195801), [#196461](https://github.com/pytorch/pytorch/pull/196461))
 ### security
 - Fix `torch.load(weights_only=True)` exposing uninitialized pybind11-backed objects (such as DTensor placements) when a checkpoint uses the `NEWOBJ` opcode without a matching `BUILD`; such checkpoints are now rejected as corrupt or malicious ([#194647](https://github.com/pytorch/pytorch/pull/194647))
 - Fix a stack buffer overflow in `torch_shm_manager` (libshm) when the Unix socket path is too long (e.g. a long `TMPDIR`); it now raises an error ([#195183](https://github.com/pytorch/pytorch/pull/195183))

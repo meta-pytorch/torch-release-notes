@@ -47,9 +47,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
+### improvements
 - Add manual backward finalization to `DistributedDataParallel`: set `ddp.require_manual_backward_finalization = True` and call `ddp.finalize_backward()`, so other work can overlap the in-flight gradient all-reduce ([#196651](https://github.com/pytorch/pytorch/pull/196651))
 - Add a `lazy_bucket_allocation` option to `DistributedDataParallel` that allocates gradient buckets during backward and frees them afterward, lowering peak memory ([#199110](https://github.com/pytorch/pytorch/pull/199110))
-### improvements
 ### bug fixes
 ### performance
 - Batch DDP's copy into `.grad` with `batched_grad_copy=True` ([#190524](https://github.com/pytorch/pytorch/pull/190524))

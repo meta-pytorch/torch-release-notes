@@ -66,8 +66,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 - Add meta implementations for `torch.histogramdd` helper ops, enabling fake-tensor tracing ([#198897](https://github.com/pytorch/pytorch/pull/198897))
-- Validate `attn_bias` and key/value shapes in the overrideable fused SDPA fake kernel ([#194271](https://github.com/pytorch/pytorch/pull/194271), [#198303](https://github.com/pytorch/pytorch/pull/198303))
-- Raise `NotImplementedError` instead of `RuntimeError` for unsupported dtypes in linalg and norm ops ([#192352](https://github.com/pytorch/pytorch/pull/192352))
 - Keep backed dimensions with hint 1 symbolic in `expand` and broadcasting ([#198258](https://github.com/pytorch/pytorch/pull/198258))
 ### bug fixes
 - Fix wrong values and `nan` gradients when compiling `weight_norm` on 1-D parameters ([#198772](https://github.com/pytorch/pytorch/pull/198772))
@@ -76,8 +74,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add fused GRU cell meta kernels so CUDA `nn.GRUCell` can be compiled ([#191156](https://github.com/pytorch/pytorch/pull/191156))
 - Match eager in decompositions and refs on XPU (`native_layer_norm`), MPS (FFT strides, `logspace`) and MTIA (`masked_fill`) ([#198647](https://github.com/pytorch/pytorch/pull/198647), [#199030](https://github.com/pytorch/pytorch/pull/199030), [#195611](https://github.com/pytorch/pytorch/pull/195611))
 - Fix `torch.cond` branch metadata mismatches from `math.trunc(s / 1)` on a `SymInt` ([#186194](https://github.com/pytorch/pytorch/pull/186194))
-- Fix `torch.tensor(..., device="meta")` under `FakeTensorMode` not returning a `FakeTensor` ([#186188](https://github.com/pytorch/pytorch/pull/186188))
 - Fix spurious `Tensor device mismatch` errors from the FakeTensor dispatch cache ([#197583](https://github.com/pytorch/pytorch/pull/197583))
+- Raise `NotImplementedError` instead of `RuntimeError` for unsupported dtypes in linalg and norm ops, and for `mean`, `var`, `std` and related ops on integer tensors ([#192352](https://github.com/pytorch/pytorch/pull/192352), [#192351](https://github.com/pytorch/pytorch/pull/192351))
+- Validate `attn_bias` and key/value shapes in the overrideable fused SDPA fake kernel ([#194271](https://github.com/pytorch/pytorch/pull/194271), [#198303](https://github.com/pytorch/pytorch/pull/198303))
 ### performance
 - Speed up FakeTensor view cache hits ([#192821](https://github.com/pytorch/pytorch/pull/192821))
 ### docs
@@ -85,4 +84,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### Untopiced
 ### not user facing
 - Add a C++ meta kernel for `arange`, skip the Python meta implementation for operators that now have symbolic C++ meta kernels, and preserve fake-tensor metadata through `as_strided` views for the in-progress C++ FakeTensor ([#197581](https://github.com/pytorch/pytorch/pull/197581), [#198888](https://github.com/pytorch/pytorch/pull/198888), [#194744](https://github.com/pytorch/pytorch/pull/194744))
+- Fix `torch.tensor(..., device="meta")` under `FakeTensorMode` not returning a `FakeTensor` ([#186188](https://github.com/pytorch/pytorch/pull/186188))
 ### security

@@ -49,7 +49,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 ### bug fixes
-- Fix MPS shader includes in editable installs ([#195295](https://github.com/pytorch/pytorch/pull/195295))
 ### performance
 ### docs
 ### devs

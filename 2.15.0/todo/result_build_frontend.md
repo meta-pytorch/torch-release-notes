@@ -48,7 +48,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Support `torch.utils.cpp_extension` CUDA builds on Windows ARM64 ([#191656](https://github.com/pytorch/pytorch/pull/191656))
 ### bug fixes
 - Fix Windows MSVC source builds computing wrong results in `parallel_for` kernels, including CPU `scaled_dot_product_attention` ([#193792](https://github.com/pytorch/pytorch/pull/193792))
 - Fix cross-compiled builds producing a `_C.so` that the target interpreter cannot import ([#189388](https://github.com/pytorch/pytorch/pull/189388))
@@ -56,8 +55,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix macOS builds failing on SDKs that lack the Metal 4 cooperative-tensor APIs ([#195302](https://github.com/pytorch/pytorch/pull/195302))
 - Fix stale embedded Metal shaders in incremental macOS builds ([#196202](https://github.com/pytorch/pytorch/pull/196202))
 - Fix the C++20 requirement not propagating through the CMake `torch` target or being checked on MSVC ([#190784](https://github.com/pytorch/pytorch/pull/190784), [#197417](https://github.com/pytorch/pytorch/pull/197417))
-- Fix a clang `time_t` compile error in `torch/csrc/stable/macros.h` ([#197021](https://github.com/pytorch/pytorch/pull/197021))
-- Ship `top_level.txt` in wheels again, fixing slow `importlib.metadata.packages_distributions()` calls that delayed importing libraries like `transformers` ([#201347](https://github.com/pytorch/pytorch/pull/201347))
 ### performance
 ### docs
 ### devs

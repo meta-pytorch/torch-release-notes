@@ -98,6 +98,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Update the bundled Triton to 3.9, including the Intel XPU Triton ([#190440](https://github.com/pytorch/pytorch/pull/190440), [#195006](https://github.com/pytorch/pytorch/pull/195006))
 - Add gfx1250 (MI450) to the ROCm wheel architectures and build the ROCm CI against ROCm 10.0 ([#196610](https://github.com/pytorch/pytorch/pull/196610), [#194794](https://github.com/pytorch/pytorch/pull/194794))
 - Update the XPU wheels to Intel Deep Learning Essentials 2026.1.3 (`intel-sycl-rt`, `dpcpp-cpp-rt` and `intel-opencl-rt` 2026.1.2, `oneccl` 2022.1.2, `intel-pti` 1.1.0), and build the Linux XPU CI and CD images with Intel OMIX ([#195128](https://github.com/pytorch/pytorch/pull/195128), [#187900](https://github.com/pytorch/pytorch/pull/187900))
+- Upgrade NVSHMEM to 3.7.2 ([#194279](https://github.com/pytorch/pytorch/pull/194279))
 ### bug fixes
 - Fix `scaled_dot_product_attention` with the cuDNN backend returning NaN query gradients on Hopper (H100/H200) for non-causal attention when the key/value sequence length is 64 modulo 128, and silently corrupting generation on B200 for models with fewer than 8 key/value heads; the wheels now ship cuDNN 9.26, and with older cuDNN versions the affected Hopper shapes fall back to another backend ([#196861](https://github.com/pytorch/pytorch/pull/196861), [#195492](https://github.com/pytorch/pytorch/pull/195492))
 - Fix C++ compilation failures of `argmax` and `argmin` under `torch.compile` on s390x by moving the ZVECTOR `Vectorized` implementation to 16-byte vectors; s390x CPU builds now target z15 ([#173072](https://github.com/pytorch/pytorch/pull/173072))
@@ -108,6 +109,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix wheel license metadata listing license files for code that is not shipped, and Windows `MAX_PATH` failures while packaging them ([#185813](https://github.com/pytorch/pytorch/pull/185813))
 - Fix standalone `cmake --install` scattering Python package files across the install prefix and writing into the source checkout ([#191494](https://github.com/pytorch/pytorch/pull/191494))
 - Make Python 3.15 Linux wheels depend on `triton`, so `torch.compile` works on GPU after `pip install torch` ([#200294](https://github.com/pytorch/pytorch/pull/200294))
+- Ship `top_level.txt` in wheels again, fixing slow `importlib.metadata.packages_distributions()` calls that delayed importing libraries like `transformers` ([#201347](https://github.com/pytorch/pytorch/pull/201347))
 ### performance
 ### docs
 - Fix docs search ranking module stub pages above the API symbols they document and listing duplicate results ([#195042](https://github.com/pytorch/pytorch/pull/195042))
