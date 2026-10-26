@@ -48,7 +48,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Use Sleef in NNC on aarch64 ([#198002](https://github.com/pytorch/pytorch/pull/198002))
 ### bug fixes
 - Fix `torch.jit.Attribute` and `nn.Module` class annotations being lost on Python 3.14; this requires `typing-extensions>=4.13` ([#195201](https://github.com/pytorch/pytorch/pull/195201), [#199074](https://github.com/pytorch/pytorch/pull/199074))
 - Fix constant pooling merging `0.0` with `-0.0` ([#192605](https://github.com/pytorch/pytorch/pull/192605))
@@ -68,4 +67,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Use c10::bit_cast for type punning instead of memcpy ([#194149](https://github.com/pytorch/pytorch/pull/194149))
 - Replace std::bind with std::bind_front where possible ([#195598](https://github.com/pytorch/pytorch/pull/195598))
 - [RAWTHROW][15] torch/csrc/jit/tensorexpr: 294 conversions, the burn-down list is empty ([#198500](https://github.com/pytorch/pytorch/pull/198500))
+- Use Sleef in NNC on aarch64 ([#198002](https://github.com/pytorch/pytorch/pull/198002))
 ### security

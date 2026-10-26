@@ -50,26 +50,22 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 ### bug fixes
 - Keep `torch._check(not expr)` on a symbolic boolean as a runtime assertion, and fix a `TypeError` comparing two symbolic booleans ([#186043](https://github.com/pytorch/pytorch/pull/186043), [#186461](https://github.com/pytorch/pytorch/pull/186461))
-- Fix guard errors for jagged `NestedTensor` inputs whose batch size changes or with `keepdim=True` reductions ([#193059](https://github.com/pytorch/pytorch/pull/193059), [#184628](https://github.com/pytorch/pytorch/pull/184628))
 - Fix stale results from a float argument baked into a cached graph under `specialize_float=False` ([#195040](https://github.com/pytorch/pytorch/pull/195040))
-- Fix `canonicalize_output_graph_node_order` moving ops out of `inference_mode`, making outputs require grad ([#195518](https://github.com/pytorch/pytorch/pull/195518))
-- Fix AOTInductor dropping runtime assertions on data-dependent sizes in lite mode ([#199294](https://github.com/pytorch/pytorch/pull/199294))
 - Fix pickling `GraphModule`s from `aot_export_module` and non-strict export, and graphs with fake view tensors in metadata ([#186418](https://github.com/pytorch/pytorch/pull/186418), [#194771](https://github.com/pytorch/pytorch/pull/194771))
 - Fix printing FX graphs with BSR or BSC tensors in node metadata ([#195253](https://github.com/pytorch/pytorch/pull/195253))
 - Fix `replace_pattern` producing an invalid graph when adjacent matches share a node ([#185365](https://github.com/pytorch/pytorch/pull/185365))
 - Fix memory leaks from `torch.fx.wrap` keeping caller frames alive and `torch.export` retaining every traced graph ([#198561](https://github.com/pytorch/pytorch/pull/198561), [#198295](https://github.com/pytorch/pytorch/pull/198295))
 - Make the FX accelerator splitter's fusion discovery deterministic ([#198684](https://github.com/pytorch/pytorch/pull/198684))
-- Fix `KeyError` in `shape_inference` with non-sequential symbol names ([#197491](https://github.com/pytorch/pytorch/pull/197491))
 ### performance
 - Reduce compile time in FX `from_node` provenance tracking ([#193051](https://github.com/pytorch/pytorch/pull/193051))
 - Speed up the FX accelerator splitter on large graphs ([#198519](https://github.com/pytorch/pytorch/pull/198519), [#198654](https://github.com/pytorch/pytorch/pull/198654))
 ### docs
 ### devs
-- Fix minifier repros failing for `repeat_interleave` with `int32` repeats ([#197035](https://github.com/pytorch/pytorch/pull/197035))
 - Fix type annotations on `Tracer(autowrap_modules=...)` and `CodeGen.process_inputs` ([#195467](https://github.com/pytorch/pytorch/pull/195467), [#188287](https://github.com/pytorch/pytorch/pull/188287))
 ### Untopiced
 ### not user facing
 - Skip `ShapeEnv.replace` for symbolic booleans that are already constant; no measurable wall-clock change ([#193159](https://github.com/pytorch/pytorch/pull/193159))
 - Make tensor device observations rank-portable under the in-progress compile-on-one-rank mode ([#196151](https://github.com/pytorch/pytorch/pull/196151))
 - Add hardware classification to FX test classes ([#192455](https://github.com/pytorch/pytorch/pull/192455), [#192470](https://github.com/pytorch/pytorch/pull/192470), [#192450](https://github.com/pytorch/pytorch/pull/192450), [#192451](https://github.com/pytorch/pytorch/pull/192451), [#193274](https://github.com/pytorch/pytorch/pull/193274), [#192929](https://github.com/pytorch/pytorch/pull/192929), [#194857](https://github.com/pytorch/pytorch/pull/194857), [#194879](https://github.com/pytorch/pytorch/pull/194879), [#192742](https://github.com/pytorch/pytorch/pull/192742))
+- Fix `KeyError` in `shape_inference` with non-sequential symbol names ([#197491](https://github.com/pytorch/pytorch/pull/197491))
 ### security

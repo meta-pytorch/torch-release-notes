@@ -70,6 +70,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix AOTInductor runtime leaks of constant handles and mmap-backed constants ([#194480](https://github.com/pytorch/pytorch/pull/194480), [#195090](https://github.com/pytorch/pytorch/pull/195090)) and of hardware queues on ROCm ([#193249](https://github.com/pytorch/pytorch/pull/193249))
 - Fix AOTInductor MPS artifacts failing to `dlopen` on other machines ([#198232](https://github.com/pytorch/pytorch/pull/198232)) and segfaulting on Metal compile errors ([#196634](https://github.com/pytorch/pytorch/pull/196634))
 - Fix packaging of models that return `torch.return_types` outputs, e.g. from `torch.max` ([#197128](https://github.com/pytorch/pytorch/pull/197128))
+- Fix AOTInductor dropping runtime assertions on data-dependent sizes in lite mode ([#199294](https://github.com/pytorch/pytorch/pull/199294))
 ### performance
 - Parallelize pinned host staging copies when loading CUDA constants ([#195257](https://github.com/pytorch/pytorch/pull/195257))
 ### docs

@@ -82,10 +82,10 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 - Add `FSDPModule.set_manual_backward_finalization(True)` and `FSDPModule.finalize_backward()` to run gradient reduction and resharding at a chosen point instead of in the autograd final callback ([#196640](https://github.com/pytorch/pytorch/pull/196640))
 - Add `finalize_backward(async_op=True)`, which returns a `GradientReductionHandle` so gradient reduction can overlap other compute ([#196724](https://github.com/pytorch/pytorch/pull/196724))
-- Add `param_dtype_override_fn` to `MixedPrecisionPolicy` for per-parameter mixed precision in `fully_shard`, keeping one all-gather per group ([#196626](https://github.com/pytorch/pytorch/pull/196626))
 - Add `FSDPModule.set_keep_unsharded_storage()` to keep unsharded parameter storage allocated across `reshard()` ([#198417](https://github.com/pytorch/pytorch/pull/198417))
 - Let tensor-subclass parameters free raw all-gather buffers right after `fsdp_post_all_gather` by implementing `fsdp_should_release_all_gather_outputs_after_post_all_gather()` ([#194114](https://github.com/pytorch/pytorch/pull/194114))
 ### improvements
+- Add `param_dtype_override_fn` to `MixedPrecisionPolicy` for per-parameter mixed precision in `fully_shard`, keeping one all-gather per group ([#196626](https://github.com/pytorch/pytorch/pull/196626))
 ### bug fixes
 - Fix FSDP2 unshard under `torch.inference_mode()` ([#197327](https://github.com/pytorch/pytorch/pull/197327))
 - Fix silently wrong gradients with `set_all_reduce_hook` on a separate stream ([#198804](https://github.com/pytorch/pytorch/pull/198804))
