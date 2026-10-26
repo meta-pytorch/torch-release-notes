@@ -127,6 +127,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Make `torch.iinfo` and `torch.finfo` hashable ([#193290](https://github.com/pytorch/pytorch/pull/193290))
 - Name the context manager in tracebacks through `torch.no_grad`-style decorators ([#186502](https://github.com/pytorch/pytorch/pull/186502))
 - Improve type stubs for `Tensor @ scalar` and `torch.utils` re-exports ([#195220](https://github.com/pytorch/pytorch/pull/195220), [#195289](https://github.com/pytorch/pytorch/pull/195289))
+- Add `uint16`, `uint32` and `uint64` support to `torch.clamp`, `torch.maximum` and `torch.minimum` on CPU and CUDA ([#189953](https://github.com/pytorch/pytorch/pull/189953))
 ### bug fixes
 - Fix `torch.asarray` on buffer-protocol objects to take the dtype from the buffer format ([#188784](https://github.com/pytorch/pytorch/pull/188784))
 - Fix `torch.load` with `map_location="meta"` or `FakeTensorMode` losing storage sharing ([#193566](https://github.com/pytorch/pytorch/pull/193566))
@@ -137,6 +138,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `Tensor.__dlpack__` exporting tensors on a non-current non-CUDA device ([#195721](https://github.com/pytorch/pytorch/pull/195721))
 - Fix `torch.isinf`/`isfinite` raising for fp8 dtypes without infinity ([#197444](https://github.com/pytorch/pytorch/pull/197444))
 - Fix `torch.isfinite` reporting NaN as finite for `float8_e8m0fnu` ([#199878](https://github.com/pytorch/pytorch/pull/199878))
+- Fix `torch.linspace` for `float16` and `bfloat16` on CPU, and `torch.linspace` and `torch.logspace` on CUDA, losing precision because the step was rounded to the output dtype; for example element 3 of `torch.linspace(0, 10, 38, dtype=torch.half)` on CPU was `0.8105` instead of the correctly rounded `0.8110` ([#198415](https://github.com/pytorch/pytorch/pull/198415))
 ### performance
 - Reduce `TensorIterator` overhead and dtype refcount contention under free-threading ([#194422](https://github.com/pytorch/pytorch/pull/194422), [#194371](https://github.com/pytorch/pytorch/pull/194371))
 ### docs

@@ -50,6 +50,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Support causal grouped-query attention with a paged KV cache in the cuDNN backend of `torch.nn.attention.varlen` (`varlen_attn` and `varlen_attn_out`), enabling head dimension 256 with a paged KV cache on Blackwell GPUs; requires cuDNN 9.24 or newer ([#195650](https://github.com/pytorch/pytorch/pull/195650))
 ### improvements
 ### bug fixes
+- Fix `scaled_dot_product_attention` with the cuDNN backend returning NaN query gradients on Hopper (H100/H200) for non-causal attention when the key/value sequence length is 64 modulo 128, and silently corrupting generation on B200 for models with fewer than 8 key/value heads; the wheels now ship cuDNN 9.26, and with older cuDNN versions the affected Hopper shapes fall back to another backend ([#196861](https://github.com/pytorch/pytorch/pull/196861), [#195492](https://github.com/pytorch/pytorch/pull/195492))
 ### performance
 - Prefer the cuDNN backend for SDPA on sm86/sm89 for higher performance ([#192799](https://github.com/pytorch/pytorch/pull/192799))
 ### docs

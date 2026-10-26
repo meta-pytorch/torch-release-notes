@@ -48,7 +48,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### deprecation
 ### new features
 ### improvements
-- Add `uint16`, `uint32` and `uint64` support to `torch.clamp`, `torch.maximum` and `torch.minimum` on CPU and CUDA ([#189953](https://github.com/pytorch/pytorch/pull/189953))
 ### bug fixes
 - Fix the vectorized `double` to `int64` conversion on AVX2 CPUs, which was only exact within +/-2^51 and rounded to the nearest integer instead of truncating toward zero; it now truncates toward zero across the full `int64` range like other CPU instruction sets. Also fix the vectorized `int64` to `double` conversion returning `-0.0` for `0` when the rounding mode is round-toward-negative ([#196614](https://github.com/pytorch/pytorch/pull/196614), [#196607](https://github.com/pytorch/pytorch/pull/196607))
 ### performance
