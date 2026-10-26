@@ -45,22 +45,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ## python_frontend
 ### bc breaking
-- Nested tensors are no longer allowlisted for `torch.load(..., weights_only=True)` ([#194380](https://github.com/pytorch/pytorch/pull/194380))
-
-  Nested jagged and strided nested tensors are no longer on the default `weights_only` allowlist. Loading a checkpoint that contains one with `weights_only=True` (the default) now fails with `Unsupported global: GLOBAL torch.nested._internal.nested_tensor._rebuild_njt was not an allowed global by default` (or `GLOBAL torch._utils._rebuild_nested_tensor` for strided nested tensors). To load checkpoints containing nested tensors, allow them explicitly with `torch.serialization.safe_globals` (see below), or use `weights_only=False` for trusted files.
-
-  Version 2.14:
-  ```python
-  loaded = torch.load("njt.pt", weights_only=True)  # works
-  ```
-
-  Version 2.15:
-  ```python
-  from torch.nested._internal.nested_tensor import _rebuild_njt, NestedTensor
-  with torch.serialization.safe_globals([_rebuild_njt, NestedTensor]):
-      loaded = torch.load("njt.pt", weights_only=True)
-  ```
-
 - `import torch` can no longer be re-executed in the same process, including via `importlib.reload(torch)` ([#194654](https://github.com/pytorch/pytorch/pull/194654))
 
   `importlib.reload(torch)` and `del sys.modules["torch"]` + re-import now raise, as does retrying `import torch` after it failed. Re-running the module body was already unsafe in exactly the same way as the retry, so the new check does not distinguish the two. Normal use is unaffected: a successful import leaves `torch` in `sys.modules` so the body never re-runs, and re-entrant imports from a backend extension during autoload still short-circuit on `sys.modules` without reaching the check.
@@ -84,6 +68,22 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   # ImportError: `torch` can only be initialized once per process, so this module cannot
   # be imported again: neither via `importlib.reload(torch)`, nor by re-importing after
   # a failed `import torch`.
+  ```
+
+- Nested tensors are no longer allowlisted for `torch.load(..., weights_only=True)` ([#194380](https://github.com/pytorch/pytorch/pull/194380))
+
+  Nested jagged and strided nested tensors are no longer on the default `weights_only` allowlist. Loading a checkpoint that contains one with `weights_only=True` (the default) now fails with `Unsupported global: GLOBAL torch.nested._internal.nested_tensor._rebuild_njt was not an allowed global by default` (or `GLOBAL torch._utils._rebuild_nested_tensor` for strided nested tensors). To load checkpoints containing nested tensors, allow them explicitly with `torch.serialization.safe_globals` (see below), or use `weights_only=False` for trusted files.
+
+  Version 2.14:
+  ```python
+  loaded = torch.load("njt.pt", weights_only=True)  # works
+  ```
+
+  Version 2.15:
+  ```python
+  from torch.nested._internal.nested_tensor import _rebuild_njt, NestedTensor
+  with torch.serialization.safe_globals([_rebuild_njt, NestedTensor]):
+      loaded = torch.load("njt.pt", weights_only=True)
   ```
 
 ### deprecation
