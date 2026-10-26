@@ -66,6 +66,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Raise an error under `torch.use_deterministic_algorithms(True)` for nondeterministic MPS ops ([#195754](https://github.com/pytorch/pytorch/pull/195754))
 - Compute half and bfloat16 `torch.lerp` in float on MPS ([#196923](https://github.com/pytorch/pytorch/pull/196923))
 - Add a native MPS implementation of `torch.nn.functional.grouped_mm` for mixture-of-experts models ([#194933](https://github.com/pytorch/pytorch/pull/194933), [#198725](https://github.com/pytorch/pytorch/pull/198725))
+- Add a native MPS implementation of `torch._int_mm`, which also enables it in AOTInductor on MPS ([#193153](https://github.com/pytorch/pytorch/pull/193153))
 ### bug fixes
 - Fix crashes and wrong results in MPS `linalg.svd`, `linalg.lstsq` and `linalg.solve` ([#195949](https://github.com/pytorch/pytorch/pull/195949), [#196128](https://github.com/pytorch/pytorch/pull/196128), [#195872](https://github.com/pytorch/pytorch/pull/195872), [#196139](https://github.com/pytorch/pytorch/pull/196139), [#199063](https://github.com/pytorch/pytorch/pull/199063), [#199694](https://github.com/pytorch/pytorch/pull/199694), [#199031](https://github.com/pytorch/pytorch/pull/199031))
 - Fix `torch.compile` on MPS: wrong `argmax`/`argmin` indices, `channels_last` conv backward stride errors, and a misleading "Not enough SMs" warning ([#199134](https://github.com/pytorch/pytorch/pull/199134), [#199132](https://github.com/pytorch/pytorch/pull/199132), [#174241](https://github.com/pytorch/pytorch/pull/174241), [#192375](https://github.com/pytorch/pytorch/pull/192375))
@@ -94,7 +95,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix building with clang 16 and Apple clang 15 ([#199115](https://github.com/pytorch/pytorch/pull/199115))
 - Fix building with a Metal 4 toolchain against older macOS SDKs, and deprecation warnings with the macOS 27 SDK ([#196104](https://github.com/pytorch/pytorch/pull/196104), [#197200](https://github.com/pytorch/pytorch/pull/197200))
 - `at::mps::MPSProfiler` `begin*`/`end*` methods take the `MPSStream*`; stream-less `begin*` overloads are deprecated ([#192525](https://github.com/pytorch/pytorch/pull/192525), [#193611](https://github.com/pytorch/pytorch/pull/193611))
-- Add a native MPS implementation of the private `torch._int_mm` op, which also enables it in AOTInductor on MPS ([#193153](https://github.com/pytorch/pytorch/pull/193153))
 - Fix macOS builds failing on SDKs that lack the Metal 4 cooperative-tensor APIs ([#195302](https://github.com/pytorch/pytorch/pull/195302))
 - Fix stale embedded Metal shaders in incremental macOS builds ([#196202](https://github.com/pytorch/pytorch/pull/196202))
 ### not user facing
