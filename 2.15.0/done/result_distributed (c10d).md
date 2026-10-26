@@ -85,7 +85,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Allow a CPU `device_id` in `init_process_group` ([#198340](https://github.com/pytorch/pytorch/pull/198340))
 - Add `TORCH_NCCL_TEARDOWN_ON_TIMEOUT` to terminate on a legacy NCCL timeout instead of hanging ([#196187](https://github.com/pytorch/pytorch/pull/196187))
 - Record the flight recorder for backends without built-in support (the new NCCL backend, MPI, UCC) and dump it on new NCCL backend health-check failures ([#192233](https://github.com/pytorch/pytorch/pull/192233), [#199092](https://github.com/pytorch/pytorch/pull/199092))
-- Support the symmetric memory `MemPool` on XPU ([#197065](https://github.com/pytorch/pytorch/pull/197065))
 - Add an expert-major receive layout and zero-copy dispatch/combine to the experimental token-switch MoE dispatch API ([#187784](https://github.com/pytorch/pytorch/pull/187784), [#187785](https://github.com/pytorch/pytorch/pull/187785))
 - Pass timeout and `enable_reconfigure` to dynamically created TorchComms communicators ([#199099](https://github.com/pytorch/pytorch/pull/199099))
 - `is_symm_mem_enabled_for_group()` no longer requires the deprecated `enable_symm_mem_for_group()` call ([#193115](https://github.com/pytorch/pytorch/pull/193115))
@@ -124,4 +123,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix a threaded process group teardown crash in the test utilities ([#196786](https://github.com/pytorch/pytorch/pull/196786))
 - Test fixes: hardcoded rendezvous ports, ROCm NaN-check tests, and the ROCm torchcomms test harness ([#195994](https://github.com/pytorch/pytorch/pull/195994), [#197885](https://github.com/pytorch/pytorch/pull/197885), [#196907](https://github.com/pytorch/pytorch/pull/196907))
 - Add an `nccl4py` backend (`init_process_group(backend="nccl4py")`), a Python-only NCCL backend built on the `nccl4py` bindings ([#191703](https://github.com/pytorch/pytorch/pull/191703), [#196331](https://github.com/pytorch/pytorch/pull/196331), [#198000](https://github.com/pytorch/pytorch/pull/198000), [#195766](https://github.com/pytorch/pytorch/pull/195766)) (removed by PoC)
+- Support the symmetric memory `MemPool` on XPU ([#197065](https://github.com/pytorch/pytorch/pull/197065)) (covered in xpu)
 ### security

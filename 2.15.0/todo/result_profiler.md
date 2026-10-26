@@ -107,7 +107,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add `torch.profiler.ProfilerActivityConfig` and `torch.profiler.PerformanceMetricsConfig` to configure collection per activity group, such as CUDA hardware performance counters ([#196065](https://github.com/pytorch/pytorch/pull/196065))
 - Add `torch.profiler.CuspyConfig` to enable the experimental Cuspy CUDA collection backend without `_ExperimentalConfig` ([#196066](https://github.com/pytorch/pytorch/pull/196066))
 ### improvements
-- Show `key_by="source"` CUDA graph annotations in Cuspy traces ([#196529](https://github.com/pytorch/pytorch/pull/196529))
 ### bug fixes
 - Fix inflated profiler device times from events sharing a correlation id ([#196282](https://github.com/pytorch/pytorch/pull/196282))
 - Fix Cuspy teardown heap corruption and `record_function` kwargs sent as raw JSON ([#195471](https://github.com/pytorch/pytorch/pull/195471), [#196352](https://github.com/pytorch/pytorch/pull/196352))
@@ -134,4 +133,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - [Profiler] Update Kineto readme ([#199364](https://github.com/pytorch/pytorch/pull/199364))
 - [Profiler] Delete unneeded Kineto code ([#199359](https://github.com/pytorch/pytorch/pull/199359))
 - Fix the profiler warning for free-threaded Python never being emitted on Python 3.13t ([#194697](https://github.com/pytorch/pytorch/pull/194697)) (cut for length)
+- Show `key_by="source"` CUDA graph annotations in Cuspy traces ([#196529](https://github.com/pytorch/pytorch/pull/196529))
 ### security

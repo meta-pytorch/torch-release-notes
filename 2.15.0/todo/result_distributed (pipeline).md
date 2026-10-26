@@ -60,14 +60,13 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
   ```
 ### deprecation
 ### new features
-- Add `finalize_gradients` to pipeline schedule `step()` for gradient accumulation across several schedule runs with FSDP stages ([#196641](https://github.com/pytorch/pytorch/pull/196641))
 - Add `PipelineStage.register_forward_context(factory)` to wrap each stage forward in a context manager that receives the stage and microbatch indices ([#196462](https://github.com/pytorch/pytorch/pull/196462))
 - Add `torch.distributed.pipelining.analyze_pipeline_activation_liveness`, which computes activation lifetimes and reusable storage slots from a schedule ([#196464](https://github.com/pytorch/pytorch/pull/196464))
 ### improvements
 - Add `WAIT_SEND_F`/`WAIT_SEND_B` schedule actions and an optional `max_outstanding_sends` limit on pending sends ([#196726](https://github.com/pytorch/pytorch/pull/196726), [#196727](https://github.com/pytorch/pytorch/pull/196727))
 - Add a `max_active_stages` argument to multi-stage schedules to control how many FSDP stages stay unsharded at once ([#193972](https://github.com/pytorch/pytorch/pull/193972))
 - Label pipeline schedule actions in CUDA graph traces captured with `enable_annotations=True` ([#195072](https://github.com/pytorch/pytorch/pull/195072))
-- Initialize pipeline communicators with one setup sequence for manual and traced stages ([#197488](https://github.com/pytorch/pytorch/pull/197488))
+- Add `finalize_gradients` to pipeline schedule `step()` for gradient accumulation across several schedule runs with FSDP stages ([#196641](https://github.com/pytorch/pytorch/pull/196641))
 ### bug fixes
 ### performance
 - Lower peak memory and improve overlap via lazy receive buffers and new `defer_reduce_grad_wait`/`unshard_lookahead` options ([#196463](https://github.com/pytorch/pytorch/pull/196463), [#196963](https://github.com/pytorch/pytorch/pull/196963), [#196725](https://github.com/pytorch/pytorch/pull/196725), [#196706](https://github.com/pytorch/pytorch/pull/196706))
@@ -75,4 +74,5 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### devs
 ### Untopiced
 ### not user facing
+- Initialize pipeline communicators with one setup sequence for manual and traced stages ([#197488](https://github.com/pytorch/pytorch/pull/197488))
 ### security

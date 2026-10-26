@@ -57,11 +57,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `torch.export.export` raising `GuardOnDataDependentSymNode` for `x[mask] = scalar` when `x` has a data-dependent size ([#200412](https://github.com/pytorch/pytorch/pull/200412))
 ### performance
 ### docs
-- Fix the `register_module_as_pytree_input_node` docstring ([#196449](https://github.com/pytorch/pytorch/pull/196449))
 ### devs
 ### Untopiced
 ### not user facing
 - Make the internal `has_triton()` helper ignore Triton's CPU backend unless `include_cpu=True` is passed, so accelerator checks keep their current behavior once Triton ships a CPU backend ([#195544](https://github.com/pytorch/pytorch/pull/195544))
 - Fix typos in comments, docstrings, and error messages ([#185830](https://github.com/pytorch/pytorch/pull/185830), [#194322](https://github.com/pytorch/pytorch/pull/194322))
 - Replace raw C++ `throw`s in the generated export serialization types with `TORCH_CHECK`, adding file and line information to their error messages ([#194378](https://github.com/pytorch/pytorch/pull/194378))
+- Fix the `register_module_as_pytree_input_node` docstring ([#196449](https://github.com/pytorch/pytorch/pull/196449))
 ### security

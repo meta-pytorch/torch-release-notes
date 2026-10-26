@@ -66,6 +66,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `rms_norm` with an engaged but undefined C++ weight ([#195574](https://github.com/pytorch/pytorch/pull/195574))
 - Fix `pixel_shuffle`/`pixel_unshuffle` meta errors for non-positive factors ([#195224](https://github.com/pytorch/pytorch/pull/195224))
 - Keep the `Module.to_empty()` hint in meta-module `to()` errors with `TORCH_SHOW_CPP_STACKTRACES=1` ([#191151](https://github.com/pytorch/pytorch/pull/191151))
+- Fix nondeterministic NaNs in memory-efficient attention forward with head dimension 256 or larger on Ampere, Ada and consumer Blackwell GPUs ([#198922](https://github.com/pytorch/pytorch/pull/198922))
+- Unify padding and pooling shape checks across CPU, CUDA and MPS ([#196457](https://github.com/pytorch/pytorch/pull/196457), [#196230](https://github.com/pytorch/pytorch/pull/196230))
 ### performance
 - Speed up `nn.Module.__call__` by about 15% ([#196236](https://github.com/pytorch/pytorch/pull/196236))
 - Add a channels-last CUDA `GroupNorm` kernel ([#191945](https://github.com/pytorch/pytorch/pull/191945))
