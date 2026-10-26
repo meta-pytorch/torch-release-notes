@@ -67,6 +67,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 - Add meta implementations for `torch.histogramdd` helper ops, enabling fake-tensor tracing ([#198897](https://github.com/pytorch/pytorch/pull/198897))
 - Keep backed dimensions with hint 1 symbolic in `expand` and broadcasting ([#198258](https://github.com/pytorch/pytorch/pull/198258))
+- Support fake-tensor tracing of sparse compressed tensor constructors and `_to_dense` ([#192091](https://github.com/pytorch/pytorch/pull/192091))
 ### bug fixes
 - Fix wrong values and `nan` gradients when compiling `weight_norm` on 1-D parameters ([#198772](https://github.com/pytorch/pytorch/pull/198772))
 - Fix compiled `torch.normal(mean, std)` output dtype with mixed float dtypes ([#194557](https://github.com/pytorch/pytorch/pull/194557))
@@ -77,8 +78,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix spurious `Tensor device mismatch` errors from the FakeTensor dispatch cache ([#197583](https://github.com/pytorch/pytorch/pull/197583))
 - Raise `NotImplementedError` instead of `RuntimeError` for unsupported dtypes in linalg and norm ops, and for `mean`, `var`, `std` and related ops on integer tensors ([#192352](https://github.com/pytorch/pytorch/pull/192352), [#192351](https://github.com/pytorch/pytorch/pull/192351))
 - Validate `attn_bias` and key/value shapes in the overrideable fused SDPA fake kernel ([#194271](https://github.com/pytorch/pytorch/pull/194271), [#198303](https://github.com/pytorch/pytorch/pull/198303))
+- Match eager shape errors for meta transposed convolution and over-broadcast `addmm`/`addmv` inputs ([#188328](https://github.com/pytorch/pytorch/pull/188328), [#195594](https://github.com/pytorch/pytorch/pull/195594))
+- Fix a crash on modulo of plain ints in symbolic shapes, and simplify `C * (x // C)` back to `x` ([#198395](https://github.com/pytorch/pytorch/pull/198395), [#198808](https://github.com/pytorch/pytorch/pull/198808))
 ### performance
 - Speed up FakeTensor view cache hits ([#192821](https://github.com/pytorch/pytorch/pull/192821))
+- Reduce compile time in `ShapeEnv` ([#193219](https://github.com/pytorch/pytorch/pull/193219), [#193161](https://github.com/pytorch/pytorch/pull/193161), [#195623](https://github.com/pytorch/pytorch/pull/195623))
 ### docs
 ### devs
 ### Untopiced

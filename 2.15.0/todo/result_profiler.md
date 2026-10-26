@@ -106,13 +106,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 - Add `torch.profiler.ProfilerActivityConfig` and `torch.profiler.PerformanceMetricsConfig` to configure collection per activity group, such as CUDA hardware performance counters ([#196065](https://github.com/pytorch/pytorch/pull/196065))
 - Add `torch.profiler.CuspyConfig` to enable the experimental Cuspy CUDA collection backend without `_ExperimentalConfig` ([#196066](https://github.com/pytorch/pytorch/pull/196066))
-- Record the Python launch stack of each CUDA graph node during capture with `annotation_config={"record_py_stacks": True}`, read via `torch.cuda.graph_annotations.get_kernel_py_stacks()` (requires CUPTI >= 13.3) ([#198419](https://github.com/pytorch/pytorch/pull/198419))
-
 ### improvements
 - Show `key_by="source"` CUDA graph annotations in Cuspy traces ([#196529](https://github.com/pytorch/pytorch/pull/196529))
 ### bug fixes
 - Fix inflated profiler device times from events sharing a correlation id ([#196282](https://github.com/pytorch/pytorch/pull/196282))
 - Fix Cuspy teardown heap corruption and `record_function` kwargs sent as raw JSON ([#195471](https://github.com/pytorch/pytorch/pull/195471), [#196352](https://github.com/pytorch/pytorch/pull/196352))
+- Fix several memory visualizer (MemoryViz) bugs, including wrong pool attribution and underreported peaks ([#199335](https://github.com/pytorch/pytorch/pull/199335), [#199415](https://github.com/pytorch/pytorch/pull/199415), [#193989](https://github.com/pytorch/pytorch/pull/193989))
 ### performance
 ### docs
 - Fix the `toggle_collection_dynamic` example ([#190369](https://github.com/pytorch/pytorch/pull/190369))

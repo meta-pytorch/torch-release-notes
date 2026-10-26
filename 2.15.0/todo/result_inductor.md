@@ -137,7 +137,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Honor `assume_32bit_indexing` for dynamic size arguments ([#194127](https://github.com/pytorch/pytorch/pull/194127))
 - Use recipe-aware layout constraints for `_scaled_mm_v2` ([#197029](https://github.com/pytorch/pytorch/pull/197029))
 - Support three reduction dimensions in N-D reduction tiling ([#197437](https://github.com/pytorch/pytorch/pull/197437))
-- Add `include_fallback` to custom-op autotuning ([#197446](https://github.com/pytorch/pytorch/pull/197446))
 - Keep Triton FP fusion on for templates to preserve numerics with Triton 3.9 ([#199500](https://github.com/pytorch/pytorch/pull/199500))
 - Apply split/cat optimizations to `torch.concatenate` ([#195174](https://github.com/pytorch/pytorch/pull/195174))
 - Reuse the CUTLASS sm120 kernel generators on sm121 GPUs ([#197621](https://github.com/pytorch/pytorch/pull/197621))
@@ -145,7 +144,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bug fixes
 - Disable the 4x-vectorized Triton RNG path, which produced correlated CUDA dropout masks since 2.13 (`TORCHINDUCTOR_USE_RAND4X=1` restores it) ([#198680](https://github.com/pytorch/pytorch/pull/198680))
 - Fix silently wrong results from in-place mutations: reinplaced scatters and `index_put` whose sources alias the input, `remove_noop_ops` on copies of mutated inputs, fusions across repeated mutations of one buffer, and mutations of buffers already referenced by views ([#198010](https://github.com/pytorch/pytorch/pull/198010), [#198132](https://github.com/pytorch/pytorch/pull/198132), [#198325](https://github.com/pytorch/pytorch/pull/198325), [#198549](https://github.com/pytorch/pytorch/pull/198549), [#198637](https://github.com/pytorch/pytorch/pull/198637))
-- Fix silently wrong results for `resize_()` on a no-op view of a returned intermediate, non-contiguous reshape views, and `torch.while_loop` whose `cond_fn` mutates a captured tensor ([#191844](https://github.com/pytorch/pytorch/pull/191844), [#192575](https://github.com/pytorch/pytorch/pull/192575), [#195393](https://github.com/pytorch/pytorch/pull/195393))
+- Fix silently wrong results for non-contiguous reshape views and `torch.while_loop` whose `cond_fn` mutates a captured tensor ([#192575](https://github.com/pytorch/pytorch/pull/192575), [#195393](https://github.com/pytorch/pytorch/pull/195393))
 - Fix silently wrong gradients and results from mix-order reductions with views into a shared buffer (a regression since 2.10) or row counts not divisible by `XBLOCK` ([#193103](https://github.com/pytorch/pytorch/pull/193103), [#196565](https://github.com/pytorch/pytorch/pull/196565))
 - Fix corrupted gradients from a reused `nested_compile_region` that inherited donated-buffer indices ([#193960](https://github.com/pytorch/pytorch/pull/193960))
 - Fix wrong results from the Triton FP8 blockwise `scaled_mm` template, including DeepSeek-style scales ([#195751](https://github.com/pytorch/pytorch/pull/195751), [#197028](https://github.com/pytorch/pytorch/pull/197028), [#197458](https://github.com/pytorch/pytorch/pull/197458))
@@ -165,7 +164,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix CUDA Graph Trees capturing cross-device extern kernels, `Detected N tensor(s) in the cudagraph pool not tracked as outputs` errors with pending backwards, static kernels partitioned out under `cudagraph_skip_dynamic_graphs`, and backward graphs treating activations as static inputs ([#190555](https://github.com/pytorch/pytorch/pull/190555), [#194124](https://github.com/pytorch/pytorch/pull/194124), [#197139](https://github.com/pytorch/pytorch/pull/197139), [#197438](https://github.com/pytorch/pytorch/pull/197438))
 - Fix `NameError` for complex indexed assignment with `mode="reduce-overhead"` and graph partitioning ([#199414](https://github.com/pytorch/pytorch/pull/199414))
 - Fix `CUDA driver error: misaligned address` in backward for misaligned saved inputs ([#192263](https://github.com/pytorch/pytorch/pull/192263))
-- Fix version-counter errors in backward for inputs mutated outside the compiled graph ([#185876](https://github.com/pytorch/pytorch/pull/185876))
 - Emit runtime asserts for backed `SymInt` inputs when `prefer_deferred_runtime_asserts_over_guards=True` ([#185588](https://github.com/pytorch/pytorch/pull/185588))
 - Fix reordering of consecutive side-effectful ops that lower to different kernel types ([#188301](https://github.com/pytorch/pytorch/pull/188301))
 - Fix a CPU buffer being passed to a CUDA kernel after an incorrect device-copy elimination ([#199402](https://github.com/pytorch/pytorch/pull/199402))
@@ -180,7 +178,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix ROCm CK-Tile GEMM autotuning dropping all `float16` kernels and `float8_e4m3fnuz`/`float8_e5m2fnuz` cast errors ([#193902](https://github.com/pytorch/pytorch/pull/193902), [#197905](https://github.com/pytorch/pytorch/pull/197905))
 - Fix failures after fp32 matmul precision was set through `torch.backends.cuda.matmul.fp32_precision` ([#189955](https://github.com/pytorch/pytorch/pull/189955), [#196860](https://github.com/pytorch/pytorch/pull/196860))
 - Fix kernel builds with only `libcuda.so.1`, the `CUDA_HOME` fallback for `nvcc`, ROCm on Windows, and DSL ops with `triton-rocm` ([#186538](https://github.com/pytorch/pytorch/pull/186538), [#197573](https://github.com/pytorch/pytorch/pull/197573), [#194471](https://github.com/pytorch/pytorch/pull/194471), [#195022](https://github.com/pytorch/pytorch/pull/195022))
-- Match eager shape errors for meta transposed convolution and over-broadcast `addmm`/`addmv` inputs ([#188328](https://github.com/pytorch/pytorch/pull/188328), [#195594](https://github.com/pytorch/pytorch/pull/195594))
 - Fail instead of hanging when a compile worker dies, and treat a cleared local cache as a miss ([#192301](https://github.com/pytorch/pytorch/pull/192301), [#196189](https://github.com/pytorch/pytorch/pull/196189))
 - Fix `AttributeError` with `torch._foreach_pow` on integer tensors ([#198675](https://github.com/pytorch/pytorch/pull/198675))
 - Fix compile crashes for `float16`/`bfloat16` floor division of `arange` values, nested grouped-reduction epilogues, fallback kernels without tensor inputs, and an early `FakeTensorUpdater` ([#197132](https://github.com/pytorch/pytorch/pull/197132), [#195874](https://github.com/pytorch/pytorch/pull/195874), [#197584](https://github.com/pytorch/pytorch/pull/197584), [#196946](https://github.com/pytorch/pytorch/pull/196946))
@@ -206,8 +203,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Document the FlexAttention `ROWS_GUARANTEED_SAFE` requirement ([#194154](https://github.com/pytorch/pytorch/pull/194154))
 ### devs
 - Add `DeviceInterface` and `DeviceOpOverrides` extension points for out-of-tree accelerator backends ([#190326](https://github.com/pytorch/pytorch/pull/190326), [#190614](https://github.com/pytorch/pytorch/pull/190614), [#192896](https://github.com/pytorch/pytorch/pull/192896), [#193908](https://github.com/pytorch/pytorch/pull/193908), [#190615](https://github.com/pytorch/pytorch/pull/190615))
-- Add a keyed registry for `InductorChoices` overrides ([#194097](https://github.com/pytorch/pytorch/pull/194097))
-- Let out-of-tree backends register FlexAttention backward templates and override the `MetalKernel` launch device ([#195786](https://github.com/pytorch/pytorch/pull/195786), [#195809](https://github.com/pytorch/pytorch/pull/195809))
 - Add declarative `implies` support to Inductor/Dynamo `Config` ([#196663](https://github.com/pytorch/pytorch/pull/196663))
 ### Untopiced
 ### not user facing
@@ -317,4 +312,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Drop a compiler-proven all-zero attention bias from `aten._scaled_dot_product_efficient_attention` forward and backward calls ([#196068](https://github.com/pytorch/pytorch/pull/196068), [#196079](https://github.com/pytorch/pytorch/pull/196079)) (cut for length)
 - Apply the `index_add` unique-index rewrite when the index is a full `torch.randperm`, not only a sliced one ([#196873](https://github.com/pytorch/pytorch/pull/196873)) (cut for length)
 - Reuse base storage for views when generating example inputs for compile-time autotuning instead of re-allocating it ([#198660](https://github.com/pytorch/pytorch/pull/198660)) (cut for length)
+- Add `include_fallback` to custom-op autotuning ([#197446](https://github.com/pytorch/pytorch/pull/197446))
+- Add a keyed registry for `InductorChoices` overrides ([#194097](https://github.com/pytorch/pytorch/pull/194097))
+- Let out-of-tree backends register FlexAttention backward templates and override the `MetalKernel` launch device ([#195786](https://github.com/pytorch/pytorch/pull/195786), [#195809](https://github.com/pytorch/pytorch/pull/195809))
 ### security

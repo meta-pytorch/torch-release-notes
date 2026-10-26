@@ -60,6 +60,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### improvements
 - Add CUDA TunableOp support for `torch._scaled_mm` ([#186271](https://github.com/pytorch/pytorch/pull/186271))
 - Unify matmul shape-check error messages ([#193583](https://github.com/pytorch/pytorch/pull/193583))
+- Add dynamic-shape TunableOp GEMM tuning with `torch.cuda.tunable.dynamic_dims_mask` and wildcard fallback (`PYTORCH_TUNABLEOP_WILDCARD_FALLBACK=1`) ([#191658](https://github.com/pytorch/pytorch/pull/191658))
 ### bug fixes
 - Fix silently wrong second-order forward AD for `linalg.det`, `slogdet` and `solve` ([#192667](https://github.com/pytorch/pytorch/pull/192667))
 - Fix wrong `torch.linalg.matrix_exp` results for some inputs ([#196658](https://github.com/pytorch/pytorch/pull/196658))
