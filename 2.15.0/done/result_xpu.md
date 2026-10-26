@@ -109,6 +109,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
 ### devs
 - Build XPU with pure SYCL compilation and support Clang as the host compiler; expose `USE_SYCLTLA` and enable oneMKL sparse in the build system ([#194185](https://github.com/pytorch/pytorch/pull/194185), [#198720](https://github.com/pytorch/pytorch/pull/198720), [#196387](https://github.com/pytorch/pytorch/pull/196387), [#198200](https://github.com/pytorch/pytorch/pull/198200))
+- Upgrade oneDNN to v3.13 ([#196712](https://github.com/pytorch/pytorch/pull/196712))
 ### Untopiced
 ### not user facing
 ### security

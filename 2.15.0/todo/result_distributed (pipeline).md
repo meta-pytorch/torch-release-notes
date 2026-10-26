@@ -64,7 +64,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add `PipelineStage.register_forward_context(factory)` to wrap each stage forward in a context manager that receives the stage and microbatch indices ([#196462](https://github.com/pytorch/pytorch/pull/196462))
 - Add `torch.distributed.pipelining.analyze_pipeline_activation_liveness`, which computes activation lifetimes and reusable storage slots from a schedule ([#196464](https://github.com/pytorch/pytorch/pull/196464))
 ### improvements
-- `is_symm_mem_enabled_for_group()` no longer requires the deprecated `enable_symm_mem_for_group()` call ([#193115](https://github.com/pytorch/pytorch/pull/193115))
 - Add `WAIT_SEND_F`/`WAIT_SEND_B` schedule actions and an optional `max_outstanding_sends` limit on pending sends ([#196726](https://github.com/pytorch/pytorch/pull/196726), [#196727](https://github.com/pytorch/pytorch/pull/196727))
 - Add a `max_active_stages` argument to multi-stage schedules to control how many FSDP stages stay unsharded at once ([#193972](https://github.com/pytorch/pytorch/pull/193972))
 - Label pipeline schedule actions in CUDA graph traces captured with `enable_annotations=True` ([#195072](https://github.com/pytorch/pytorch/pull/195072))

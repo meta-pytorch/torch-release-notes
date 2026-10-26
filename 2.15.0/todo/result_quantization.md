@@ -49,7 +49,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### new features
 ### improvements
 - Support pruned tables in quantized `embedding_bag` on CUDA ([#194934](https://github.com/pytorch/pytorch/pull/194934))
-- Upgrade oneDNN to v3.13 ([#196712](https://github.com/pytorch/pytorch/pull/196712))
 ### bug fixes
 - Fix FX FP16/BF16 linear weight folding `KeyError` for shared weights ([#194292](https://github.com/pytorch/pytorch/pull/194292))
 ### performance

@@ -52,8 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Update AOTriton to 0.14.2b, adding FlyDSL SDPA kernels for gfx950 and gfx1201 and several attention correctness fixes ([#197747](https://github.com/pytorch/pytorch/pull/197747))
 - Add a gfx950 pre-swizzled MX FP4/FP8 block-scale layout for `scaled_mm` (`SwizzleType.SWIZZLE_32_8`) ([#190290](https://github.com/pytorch/pytorch/pull/190290)), and allow all operand layouts in `torch._scaled_mm` with FP8 tensorwise scaling ([#196884](https://github.com/pytorch/pytorch/pull/196884))
 - Add gfx1250 Tensor Data Mover support to Inductor for `mm`/`addmm`, pointwise and reduction codegen, and FlexAttention ([#191166](https://github.com/pytorch/pytorch/pull/191166), [#196525](https://github.com/pytorch/pytorch/pull/196525), [#197329](https://github.com/pytorch/pytorch/pull/197329))
-- hipBLAS and hipBLASLt workspaces are now allocated per operation, matching CUDA; set `TORCH_CUBLAS_WORKSPACE_CACHE=1` to keep the old cache ([#196920](https://github.com/pytorch/pytorch/pull/196920))
-- Add dynamic-shape TunableOp GEMM tuning with `torch.cuda.tunable.dynamic_dims_mask` and wildcard fallback (`PYTORCH_TUNABLEOP_WILDCARD_FALLBACK=1`) ([#191658](https://github.com/pytorch/pytorch/pull/191658))
 - Fall back to the native RNN implementation when MIOpen RNN fails at runtime ([#189658](https://github.com/pytorch/pytorch/pull/189658))
 - Report AOTriton attention launch failures from the attention op that caused them ([#194100](https://github.com/pytorch/pytorch/pull/194100))
 ### bug fixes
@@ -69,6 +67,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix hipify narrowing 64-bit and unsigned `std::max`/`std::min` arguments to `int` ([#199444](https://github.com/pytorch/pytorch/pull/199444))
 - Fix JIT C++ extensions failing with `hipblas/hipblas.h: No such file or directory` with ROCm from TheRock pip wheels ([#196503](https://github.com/pytorch/pytorch/pull/196503))
 - Stop RCCL 2.28+ from printing a deprecation warning on every all-to-all ([#197534](https://github.com/pytorch/pytorch/pull/197534), [#199124](https://github.com/pytorch/pytorch/pull/199124))
+- Fix rare incorrect indices from `argmax`, `argmin`, `max` and `min` for large reductions on ROCm ([#193291](https://github.com/pytorch/pytorch/pull/193291))
 ### performance
 ### docs
 - Document gfx1151 SDPA layouts, hipFile GPUDirect Storage, and MI300 matmul precision issues ([#190771](https://github.com/pytorch/pytorch/pull/190771), [#195478](https://github.com/pytorch/pytorch/pull/195478), [#190736](https://github.com/pytorch/pytorch/pull/190736))

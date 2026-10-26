@@ -88,6 +88,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Support the symmetric memory `MemPool` on XPU ([#197065](https://github.com/pytorch/pytorch/pull/197065))
 - Add an expert-major receive layout and zero-copy dispatch/combine to the experimental token-switch MoE dispatch API ([#187784](https://github.com/pytorch/pytorch/pull/187784), [#187785](https://github.com/pytorch/pytorch/pull/187785))
 - Pass timeout and `enable_reconfigure` to dynamically created TorchComms communicators ([#199099](https://github.com/pytorch/pytorch/pull/199099))
+- `is_symm_mem_enabled_for_group()` no longer requires the deprecated `enable_symm_mem_for_group()` call ([#193115](https://github.com/pytorch/pytorch/pull/193115))
 ### bug fixes
 - Fix new NCCL backend lifetime bugs: a crash or hang when `Work` outlives `destroy_process_group()`, tensors kept alive after `wait_tensor`, a stray CUDA context on GPU 0, failed nonblocking splits treated as ready, and errors destroying a group used in CUDA graphs ([#195485](https://github.com/pytorch/pytorch/pull/195485), [#193239](https://github.com/pytorch/pytorch/pull/193239), [#198339](https://github.com/pytorch/pytorch/pull/198339), [#199263](https://github.com/pytorch/pytorch/pull/199263), [#199226](https://github.com/pytorch/pytorch/pull/199226))
 - Fix the flight recorder not attaching to `nccl` groups that use the new NCCL backend ([#192858](https://github.com/pytorch/pytorch/pull/192858))

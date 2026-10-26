@@ -47,21 +47,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Add `FSDPModule.set_manual_backward_finalization(True)` and `FSDPModule.finalize_backward()` to run gradient reduction and resharding at a chosen point instead of in the autograd final callback ([#196640](https://github.com/pytorch/pytorch/pull/196640))
-- Add `finalize_backward(async_op=True)`, which returns a `GradientReductionHandle` so gradient reduction can overlap other compute ([#196724](https://github.com/pytorch/pytorch/pull/196724))
-- Add `param_dtype_override_fn` to `MixedPrecisionPolicy` for per-parameter mixed precision in `fully_shard`, keeping one all-gather per group ([#196626](https://github.com/pytorch/pytorch/pull/196626))
-- Add `FSDPModule.set_keep_unsharded_storage()` to keep unsharded parameter storage allocated across `reshard()` ([#198417](https://github.com/pytorch/pytorch/pull/198417))
-- Let tensor-subclass parameters free raw all-gather buffers right after `fsdp_post_all_gather` by implementing `fsdp_should_release_all_gather_outputs_after_post_all_gather()` ([#194114](https://github.com/pytorch/pytorch/pull/194114))
 ### improvements
 ### bug fixes
-- Fix silently wrong gradients with `NO_SHARD` plus `CPUOffload(offload_params=True)`, and with `set_all_reduce_hook` on a separate stream ([#194519](https://github.com/pytorch/pytorch/pull/194519), [#198804](https://github.com/pytorch/pytorch/pull/198804))
-- Fix `AttributeError: 'FSDPParam' object has no attribute '_unsharded_param'` in gradient accumulation with unused parameters ([#194058](https://github.com/pytorch/pytorch/pull/194058))
-- Fix `fully_shard` keeping prefetched all-gather outputs alive, a reduce-scatter use-after-free, and `cudaErrorStreamCaptureUnjoined` under CUDA graph capture ([#196460](https://github.com/pytorch/pytorch/pull/196460), [#193686](https://github.com/pytorch/pytorch/pull/193686), [#199677](https://github.com/pytorch/pytorch/pull/199677))
-- Fix wrong float8 values in the single-rank all-gather path for `uint8` views ([#199733](https://github.com/pytorch/pytorch/pull/199733))
+- Fix silently wrong gradients with `NO_SHARD` plus `CPUOffload(offload_params=True)` ([#194519](https://github.com/pytorch/pytorch/pull/194519))
 - Fix mixed precision wrap overrides leaking between modules ([#194895](https://github.com/pytorch/pytorch/pull/194895))
 ### performance
 ### docs
-- Document parameter-mutation limits of `fully_shard` ([#198826](https://github.com/pytorch/pytorch/pull/198826))
 ### devs
 ### Untopiced
 ### not user facing

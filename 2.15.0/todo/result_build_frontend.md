@@ -52,8 +52,6 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix Windows MSVC source builds computing wrong results in `parallel_for` kernels, including CPU `scaled_dot_product_attention` ([#193792](https://github.com/pytorch/pytorch/pull/193792))
 - Fix cross-compiled builds producing a `_C.so` that the target interpreter cannot import ([#189388](https://github.com/pytorch/pytorch/pull/189388))
 - Fix BLAS/LAPACK detection for ATLAS, vecLib, BLIS and FlexiBLAS ([#196427](https://github.com/pytorch/pytorch/pull/196427), [#196428](https://github.com/pytorch/pytorch/pull/196428), [#196430](https://github.com/pytorch/pytorch/pull/196430))
-- Fix macOS builds failing on SDKs that lack the Metal 4 cooperative-tensor APIs ([#195302](https://github.com/pytorch/pytorch/pull/195302))
-- Fix stale embedded Metal shaders in incremental macOS builds ([#196202](https://github.com/pytorch/pytorch/pull/196202))
 - Fix the C++20 requirement not propagating through the CMake `torch` target or being checked on MSVC ([#190784](https://github.com/pytorch/pytorch/pull/190784), [#197417](https://github.com/pytorch/pytorch/pull/197417))
 ### performance
 ### docs

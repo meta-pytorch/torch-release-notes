@@ -57,6 +57,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix corrupted opaque constants in compiled graphs with tensor-subclass outputs ([#193190](https://github.com/pytorch/pytorch/pull/193190))
 - Fix a min-cut partitioner crash on graphs with `torch.device` nodes ([#196146](https://github.com/pytorch/pytorch/pull/196146))
 - Fix misaligned inputs reaching Inductor kernels after effect-token removal ([#198005](https://github.com/pytorch/pytorch/pull/198005))
+- Fix version-counter errors in backward for inputs mutated outside the compiled graph ([#185876](https://github.com/pytorch/pytorch/pull/185876))
+- Fix silently wrong results for `resize_()` on a no-op view of a returned intermediate ([#191844](https://github.com/pytorch/pytorch/pull/191844))
+- Fix `assert_size_stride` failures on the second call of a compiled training graph under dynamic shapes ([#194420](https://github.com/pytorch/pytorch/pull/194420))
 ### performance
 - Speed up the min-cut partitioner, reducing cold compile time by about 5% ([#197724](https://github.com/pytorch/pytorch/pull/197724))
 ### docs
