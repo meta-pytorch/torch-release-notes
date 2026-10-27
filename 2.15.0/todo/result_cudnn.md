@@ -52,9 +52,9 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bug fixes
 - Fix `scaled_dot_product_attention` with the cuDNN backend returning NaN query gradients on Hopper (H100/H200) for non-causal attention when the key/value sequence length is 64 modulo 128, and silently corrupting generation on B200 for models with fewer than 8 key/value heads; the wheels now ship cuDNN 9.26, and with older cuDNN versions the affected Hopper shapes fall back to another backend ([#196861](https://github.com/pytorch/pytorch/pull/196861), [#195492](https://github.com/pytorch/pytorch/pull/195492))
 ### performance
-- Prefer the cuDNN backend for SDPA on sm86/sm89 for higher performance ([#192799](https://github.com/pytorch/pytorch/pull/192799))
 ### docs
 ### devs
 ### Untopiced
 ### not user facing
+- Reverted the cuDNN SDPA preference on sm86/sm89; this backend-selection change is absent from PyTorch 2.15 ([#192799](https://github.com/pytorch/pytorch/pull/192799), [dc3f3e4](https://github.com/pytorch/pytorch/commit/dc3f3e4104ad548277fe50a4d9b0f652bda3f6ea))
 ### security

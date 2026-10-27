@@ -47,11 +47,11 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - The MPS backend now requires macOS 15 (Sequoia) or newer ([#199261](https://github.com/pytorch/pytorch/pull/199261), [#200290](https://github.com/pytorch/pytorch/pull/200290))
 
-  macOS 14 has reached end of life, so its MPS workarounds were removed. On macOS 14, `torch.backends.mps.is_available()` returns `False` and allocating on `mps` raises the error below. To keep using MPS, stay on PyTorch 2.14 or upgrade macOS; CPU builds still run on older macOS. C++ extensions: `at::mps::MacOSVersion::MACOS_14_4` was removed.
+  macOS 14 MPS workarounds were removed. Upgrade to macOS 15 or newer before using MPS in PyTorch 2.15, or stay on PyTorch 2.14 on macOS 14. CPU builds still run on macOS 14. A `True` result from `torch.backends.mps.is_available()` does not confirm that the OS meets this requirement. C++ extensions: `at::mps::MacOSVersion::MACOS_14_4` was removed.
 
-  ```python
-  >>> torch.ones(2, device="mps")  # 2.15 on macOS 14
-  RuntimeError: The MPS backend is supported on macOS 15.0+. Current OS version can be queried using `sw_vers`
+  ```bash
+  # Keep PyTorch 2.14 to use MPS on macOS 14.
+  python -m pip install "torch==2.14.0"
   ```
 ### deprecation
 ### new features
@@ -72,7 +72,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix `torch.compile` on MPS: wrong `argmax`/`argmin` indices, `channels_last` conv backward stride errors, and a misleading "Not enough SMs" warning ([#199134](https://github.com/pytorch/pytorch/pull/199134), [#199132](https://github.com/pytorch/pytorch/pull/199132), [#174241](https://github.com/pytorch/pytorch/pull/174241), [#192375](https://github.com/pytorch/pytorch/pull/192375))
 - Raise errors instead of aborting the process on MPS for mixed-dtype inputs (`batch_norm`, `mse_loss`, `addr`, ...), 1-D-weight `linear` backward, empty `BCELoss`, and failures inside dispatch blocks ([#198740](https://github.com/pytorch/pytorch/pull/198740), [#198738](https://github.com/pytorch/pytorch/pull/198738), [#198739](https://github.com/pytorch/pytorch/pull/198739), [#187989](https://github.com/pytorch/pytorch/pull/187989), [#196204](https://github.com/pytorch/pytorch/pull/196204), [#196893](https://github.com/pytorch/pytorch/pull/196893))
 - Fix silent wrong results for large MPS tensors in `torch.cat`, `arange`/`linspace`, `nll_loss`, padding and pooling, and fix `histogram` aborts and out-of-range counts ([#189965](https://github.com/pytorch/pytorch/pull/189965), [#198593](https://github.com/pytorch/pytorch/pull/198593), [#198776](https://github.com/pytorch/pytorch/pull/198776), [#198592](https://github.com/pytorch/pytorch/pull/198592), [#195147](https://github.com/pytorch/pytorch/pull/195147), [#196985](https://github.com/pytorch/pytorch/pull/196985), [#194460](https://github.com/pytorch/pytorch/pull/194460), [#195714](https://github.com/pytorch/pytorch/pull/195714), [#198416](https://github.com/pytorch/pytorch/pull/198416))
-- Propagate NaN/Inf in MPS `addmm`/`addbmm`/`baddbmm` with `beta=0` and `add`/`sub` with `alpha=0` ([#193850](https://github.com/pytorch/pytorch/pull/193850), [#194474](https://github.com/pytorch/pytorch/pull/194474), [#196661](https://github.com/pytorch/pytorch/pull/196661))
+- Ignore NaN/Inf in the input/bias of MPS `addmm`/`addbmm`/`baddbmm` when `beta=0`, and propagate NaN/Inf in `add`/`sub` when `alpha=0` ([#193850](https://github.com/pytorch/pytorch/pull/193850), [#194474](https://github.com/pytorch/pytorch/pull/194474), [#196661](https://github.com/pytorch/pytorch/pull/196661))
 - Fix MPS `pow` with integer exponents, and complex `std`/`var`, `pow` and logical ops ([#195585](https://github.com/pytorch/pytorch/pull/195585), [#195344](https://github.com/pytorch/pytorch/pull/195344), [#195592](https://github.com/pytorch/pytorch/pull/195592))
 - Fix wrong MPS results in large `var`/`std` reductions, permuted `softplus`, `lerp` with a scalar weight, `rand` hitting its upper bound, bfloat16 `nextafter`, and small-input `expm1` ([#198495](https://github.com/pytorch/pytorch/pull/198495), [#197000](https://github.com/pytorch/pytorch/pull/197000), [#196662](https://github.com/pytorch/pytorch/pull/196662), [#197081](https://github.com/pytorch/pytorch/pull/197081), [#193897](https://github.com/pytorch/pytorch/pull/193897), [#198771](https://github.com/pytorch/pytorch/pull/198771))
 - Fix MPS `scaled_dot_product_attention` output shape with broadcast batch/head dims, and `scatter_add_`/`index_add_` on offset `bool` views ([#189631](https://github.com/pytorch/pytorch/pull/189631), [#195081](https://github.com/pytorch/pytorch/pull/195081))

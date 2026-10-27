@@ -1,6 +1,6 @@
 # cherry picks
 
-Commits that reached release/2.15 after the branch cut through cherry-picks (43 commits, through the final RC rc7 plus one later pick).
+Commits that reached release/2.15 after the branch cut through cherry-picks (44 commits, through the final RC rc7 plus two later picks; checked at `30c000d9a4b266157c9515acd195083898a00787`).
 User-facing entries live in their area worksheets so merge.py includes them; this file records where each went.
 
 ## added to worksheets
@@ -36,6 +36,7 @@ User-facing entries live in their area worksheets so merge.py includes them; thi
 - Pin `pyarrow<26` in the torchtitan CI test on release/2.15 ([#200923](https://github.com/pytorch/pytorch/pull/200923))
 
 ### Reverts on release/2.15
+- Revert cache-key prefetch at `torch.compile()` time: revert of #198747 on release/2.15, background source-hashing claim removed ([#202168](https://github.com/pytorch/pytorch/pull/202168))
 - Revert "[aoti] Use the proxy executor for _quantized ops without a C shim": revert of #199336 on release/2.15, original entry removed ([#199960](https://github.com/pytorch/pytorch/pull/199960))
 - Revert "Preserve channels_last_3d in InstanceNorm3d": revert of #199112 on release/2.15, original entry removed ([#199961](https://github.com/pytorch/pytorch/pull/199961))
 - Revert "Prune unused view ops from proxy tensor traces": revert of #198515 on release/2.15, original entry removed ([#199962](https://github.com/pytorch/pytorch/pull/199962))
@@ -48,7 +49,7 @@ User-facing entries live in their area worksheets so merge.py includes them; thi
 - Use a microbatched reference in `test_schedule_releases_output_before_backward` ([#199624](https://github.com/pytorch/pytorch/pull/199624))
 
 ### MPS
-- Require macOS 15.0+ and report a missing GPU separately: already covered in result_mps.md ([#200062](https://github.com/pytorch/pytorch/pull/200062))
+- Update MPS minimum-OS and missing-GPU error messages: already covered in result_mps.md; device availability still does not enforce the macOS 15 requirement ([#200062](https://github.com/pytorch/pytorch/pull/200062))
 
 ### XPU
 - Update the torch-xpu-ops commit pin: already covered in result_xpu.md ([#200223](https://github.com/pytorch/pytorch/pull/200223))

@@ -116,7 +116,7 @@ Use `nccl` (eager initialization) by default. Use `nccl-lazy` when you need inde
 Differences from the legacy backend:
 
 - Communicators are created eagerly in `init_process_group()`/`new_group()`, allocating GPU memory even for unused groups.
-- Each group is bound to one CUDA device: `device_id`, else `LOCAL_RANK % torch.cuda.device_count()` (or the global rank modulo the device count); `torch.cuda.set_device()` is not used. Tensors on another GPU fail with `Expected tensor on cuda:X but found tensor on cuda:Y` or `ProcessGroupNCCL is bound to device cuda:X but an operation was issued on cuda:Y`. Pass `device_id` if needed; several GPUs per process requires `nccl-legacy`.
+- Each group is bound to one CUDA device per process: `device_id`, else `LOCAL_RANK % torch.cuda.device_count()` (or the global rank modulo the device count); `torch.cuda.set_device()` is not used. Tensors on another GPU fail with `Expected tensor on cuda:X but found tensor on cuda:Y` or `ProcessGroupNCCL is bound to device cuda:X but an operation was issued on cuda:Y`. Pass `device_id` if needed. Using multiple CUDA devices on one rank within a single group requires `nccl-legacy`; separate NCCL groups in the same process can bind to different devices when the default process group has no bound `device_id`.
 - `dist.get_backend_impl(...)` returns the new backend class, so `isinstance(..., ProcessGroupNCCL)` is `False` and legacy-only methods such as `comm_split_count()` are missing.
 - An async `all_gather`'s `work.get_future()` value is the list of per-rank outputs, not a one-element list holding a stacked tensor; read the output list passed to `all_gather` instead (works on both backends).
 
@@ -248,7 +248,9 @@ cfg = _ExperimentalConfig(custom_profiler_config='{"backend":"cuspy"}')
 
 ### Higher-order ops now reject input mutation and aliasing in their bodies unless the op opts in ([#185738](https://github.com/pytorch/pytorch/pull/185738))
 
-Before, Dynamo let any higher-order op body mutate or alias its inputs by default. Ops that do not implement those semantics could silently produce invalid graphs. Mutation and aliasing are now off by default. The built-in wrappers that support them (`wrap`, checkpoint, `autograd.Function`, autocast/set-grad wrappers) opt in. A `flex_attention` `mask_mod` may read captured views but must not mutate inputs or return aliases. Under `fullgraph=True`, unsupported mutation or aliasing raises `Encountered input mutation during higher order op tracing` or `Encountered aliasing during higher order op tracing`; otherwise, Dynamo graph breaks and falls back to eager execution. Rewrite the higher-order op body to avoid mutation or aliasing.
+Dynamo's default for higher-order op bodies now disallows input mutation and aliasing; some ops already rejected these in PyTorch 2.14. Ops that do not implement those semantics could otherwise silently produce invalid graphs. The built-in wrappers that support them (`wrap`, checkpoint, `autograd.Function`, autocast/set-grad wrappers) opt in. A `flex_attention` `mask_mod` may read captured views but must not mutate inputs or return aliases.
+
+Under `fullgraph=True`, unsupported mutation or aliasing raises `Encountered input mutation during higher order op tracing` or `Encountered aliasing during higher order op tracing`. With `fullgraph=False`, ops that allow eager fallback graph break and run eagerly; ops such as `cond`, `hints_wrapper`, and `strict_mode` still raise. Rewrite the higher-order op body to avoid mutation or aliasing.
 
 For example, rewrite an in-place `flex_attention` score modifier as an out-of-place operation:
 
@@ -415,19 +417,19 @@ Version 2.14:
 
 Version 2.15:
 ```python
->>> x.cos()  # float32 on Arm: within 2 ULP
->>> x.double().cos().float()  # workaround: correctly rounded
+>>> x.cos()  # float32 on Arm: within 3.5 ULP
+>>> x.double().cos().float()  # workaround: compute in higher precision
 ```
 
 ## MPS
 
 ### The MPS backend now requires macOS 15 (Sequoia) or newer ([#199261](https://github.com/pytorch/pytorch/pull/199261), [#200290](https://github.com/pytorch/pytorch/pull/200290))
 
-macOS 14 has reached end of life, so its MPS workarounds were removed. On macOS 14, `torch.backends.mps.is_available()` returns `False` and allocating on `mps` raises the error below. To keep using MPS, stay on PyTorch 2.14 or upgrade macOS; CPU builds still run on older macOS. C++ extensions: `at::mps::MacOSVersion::MACOS_14_4` was removed.
+macOS 14 MPS workarounds were removed. Upgrade to macOS 15 or newer before using MPS in PyTorch 2.15, or stay on PyTorch 2.14 on macOS 14. CPU builds still run on macOS 14. A `True` result from `torch.backends.mps.is_available()` does not confirm that the OS meets this requirement. C++ extensions: `at::mps::MacOSVersion::MACOS_14_4` was removed.
 
-```python
->>> torch.ones(2, device="mps")  # 2.15 on macOS 14
-RuntimeError: The MPS backend is supported on macOS 15.0+. Current OS version can be queried using `sw_vers`
+```bash
+# Keep PyTorch 2.14 to use MPS on macOS 14.
+python -m pip install "torch==2.14.0"
 ```
 
 ## XPU
@@ -477,13 +479,13 @@ opt = torch.optim.Adam(list(model.parameters()))  # recommended
 
 ## Linear Algebra Frontend
 
-### MAGMA is deprecated for LU factorization with pivoting on CUDA: `torch.linalg.lu_factor`, `torch.linalg.lu`, and the ops that use it internally (`torch.linalg.solve`, `torch.linalg.inv`, `torch.linalg.det`, `torch.linalg.slogdet`) now always use cuSOLVER ([#190661](https://github.com/pytorch/pytorch/pull/190661))
+### MAGMA is deprecated for LU factorization with pivoting on CUDA: `torch.linalg.lu_factor`, `torch.linalg.lu`, and the ops that use it internally (`torch.linalg.solve`, `torch.linalg.inv`, `torch.linalg.det`, `torch.linalg.slogdet`) no longer use MAGMA for pivoted LU ([#190661](https://github.com/pytorch/pytorch/pull/190661))
 
-This only affects code that sets `torch.backends.cuda.preferred_linalg_library("magma")`: pivoted LU now uses cuSOLVER anyway; a new built-in batched LU kernel replaces MAGMA's for large batches. When MAGMA is preferred, the first call warns: `linalg.lu_factor: MAGMA, as a linear algebra backend, is deprecated and will be removed in future releases.` `pivot=False` still uses MAGMA when it is preferred. To avoid the warning, use the default or cuSOLVER backend.
+This affects code that sets `torch.backends.cuda.preferred_linalg_library("magma")`: pivoted LU now selects cuSOLVER, cuBLAS, or the built-in batched LU kernel based on the input. When MAGMA is preferred, the first call warns: `linalg.lu_factor: MAGMA, as a linear algebra backend, is deprecated and will be removed in future releases.` `pivot=False` still uses MAGMA when it is preferred. To avoid the warning, use `torch.backends.cuda.preferred_linalg_library("default")` or `torch.backends.cuda.preferred_linalg_library("cusolver")`.
 
 ```python
 torch.backends.cuda.preferred_linalg_library("magma")
-LU, pivots = torch.linalg.lu_factor(A)  # 2.14: MAGMA; 2.15: cuSOLVER + UserWarning
+LU, pivots = torch.linalg.lu_factor(A)  # 2.14: MAGMA; 2.15: automatic CUDA selection + UserWarning
 torch.backends.cuda.preferred_linalg_library("default")  # recommended
 ```
 
@@ -629,7 +631,7 @@ annotations = get_kernel_annotations()
 
 ## Ahead-Of-Time Inductor (AOTI)
 
-- Add `num_runners` and `use_stream_affinity` arguments to `torch._inductor.aoti_load_package`, which keep each non-null CUDA or XPU stream on the same model instance across calls ([#194783](https://github.com/pytorch/pytorch/pull/194783))
+- Add `num_runners` and `use_stream_affinity` arguments to `torch._inductor.aoti_load_package`. With `use_stream_affinity=True` (default: `False`), each non-null CUDA or XPU stream keeps its model instance while enough runners are available; additional streams can rebind existing instances when they exceed `num_runners` ([#194783](https://github.com/pytorch/pytorch/pull/194783))
 - Add an optional lifecycle observer to the C++ `AOTIModelContainerRunner`: attach a `torch::inductor::AOTIModelContainerObserver` with `set_observer()` to get begin/end callbacks around inference, constant swaps and constant folding ([#193999](https://github.com/pytorch/pytorch/pull/193999))
 
 ## Foreach
@@ -644,7 +646,7 @@ annotations = get_kernel_annotations()
 
 ## Release Engineering
 
-- Enable the FlashAttention backend of `scaled_dot_product_attention` in Windows CUDA builds and wheels for Ampere and newer GPUs. It was previously disabled on Windows, so SDPA fell back to the math backend; in a GQA benchmark (bf16, sequence length 2048) on an RTX 5090 the forward pass drops from 11.5 ms to 0.49 ms ([#186343](https://github.com/pytorch/pytorch/pull/186343))
+- Enable the FlashAttention backend of `scaled_dot_product_attention` in Windows CUDA builds and wheels for Ampere and newer GPUs. It was previously disabled on Windows. In a GQA benchmark that previously fell back to the math backend (bf16, sequence length 2048) on an RTX 5090, the forward pass drops from 11.5 ms to 0.49 ms ([#186343](https://github.com/pytorch/pytorch/pull/186343))
 - `torch.compile` now works on Python 3.15 (previously it raised `RuntimeError: torch.compile is not supported on Python 3.15+`; the check now applies to Python 3.16 and newer), and the Python 3.15 and 3.15t wheels are built against CPython 3.15.0rc2, after the ABI freeze, instead of beta releases ([#178393](https://github.com/pytorch/pytorch/pull/178393), [#199356](https://github.com/pytorch/pytorch/pull/199356))
 
 ## CUDA
@@ -710,7 +712,7 @@ annotations = get_kernel_annotations()
 
 ## Distributed (c10d)
 
-- Extend the new NCCL backend: collective runtime estimation, the NCCL allocator for backend tensors, an opt-in shrink/grow `reconfigure()` path, legacy-matching errors, and windows and reconfiguration on ROCm ([#192854](https://github.com/pytorch/pytorch/pull/192854), [#192855](https://github.com/pytorch/pytorch/pull/192855), [#199240](https://github.com/pytorch/pytorch/pull/199240), [#194953](https://github.com/pytorch/pytorch/pull/194953), [#193282](https://github.com/pytorch/pytorch/pull/193282), [#194774](https://github.com/pytorch/pytorch/pull/194774))
+- Extend the new NCCL backend: collective runtime estimation, the NCCL allocator for backend tensors, an opt-in shrink/grow `reconfigure()` path, legacy-matching errors, and memory windows on ROCm. ROCm reconfiguration requires RCCL >= 2.30.7 (ROCm 10.1+); the standard ROCm 7.14 and 10.0 wheels do not meet that requirement ([#192854](https://github.com/pytorch/pytorch/pull/192854), [#192855](https://github.com/pytorch/pytorch/pull/192855), [#199240](https://github.com/pytorch/pytorch/pull/199240), [#194953](https://github.com/pytorch/pytorch/pull/194953), [#193282](https://github.com/pytorch/pytorch/pull/193282), [#194774](https://github.com/pytorch/pytorch/pull/194774))
 - Add a `comm_ptr` property returning the `ncclComm_t` on all NCCL backends ([#197558](https://github.com/pytorch/pytorch/pull/197558), [#198865](https://github.com/pytorch/pytorch/pull/198865))
 - Support `ReduceOp.PREMUL_SUM` in functional `all_reduce` and under `LocalTensorMode`, and backward for `MIN`/`MAX` ([#190942](https://github.com/pytorch/pytorch/pull/190942), [#193868](https://github.com/pytorch/pytorch/pull/193868), [#191947](https://github.com/pytorch/pytorch/pull/191947))
 - Stop emitting a `FutureWarning` from `all_gather_into_tensor` and `reduce_scatter_tensor` ([#193874](https://github.com/pytorch/pytorch/pull/193874))
@@ -756,8 +758,13 @@ annotations = get_kernel_annotations()
 - Unify matmul shape-check error messages ([#193583](https://github.com/pytorch/pytorch/pull/193583))
 - Add dynamic-shape TunableOp GEMM tuning with `torch.cuda.tunable.dynamic_dims_mask` and wildcard fallback (`PYTORCH_TUNABLEOP_WILDCARD_FALLBACK=1`) ([#191658](https://github.com/pytorch/pytorch/pull/191658))
 
+## Profiler
+
+- Honor explicit MTIA activity filters in the profiler: `COLLECTIVE_COMM` is now a selectable MTIA activity, and combining a non-empty `custom_profiler_config` with an explicit MTIA `activity_filter` is rejected ([#194920](https://github.com/pytorch/pytorch/pull/194920))
+
 ## Dynamo
 
+- Improve the error when a symbolic size reaches an op expecting concrete ints: report the offending index and value, and suggest common dynamic-shape causes ([#186082](https://github.com/pytorch/pytorch/pull/186082))
 - Support more Python in compiled regions: `bytearray`, `types.SimpleNamespace`, `bytes()`, calling `classmethod`/`staticmethod`, list subclasses overriding `__new__`, `del` of captured variables, and more of `math`, `cmath`, `operator` and `heapq` ([#192205](https://github.com/pytorch/pytorch/pull/192205), [#199252](https://github.com/pytorch/pytorch/pull/199252), [#193719](https://github.com/pytorch/pytorch/pull/193719), [#196103](https://github.com/pytorch/pytorch/pull/196103), [#197499](https://github.com/pytorch/pytorch/pull/197499), [#197781](https://github.com/pytorch/pytorch/pull/197781), [#191512](https://github.com/pytorch/pytorch/pull/191512), [#189216](https://github.com/pytorch/pytorch/pull/189216), [#196867](https://github.com/pytorch/pytorch/pull/196867), [#197498](https://github.com/pytorch/pytorch/pull/197498), [#197222](https://github.com/pytorch/pytorch/pull/197222), [#198685](https://github.com/pytorch/pytorch/pull/198685), [#195999](https://github.com/pytorch/pytorch/pull/195999), [#192942](https://github.com/pytorch/pytorch/pull/192942), [#192834](https://github.com/pytorch/pytorch/pull/192834), [#195765](https://github.com/pytorch/pytorch/pull/195765))
 - Improve exception and object-model support: exception identity checks, `delattr` and `super().__init__(msg)` on exceptions, non-string `assert` messages, `property` attributes, `types.DynamicClassAttribute`, and closure-cell comparison ([#191404](https://github.com/pytorch/pytorch/pull/191404), [#196722](https://github.com/pytorch/pytorch/pull/196722), [#196051](https://github.com/pytorch/pytorch/pull/196051), [#197798](https://github.com/pytorch/pytorch/pull/197798), [#194642](https://github.com/pytorch/pytorch/pull/194642), [#199260](https://github.com/pytorch/pytorch/pull/199260), [#197189](https://github.com/pytorch/pytorch/pull/197189))
 - Raise the real Python exception (e.g. `TypeError`) for user errors detected while tracing instead of graph breaking ([#196432](https://github.com/pytorch/pytorch/pull/196432))
@@ -788,7 +795,7 @@ annotations = get_kernel_annotations()
 - Accept out-of-tree backend config values as `"<device>.<key>"` in `torch.compile(options=...)` ([#194998](https://github.com/pytorch/pytorch/pull/194998))
 - Honor `assume_32bit_indexing` for dynamic size arguments ([#194127](https://github.com/pytorch/pytorch/pull/194127))
 - Keep Triton FP fusion on for templates to preserve numerics with Triton 3.9 ([#199500](https://github.com/pytorch/pytorch/pull/199500))
-- Apply split/cat optimizations to `torch.concatenate` ([#195174](https://github.com/pytorch/pytorch/pull/195174))
+- Apply split/cat optimizations to `torch.concatenate` ([e505f38](https://github.com/pytorch/pytorch/commit/e505f38d27670c82484969f10efbd3452129c0fd))
 - Reuse the CUTLASS sm120 kernel generators on sm121 GPUs ([#197621](https://github.com/pytorch/pytorch/pull/197621))
 - Add an opt-in `bmm_skip_dynamic_shape_dim_check` to decompose CPU `bmm` whose batch size cannot be proven ([#197016](https://github.com/pytorch/pytorch/pull/197016))
 - Add `"strict_pointwise"` and `"strict_reduction"` values to `torch._inductor.config.numerics` and make `"strict"` match eager numerics more closely ([#192883](https://github.com/pytorch/pytorch/pull/192883), [#195640](https://github.com/pytorch/pytorch/pull/195640))
@@ -940,7 +947,7 @@ annotations = get_kernel_annotations()
 - Fix single-rank legacy NCCL `reduce_scatter` dropping the `PREMUL_SUM` factor ([#198961](https://github.com/pytorch/pytorch/pull/198961))
 - Fix all-zero gradients from coalesced functional collectives under `torch.compile` ([#196077](https://github.com/pytorch/pytorch/pull/196077))
 - Fix functional `all_gather_single` with a negative `gather_dim` ([#194865](https://github.com/pytorch/pytorch/pull/194865))
-- Fix `split_group` rejecting valid splits or hanging when backends differ from the default group ([#195758](https://github.com/pytorch/pytorch/pull/195758), [#197568](https://github.com/pytorch/pytorch/pull/197568))
+- Fix `split_group` rejecting valid splits, and `new_group` hanging when its backend differs from the default group's backend ([#195758](https://github.com/pytorch/pytorch/pull/195758), [#197568](https://github.com/pytorch/pytorch/pull/197568))
 - Fix a segfault when registering a second device for a backend type without passing a backend ([#195536](https://github.com/pytorch/pytorch/pull/195536))
 - Fix Python `ProcessGroup` subclasses' `reconfigure` overrides being bypassed from C++ ([#198251](https://github.com/pytorch/pytorch/pull/198251))
 - Fix `LocalTensorMode` collectives on groups with unsorted ranks ([#192777](https://github.com/pytorch/pytorch/pull/192777))
@@ -1028,6 +1035,7 @@ annotations = get_kernel_annotations()
 
 ## Inductor
 
+- Fix Triton compilation failures from reusing loop-local indirect loads in reduction epilogues or hoisting masked loads outside their valid scope ([#194786](https://github.com/pytorch/pytorch/pull/194786))
 - Disable the 4x-vectorized Triton RNG path, which produced correlated CUDA dropout masks since 2.13 (`TORCHINDUCTOR_USE_RAND4X=1` restores it) ([#198680](https://github.com/pytorch/pytorch/pull/198680))
 - Fix silently wrong results from in-place mutations: reinplaced scatters and `index_put` whose sources alias the input, `remove_noop_ops` on copies of mutated inputs, fusions across repeated mutations of one buffer, and mutations of buffers already referenced by views ([#198010](https://github.com/pytorch/pytorch/pull/198010), [#198132](https://github.com/pytorch/pytorch/pull/198132), [#198325](https://github.com/pytorch/pytorch/pull/198325), [#198549](https://github.com/pytorch/pytorch/pull/198549), [#198637](https://github.com/pytorch/pytorch/pull/198637))
 - Fix silently wrong results for non-contiguous reshape views and `torch.while_loop` whose `cond_fn` mutates a captured tensor ([#192575](https://github.com/pytorch/pytorch/pull/192575), [#195393](https://github.com/pytorch/pytorch/pull/195393))
@@ -1037,7 +1045,7 @@ annotations = get_kernel_annotations()
 - Fix wrong results from SDPA pattern fusion when the key is permuted other than `key.transpose(-2, -1)`, and failures with a 0-d tensor scale ([#195383](https://github.com/pytorch/pytorch/pull/195383), [#191496](https://github.com/pytorch/pytorch/pull/191496))
 - Fix wrong results in pre-/post-grad fusion passes: batched `aten.sub` dropping `alpha`, batched linear mixing dtypes, one-element tuple replacements, `merge_select_cat_aten`, and batch math fusion of `torch.clamp` and in-place dropout ([#195463](https://github.com/pytorch/pytorch/pull/195463), [#197069](https://github.com/pytorch/pytorch/pull/197069), [#197832](https://github.com/pytorch/pytorch/pull/197832), [#198638](https://github.com/pytorch/pytorch/pull/198638), [#198285](https://github.com/pytorch/pytorch/pull/198285))
 - Fix compile failures in the partitioned scatter, joint-graph no-op removal and view cleanup passes and the constant `cumsum` pattern ([#194366](https://github.com/pytorch/pytorch/pull/194366), [#193052](https://github.com/pytorch/pytorch/pull/193052), [#193708](https://github.com/pytorch/pytorch/pull/193708), [#193422](https://github.com/pytorch/pytorch/pull/193422), [#193959](https://github.com/pytorch/pytorch/pull/193959))
-- Fix compiled `torch.special.log_ndtr`, `torch.frexp` and `torch.nextafter` edge cases (signed zeros, subnormals, `float16`/`bfloat16`), `torch.randn` with `align_random_eager=True`, and `torch.nan_to_num` on complex inputs ([#191339](https://github.com/pytorch/pytorch/pull/191339), [#195041](https://github.com/pytorch/pytorch/pull/195041), [#196578](https://github.com/pytorch/pytorch/pull/196578), [#194118](https://github.com/pytorch/pytorch/pull/194118), [#190428](https://github.com/pytorch/pytorch/pull/190428))
+- Fix compiled `torch.special.log_ndtr`, `torch.frexp` and `torch.nextafter` edge cases (signed zeros, subnormals, `float16`/`bfloat16`), `torch.randn` with `align_random_eager=True`, and `torch.nan_to_num` on complex inputs ([9f9f73a](https://github.com/pytorch/pytorch/commit/9f9f73a9530c1d8d093a450dc66dec08ec9a6d88), [#195041](https://github.com/pytorch/pytorch/pull/195041), [#196578](https://github.com/pytorch/pytorch/pull/196578), [#194118](https://github.com/pytorch/pytorch/pull/194118), [#190428](https://github.com/pytorch/pytorch/pull/190428))
 - Accumulate `float16`/`bfloat16` Triton scans such as `cumsum` in `float32` ([#199088](https://github.com/pytorch/pytorch/pull/199088))
 - Fix boolean `index_put(..., accumulate=True)` on GPU ([#193584](https://github.com/pytorch/pytorch/pull/193584))
 - Fix compiled max pooling with indices returning transposed indices for non-contiguous inputs, and `adaptive_max_pool3d` gradients on channels-last inputs ([#197596](https://github.com/pytorch/pytorch/pull/197596), [#199068](https://github.com/pytorch/pytorch/pull/199068))
@@ -1187,7 +1195,7 @@ annotations = get_kernel_annotations()
 - Fix `torch.compile` on MPS: wrong `argmax`/`argmin` indices, `channels_last` conv backward stride errors, and a misleading "Not enough SMs" warning ([#199134](https://github.com/pytorch/pytorch/pull/199134), [#199132](https://github.com/pytorch/pytorch/pull/199132), [#174241](https://github.com/pytorch/pytorch/pull/174241), [#192375](https://github.com/pytorch/pytorch/pull/192375))
 - Raise errors instead of aborting the process on MPS for mixed-dtype inputs (`batch_norm`, `mse_loss`, `addr`, ...), 1-D-weight `linear` backward, empty `BCELoss`, and failures inside dispatch blocks ([#198740](https://github.com/pytorch/pytorch/pull/198740), [#198738](https://github.com/pytorch/pytorch/pull/198738), [#198739](https://github.com/pytorch/pytorch/pull/198739), [#187989](https://github.com/pytorch/pytorch/pull/187989), [#196204](https://github.com/pytorch/pytorch/pull/196204), [#196893](https://github.com/pytorch/pytorch/pull/196893))
 - Fix silent wrong results for large MPS tensors in `torch.cat`, `arange`/`linspace`, `nll_loss`, padding and pooling, and fix `histogram` aborts and out-of-range counts ([#189965](https://github.com/pytorch/pytorch/pull/189965), [#198593](https://github.com/pytorch/pytorch/pull/198593), [#198776](https://github.com/pytorch/pytorch/pull/198776), [#198592](https://github.com/pytorch/pytorch/pull/198592), [#195147](https://github.com/pytorch/pytorch/pull/195147), [#196985](https://github.com/pytorch/pytorch/pull/196985), [#194460](https://github.com/pytorch/pytorch/pull/194460), [#195714](https://github.com/pytorch/pytorch/pull/195714), [#198416](https://github.com/pytorch/pytorch/pull/198416))
-- Propagate NaN/Inf in MPS `addmm`/`addbmm`/`baddbmm` with `beta=0` and `add`/`sub` with `alpha=0` ([#193850](https://github.com/pytorch/pytorch/pull/193850), [#194474](https://github.com/pytorch/pytorch/pull/194474), [#196661](https://github.com/pytorch/pytorch/pull/196661))
+- Ignore NaN/Inf in the input/bias of MPS `addmm`/`addbmm`/`baddbmm` when `beta=0`, and propagate NaN/Inf in `add`/`sub` when `alpha=0` ([#193850](https://github.com/pytorch/pytorch/pull/193850), [#194474](https://github.com/pytorch/pytorch/pull/194474), [#196661](https://github.com/pytorch/pytorch/pull/196661))
 - Fix MPS `pow` with integer exponents, and complex `std`/`var`, `pow` and logical ops ([#195585](https://github.com/pytorch/pytorch/pull/195585), [#195344](https://github.com/pytorch/pytorch/pull/195344), [#195592](https://github.com/pytorch/pytorch/pull/195592))
 - Fix wrong MPS results in large `var`/`std` reductions, permuted `softplus`, `lerp` with a scalar weight, `rand` hitting its upper bound, bfloat16 `nextafter`, and small-input `expm1` ([#198495](https://github.com/pytorch/pytorch/pull/198495), [#197000](https://github.com/pytorch/pytorch/pull/197000), [#196662](https://github.com/pytorch/pytorch/pull/196662), [#197081](https://github.com/pytorch/pytorch/pull/197081), [#193897](https://github.com/pytorch/pytorch/pull/193897), [#198771](https://github.com/pytorch/pytorch/pull/198771))
 - Fix MPS `scaled_dot_product_attention` output shape with broadcast batch/head dims, and `scatter_add_`/`index_add_` on offset `bool` views ([#189631](https://github.com/pytorch/pytorch/pull/189631), [#195081](https://github.com/pytorch/pytorch/pull/195081))
@@ -1265,6 +1273,7 @@ annotations = get_kernel_annotations()
 
 ## torch.nn
 
+- Speed up the chunked CUDA `torch.nn.functional.linear_cross_entropy` backward with one fused CuTeDSL kernel when the CuTeDSL runtime is installed (0.61-0.87x of eager time on H100, 0.30-0.78x on B200, at lower peak memory) ([#195829](https://github.com/pytorch/pytorch/pull/195829))
 - Speed up `nn.Module.__call__` by about 15% ([#196236](https://github.com/pytorch/pytorch/pull/196236))
 - Add a channels-last CUDA `GroupNorm` kernel ([#191945](https://github.com/pytorch/pytorch/pull/191945))
 - Speed up RMSNorm backward up to 2x on sm12x and chunked `linear_cross_entropy` by 6-10% ([#192400](https://github.com/pytorch/pytorch/pull/192400), [#196134](https://github.com/pytorch/pytorch/pull/196134))
@@ -1303,7 +1312,7 @@ annotations = get_kernel_annotations()
 
 ## Inductor
 
-- Reduce compile time by caching in fusion search and codegen, hashing sources in the background, and compiling combo-kernel benchmarks in parallel ([#186319](https://github.com/pytorch/pytorch/pull/186319), [#192817](https://github.com/pytorch/pytorch/pull/192817), [#192820](https://github.com/pytorch/pytorch/pull/192820), [#194010](https://github.com/pytorch/pytorch/pull/194010), [#194011](https://github.com/pytorch/pytorch/pull/194011), [#198747](https://github.com/pytorch/pytorch/pull/198747), [#198881](https://github.com/pytorch/pytorch/pull/198881), [#198320](https://github.com/pytorch/pytorch/pull/198320))
+- Reduce compile time by caching in fusion search and codegen and compiling combo-kernel benchmarks in parallel ([#186319](https://github.com/pytorch/pytorch/pull/186319), [#192817](https://github.com/pytorch/pytorch/pull/192817), [#192820](https://github.com/pytorch/pytorch/pull/192820), [#194010](https://github.com/pytorch/pytorch/pull/194010), [#194011](https://github.com/pytorch/pytorch/pull/194011), [#198881](https://github.com/pytorch/pytorch/pull/198881), [#198320](https://github.com/pytorch/pytorch/pull/198320))
 - Allow mix-order reduction fusion for more shapes, speeding up RMSNorm backward ([#186370](https://github.com/pytorch/pytorch/pull/186370), [#188660](https://github.com/pytorch/pytorch/pull/188660))
 - Reduce `cpp_wrapper` kernel call overhead by 40-50% ([#192287](https://github.com/pytorch/pytorch/pull/192287))
 - Improve CPU FlexAttention BF16 performance by 6-29% ([#191780](https://github.com/pytorch/pytorch/pull/191780))
@@ -1327,6 +1336,7 @@ annotations = get_kernel_annotations()
 
 ## Composability
 
+- Reduce compile time with dynamic shapes by reusing the inner tensor's storage size when creating `FunctionalTensor` objects (about 1s less compile time on one model) ([#193416](https://github.com/pytorch/pytorch/pull/193416))
 - Speed up FakeTensor view cache hits ([#192821](https://github.com/pytorch/pytorch/pull/192821))
 - Reduce compile time in `ShapeEnv` ([#193219](https://github.com/pytorch/pytorch/pull/193219), [#193161](https://github.com/pytorch/pytorch/pull/193161), [#195623](https://github.com/pytorch/pytorch/pull/195623))
 
@@ -1344,10 +1354,6 @@ annotations = get_kernel_annotations()
 - Speed up CUDA `upsample_linear1d` by 5-25x for small outputs ([#180885](https://github.com/pytorch/pytorch/pull/180885)), pooling backward ([#191086](https://github.com/pytorch/pytorch/pull/191086), [#195119](https://github.com/pytorch/pytorch/pull/195119), [#196156](https://github.com/pytorch/pytorch/pull/196156)), dtype-conversion copies ([#195542](https://github.com/pytorch/pytorch/pull/195542), [#198723](https://github.com/pytorch/pytorch/pull/198723)), 2D transpose copies ([#194310](https://github.com/pytorch/pytorch/pull/194310)), and `zero_` ([#195303](https://github.com/pytorch/pytorch/pull/195303), [#198565](https://github.com/pytorch/pytorch/pull/198565))
 - `torch.topk` on CUDA 13 Linux wheels uses ahead-of-time compiled radix-select kernels on Hopper and Blackwell (median 2.16x on H100) ([#190899](https://github.com/pytorch/pytorch/pull/190899))
 - Fix a 10-30x slowdown of `gather`, `index_select`, `x[idx]` and `scatter_add` on rows of 16 or 32 bytes ([#200995](https://github.com/pytorch/pytorch/pull/200995))
-
-## cuDNN
-
-- Prefer the cuDNN backend for SDPA on sm86/sm89 for higher performance ([#192799](https://github.com/pytorch/pytorch/pull/192799))
 
 ## CPU (x86)
 

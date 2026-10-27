@@ -47,7 +47,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 ### deprecation
 ### new features
-- Add `num_runners` and `use_stream_affinity` arguments to `torch._inductor.aoti_load_package`, which keep each non-null CUDA or XPU stream on the same model instance across calls ([#194783](https://github.com/pytorch/pytorch/pull/194783))
+- Add `num_runners` and `use_stream_affinity` arguments to `torch._inductor.aoti_load_package`. With `use_stream_affinity=True` (default: `False`), each non-null CUDA or XPU stream keeps its model instance while enough runners are available; additional streams can rebind existing instances when they exceed `num_runners` ([#194783](https://github.com/pytorch/pytorch/pull/194783))
 - Add an optional lifecycle observer to the C++ `AOTIModelContainerRunner`: attach a `torch::inductor::AOTIModelContainerObserver` with `set_observer()` to get begin/end callbacks around inference, constant swaps and constant folding ([#193999](https://github.com/pytorch/pytorch/pull/193999))
 ### improvements
 - Support `torch.compiler.nested_compile_region` in the AOTInductor C++ wrapper ([#194703](https://github.com/pytorch/pytorch/pull/194703), [#194704](https://github.com/pytorch/pytorch/pull/194704))

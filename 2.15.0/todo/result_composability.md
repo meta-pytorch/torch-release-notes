@@ -82,6 +82,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix a crash on modulo of plain ints in symbolic shapes, and simplify `C * (x // C)` back to `x` ([#198395](https://github.com/pytorch/pytorch/pull/198395), [#198808](https://github.com/pytorch/pytorch/pull/198808))
 - Fix guard errors for jagged `NestedTensor` inputs whose batch size changes or with `keepdim=True` reductions ([#193059](https://github.com/pytorch/pytorch/pull/193059), [#184628](https://github.com/pytorch/pytorch/pull/184628))
 ### performance
+- Reduce compile time with dynamic shapes by reusing the inner tensor's storage size when creating `FunctionalTensor` objects (about 1s less compile time on one model) ([#193416](https://github.com/pytorch/pytorch/pull/193416))
 - Speed up FakeTensor view cache hits ([#192821](https://github.com/pytorch/pytorch/pull/192821))
 - Reduce compile time in `ShapeEnv` ([#193219](https://github.com/pytorch/pytorch/pull/193219), [#193161](https://github.com/pytorch/pytorch/pull/193161), [#195623](https://github.com/pytorch/pytorch/pull/195623))
 ### docs

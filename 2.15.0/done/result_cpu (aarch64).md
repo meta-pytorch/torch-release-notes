@@ -56,8 +56,8 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 
   Version 2.15:
   ```python
-  >>> x.cos()  # float32 on Arm: within 2 ULP
-  >>> x.double().cos().float()  # workaround: correctly rounded
+  >>> x.cos()  # float32 on Arm: within 3.5 ULP
+  >>> x.double().cos().float()  # workaround: compute in higher precision
   ```
 ### deprecation
 ### new features

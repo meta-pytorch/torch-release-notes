@@ -107,6 +107,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Add `torch.profiler.ProfilerActivityConfig` and `torch.profiler.PerformanceMetricsConfig` to configure collection per activity group, such as CUDA hardware performance counters ([#196065](https://github.com/pytorch/pytorch/pull/196065))
 - Add `torch.profiler.CuspyConfig` to enable the experimental Cuspy CUDA collection backend without `_ExperimentalConfig` ([#196066](https://github.com/pytorch/pytorch/pull/196066))
 ### improvements
+- Honor explicit MTIA activity filters in the profiler: `COLLECTIVE_COMM` is now a selectable MTIA activity, and combining a non-empty `custom_profiler_config` with an explicit MTIA `activity_filter` is rejected ([#194920](https://github.com/pytorch/pytorch/pull/194920))
 ### bug fixes
 - Fix inflated profiler device times from events sharing a correlation id ([#196282](https://github.com/pytorch/pytorch/pull/196282))
 - Fix Cuspy teardown heap corruption and `record_function` kwargs sent as raw JSON ([#195471](https://github.com/pytorch/pytorch/pull/195471), [#196352](https://github.com/pytorch/pytorch/pull/196352))

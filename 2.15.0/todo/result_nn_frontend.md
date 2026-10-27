@@ -69,6 +69,7 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 - Fix nondeterministic NaNs in memory-efficient attention forward with head dimension 256 or larger on Ampere, Ada and consumer Blackwell GPUs ([#198922](https://github.com/pytorch/pytorch/pull/198922))
 - Unify padding and pooling shape checks across CPU, CUDA and MPS ([#196457](https://github.com/pytorch/pytorch/pull/196457), [#196230](https://github.com/pytorch/pytorch/pull/196230))
 ### performance
+- Speed up the chunked CUDA `torch.nn.functional.linear_cross_entropy` backward with one fused CuTeDSL kernel when the CuTeDSL runtime is installed (0.61-0.87x of eager time on H100, 0.30-0.78x on B200, at lower peak memory) ([#195829](https://github.com/pytorch/pytorch/pull/195829))
 - Speed up `nn.Module.__call__` by about 15% ([#196236](https://github.com/pytorch/pytorch/pull/196236))
 - Add a channels-last CUDA `GroupNorm` kernel ([#191945](https://github.com/pytorch/pytorch/pull/191945))
 - Speed up RMSNorm backward up to 2x on sm12x and chunked `linear_cross_entropy` by 6-10% ([#192400](https://github.com/pytorch/pytorch/pull/192400), [#196134](https://github.com/pytorch/pytorch/pull/196134))
