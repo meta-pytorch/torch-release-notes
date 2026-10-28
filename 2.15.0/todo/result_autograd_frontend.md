@@ -47,12 +47,12 @@ Feel free to use https://github.com/pytorch/pytorch/releases/tag/v2.10.0 as an e
 ### bc breaking
 - Selective activation checkpointing now saves, rather than recomputes, the outputs of operators with an ordered effect unless the policy returns `CheckpointPolicy.MUST_RECOMPUTE` ([#196956](https://github.com/pytorch/pytorch/pull/196956))
 
-  In eager mode, if a `create_selective_checkpoint_contexts` policy returns `PREFER_RECOMPUTE`, `PREFER_CPU_OFFLOAD` or `MUST_CPU_OFFLOAD` for a non-aliasing operator with an ordered effect (e.g. via `register_effect(torch.library.EffectType.ORDERED)`), its outputs are now saved as with `MUST_SAVE` instead of recomputed, so the side effect is no longer replayed during backward. This can increase activation memory. Operators in the `c10d` namespace are excluded. Under `torch.compile`, `MUST_RECOMPUTE` on an effectful operator now raises at compile time: `RuntimeError: AOTAutograd does not support MUST_RECOMPUTE for effectful operations because forward effects cannot join the backward effect-token chain.` Use a save policy instead.
+  In eager mode, if a `create_selective_checkpoint_contexts` policy returns `CheckpointPolicy.PREFER_RECOMPUTE` for a non-aliasing operator with an ordered effect (e.g. via `register_effect(torch.library.EffectType.ORDERED)`), that choice is now overridden and its outputs are saved, so the side effect is no longer replayed during backward. This can increase activation memory. To keep the 2.14 behavior, return `CheckpointPolicy.MUST_RECOMPUTE` for that operator. Operators in the `c10d` namespace are excluded. Under `torch.compile`, `CheckpointPolicy.MUST_RECOMPUTE` on an effectful operator now raises at compile time: `RuntimeError: AOTAutograd does not support MUST_RECOMPUTE for effectful operations because forward effects cannot join the backward effect-token chain.` Use a save policy instead.
 
   ```python
   policy = lambda ctx, op, *args, **kwargs: CheckpointPolicy.PREFER_RECOMPUTE
   checkpoint(fn, x, use_reentrant=False, context_fn=lambda: create_selective_checkpoint_contexts(policy))
-  # 2.14: an effectful op in fn runs twice; 2.15: once (use MUST_RECOMPUTE to replay)
+  # 2.14: an effectful op in fn runs twice; 2.15: once (use CheckpointPolicy.MUST_RECOMPUTE to replay)
   ```
 
 ### deprecation
