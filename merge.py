@@ -100,7 +100,7 @@ def render_commit(commit):
     return "\n".join(rendered)
 
 
-def write_output(per_category_commits, output_filename, version="X.x.x"):
+def write_output(per_category_commits, output_filename, version="X.x.x", highlights="TODO"):
     # defines the order in which these are written in the output file + nicely formatted name
     # note that "not user facing" is intentionally left out
     category_order = [
@@ -244,7 +244,7 @@ def write_output(per_category_commits, output_filename, version="X.x.x"):
         f.write("- [Security](#security)\n")
         f.write("- [Developers](#developers)\n\n")
         f.write("# Highlights\n\n")
-        f.write("TODO\n\n")
+        f.write(f"{highlights}\n\n")
         f.write("For more details about these highlighted features, you can look "
                 "at the release blogpost. Below are the full release notes for this "
                 "release.\n\n")
@@ -293,7 +293,13 @@ def main(args):
     version = args.version
     if version is None:
         version = os.path.basename(os.path.dirname(os.path.normpath(args.dir))) or "X.x.x"
-    write_output(per_category_commits, args.output, version)
+    # highlights live in <version dir>/highlights.md so regenerating keeps them
+    highlights_path = os.path.join(os.path.dirname(os.path.normpath(args.dir)), "highlights.md")
+    highlights = "TODO"
+    if os.path.exists(highlights_path):
+        with open(highlights_path, 'r') as f:
+            highlights = f.read().strip()
+    write_output(per_category_commits, args.output, version, highlights)
 
 
 if __name__ == "__main__":
