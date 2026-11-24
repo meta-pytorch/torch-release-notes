@@ -98,11 +98,15 @@ Now process the remaining PRs (the ones staying in this worksheet) **in batches 
 
 Only genuinely internal changes stay in `### not user facing`: test-only changes, CI/lint/formatting, internal refactors with no behavior change, typo fixes in comments, and changes whose `release notes:` label points at a *different* area (those go to `miscategorized.md`). When unsure whether something is user-facing, read the body rather than trusting the label.
 
+**Review `result_skip.md` the same way.** `commitlist.py` puts a PR there without anyone reading it: it has no `release notes:` label and is a revert, a codemod, or labeled `topic: not user facing`. Give each PR the same body-level review and move user-facing ones to the worksheet for their area via `miscategorized.md`. Unlabeled BC-breaking changes turn up here (in 2.15 this pass found 118 user-facing PRs, 3 of them BC-breaking).
+
 #### When to fetch PR details
 
 For most PRs, the title is sufficient to categorize. Only fetch additional detail when needed:
 - For potential BC-breaking changes or deprecations, always read the full PR body and diff to write a proper migration guide.
   - Verify concrete behavioral claims against the merged diff, do not trust the PR description for them. Whenever an entry would state a specific, checkable detail, confirm it exists in `gh pr diff <NUM> --repo pytorch/pytorch` before writing it. This applies to config flags, env vars, warnings, or error messages.
+  - Then run the before/after snippet on the previous release and the current release candidate, and correct the entry to match what actually ran: error type and text, warning text, return values, and whether the workaround restores the old behavior. If you can't run it (other hardware or OS, or only knowable at release), say so in your report so the owner confirms it.
+  - If the PR author wrote a BC note in the PR description, use it as the entry text with grammar fixes only, and add your verified before/after example after it if it has none.
 - For new features, read the PR body to write a clear description.
 - For ambiguous titles, fetch the PR body to determine the correct category.
 
@@ -173,7 +177,7 @@ All category headings must be present even if empty.
 - **performance**: Can be condensed.
 - **docs**: Can be condensed.
 - **devs**: Changes that affect people who build PyTorch from source, develop in it, or extend it, can be condensed.
-- **not user facing**: List items here so reviewers can verify, but these will be dropped from the final merged release notes. Usually this includes refactors with no behavior change, dead-code or duplicate-code removal with no user-visible effect, test/CI/lint-only changes, and changes confined to private APIs (names with a leading underscore).
+- **not user facing**: List items here so reviewers can verify, but these will be dropped from the final merged release notes. Usually this includes refactors with no behavior change, dead-code or duplicate-code removal with no user-visible effect, test/CI/lint-only changes, and changes confined to private APIs. An API is public if it is documented on the live docs site (docs.pytorch.org) or reachable without underscores (a config path, an env var, or `torch.compile(options=...)`); underscore APIs that past release notes already list (e.g. `torch._scaled_mm`, `torch._int_mm`) also count as public. Changes to other private APIs go here, or in `### devs` if they matter to people extending PyTorch.
 - **security**: Security-related fixes.
 
 Format each entry as:
@@ -201,6 +205,7 @@ Re-read the completed worksheet and verify:
 - No PR appears in more than one category
 - All category headings are present
 - BC-breaking and deprecation entries have before/after code examples
+- If you shortened or rewrote a BC-breaking or deprecation entry after verifying it, it still states the same conditions, error text, and migration steps
 
 ### Step 5: Move to done
 
